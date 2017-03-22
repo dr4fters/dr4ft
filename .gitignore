@@ -1,0 +1,10 @@
+*.swp
+.DS_Store
+node_modules
+
+data
+public/out
+public/lib
+
+config.client.js
+config.server.js
