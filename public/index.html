@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="lib/normalize.css">
+  <!-- https://github.com/driftyco/ionicons/issues/129 -->
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <script src="lib/react.js"></script>
+  <script src="lib/engine.io.js"></script>
+  <script src="lib/traceur.js"></script>
+</head>
+<body>
+  <script>
+    System
+    .import('./src/init')
+    .catch(function(err) { console.log(err.message) })
+  </script>
+</body>
+</html>

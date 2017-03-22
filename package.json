@@ -1,0 +1,22 @@
+{
+  "name": "draft",
+  "version": "0.2.0",
+  "description": "game client/server",
+  "author": "James Campos <james.r.campos@gmail.com>",
+  "repository": "aeosynth/draft",
+  "dependencies": {
+    "ee": "git://github.com/aeosynth/ee",
+    "engine.io": "^1.4.1",
+    "engine.io-client": "^1.4.1",
+    "log-timestamp": "^0.1.2",
+    "jsonfile": "^2.4.0",
+    "node-fetch": "^1.0.3",
+    "send": "^0.11.1",
+    "traceur": "0.0.65",
+    "utils": "git://github.com/arxanas/utils"
+  },
+  "devDependencies": {
+    "normalize.css": "^3.0.1",
+    "react": "^0.11.2"
+  }
+}
