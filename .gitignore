@@ -5,6 +5,7 @@ node_modules
 data
 public/out
 public/lib
+public/src/config.js
 
 config.client.js
 config.server.js
