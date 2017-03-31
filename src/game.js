@@ -276,6 +276,14 @@ module.exports = class Game extends Room {
         }
         draftcap.cap.push(playercap)
       }
+      else {
+        playercap = {
+          "bot": true,
+          "seat": seatnumber,
+          "picks": p.cap.packs
+        }
+        draftcap.cap.push(playercap)
+      }
     }
     var jsonfile = require('jsonfile')
     var file = './data/cap.json'
@@ -306,11 +314,9 @@ module.exports = class Game extends Room {
   startRound() {
     if (this.round != 0) {
         for (var p of this.players) {
-            if (!p.isBot) {
-              p.cap.packs[this.round] = p.picks
+            p.cap.packs[this.round] = p.picks
               //console.log('moving ' + p.name + ' picks ' + p.picks + ' to cap')
-              p.picks = []
-            }
+            p.picks = []
         }
     }
     if (this.round++ === this.rounds)
