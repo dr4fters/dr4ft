@@ -16,7 +16,7 @@ var Sets = {}
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
-var codes = ['EMA', 'MMA', 'VMA', 'CNS', 'TPR', 'MM2', 'EXP', 'MPS', 'CN2']
+var codes = ['EMA', 'MMA', 'VMA', 'CNS', 'TPR', 'MM2', 'EXP', 'MPS', 'CN2', 'MM3', 'MPS_AKH']
 for (var code in raw) {
   var set = raw[code]
   if (types.indexOf(set.type) > -1
@@ -103,6 +103,10 @@ function after() {
     "AER": {
       "cards": ["Paradox Engine","Planar Bridge","Arcbound Ravager","Black Vise","Chalice of the Void","Defense Grid","Duplicant","Engineered Explosives","Ensnaring Bridge","Extraplanar Lens","Grindstone","Meekstone","Oblivion Stone","Ornithopter","Sphere of Resistance","Staff of Domination","Sundering Titan","Sword of Body and Mind","Sword of War and Peace","Trinisphere","Vedalken Shackles","Wurmcoil Engine"],
       "code": "MPS"
+    },
+    "AKH": {
+      "cards": ["Austere Command","Aven Mindcensor","Containment Priest","Loyal Retainers","Worship","Wrath of God","Consecrated Sphinx","Counterbalance","Counterspell","Cryptic Command","Daze","Divert","Force of Will","Pact of Negation","Spell Pierce","Stifle","Attrition","Dark Ritual","Diabolic Intent","Entomb","Mind Twist","Aggravated Assault","Chain Lightning","Maelstrom Pulse","Vindicate","Hazoret the Fervent","Kefnet the Mindful","Oketra the True","Bontu the Glorified","Rhonas the Indomitable"],
+      "code": "MPS_AKH"
     }
   }
   for (var masterset in masterpiecelist) {
@@ -118,14 +122,6 @@ function after() {
       }
     }
     var mastercards = masterpiecelist[masterset]['cards']
-    //console.log("mastercards = " + mastercards)
-    //for (var mastercard in mastercards) {
-      //console.log("mastercard = " + mastercards[mastercard])
-      //if (!Cards[mastercards[mastercard]]['sets'][masterset]) {
-        //Cards[mastercards[mastercard]]['sets'][masterset] = Cards[mastercards[mastercard]]['sets'][masterpiecelist[masterset]['code']]
-        //Cards[mastercards[mastercard]]['sets'][masterset]['rarity'] = "special"
-      //}
-    //}
   }
   var {EMN} = Sets
   EMN.special = {
@@ -312,6 +308,7 @@ function after() {
   // send them to removeBonusCards with their set code and the highest numbered booster card
   removeBonusCards("KLD", 264)
   removeBonusCards("AER", 184)
+  removeBonusCards("AKH", 269)
 
   Sets.OGW.common.push('wastes')// wastes are twice as common
 }
@@ -415,7 +412,7 @@ function doCard(rawCard, cards, code, set) {
     colors[0].toLowerCase()
 
   var picUrl = rawCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
-
+  //console.log(rawCard.name + rawCard.types)
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
     cmc: rawCard.cmc || 0,

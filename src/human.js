@@ -79,7 +79,7 @@ module.exports = class extends EventEmitter {
     if (pack.length === 1)
       return this.pick(0)
 
-    if (this.useTimer)
+    if (this.useTimer) {
       var timer = []
       // http://www.wizards.com/contentresources/wizards/wpn/main/documents/magic_the_gathering_tournament_rules_pdf1.pdf pp43
       // official WOTC timings are
@@ -87,15 +87,18 @@ module.exports = class extends EventEmitter {
       // (1,40)(2,40)(3,35)(4,30)(5,25)(6,25)(7,20)(8,20)(9,15)(10,10)(11,10)(12,5)(13,5)(14,5)(15,0)
       var MTRTimes = [40,40,35,30,25,25,20,20,15,10,10,5,5,5,5]
       // whereas MTGO starts @ 75s and decrements by 5s per pick
-      var MTGOTimes = [75,70,65,60,55,50,45,40,35,30,25,20,15,10,5]
+      var MTGOTimes = [75,70,65,60,55,50,45,40,35,30,25,20,15,12,10]
       // and here's a happy medium
-      var AVGTimes = [55,51,47,43,38,34,30,26,22,18,14,10,6,5]
+      var AVGTimes = [55,51,47,43,38,34,30,26,22,18,14,13,11,9]
       timer = AVGTimes
       if (this.timerLength == 'Fast') {
         timer = MTRTimes
       }
       if (this.timerLength == 'Slow') {
-        timer = MTGTimes
+        timer = MTGOTimes
+      }
+      if (this.timerLength == 'Leisurely') {
+        timer = [90,85,80,75,70,65,60,55,50,45,40,35,30,25]
       }
       // if a pack has more than 15 cards in it, add the average decrement on to the first picks
       if (pack.length + this.picks.length > 15) {
@@ -104,6 +107,11 @@ module.exports = class extends EventEmitter {
         }
       }
       this.time = timer[this.picks.length]
+    }
+    else {
+      this.time = 0
+    }
+
 
     this.send('pack', pack)
   }

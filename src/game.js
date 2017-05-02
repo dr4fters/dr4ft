@@ -266,24 +266,14 @@ module.exports = class Game extends Room {
     var seatnumber = 0
     for (var p of this.players) {
       seatnumber++
-      if (!p.isBot) {
-        var playercap = {
-          "id": p.id,
-          "name": p.name,
-          "ip": p.ip,
-          "seat": seatnumber,
-          "picks": p.cap.packs
-        }
-        draftcap.cap.push(playercap)
+      var playercap = {
+        "id": p.id,
+        "name": p.name,
+         "ip": p.ip,
+        "seat": seatnumber,
+        "picks": p.cap.packs
       }
-      else {
-        playercap = {
-          "bot": true,
-          "seat": seatnumber,
-          "picks": p.cap.packs
-        }
-        draftcap.cap.push(playercap)
-      }
+      draftcap.cap.push(playercap)
     }
     var jsonfile = require('jsonfile')
     var file = './data/cap.json'
@@ -315,7 +305,7 @@ module.exports = class Game extends Room {
     if (this.round != 0) {
         for (var p of this.players) {
             p.cap.packs[this.round] = p.picks
-              //console.log('moving ' + p.name + ' picks ' + p.picks + ' to cap')
+            //console.log('moving ' + p.name + ' picks ' + p.picks + ' to cap')
             p.picks = []
         }
     }
