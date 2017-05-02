@@ -23,14 +23,16 @@ let App = {
     seats: 8,
     title: '',
     isPrivate: true,
+    fourPack: false,
+    modernOnly: false,
     type: 'draft',
     sets: [
-      'AER',
-      'AER',
-      'KLD',
-      'AER',
-      'AER',
-      'KLD'
+      'AKH',
+      'AKH',
+      'AKH',
+      'AKH',
+      'AKH',
+      'AKH'
     ],
     list: '',
     cards: 15,
@@ -38,7 +40,7 @@ let App = {
 
     addBots: true,
     useTimer: true,
-    timerLength: 'Moderate', // seconds
+    timerLength: 'Moderate', // Fast Moderate or Slow
 
     beep: false,
     chat: true,
