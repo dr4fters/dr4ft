@@ -45,9 +45,10 @@ time {
 }
 
 .legend {
-  background-color: #eaeaea;
+  background-color: #FFFFFF;
   border: solid #ccc 1px;
   box-shadow: 0 1px 1px 0 #ccc;
+  color: #089dff;
   font-family: 'Montserrat', 'Arial', sans-serif;
   font-size: 20px;
   font-weight: bold;
@@ -66,6 +67,7 @@ input[type=button], button, input[type=text], textarea {
 
 input[type=button], button {
   background-color: #f0f0f0;
+  padding: 5px;
 }
 
 input[type=button]:hover, button:hover, input[type=text]:hover, textarea:hover {
@@ -194,7 +196,7 @@ input[type=button]:disabled:active, button:disabled:active {
   flex-direction: column;
   height: 100%;
   position: fixed;
-  right: 5px;
+  right: 7px;
   top: 0;
   width: 25%;
   z-index: 0;
@@ -277,9 +279,23 @@ input[type=button]:disabled:active, button:disabled:active {
   left: 0;
   right: 0;
 
-  border-radius: 12px;
+  background: rgba(200, 200, 200, 0.25);
+}
+
+.foil-card:before {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   background: rgba(200, 200, 200, 0.25);
+  background-image: url('foil.png');
+  background-size: 240px 340px;
 }
 
 .autopick-card:after {

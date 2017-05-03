@@ -310,7 +310,6 @@ module.exports = class Game extends Room {
     if (this.round != 0) {
         for (var p of this.players) {
             p.cap.packs[this.round] = p.picks
-            //console.log('moving ' + p.name + ' picks ' + p.picks + ' to cap')
             p.picks = []
         }
     }

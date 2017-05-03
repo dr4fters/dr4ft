@@ -3,6 +3,7 @@ export default {
     "Random Set": "RNG"
   },
   expansion: {
+    "Amonkhet": "AKH",
     "Aether Revolt": "AER",
     "Kaladesh": "KLD",
     "Eldritch Moon": "EMN",
@@ -97,6 +98,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   other: {
+    "Modern Masters 2017": "MM3",
     "Eternal Masters": "EMA",
     "Magic Origins": "ORI",
     "Modern Masters 2015": "MM2",
