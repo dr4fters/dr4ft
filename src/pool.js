@@ -284,7 +284,6 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
               setindex = _.rand(setlist.length)
               chaosPool.push(_.choose(1, Sets[setlist[setindex]].common))
             }
-            console.log(chaosPool)
             pools.push(toCards(chaosPool))
           }
         }
