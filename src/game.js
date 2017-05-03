@@ -266,14 +266,24 @@ module.exports = class Game extends Room {
     var seatnumber = 0
     for (var p of this.players) {
       seatnumber++
-      var playercap = {
-        "id": p.id,
-        "name": p.name,
-         "ip": p.ip,
-        "seat": seatnumber,
-        "picks": p.cap.packs
+      if (!p.isBot) {
+        var playercap = {
+          "id": p.id,
+          "name": p.name,
+          "ip": p.ip,
+          "seat": seatnumber,
+          "picks": p.cap.packs
+        }
+        draftcap.cap.push(playercap)
       }
-      draftcap.cap.push(playercap)
+      else {
+        playercap = {
+          "bot": true,
+          "seat": seatnumber,
+          "picks": p.cap.packs
+        }
+        draftcap.cap.push(playercap)
+      }
     }
     var jsonfile = require('jsonfile')
     var file = './data/cap.json'
