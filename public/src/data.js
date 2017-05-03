@@ -1,7 +1,4 @@
 export default {
-  random: {
-    "Random Set": "RNG"
-  },
   expansion: {
     "Amonkhet": "AKH",
     "Aether Revolt": "AER",
@@ -112,5 +109,8 @@ export default {
     "Portal Three Kingdoms": "PTK",
     "Portal Second Age": "PO2",
     "Portal": "POR"
+  },
+  random: {
+    "Random Set": "RNG"
   }
 }
