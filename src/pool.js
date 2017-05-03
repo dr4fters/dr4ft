@@ -24,7 +24,7 @@ function pickFoil(set) {
   var rngFoil = _.rand(6)
   if (rngFoil < 1)
     if (set.mythic)
-      if (_.rand(set.mythic.length + set.rare.length) < set.mythic.length)
+      if (_.rand(set.mythic.length + (set.rare.length * 2)) < set.mythic.length)
         return set.mythic
       else
         return set.rare
@@ -97,6 +97,10 @@ function toPack(code) {
       foilCard = true
       break
     case 'MM2':
+      special = selectRarity(set)
+      foilCard = true
+      break
+    case 'MM3':
       special = selectRarity(set)
       foilCard = true
       break
@@ -189,6 +193,8 @@ function toCards(pool, code, foilCard, masterpiece) {
         card.code = 'EXP'
       } else if (code == 'KLD' || code == 'AER') {
         card.code = 'MPS'
+      } else if (code == 'AKH' || code == 'HOU') {
+        card.code = 'MPS_AKH'
       }
       set = sets[card.code]
       masterpiece = ''

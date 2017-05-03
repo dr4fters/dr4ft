@@ -66,7 +66,8 @@ export default React.createClass({
         d.span({ style: { marginLeft: '5px' } },
           `Waiting for ${numNotReady} ${players} to become ready...`)
     }
-    let timers = ['Fast','Moderate','Slow'].map(x => d.option({}, x))
+    
+    let timers = ['Fast','Moderate','Slow','Leisurely'].map(x => d.option({}, x))
     let startControls = d.div({},
       d.div({}, `Format: ${App.state.format}`),
       LBox('addBots', 'bots'),
