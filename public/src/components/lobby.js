@@ -9,7 +9,7 @@ let d = React.DOM
 
 export default React.createClass({
   componentWillMount() {
-    App.state.chat = true
+    App.state.chat = false
   },
   componentDidMount() {
     App.send('join', 'lobby')
@@ -54,6 +54,9 @@ function content() {
   let setsTop = d.div({}, sets.slice(0, 3))
   let setsBot = d.div({}, sets.slice(3))
 
+  let setsFourOne = d.div({}, sets.slice(0, 2))
+  let setsFourTwo = d.div({}, sets.slice(2, 4))
+
   let cube = [
     d.div({}, 'one card per line'),
     d.textarea({
@@ -70,13 +73,17 @@ function content() {
     d.select({ valueLink: App.link('packs') }, packs),
     ' packs')
   let chaos = d.div({})
+  let fourPack = d.div({},RBox('fourPack', '4 Pack Sealed: '))
+  let modernOnly = d.div({},RBox('modernOnly', 'Only Modern Sets: '))
 
   switch(App.state.type) {
     case 'draft' : return setsTop
-    case 'sealed': return [setsTop, setsBot]
+    case 'sealed':
+      if (App.state.fourPack) { return [setsFourOne, setsFourTwo, fourPack] }
+      else { return [setsTop, setsBot, fourPack] }
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
-    case 'chaos': return chaos
+    case 'chaos': return [chaos, modernOnly]
   }
 }
 

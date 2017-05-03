@@ -208,7 +208,7 @@ function toCards(pool, code, foilCard, masterpiece) {
   })
 }
 
-module.exports = function (src, playerCount, isSealed, isChaos) {
+module.exports = function (src, playerCount, isSealed, isChaos, modernOnly) {
   if (!(src instanceof Array)) {
     if (!(isChaos)) {
       var isCube = true
@@ -245,9 +245,15 @@ module.exports = function (src, playerCount, isSealed, isChaos) {
             : [].concat(...src.map(toPack)))
     } else {
       var setlist = []
-      for (var code in Sets)
-        if (code != 'UNH' && code != 'UGL')
-          setlist.push(code)
+      var modernSets = ['AER','KLD','EMN','SOI','OGW','BFZ','ORI','DTK','FRF','KTK','M15','JOU','BNG','THS','M14','DGM','GTC','RTR','M13','AVR','DKA','ISD','M12','NPH','MBS','SOM','M11','ROE','WWK','ZEN','M10','ARB','CON','ALA','EVE','SHM','MOR','LRW','10E','FUT','PLC','TSP','CSP','DIS','GPT','RAV','9ED','SOK','8ED','BOK','CHK','5DN','DST','MRD']
+      if (modernOnly) {
+        setlist = modernSets
+      }
+      else {
+        for (var code in Sets)
+          if (code != 'UNH' && code != 'UGL')
+            setlist.push(code)
+      }
       for (var i = 0; i < 3; i++) {
         for (var j = 0; j < playerCount; j++) {
 	  var setindex = _.rand(setlist.length)

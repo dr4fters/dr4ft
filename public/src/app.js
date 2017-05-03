@@ -23,6 +23,8 @@ let App = {
     seats: 8,
     title: '',
     isPrivate: true,
+    fourPack: false,
+    modernOnly: false,
     type: 'draft',
     sets: [
       'AKH',

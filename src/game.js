@@ -33,8 +33,13 @@ let games = {}
 })()
 
 module.exports = class Game extends Room {
-  constructor({id, title, seats, type, sets, cube, isPrivate}) {
+  constructor({id, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly}) {
     super({isPrivate})
+    super({fourPack})
+    super({modernOnly})
+    this.modernOnly = modernOnly
+
+    if (fourPack) { sets = sets.slice(0,4) }
 
     if (sets) {
       if (type != 'chaos') {
@@ -266,24 +271,14 @@ module.exports = class Game extends Room {
     var seatnumber = 0
     for (var p of this.players) {
       seatnumber++
-      if (!p.isBot) {
-        var playercap = {
-          "id": p.id,
-          "name": p.name,
-          "ip": p.ip,
-          "seat": seatnumber,
-          "picks": p.cap.packs
-        }
-        draftcap.cap.push(playercap)
+      var playercap = {
+        "id": p.id,
+        "name": p.name,
+         "ip": p.ip,
+        "seat": seatnumber,
+        "picks": p.cap.packs
       }
-      else {
-        playercap = {
-          "bot": true,
-          "seat": seatnumber,
-          "picks": p.cap.packs
-        }
-        draftcap.cap.push(playercap)
-      }
+      draftcap.cap.push(playercap)
     }
     var jsonfile = require('jsonfile')
     var file = './data/cap.json'
@@ -383,8 +378,9 @@ module.exports = class Game extends Room {
         players.push(new Bot)
     _.shuffle(players)
 
-    if (/chaos/.test(this.type))
-      this.pool = Pool(src, players.length, true, true)
+    if (/chaos/.test(this.type)) {
+      this.pool = Pool(src, players.length, true, true, this.modernOnly)
+    }
     else
       this.pool = Pool(src, players.length)
 
