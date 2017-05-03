@@ -208,7 +208,7 @@ function toCards(pool, code, foilCard, masterpiece) {
   })
 }
 
-module.exports = function (src, playerCount, isSealed, isChaos, modernOnly) {
+module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, totalChaos) {
   if (!(src instanceof Array)) {
     if (!(isChaos)) {
       var isCube = true
@@ -254,12 +254,39 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly) {
           if (code != 'UNH' && code != 'UGL')
             setlist.push(code)
       }
-      for (var i = 0; i < 3; i++) {
-        for (var j = 0; j < playerCount; j++) {
-	  var setindex = _.rand(setlist.length)
-          var code = setlist[setindex]
-	  setlist.splice(setindex, 1)
-          pools.push(toPack(code))
+      if (!(totalChaos)) {
+        for (var i = 0; i < 3; i++) {
+          for (var j = 0; j < playerCount; j++) {
+            var setindex = _.rand(setlist.length)
+            var code = setlist[setindex]
+            setlist.splice(setindex, 1)
+            pools.push(toPack(code))
+          }
+        }
+      }
+      else {
+        var setindex = 0
+        for (var i = 0; i < 3; i++) {
+          for (var j = 0; j < playerCount; j++) {
+            var chaosPool = []
+            setindex = _.rand(setlist.length)
+            if (setlist[setindex].mythic && !_.rand(8)) {
+              chaosPool.push(_.choose(1, Sets[setlist[setindex]].mythic))
+            }
+            else {
+              chaosPool.push(_.choose(1, Sets[setlist[setindex]].rare))
+            }
+            for (var k = 0; k < 3; k++) {
+              setindex = _.rand(setlist.length)
+              chaosPool.push(_.choose(1, Sets[setlist[setindex]].uncommon))
+            }
+            for (var k = 0; k < 10; k++) {
+              setindex = _.rand(setlist.length)
+              chaosPool.push(_.choose(1, Sets[setlist[setindex]].common))
+            }
+            console.log(chaosPool)
+            pools.push(toCards(chaosPool))
+          }
         }
       }
     }

@@ -33,11 +33,13 @@ let games = {}
 })()
 
 module.exports = class Game extends Room {
-  constructor({id, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly}) {
+  constructor({id, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos}) {
     super({isPrivate})
     super({fourPack})
     super({modernOnly})
+    super({totalChaos})
     this.modernOnly = modernOnly
+    this.totalChaos = totalChaos
 
     if (fourPack) { sets = sets.slice(0,4) }
 
@@ -379,7 +381,7 @@ module.exports = class Game extends Room {
     _.shuffle(players)
 
     if (/chaos/.test(this.type)) {
-      this.pool = Pool(src, players.length, true, true, this.modernOnly)
+      this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos)
     }
     else
       this.pool = Pool(src, players.length)

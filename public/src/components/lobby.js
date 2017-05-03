@@ -73,17 +73,18 @@ function content() {
     d.select({ valueLink: App.link('packs') }, packs),
     ' packs')
   let chaos = d.div({})
-  let fourPack = d.div({},RBox('fourPack', '4 Pack Sealed: '))
-  let modernOnly = d.div({},RBox('modernOnly', 'Only Modern Sets: '))
+  let fourPackBox = d.div({},RBox('fourPack', '4 Pack Sealed: '))
+  let modernOnlyBox = d.div({},RBox('modernOnly', 'Only Modern Sets: '))
+  let totalChaosBox = d.div({}, RBox('totalChaos', 'Total Chaos: '))
 
   switch(App.state.type) {
     case 'draft' : return setsTop
     case 'sealed':
-      if (App.state.fourPack) { return [setsFourOne, setsFourTwo, fourPack] }
-      else { return [setsTop, setsBot, fourPack] }
+      if (App.state.fourPack) { return [setsFourOne, setsFourTwo, fourPackBox] }
+      else { return [setsTop, setsBot, fourPackBox] }
     case 'cube draft' : return [cube, cubeDraft]
     case 'cube sealed': return cube
-    case 'chaos': return [chaos, modernOnly]
+    case 'chaos': return [chaos, modernOnlyBox, totalChaosBox]
   }
 }
 
