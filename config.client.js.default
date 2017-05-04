@@ -18,7 +18,7 @@ export let STRINGS = {
       ' arxanas fork of the ',
       d.code({}, 'draft'),
       ' project by aeosynth. Contributions welcome! ',
-      d.a({ href: 'https://github.com/tritoch/dr4ft' },
-        'https://github.com/tritoch/dr4ft')),
+      d.a({ href: 'https://github.com/dr4fters/dr4ft' },
+        'https://github.com/dr4fters/dr4ft')),
   },
 }
