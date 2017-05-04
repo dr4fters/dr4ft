@@ -25,6 +25,7 @@ let App = {
     isPrivate: true,
     fourPack: false,
     modernOnly: false,
+    totalChaos: false,
     type: 'draft',
     sets: [
       'AKH',
