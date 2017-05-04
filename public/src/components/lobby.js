@@ -27,6 +27,7 @@ export default React.createClass({
         Create(),
         Join(),
         Motd(),
+        STRINGS.BRANDING.PAYPAL,
         STRINGS.PAGE_SECTIONS.FOOTER),
       Chat())
   }

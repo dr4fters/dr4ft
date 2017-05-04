@@ -20,6 +20,7 @@ install:
 	ln -sf ${node}/traceur/bin/traceur-runtime.js public/lib
 	ln -sf ${node}/ee/ee.js public/lib
 	ln -sf ${node}/utils/utils.js public/lib
+	touch public/lib/piwik.js
 
 clean:
 	rm -f ${all_sets}

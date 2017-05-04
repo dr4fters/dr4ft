@@ -4,6 +4,7 @@ export let STRINGS = {
   BRANDING: {
     SITE_NAME: ['drafts', 'ninja'],
     DEFAULT_USERNAME: 'ninja',
+    PAYPAL: '',
   },
 
   PAGE_SECTIONS: {
