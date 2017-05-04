@@ -15,18 +15,20 @@ export default React.createClass({
     App.send('join', 'lobby')
   },
   render() {
-    document.title = STRINGS.BRANDING.SITE_NAME.join('.')
+    document.title = STRINGS.BRANDING.SITE_TITLE
 
     return d.div({ className: 'container' },
       d.div({ className: 'lobby' },
         d.header({},
           d.h1({ className: 'lobby-header' },
-            Spaced(...STRINGS.BRANDING.SITE_NAME))),
+            //Spaced(...STRINGS.BRANDING.SITE_NAME))),
+            STRINGS.BRANDING.SITE_NAME)),
         ServerInfo(),
         d.p({ className: 'error' }, App.err),
         Create(),
         Join(),
         Motd(),
+        STRINGS.BRANDING.PAYPAL,
         STRINGS.PAGE_SECTIONS.FOOTER),
       Chat())
   }
