@@ -25,7 +25,7 @@ module.exports = {
   VERSION,
   STRINGS: {
     BRANDING: {
-      DEFAULT_USERNAME: 'ninja',
+      DEFAULT_USERNAME: 'dr4fter',
     }
   }
 }
