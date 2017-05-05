@@ -29,7 +29,8 @@ export default React.createClass({
         Join(),
         Motd(),
         STRINGS.BRANDING.PAYPAL,
-        STRINGS.PAGE_SECTIONS.FOOTER),
+        STRINGS.PAGE_SECTIONS.FOOTER,
+        Version()),
       Chat())
   }
 })
@@ -111,12 +112,15 @@ function ServerInfo() {
     ${App.state.numActiveGames}
     ${App.state.numActiveGames === 1 ? 'game' : 'games'}`
 
+  return d.p({}, Spaced(...[numUsers, numPlayers]))
+}
+
+function Version() {
   let serverVersion =
     App.state.serverVersion
-    ? `Running ${App.state.serverVersion}`
+    ? d.p({}, "Running Version ", d.a({ href:`https://github.com/dr4fters/dr4ft/commit/${App.state.serverVersion}` }, `${App.state.serverVersion}`))
     : null
-
-  return d.p({}, Spaced(...[numUsers, numPlayers, serverVersion]))
+  return serverVersion
 }
 
 function Create() {
