@@ -391,7 +391,7 @@ function doCard(rawCard, cards, code, set) {
     && rawCard.number.indexOf('b') > -1)
     return
 
-  if (rawCard.layout === 'split')
+  if (rawCard.layout === 'split' || rawCard.layout === 'aftermath')
     name = rawCard.names.join(' // ')
 
   name = _.ascii(name)
