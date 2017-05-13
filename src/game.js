@@ -50,7 +50,7 @@ module.exports = class Game extends Room {
           format: sets.join(' / ')
         })
       } else {
-        this.format = 'CHAOS!'
+        this.format = 'CHAOS'
       }
     } else {
       let format = type

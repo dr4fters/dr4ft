@@ -175,9 +175,10 @@ function toPack(code) {
 
 function toCards(pool, code, foilCard, masterpiece) {
   var isCube = !code
+  var packSize = pool.length
   return pool.map(cardName => {
     var card = Object.assign({}, Cards[cardName])
-
+    card.packSize = packSize
     var {sets} = card
 
     if (isCube)
