@@ -68,21 +68,29 @@ export default React.createClass({
     }
     
     let timers = ['Fast','Moderate','Slow','Leisurely'].map(x => d.option({}, x))
-    let startControls = d.div({},
-      d.div({}, `Format: ${App.state.format}`),
-      LBox('addBots', 'bots'),
-      d.div({},
-        d.label({},
-          d.input({
-            type: 'checkbox',
-            checkedLink: App.link('useTimer'),
-          }), ' timer: '),
-          d.label({},
-            d.select({
-              disabled: !App.state.useTimer,
-              valueLink: App.link('timerLength')
-            }, timers),'')),
-      d.div({}, startButton, readyReminderText))
+    let startControls = ''
+    if (App.state.type !== 'sealed') {
+      startControls = d.div({},
+          d.div({}, `Format: ${App.state.format}`),
+          LBox('addBots', 'bots'),
+          d.div({},
+            d.label({},
+              d.input({
+                type: 'checkbox',
+                checkedLink: App.link('useTimer'),
+              }), ' timer: '),
+            d.label({},
+              d.select({
+                disabled: !App.state.useTimer,
+                valueLink: App.link('timerLength')
+              }, timers),'')),
+          d.div({}, startButton, readyReminderText))
+    }
+    else {
+      startControls = d.div({},
+        d.div({}, `Format: ${App.state.format}`),
+          d.div({}, startButton, readyReminderText))
+    }
 
     return d.fieldset({ className: 'start-controls fieldset' },
       d.legend({ className: 'legend game-legend' }, 'Start game'),
