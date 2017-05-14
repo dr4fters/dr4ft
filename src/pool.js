@@ -163,7 +163,8 @@ function toPack(code) {
       }
     }
   }
-  if (_.rand(6) < 1 && !(foilCard) && !(masterpiece)) {
+  if (_.rand(7) < 1 && !(foilCard) && !(masterpiece)) {
+    // http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/768235-what-are-current-pack-odds-including-foils
     size = size - 1
     foilCard = _.choose(1, pickFoil(set))
     pack.push(foilCard[0])
