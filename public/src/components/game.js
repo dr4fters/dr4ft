@@ -69,7 +69,7 @@ export default React.createClass({
     
     let timers = ['Fast','Moderate','Slow','Leisurely'].map(x => d.option({}, x))
     let startControls = ''
-    if (App.state.type !== 'sealed') {
+    if (App.state.type !== 'sealed' && App.state.type !== 'cube sealed') {
       startControls = d.div({},
           d.div({}, `Format: ${App.state.format}`),
           LBox('addBots', 'bots'),
