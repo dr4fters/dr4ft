@@ -282,7 +282,7 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
               setindex = _.rand(setlist.length)
               chaosPool.push(_.choose(1, Sets[setlist[setindex]].uncommon))
             }
-            for (var k = 0; k < 10; k++) {
+            for (var k = 0; k < 11; k++) {
               setindex = _.rand(setlist.length)
               chaosPool.push(_.choose(1, Sets[setlist[setindex]].common))
             }
