@@ -40,10 +40,9 @@ module.exports = class Game extends Room {
     super({totalChaos})
     this.modernOnly = modernOnly
     this.totalChaos = totalChaos
-
-    if (fourPack) { sets = sets.slice(0,4) }
-
+    
     if (sets) {
+      if (fourPack) { sets = sets.slice(0,4) }
       if (type != 'chaos') {
         Object.assign(this, {
           sets,
