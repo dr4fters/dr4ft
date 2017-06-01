@@ -2,6 +2,8 @@
 
 
 
+[![Join the chat at https://gitter.im/dr4ft/Lobby](https://badges.gitter.im/dr4ft/Lobby.svg)](https://gitter.im/dr4ft/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [dr4ft](http://dr4ft.com) is a fork of arxanas' `drafts.ninja` fork of aeosynth's `draft` project. It
 supports all of the features of `drafts.ninja` and more.
 
