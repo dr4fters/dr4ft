@@ -30,7 +30,7 @@ fs.writeFileSync('data/cards.json', JSON.stringify(Cards, null, 2))
 fs.writeFileSync('data/sets.json', JSON.stringify(Sets, null, 2))
 
 function before() {
-  raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== 'token')
+    raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== 'token')
 
   raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
   delete raw.TSB
@@ -106,6 +106,10 @@ function after() {
     },
     "AKH": {
       "cards": ["Austere Command","Aven Mindcensor","Containment Priest","Loyal Retainers","Worship","Wrath of God","Consecrated Sphinx","Counterbalance","Counterspell","Cryptic Command","Daze","Divert","Force of Will","Pact of Negation","Spell Pierce","Stifle","Attrition","Dark Ritual","Diabolic Intent","Entomb","Mind Twist","Aggravated Assault","Chain Lightning","Maelstrom Pulse","Vindicate","Hazoret the Fervent","Kefnet the Mindful","Oketra the True","Bontu the Glorified","Rhonas the Indomitable"],
+      "code": "MPS_AKH"
+    },
+    "HOU": {
+      "cards": ["Armageddon","Capsize","Forbid","Omniscience","Opposition","Sunder","Threads of Disloyalty","Avatar of Woe","Damnation","Desolation Angel","Diabolic Edict","Doomsday","No Mercy","Slaughter Pact","Thoughtseize","Blood Moon","Boil","Shatterstorm","Through the Breach","Choke","The Locust God","Lord of Extinction","The Scarab God","The Scorpion God"],
       "code": "MPS_AKH"
     }
   }
@@ -309,6 +313,7 @@ function after() {
   removeBonusCards("KLD", 264)
   removeBonusCards("AER", 184)
   removeBonusCards("AKH", 269)
+  removeBonusCards("HOU", 199)
 
   Sets.OGW.common.push('wastes')// wastes are twice as common
 }

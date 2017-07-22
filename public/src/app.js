@@ -28,11 +28,11 @@ let App = {
     totalChaos: false,
     type: 'draft',
     sets: [
+      'HOU',
+      'HOU',
       'AKH',
-      'AKH',
-      'AKH',
-      'AKH',
-      'AKH',
+      'HOU',
+      'HOU',
       'AKH'
     ],
     list: '',

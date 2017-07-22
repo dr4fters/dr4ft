@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Hour of Devastation": "HOU",
     "Amonkhet": "AKH",
     "Aether Revolt": "AER",
     "Kaladesh": "KLD",
