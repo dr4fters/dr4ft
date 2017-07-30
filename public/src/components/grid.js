@@ -32,7 +32,7 @@ function zone(zoneName) {
 
   return d.div({ className: 'zone' },
     d.h1({}, Spaced(
-      d.span({}, `${zoneName} ${zoneName === 'pack' ? App.state.round : ''}`),
+      d.span({}, `${zoneName}${zoneName === 'pack' ? " " + App.state.round : ""}`),
       d.span({}, `${cards.length} ${zoneName === 'pack' ? ' /  ' + cards[0].packSize.toString() : ""} ${cards.length === 1 ? 'card' : 'cards' }`))),
     items)
 }
