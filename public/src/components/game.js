@@ -71,20 +71,20 @@ export default React.createClass({
     let startControls = ''
     if (App.state.type !== 'sealed' && App.state.type !== 'cube sealed') {
       startControls = d.div({},
-          d.div({}, `Format: ${App.state.format}`),
-          LBox('addBots', 'bots'),
-          d.div({},
-            d.label({},
-              d.input({
-                type: 'checkbox',
-                checkedLink: App.link('useTimer'),
-              }), ' timer: '),
+        d.div({}, `Format: ${App.state.format}`),
+        LBox('addBots', 'bots'),
+        d.div({},
+          d.label({},
+            LBox('useTimer', 'timer: '),
             d.label({},
               d.select({
                 disabled: !App.state.useTimer,
                 valueLink: App.link('timerLength')
               }, timers),'')),
-          d.div({}, startButton, readyReminderText))
+          LBox('shufflePlayers', 'shuffle players'),
+          d.div({}, startButton, readyReminderText)
+        )
+      )
     }
     else {
       startControls = d.div({},
@@ -169,11 +169,29 @@ function row(p, i) {
     d.td({}, p.hash && p.hash.mws),
   ]
 
-  if (!App.state.didGameStart)
+  if (!App.state.didGameStart) {
     columns.push(d.td({
       className: 'ready',
       title: READY_TITLE_TEXT
     }, readyCheckbox))
+
+    if (App.state.isHost) {
+      columns.push(
+        d.td({},
+          d.button({
+              onClick: ()=> App.send('swap', [i, i - 1]),
+            },
+            d.img({ src: `../../media/arrow-up.png`, width: "16px" })
+          ),
+          d.button({
+              onClick: ()=> App.send('swap', [i, i + 1]),
+            },
+            d.img({ src: `../../media/arrow-down.png`, width: "16px" })
+          )
+        )
+      )
+    }
+  }
 
   if (App.state.isHost)
     if (i !== self && !p.isBot)

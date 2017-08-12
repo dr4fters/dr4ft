@@ -40,6 +40,7 @@ let App = {
     packs: 3,
 
     addBots: true,
+    shufflePlayers: true,
     useTimer: true,
     timerLength: 'Moderate', // Fast Moderate or Slow
 
