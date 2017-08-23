@@ -111,6 +111,35 @@ let events = {
     if (App.state.beep)
       document.getElementById('beep').play()
   },
+  log(draftLog) {
+    App.state.log = draftLog
+  },
+  getLog() {
+    let {id, format, log, players, self, sets, type} = App.state
+    let isCube = /cube/.test(type)
+    let date = new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","_")
+    let filename = `Draft_${format.replace(/\W/g, "")}_${date}.log`
+    let data = [
+      `Event #: ${id}`,
+      `Time: ${date}`,
+      `Players:`
+    ]
+
+    players.forEach((x, i) =>
+      data.push(i === self ? `--> ${x.name}` : `    ${x.name}`)
+    )
+
+    for (var round in log) {
+      data.push('', `------ ${isCube ? "Cube" : sets.shift()} ------`)
+      log[round].forEach(function (pick, i) {
+        data.push('', `Pack ${round} pick ${i + 1}:`)
+        data = data.concat(pick)
+      })
+    }
+
+    _.download(data.join('\n'), filename)
+  },
+
   create() {
     let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state
     let savename = App.state.type === 'draft' ? App.state.sets[0] + '-draft' : App.state.type

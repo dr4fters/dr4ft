@@ -19,7 +19,12 @@ module.exports = class extends EventEmitter {
       cap: {
         packs: {}
       },
-      picks: []
+      picks: [],
+      draftLog: {
+        round : {},
+        pack: []
+      }
+
     })
     this.attach(sock)
   }
@@ -118,6 +123,8 @@ module.exports = class extends EventEmitter {
   pick(index) {
     var pack = this.packs.shift()
     var card = pack.splice(index, 1)[0]
+
+    this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) )
 
     var pickcard = card.name
     if (card.foil == true)

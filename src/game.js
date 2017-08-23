@@ -257,8 +257,10 @@ module.exports = class Game extends Room {
   end() {
     var humans = 0
     for (var p of this.players)
-        if (!p.isBot)
+        if (!p.isBot) {
             humans++
+            p.send('log', p.log)
+        }
 
     var draftcap = {
       "gameID": this.id,
@@ -312,6 +314,10 @@ module.exports = class Game extends Room {
         for (var p of this.players) {
             p.cap.packs[this.round] = p.picks
             p.picks = []
+            if(!p.isBot) {
+              p.draftLog.round[this.round] = p.draftLog.pack
+              p.draftLog.pack = []
+            }
         }
     }
     if (this.round++ === this.rounds)

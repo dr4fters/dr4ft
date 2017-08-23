@@ -81,7 +81,9 @@ export default React.createClass({
         d.fieldset({ className: 'download-controls fieldset' },
           d.legend({ className: 'legend game-legend' }, 'Download'),
           Download(),
-          this.Copy()))
+          this.Copy(),
+          this.Log())
+        )
     return null
   },
   Copy() {
@@ -97,4 +99,12 @@ export default React.createClass({
         readOnly: true
       }))
   },
+  Log() {
+    return d.div({ },
+      d.button({
+        className: 'connected-component',
+        onClick: App._emit('getLog')
+      }, 'Download Draft Log'))
+  }
+
 })

@@ -51,6 +51,7 @@ let App = {
     filetype: 'txt',
     side: false,
     sort: 'color',
+    log: {},
 
     get didGameStart() {
       // both round === 0 and round is undefined
