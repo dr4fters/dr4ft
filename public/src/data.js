@@ -77,6 +77,7 @@ export default {
     "Arabian Nights": "ARN"
   },
   core: {
+    "Magic Origins": "ORI",
     "Magic 2015 Core Set": "M15",
     "Magic 2014 Core Set": "M14",
     "Magic 2013": "M13",
@@ -98,7 +99,6 @@ export default {
   other: {
     "Modern Masters 2017": "MM3",
     "Eternal Masters": "EMA",
-    "Magic Origins": "ORI",
     "Modern Masters 2015": "MM2",
     "Tempest Remastered": "TPR",
     "Conspiracy": "CNS",
