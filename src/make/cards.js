@@ -30,17 +30,22 @@ fs.writeFileSync('data/cards.json', JSON.stringify(Cards, null, 2))
 fs.writeFileSync('data/sets.json', JSON.stringify(Sets, null, 2))
 
 function before() {
-    raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== 'token')
+  raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== 'token')
 
+  for (card of raw.TSB.cards)
+	card.rarity = 'special'
+  
   raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
-  delete raw.TSB
 
-  raw.CPK.cards = raw.CPK.cards.concat(raw.CPK.cards)
-  delete raw.CPK
-
-  raw.ITP.cards = raw.ITP.cards.concat(raw.ITP.cards)
-  delete raw.ITP
-
+  // Add set codes here to have them removed 
+  for (var removeSet of ['TSB','ITP']) {  
+	  if (raw[removeSet]) {
+	    delete raw[removeSet]
+    }
+	  else {
+	    console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)")
+    }	  
+  }	
   raw.PLC.booster = Array(11).fill('common')
   raw.FUT.booster = Array(11).fill('common')
 
