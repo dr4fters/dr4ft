@@ -40,7 +40,7 @@ module.exports = class Game extends Room {
     super({totalChaos})
     this.modernOnly = modernOnly
     this.totalChaos = totalChaos
-    
+
     if (sets) {
       if (fourPack) { sets = sets.slice(0,4) }
       if (type != 'chaos') {
@@ -259,7 +259,7 @@ module.exports = class Game extends Room {
     for (var p of this.players)
         if (!p.isBot) {
             humans++
-            p.send('log', p.log)
+            p.send('log', p.draftLog.round)
         }
 
     var draftcap = {
