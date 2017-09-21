@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
     "Amonkhet": "AKH",
     "Aether Revolt": "AER",
