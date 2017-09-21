@@ -16,7 +16,7 @@ var Sets = {}
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
-var codes = ['EMA', 'MMA', 'VMA', 'CNS', 'TPR', 'MM2', 'EXP', 'MPS', 'CN2', 'MM3', 'MPS_AKH']
+var codes = ['EMA', 'MMA', 'VMA', 'CNS', 'TPR', 'MM2', 'EXP', 'MPS', 'CN2', 'MM3', 'MPS_AKH', "IMA"]
 for (var code in raw) {
   var set = raw[code]
   if (types.indexOf(set.type) > -1
