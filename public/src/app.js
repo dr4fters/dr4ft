@@ -28,12 +28,12 @@ let App = {
     totalChaos: false,
     type: 'draft',
     sets: [
-      'HOU',
-      'HOU',
-      'AKH',
-      'HOU',
-      'HOU',
-      'AKH'
+      'XLN',
+      'XLN',
+      'XLN',
+      'XLN',
+      'XLN',
+      'XLN'
     ],
     list: '',
     cards: 15,
