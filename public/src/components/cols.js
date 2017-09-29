@@ -11,8 +11,8 @@ export default React.createClass({
   render() {
     let zones = this.props.zones.map(this.zone)
     const img = this.state.card && React.createElement(ImageHelper, {
-      card,   
-      className 
+      card: this.state.card,   
+      className: this.state.className 
     })
     return d.div({}, zones, img)
   },
@@ -39,7 +39,7 @@ export default React.createClass({
       let items = zone[key].map(card =>
         d.div({
           onClick: App._emit('click', zoneName, card.name),
-          onMouseEnter: this.enter.bind(this, card),
+          onMouseOver: this.enter.bind(this, card),
           onMouseLeave: () => { this.setState({ card: false })}
         }, d.img({ src: card.url, alt: card.name }))
       )
@@ -61,12 +61,14 @@ const ImageHelper = React.createClass({
     if(this.props.card.isDoubleFaced) {
       return d.div({
         className: this.props.className,
-        id: 'img',
+        id: 'doubleimg',
       },
       d.img({
+        className: "card",
         src:this.props.card.url,
       }),
       d.img({
+        className: "card",
         src:this.props.card.flippedCardURL,
       })
       )

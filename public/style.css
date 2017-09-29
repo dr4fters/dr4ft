@@ -244,6 +244,11 @@ input[type=button]:disabled:active, button:disabled:active {
   cursor: pointer;
 }
 
+#doubleimg {
+  height: 340px;
+  width: 480px;
+}
+
 .col {
   float: left;
   width: 180px;
@@ -374,15 +379,15 @@ input[type=button]:disabled:active, button:disabled:active {
   text-align: center;
 }
 
-#img {
+#img, #doubleimg {
   position: fixed;
   bottom: 0;
   z-index: 1;
 }
-#img.left {
+#img.left, #doubleimg.left {
   left: 0;
 }
-#img.right {
+#img.right, #doubleimg.right {
   right: 0;
 }
 
