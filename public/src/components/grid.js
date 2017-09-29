@@ -19,20 +19,54 @@ function zone(zoneName) {
   let isAutopickable = card => zoneName === 'pack' && card.isAutopick
 
   let items = cards.map(card =>
-    d.span(
-      {
-        className: `card ${isAutopickable(card) ? 'autopick-card ' : ''} card ${card.foil ? 'foil-card ' : ''}`,
-        title: isAutopickable(card) ? 'This card will be automatically picked if your time expires.' : '',
-        onClick: App._emit('click', zoneName, card.name),
-      },
-      d.img({
-        src: card.url,
-        alt: card.name,
-      })))
-
+      React.createElement(Card, {
+        card: card,
+        isAutopick: isAutopickable(card),
+        zoneName:zoneName
+      })
+    )
   return d.div({ className: 'zone' },
     d.h1({}, Spaced(
       d.span({}, zoneName),
       d.span({}, `${cards.length} ${zoneName === 'pack' ? ' /  ' + cards[0].packSize.toString() : ""} ${cards.length === 1 ? 'card' : 'cards' }`))),
     items)
 }
+
+const Card = React.createClass({
+  getInitialState() {
+    return {
+      card: this.props.card,
+      url: this.props.card.url
+    }
+  },
+  onMouseEnter() {
+    if(this.state.card.isDoubleFaced) {
+      this.setState({
+        url: this.state.card.flippedCardURL
+      })
+    }
+  },
+  onMouseLeave() {
+    this.setState({
+      url: this.state.card.url
+    })
+  },
+  render() {
+    if(this.props.card != this.state.card) {
+      this.state.card = this.props.card;
+      this.state.url = this.props.card.url
+    }
+    return d.span({
+      onMouseOver: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      className: `card ${this.props.isAutopick ? 'autopick-card ' : ''} card ${this.props.card.foil ? 'foil-card ' : ''}`,
+      title: this.props.isAutopick ? 'This card will be automatically picked if your time expires.' : '',
+      onClick: App._emit('click', this.props.zoneName, this.state.card.name),
+    },
+    d.img({
+      src: this.state.url,
+      alt: this.state.card.name,
+    })
+  )
+  }
+})
