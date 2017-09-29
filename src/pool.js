@@ -89,17 +89,8 @@ function toPack(code) {
         : special.shock
       break
     case 'EMA':
-      special = selectRarity(set)
-      foilCard = true
-      break
     case 'MMA':
-      special = selectRarity(set)
-      foilCard = true
-      break
     case 'MM2':
-      special = selectRarity(set)
-      foilCard = true
-      break
     case 'MM3':
       special = selectRarity(set)
       foilCard = true
