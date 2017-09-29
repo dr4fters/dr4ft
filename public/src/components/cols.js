@@ -5,7 +5,7 @@ let d = React.DOM
 export default React.createClass({
   getInitialState() {
     return {
-      className: 'right',
+      className: 'right'
     }
   },
   render() {
@@ -14,7 +14,7 @@ export default React.createClass({
       card,   
       className 
     })
-    return d.div({}, zones, this.state.img)
+    return d.div({}, zones, img)
   },
 
   enter(card, e) {
