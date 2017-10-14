@@ -1,5 +1,8 @@
-import Lobby from './components/lobby'
-import Game  from './components/game'
+import React from "react"
+import { render } from "react-dom"
+
+import Lobby from './lobby/Lobby'
+import Game  from './game/Game'
 let App
 
 export default function(_App) {
@@ -15,15 +18,14 @@ function route() {
 
   switch(route) {
     case 'g':
-      component = Game({ id })
+      component = <Game id={ id } />
       break
     case '':
-      component = Lobby()
+      component = <Lobby />
       break
     default:
       return App.error(`not found: ${path}`)
   }
 
-  App.component = component
-  App.update()
+  render(component, document.getElementById("root"))
 }

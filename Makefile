@@ -3,24 +3,22 @@ all: install cards score js
 
 node := ${CURDIR}/node_modules
 all_sets := ${CURDIR}/data/AllSets.json
-traceur := ${node}/.bin/traceur
+webpack := ${node}/.bin/webpack
 
 client_config := config.client.js
 server_config := config.server.js
 
-${traceur}: install
+${webpack}: install
 
 install:
 	npm install
 	mkdir -p public/lib
 	ln -sf ${node}/normalize.css/normalize.css public/lib
-	ln -sf ${node}/react/dist/react.js public/lib
+	ln -sf ${node}/react/umd/react.development.js public/lib/react.js
+	ln -sf ${node}/react-dom/umd/react-dom.development.js public/lib/react-dom.js
 	ln -sf ${node}/engine.io-client/engine.io.js public/lib
-	ln -sf ${node}/traceur/bin/traceur.js public/lib
-	ln -sf ${node}/traceur/bin/traceur-runtime.js public/lib
 	ln -sf ${node}/ee/ee.js public/lib
 	ln -sf ${node}/utils/utils.js public/lib
-	touch public/lib/piwik.js
 
 clean:
 	rm -f ${all_sets}
@@ -37,8 +35,8 @@ ${all_sets}:
 score:
 	-node src/make score
 
-js: ${traceur} ${all_sets} ${client_config} ${server_config}
-	${traceur} --out public/lib/app.js public/src/init.js
+js: ${webpack} ${all_sets} ${client_config} ${server_config}
+	${webpack}
 
 # "order-only" prerequisite
 ${client_config}: | ${client_config}.default

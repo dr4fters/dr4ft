@@ -1,24 +1,27 @@
-let d = React.DOM
+import React from "react"
 
-export let STRINGS = {
-  BRANDING: {
-    SITE_TITLE: ['dr4ft','com'].join('.'),
-    SITE_NAME: d.span({},'DR',d.img({src:'4.png',alt:'4'}),'FT'),
-    DEFAULT_USERNAME: 'dr4fter',
-    PAYPAL: '',
-  },
+export default {
+  STRINGS: {
+    BRANDING: {
+      SITE_TITLE: ['dr4ft', 'com'].join('.'),
+      SITE_NAME: <span>
+        DR < img src = '4.png'
+      alt = '4' /> FT </span>,
+      DEFAULT_USERNAME: 'dr4fter',
+      PAYPAL: '',
+    },
 
-  PAGE_SECTIONS: {
-    MOTD: null, // message of the day; can be a React element
+    PAGE_SECTIONS: {
+      MOTD: null, // message of the day; can be a React element
 
-    FOOTER: d.div({},
-      d.strong({}, 'dr4ft'),
-      ' is a fork of the ',
-      d.code({}, 'drafts.ninja'),
-      ' arxanas fork of the ',
-      d.code({}, 'draft'),
-      ' project by aeosynth. Contributions welcome! ',
-      d.a({ href: 'https://github.com/dr4fters/dr4ft' },
-        'https://github.com/dr4fters/dr4ft')),
-  },
+      FOOTER:
+        <div>
+          <strong> dr4ft </strong>is a fork of the <code>drafts.ninja</code>
+          arxanas fork of the <code > draft </code>
+          project by aeosynth.Contributions welcome!
+          <a href = 'https://github.com/dr4fters/dr4ft'>
+          https: //github.com/dr4fters/dr4ft</a>
+        </div>
+    },
+  }
 }
