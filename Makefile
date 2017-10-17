@@ -12,13 +12,6 @@ ${webpack}: install
 
 install:
 	npm install
-	mkdir -p public/lib
-	ln -sf ${node}/normalize.css/normalize.css public/lib
-	ln -sf ${node}/react/umd/react.development.js public/lib/react.js
-	ln -sf ${node}/react-dom/umd/react-dom.development.js public/lib/react-dom.js
-	ln -sf ${node}/engine.io-client/engine.io.js public/lib
-	ln -sf ${node}/ee/ee.js public/lib
-	ln -sf ${node}/utils/utils.js public/lib
 
 clean:
 	rm -f ${all_sets}
