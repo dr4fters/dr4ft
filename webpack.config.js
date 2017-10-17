@@ -1,14 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   devtool: 'cheap-eval-source-map',
   // context: __dirname,
-  entry: ['./public/src/init.js'],
+  entry: {
+    app: './public/src/init.js',
+    react: ['react', 'react-dom']
+  },
   output: {
     path: path.join(__dirname, './public/lib'),
-    filename: 'app.js',
+    filename: '[name].js',
     publicPath: '/'
   },
   devServer: {
@@ -24,7 +28,12 @@ module.exports = {
     //   filename: '../index.html',
     //   inject: 'body'
     // })
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+    new CopyWebpackPlugin([
+      { from: 'node_modules/engine.io-client/engine.io.js', to: 'engine.io.js' },
+      { from: 'node_modules/ee/ee.js', to: 'ee.js' },
+      { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
+    ])
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.less'],
@@ -33,7 +42,9 @@ module.exports = {
       Src: path.resolve(__dirname, "public/src"),
     }
   },
+  externals: /utils|ee|engine.io/i,
   module: {
+    noParse:/ee|engine.io|utils/,
     rules: [
       {
         test: /\.(js|jsx)$/,
