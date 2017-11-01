@@ -5,7 +5,9 @@ node_modules
 
 data
 public/out
-public/lib
+public/lib/*
+!public/lib/utils.js
+!public/lib/ee.js
 public/src/config.js
 
 config.client.js
