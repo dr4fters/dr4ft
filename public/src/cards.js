@@ -77,10 +77,13 @@ let events = {
 
     App.update()
   },
-  copy(ref) {
-    let node = ref.getDOMNode()
-    node.value = filetypes.txt()
-    node.select()
+  copy() {
+    let textField = document.createElement('textarea')
+    textField.innerText = filetypes.txt()
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove()
     hash()
   },
   download() {

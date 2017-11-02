@@ -1,73 +1,102 @@
-import App from '../app'
-import {BASICS, Zones} from '../cards'
-import React from "react"
-import {Select} from "../utils"
+import App from 'Src/app'
+import {BASICS, Zones} from 'Src/cards'
+import _ from "Lib/utils"
+import React, {Component} from "react"
+import {Select} from "Src/utils"
 
-function Lands() {
-  let colors = ['White', 'Blue', 'Black', 'Red', 'Green']
-  let symbols = colors.map(x => <td>
-    <img src={`http://www.wizards.com/Magic/redesign/${x}_Mana.png`}/>
-  </td>)
+const DeckSettings = () => (
+  (App.state.isGameFinished || App.state.didGameStart)
+  ? <div className='deck-settings'>
+      <LandsPanel />
+      <DownloadPanel />
+    </div>
+  : <div/>
+)
 
-  let [main,
-    side] = ['main', 'side'].map(zoneName => {
-    let inputs = BASICS.map(cardName => <td>
-      <input
-        className='number'
-        min={0}
-        onChange={App._emit('land', zoneName, cardName)}
-        type='number'
-        value={Zones[zoneName][cardName] || 0}/>
-    </td>)
+const LandsPanel = () => (
+  <fieldset className='land-controls fieldset'>
+    <legend className='legend game-legend'>Lands</legend>
+    <table>
+      <thead>
+        <ManaSymbols />
+      </thead>
+      <tbody>
+        <LandsRow zoneName="main" />
+        <LandsRow zoneName="side" />
+      </tbody>
+      <tfoot>
+        <SuggestLands />
+      </tfoot>
+    </table>
+  </fieldset>
+)
 
-    return (
-      <tr>
-        <td>{zoneName}</td>
-        {inputs}
-      </tr>
-    )
-  })
+const ManaSymbols = () => {
+  const manaSymbols = ['White', 'Blue', 'Black', 'Red', 'Green']
+  const url = x => `http://www.wizards.com/Magic/redesign/${x}_Mana.png`
 
-  let suggest = (
+  return (
     <tr>
-      <td>deck size</td>
-      <td><input
+      <td />
+      {manaSymbols.map(x =>
+        <td key={_.uid()}>
+          <img src={url(x)}/>
+        </td>)
+      }
+    </tr>
+  )
+}
+
+const LandsRow = ({zoneName}) => (
+  <tr>
+    <td>{zoneName}</td>
+    {BASICS.map(cardName =>
+      <td key={_.uid()}>
+        <input
+          className='number'
+          min={0}
+          onChange={App._emit('land', zoneName, cardName)}
+          type='number'
+          value={Zones[zoneName][cardName] || 0}/>
+      </td>)}
+  </tr>
+)
+
+const SuggestLands = () => (
+  <tr>
+    <td>deck size</td>
+    <td>
+      <input
         className='number'
         min={0}
         onChange={App._emit('deckSize')}
         type='number'
-        value={App.state.deckSize}/></td>
-      <td colSpan={2}>
-        <button className='land-suggest-button' onClick={App._emit('resetLands')}>
-          reset lands
-        </button>
-      </td>
-      <td colSpan={2}>
-        <button className='land-suggest-button' onClick={App._emit('suggestLands')}>
-          suggest lands
-        </button>
-      </td>
-    </tr>
-  )
+        value={App.state.deckSize}/>
+    </td>
+    <td colSpan={2}>
+      <button className='land-suggest-button' onClick={App._emit('resetLands')}>
+        reset lands
+      </button>
+    </td>
+    <td colSpan={2}>
+      <button className='land-suggest-button' onClick={App._emit('suggestLands')}>
+        suggest lands
+      </button>
+    </td>
+  </tr>
+)
 
-  return (
-    <fieldset className='land-controls fieldset'>
-      <legend className='legend game-legend'>Lands</legend>
-      <table>
-        <tr>
-          <td/> {symbols}
-        </tr>
-        {main}
-        {side}
-        {suggest}
-      </table>
-    </fieldset>
-  )
-}
+const DownloadPanel = () => (
+  <fieldset className='download-controls fieldset'>
+    <legend className='legend game-legend'>Download</legend>
+    <Download />
+    <Copy />
+    <Log />
+  </fieldset>
+)
 
-function Download() {
+const Download = () => {
   const filetypes = ['cod', 'json', 'mwdeck', 'txt']
-  // TODO: Checker car j'ai ajouté un <label> dans le Select par rapport à avant!
   const select = <Select link='filetype' opts={filetypes}/>
 
   return (
@@ -80,51 +109,30 @@ function Download() {
         className='download-filename connected-component'
         placeholder='filename'
         value={App.state["filename"]}
-        onChange={function (e) {
-        App.save("filename", e.currentTarget.checked)
-      }}/> {select}
+        onChange={e => { App.save("filename", e.currentTarget.checked) }} />
+      {select}
       <span className='download-button'/>
     </div>
   )
 }
 
-export default class DeckSettings extends React.Component {
-  render() {
-    if (App.state.isGameFinished || App.state.didGameStart) 
-      return (
-        <div className='deck-settings'>
-          {Lands()}
-          <fieldset className='download-controls fieldset'>
-            <legend className='legend game-legend'>Download</legend>
-            {Download()}
-            {this.Copy()}
-            {this.Log()}
-          </fieldset>
-        </div>
-      )
-    return null
-  };
-  Copy() {
-    return (
-      <div className='copy-controls connected-container'>
-        <button
-          className='connected-component'
-          onClick={App._emit('copy', this.refs.decklist)}>
-          Make copyable text
-        </button>
-        <textarea
-          className='connected-component'
-          placeholder='decklist'
-          ref='decklist'
-          readOnly={true}/>
-      </div>
-    )
-  };
-  Log() {
-    return (
-      <div>
-        <button className='connected-component' onClick={App._emit('getLog')}>Download Draft Log</button>
-      </div>
-    )
-  }
-}
+const Copy = () => (
+  <div className='copy-controls connected-container'>
+    <button
+      className='connected-component'
+      onClick={App._emit('copy')}>
+      Copy deck to clipboard
+    </button>
+  </div>
+)
+
+const Log = () => (
+  <div>
+    <button className='connected-component'
+            onClick={e => App._emit('getLog')}>
+      Download Draft Log
+    </button>
+  </div>
+)
+
+export default DeckSettings
