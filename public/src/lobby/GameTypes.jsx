@@ -25,9 +25,10 @@ const GameType = ({type, isChecked}) => (
       type='radio'
       value={type}
       onChange={() => {
-      App.save("type", type)
-    }}
+        App.save("type", type)
+      }}
       checked={isChecked}/> {type}
   </label>
 )
+
 export default GameTypes

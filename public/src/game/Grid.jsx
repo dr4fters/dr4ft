@@ -16,11 +16,12 @@ const zone = (zoneName) => {
   const values = _.values(zone)
   const cards = _.flat(values)
 
-  const zoneHelper = `${cards.length}
-          ${zoneName === 'pack' ?
-              ' /  ' + cards[0].packSize.toString() :
-              ""}
-          ${cards.length === 1 ? 'card' : 'cards' }`
+  const zoneHelper
+  = `${cards.length}
+    ${zoneName === 'pack'
+      ? ' /  ' + cards[0].packSize.toString()
+      : ""}
+    ${cards.length === 1 ? 'card' : 'cards' }`
 
   return (
     <div className='zone' key={_.uid()}>
@@ -39,10 +40,11 @@ const Cards = ({cards, zoneName}) => {
     `card ${isAutopickable(card) ? 'autopick-card ' : ''}
     card ${card.foil ? 'foil-card ' : ''}`
 
-    const title =
-    isAutopickable(card)
-        ? 'This card will be automatically picked if your time expires.'
-        : ''
+    const title
+    = isAutopickable(card)
+      ? 'This card will be automatically picked if your time expires.'
+      : ''
+
     return (
       <span key={_.uid()}
         className={className}

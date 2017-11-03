@@ -13,8 +13,8 @@ const GameSettings = () => (
             <Checkbox side="left" text="Show chat" link="chat" />
           </div>
           <div>
-            <Checkbox side="left" text="Add picks to sideboard" 
-                      link="side" 
+            <Checkbox side="left" text="Add picks to sideboard"
+                      link="side"
                       onChange={(e) => {
                         App.save('side', e.target.checked)
                         App.emit('side')
@@ -26,13 +26,13 @@ const GameSettings = () => (
           <div>
             <Checkbox side="left" text="Column view" link="cols" />
           </div>
-          <Sort />
+          <SortCards />
         </span>
       </fieldset>
     </div>
 )
 
-const Sort = () => (
+const SortCards = () => (
   <div>
     Sort cards by:
     <div className= 'connected-container' >
@@ -44,7 +44,7 @@ const Sort = () => (
                  onChange= {e => App.save('sort', e.currentTarget.value)}
                  type='radio'
                  value={sort}/>
-          {sort}  
+          {sort}
         </label>
       )}
     </div>

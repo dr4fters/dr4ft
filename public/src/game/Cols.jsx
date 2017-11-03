@@ -11,19 +11,9 @@ class Cols extends Component {
       className: 'right',
       url: undefined
     }
-    this.enter = this.enter.bind(this)
-    this.zone = this.zone.bind(this)
+    this.onMouseEnter = this.onMouseEnter.bind(this)
   }
-  render() {
-    const zones = this.props.zones.map(this.zone)
-    let img = this.state.url && 
-              <img className={this.state.className}
-                   id='img'
-                   onMouseEnter={this.enter.bind(this, this.state.url)}
-                   src={this.state.url}/>
-    return <div>{zones}{img}</div>
-  };
-  enter(url, e) {
+  onMouseEnter(url, e) {
     let {offsetLeft} = e.target
     let {clientWidth} = document.documentElement
 
@@ -35,23 +25,37 @@ class Cols extends Component {
       : 'right'
 
     this.setState({ url, className })
-  };
-  zone(zoneName) {
-    let zone = getZone(zoneName)
+  }
+  render() {
+    return (
+      <div>
+        <Zones onMouseEnter={this.onMouseEnter} zoneNames={this.props.zones} />
+        <ImageHelper onMouseEnter={this.onMouseEnter}
+          className={this.state.className}
+          src={this.state.url} />
+      </div>
+    )
+  }
+}
 
+const Zones = ({onMouseEnter, zoneNames}) => {
+  const renderZone = (zoneName) => {
+    const zone = getZone(zoneName)
     let sum = 0
     let cols = []
+
     for (let key in zone) {
       let items = zone[key].map(card =>
-        <div onClick= {App._emit('click', zoneName, card.name)}
-             onMouseOver= {this.enter.bind(this, card.url)} >
-          <img src= {card.url} alt= {card.name} />
+        <div key={_.uid()}
+             onClick={App._emit('click', zoneName, card.name)}
+             onMouseEnter={e => onMouseEnter(card.url, e)} >
+          <img src={card.url} alt={card.name} />
         </div>
       )
 
       sum += items.length
       cols.push(
-        <div className='col'>
+        <div key={_.uid()} className='col'>
           <div>
             {`${key} - ${items.length} cards`}
           </div>
@@ -61,7 +65,7 @@ class Cols extends Component {
     }
 
     return (
-      <div className='zone'>
+      <div key={_.uid()} className='zone'>
         <h1>
           {`${zoneName} ${sum}`}
         </h1>
@@ -69,6 +73,17 @@ class Cols extends Component {
       </div>
     )
   }
+
+  return zoneNames.map(renderZone)
 }
+
+const ImageHelper = ({onMouseEnter, className, src}) => (
+  src
+  ? <img className={className}
+       id='img'
+       onMouseEnter={e => onMouseEnter(src, e)}
+       src={src}/>
+  : <div />
+)
 
 export default Cols
