@@ -1,7 +1,8 @@
+import React from "react"
+
+import _ from "Lib/utils"
 import App from 'Src/app'
 import {BASICS, Zones} from 'Src/cards'
-import _ from "Lib/utils"
-import React, {Component} from "react"
 import {Select} from "Src/utils"
 
 const DeckSettings = () => (

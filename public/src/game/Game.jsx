@@ -1,16 +1,17 @@
 import React, {Component} from "react"
 
-import App from '../app'
-import {Zones} from '../cards'
+import _ from "Lib/utils"
+import App from 'Src/app'
+import {Zones} from 'Src/cards'
+import {Checkbox} from "Src/utils"
+
 import PlayersPanel from "./PlayersPanel"
 import StartPanel from "./StartPanel"
 import DeckSettings from "./DeckSettings"
 import GameSettings from "./GameSettings"
-import {Checkbox} from "../utils"
 import Cols from "./Cols"
 import Grid from "./Grid"
 import Chat from "./Chat"
-import _ from "../../lib/utils"
 
 
 export default class Game extends Component {

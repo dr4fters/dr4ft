@@ -1,9 +1,10 @@
 import React from "react"
 
-import App from "../app"
-import Set from "./Set"
 import _ from "Lib/utils"
-import {Checkbox, Select, Textarea} from "../utils"
+import App from "Src/app"
+import {Checkbox, Select, Textarea} from "Src/utils"
+
+import Set from "./Set"
 
 const GameOptions = () => {
   const {sets, fourPack} = App.state

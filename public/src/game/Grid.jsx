@@ -1,8 +1,9 @@
-import _ from "../../lib/utils"
+import React from "react"
+
+import _ from "Lib/utils"
 import App from 'Src/app'
 import {getZone} from 'Src/cards'
 import {Spaced} from 'Src/utils'
-import React from "react"
 
 const Grid = ({zones}) => (
   <div>

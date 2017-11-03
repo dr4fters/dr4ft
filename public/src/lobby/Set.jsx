@@ -1,8 +1,8 @@
 import React from "react"
 
-import App from "../app"
-import _ from "../../lib/utils"
-import sets from "../sets"
+import _ from "Lib/utils"
+import App from "Src/app"
+import sets from "Src/sets"
 
 export default function Set({index, selectedSet}) {
     const onSetChange = (e) => {

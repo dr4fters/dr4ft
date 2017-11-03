@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   devtool: 'cheap-eval-source-map',
-  // context: __dirname,
+  context: __dirname,
   entry: {
     app: './public/src/init.js',
     react: ['react', 'react-dom']
@@ -31,7 +31,6 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new CopyWebpackPlugin([
       { from: 'node_modules/engine.io-client/engine.io.js', to: 'engine.io.js' },
-      { from: 'node_modules/ee/ee.js', to: 'ee.js' },
       { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
     ])
   ],
@@ -42,9 +41,8 @@ module.exports = {
       Src: path.resolve(__dirname, "public/src"),
     }
   },
-  externals: /utils|ee|engine.io/i,
   module: {
-    noParse:/ee|engine.io|utils/,
+    noParse:/engine.io/,
     rules: [
       {
         test: /\.(js|jsx)$/,

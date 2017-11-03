@@ -1,7 +1,8 @@
-import App from '../app'
-import {Checkbox} from "../utils"
-import _ from "../../lib/utils"
 import React from "react"
+
+import _ from "Lib/utils"
+import App from 'Src/app'
+import {Checkbox} from "Src/utils"
 
 const GameSettings = () => (
     <div className='game-settings'>

@@ -1,12 +1,13 @@
 import React, {Component} from "react"
 
-import {STRINGS} from '../config'
+import App from 'Src/app'
+import {STRINGS} from 'Src/config'
+
 import Header from './Header'
 import JoinPanel from './JoinPanel'
 import NewsPanel from './NewsPanel'
 import CreatePanel from './CreatePanel'
 import Version from './Version'
-import App from 'Src/app'
 
 export default class Lobby extends Component {
   componentDidMount() {

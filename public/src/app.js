@@ -1,8 +1,8 @@
 import React from "react"
 import { render } from "react-dom"
 
-import _ from '../lib/utils'
-import EventEmitter from '../lib/ee'
+import _ from "Lib/utils"
+import EventEmitter from 'Lib/ee'
 import {STRINGS} from './config'
 
 function message(msg) {

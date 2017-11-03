@@ -1,22 +1,17 @@
 import React from "react"
 
-import App from '../app'
-import _ from "../../lib/utils"
-import {Select, Checkbox} from "../utils"
+import _ from "Lib/utils"
+import App from 'Src/app'
+import {Select, Checkbox} from "Src/utils"
 
-const StartPanel = () => {
-    const {didGameStart, isHost} = App.state
-
-    if (didGameStart || !isHost) 
-        return <div/>
-
-    return (
-        <fieldset className='start-controls fieldset'>
-            <legend className='legend game-legend'>Start game</legend>
-            <span><StartControls/></span>
-        </fieldset>
-    )
-}
+const StartPanel = () => (
+  (App.state.isHost && !App.state.didGameStart)
+  ? <fieldset className='start-controls fieldset'>
+      <legend className='legend game-legend'>Start game</legend>
+      <StartControls/>
+    </fieldset>
+  : <div/>
+)
 
 const StartControls = () => {
     const {players, type, format, useTimer, timerLength} = App.state

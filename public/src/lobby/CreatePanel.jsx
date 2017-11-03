@@ -1,8 +1,9 @@
 import React from "react"
 
-import App from "../app"
-import _ from '../../lib/utils'
-import {Checkbox} from "../utils"
+import _ from "Lib/utils"
+import App from "Src/app"
+import {Checkbox} from "Src/utils"
+
 import GameTypes from "./GameTypes"
 import GameOptions from "./GameOptions"
 

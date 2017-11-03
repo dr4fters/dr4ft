@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 
 import App from './app'
-import _ from "../lib/utils"
+import _ from "Lib/utils"
 
 /**
  * Utils offers a list of "connected" tools

@@ -1,9 +1,9 @@
-import _ from '../../lib/utils'
-import App from '../app'
-import React from "react"
-let d = React.DOM
+import React, {Component} from "react"
 
-export default class Chat extends React.Component{
+import _ from "Lib/utils"
+import App from 'Src/app'
+
+export default class Chat extends Component{
   constructor(props) {
     super(props)
     this.state = {

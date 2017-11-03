@@ -1,11 +1,9 @@
 import React from "react"
 
-import App from "../app"
-
-//TODO: déplacer les types dans une CONF ?
-const types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos']
+import App from "Src/app"
 
 const GameTypes = () => {
+  const types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos']
   return (
     <div>
       <p>Game type:{' '}

@@ -1,4 +1,4 @@
-import _ from '../lib/utils'
+import _ from 'Lib/utils'
 import App from './app'
 
 let Cards = {

@@ -1,7 +1,7 @@
-import React from "react"
+import React, {Component} from "react"
 
-import App from "../app"
-import _ from "../../lib/utils"
+import _ from "Lib/utils"
+import App from "Src/app"
 
 //TODO lui trouver une meilleure place
 const READY_TITLE_TEXT = 'The host may start the game once all users have clicked the "ready" checkbox.'

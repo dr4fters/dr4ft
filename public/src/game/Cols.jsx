@@ -1,6 +1,8 @@
-import App from '../app'
-import {getZone} from '../cards'
 import React, {Component} from "react"
+
+import _ from "Lib/utils"
+import App from 'Src/app'
+import {getZone} from 'Src/cards'
 
 class Cols extends Component {
   constructor(props) {
