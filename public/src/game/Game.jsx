@@ -25,50 +25,42 @@ export default class Game extends Component {
     App.state.players = []
     App.send('join', this.props.id)
     App.state.chat = true
-  };
-  componentDidMount() {
-    this.timer = window.setInterval(decrement, 1e3)
-  };
-  componentWillUnmount() {
-    window.clearInterval(this.timer)
-  };
+  }
+
   componentWillReceiveProps({id}) {
-    if (this.props.id === id) 
+    if (this.props.id === id)
       return
 
     App.send('join', id)
-  };
+  }
+
   render() {
-    return <div className='container'>
-      <audio id='beep' src='/media/beep.wav'/>,
-      <div className='game'>
-        <div className='game-controls'>
-          <div className='game-status'>
-            <PlayersPanel/>
-            <StartPanel/>
+    return (
+      <div className='container'>
+        <audio id='beep' src='/media/beep.wav'/>
+        <div className='game'>
+          <div className='game-controls'>
+            <div className='game-status'>
+              <PlayersPanel/>
+              <StartPanel/>
+            </div>
+            <DeckSettings />
+            <GameSettings/>
           </div>
-          <DeckSettings />
-          <GameSettings/>
+          <CardsZone />
         </div>
-        <Cards />
+        <Chat />
       </div>
-      <Chat />
-    </div>
+    )
   }
 }
 
-const Cards = () => {
-    const pack = 
-    Object.keys(Zones.pack).length ?
-        <Grid zones={['pack']} />:
-        <div/>
-    const props = { zones: ['main', 'side', 'junk'] }
-    const pool = App.state.cols ? <Cols {...props}/> : <Grid {...props} />
-    return [pack, pool]
-}
-
-function decrement() {
-  for (let p of App.state.players) 
-    if (p.time) 
-      p.time--; App.update()
+const CardsZone = () => {
+  const pack
+  = Object.keys(Zones.pack).length
+    ? <Grid key={_.uid()} zones={['pack']} />
+    : <div key={_.uid()}/>
+  const props = { zones: ['main', 'side', 'junk'] }
+  const pool = App.state.cols ? <Cols key={_.uid()} {...props}/> : <Grid key={_.uid()} {...props} />
+  return [pack, pool]
 }
