@@ -47,6 +47,7 @@
     "jsonfile": "^2.4.0",
     "log-timestamp": "^0.1.2",
     "node-fetch": "^1.0.3",
+    "normalize.css": "^3.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "send": "^0.11.1",
@@ -57,7 +58,6 @@
   },
   "devDependencies": {
     "css-loader": "^0.28.7",
-    "normalize.css": "^3.0.1",
     "path": "^0.12.7",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

@@ -32,9 +32,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new CopyWebpackPlugin([
       { from: 'node_modules/engine.io-client/engine.io.js', to: 'engine.io.js' },
-      { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' },
-      { from: 'config.server.js.default', to: 'config.server.js' },
-      { from: 'config.client.js.default', to: 'config.client.js' }
+      { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
     ]),
     new WebpackShellPlugin({
       onBuildStart:['node onBuildStart']
