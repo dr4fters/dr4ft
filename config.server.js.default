@@ -21,7 +21,7 @@ const VERSION =
   : versionInfo
 
 module.exports = {
-  PORT: 1337,
+  PORT: process.env.PORT || 1337,
   VERSION,
   STRINGS: {
     BRANDING: {

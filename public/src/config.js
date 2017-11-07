@@ -1,1 +1,1 @@
-config.client.js
+../../config.client.js

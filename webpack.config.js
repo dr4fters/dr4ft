@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   devtool: 'cheap-eval-source-map',
@@ -34,7 +35,10 @@ module.exports = {
       { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' },
       { from: 'config.server.js.default', to: 'config.server.js' },
       { from: 'config.client.js.default', to: 'config.client.js' }
-    ])
+    ]),
+    new WebpackShellPlugin({
+      onBuildStart:['node onBuildStart']
+    })
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.less'],
