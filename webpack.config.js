@@ -35,7 +35,7 @@ module.exports = {
       // { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
     ]),
     new WebpackShellPlugin({
-      onBuildStart:['node onBuildStart']
+      onBuildStart:['node onBuildStart', 'node src/make cards', 'node src/make score']
     })
   ],
   resolve: {
