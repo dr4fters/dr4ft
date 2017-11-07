@@ -106,7 +106,7 @@ let App = {
       query: { id, name }
     }
     if(!this.ws) {
-      this.ws = eio(location.host, options)
+      this.ws = eio(location.href, options)
       this.ws.on('open' , ()=> console.log('open'))
       this.ws.on('close', ()=> console.log('close'))
       this.ws.on('message', message)
