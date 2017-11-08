@@ -7,9 +7,9 @@ import {Checkbox, Select, Textarea} from "Src/utils"
 import Set from "./Set"
 
 const GameOptions = () => {
-  const {sets, fourPack} = App.state
+  const {sets, fourPack, type} = App.state
 
-  switch (App.state.type) {
+  switch (type) {
     case 'draft':
       return <DraftOptions sets={sets}/>
     case 'sealed':
@@ -24,9 +24,11 @@ const GameOptions = () => {
 
 }
 
-const DraftOptions = ({sets}) => (<Sets sets={sets} from={0} to={3}/>)
+const DraftOptions = ({ sets }) => (
+  <Sets sets={sets} from={0} to={3}/>
+)
 
-const SealedOptions = ({sets, fourPack}) => {
+const SealedOptions = ({ sets, fourPack }) => {
   const pivot = fourPack
     ? 2
     : 3
@@ -36,7 +38,7 @@ const SealedOptions = ({sets, fourPack}) => {
         <Sets sets={sets} from={0} to={pivot}/>
       </div>
       <div>
-        <Sets sets={sets} from={pivot}/>
+        <Sets sets={sets} from={pivot} to={pivot*2}/>
       </div>
       <div>
         <Checkbox link='fourPack' side='right' text='4 Pack Sealed: '/>
