@@ -130,7 +130,7 @@ const Copy = () => (
 const Log = () => (
   <div>
     <button className='connected-component'
-            onClick={e => App._emit('getLog')}>
+            onClick={App._emit('getLog')}>
       Download Draft Log
     </button>
   </div>
