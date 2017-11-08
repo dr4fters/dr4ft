@@ -259,20 +259,22 @@ let events = {
       manaSymbolsToAdd[i]--
     }
 
-    let mainDeckSize = Object.keys(Zones['main'])
-      .map(x => Zones['main'][x])
-      .reduce((a, b) => a + b)
-    let landsToAdd = App.state.deckSize - mainDeckSize
+    if (colorsToAdd.length > 0) {
+      let mainDeckSize = Object.keys(Zones['main'])
+        .map(x => Zones['main'][x])
+        .reduce((a, b) => a + b)
+      let landsToAdd = App.state.deckSize - mainDeckSize
 
-    let j = 0
-    for (let i = 0; i < landsToAdd; i++) {
-      let color = colorsToAdd[j]
-      let land = COLORS_TO_LANDS[color]
-      if (!Zones['main'].hasOwnProperty(land))
-        Zones['main'][land] = 0
-      Zones['main'][land]++
+      let j = 0
+      for (let i = 0; i < landsToAdd; i++) {
+        let color = colorsToAdd[j]
+        let land = COLORS_TO_LANDS[color]
+        if (!Zones['main'].hasOwnProperty(land))
+          Zones['main'][land] = 0
+        Zones['main'][land]++
 
-      j = (j + 1) % colorsToAdd.length
+        j = (j + 1) % colorsToAdd.length
+      }
     }
 
     App.update()
