@@ -24,7 +24,8 @@
     "watch": "webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
-    "build": "webpack"
+    "build": "webpack",
+    "heroku-prebuild": "node onBuildStart && node src/make/cards"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
