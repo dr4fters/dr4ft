@@ -59,7 +59,7 @@ module.exports = class Game extends Room {
     }
 
     var gameID = _.id()
-    Object.assign(this, { title, seats, type,
+    Object.assign(this, { title, seats, type, isPrivate,
       delta: -1,
       hostID: id,
       id: gameID,
