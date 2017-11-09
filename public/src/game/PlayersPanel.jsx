@@ -25,11 +25,6 @@ const PlayersTable = ({players, columns}) => (
 const PlayerTableHeader = () => {
     const {didGameStart, isHost} = App.state
 
-    const ready
-    = !didGameStart
-      ? <th title= {READY_TITLE_TEXT}>ready</th>
-      : <th />
-
     const kick
     = isHost
       ? <th>kick</th>
@@ -44,7 +39,6 @@ const PlayerTableHeader = () => {
         <th key="7">time</th>
         <th key="8">cock</th>
         <th key="9">mws</th>
-        {ready}
         {kick}
       </tr>
     )
@@ -105,14 +99,6 @@ const PlayerEntry = ({player, index}) => {
     <td key={_.uid()}>{player.hash && player.hash.cock}</td>,
     <td key={_.uid()}>{player.hash && player.hash.mws}</td>
   ]
-
-  if (!didGameStart)
-    columns.push(
-      <td key={_.uid()}
-          className= 'ready'
-          title={READY_TITLE_TEXT}>
-          {readyCheckbox}
-      </td>)
 
   if (isHost)
     if (index !== self && !player.isBot)
