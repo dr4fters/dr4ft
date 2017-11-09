@@ -17,7 +17,7 @@ export default class Chat extends Component{
   // };
   componentDidMount() {
     // this.refs.entry.getDOMNode().focus()
-    App.on('hear', this.hear)
+    App.on('hear', this.hear.bind(this))
     App.on('chat', messages => this.setState({ messages }))
   };
   componentWillUnmount() {
@@ -42,7 +42,7 @@ export default class Chat extends Component{
     this.forceUpdate(this.scrollChat)
   };
   scrollChat() {
-    let el = this.refs.messages.getDOMNode()
+    let el = this.refs.messages
     el.scrollTop = el.scrollHeight
   };
   Message(msg) {
@@ -59,14 +59,14 @@ export default class Chat extends Component{
       <div>
         <time>{time}</time>
         {' '}
-        <span className='name'>name</span>
+        <span className='name'>{name}</span>
         {' '}
         {text}
       </div>
     )
   };
   Entry() {
-    return <input autoFocus className='chat-input' type='text' ref='entry' onKeyDown={this.key} placeholder='/nick name' />
+    return <input autoFocus className='chat-input' type='text' ref='entry' onKeyDown={this.key.bind(this)} placeholder='/nick name' />
   };
   key(e) {
     if (e.key !== 'Enter')
