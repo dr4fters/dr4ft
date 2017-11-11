@@ -128,12 +128,14 @@ const Copy = () => (
 )
 
 const Log = () => (
-  <div>
-    <button className='connected-component'
-            onClick={App._emit('getLog')}>
-      Download Draft Log
-    </button>
-  </div>
+  /draft/.test(App.state.type)
+  ? <div>
+      <button className='connected-component'
+              onClick={App._emit('getLog')}>
+        Download Draft Log
+      </button>
+    </div>
+  : <div />
 )
 
 export default DeckSettings
