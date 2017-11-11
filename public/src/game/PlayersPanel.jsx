@@ -3,8 +3,8 @@ import React, {Component} from "react"
 import _ from "Lib/utils"
 import App from "Src/app"
 
-//TODO: Find a better place
-const READY_TITLE_TEXT = 'The host may start the game once all users have clicked the "ready" checkbox.'
+const READY_TITLE_TEXT
+= 'The host may start the game once all users have clicked the "ready" checkbox.'
 
 const PlayersPanel = () => (
   <fieldset className='fieldset'>
@@ -22,27 +22,17 @@ const PlayersTable = ({players, columns}) => (
   </table>
 )
 
-const PlayerTableHeader = () => {
-    const {didGameStart, isHost} = App.state
-
-    const kick
-    = isHost
-      ? <th>kick</th>
-      : <th />
-
-    return (
-      <tr>
-        <th key="1">#</th>
-        <th key="2"/>
-        <th key="3">name</th>
-        <th key="4">packs</th>
-        <th key="7">time</th>
-        <th key="8">cock</th>
-        <th key="9">mws</th>
-        {kick}
-      </tr>
-    )
-}
+const PlayerTableHeader = () => (
+  <tr>
+    <th key="1">#</th>
+    <th key="2"/>
+    <th key="3">name</th>
+    <th key="4">packs</th>
+    <th key="7">time</th>
+    <th key="8">cock</th>
+    <th key="9">mws</th>
+  </tr>
+)
 
 class PlayerEntries extends Component {
   decrement() {
@@ -63,9 +53,9 @@ class PlayerEntries extends Component {
   }
 }
 
-//TODO: voir si on le désintègre ? Ou refactoring
 const PlayerEntry = ({player, index}) => {
   const {players, self, didGameStart, isHost} = App.state
+  const {isBot, isReadyToStart, name, packs, time, hash} = player
   const {length} = players
 
   const opp
@@ -81,27 +71,27 @@ const PlayerEntry = ({player, index}) => {
       : null
 
   const connectionStatusIndicator
-  = <span className={player.isBot ? 'icon-bot' : 'icon-connected'}
-          title={player.isBot ? 'This player is a bot.': ''} />
+  = <span className={isBot ? 'icon-bot' : 'icon-connected'}
+          title={isBot ? 'This player is a bot.': ''} />
 
   const readyCheckbox
   = <input type="checkbox"
-        checked={player.isReadyToStart}
+        checked={isReadyToStart}
         disabled='true'
         onChange={App._emit('readyToStart')} />
 
   const columns = [
     <td key={_.uid()}>{index + 1}</td>,
     <td key={_.uid()}>{connectionStatusIndicator}</td>,
-    <td key={_.uid()}>{player.name}</td>,
-    <td key={_.uid()}>{player.packs}</td>,
-    <td key={_.uid()}>{player.time}</td>,
-    <td key={_.uid()}>{player.hash && player.hash.cock}</td>,
-    <td key={_.uid()}>{player.hash && player.hash.mws}</td>
+    <td key={_.uid()}>{name}</td>,
+    <td key={_.uid()}>{packs}</td>,
+    <td key={_.uid()}>{time}</td>,
+    <td key={_.uid()}>{hash && hash.cock}</td>,
+    <td key={_.uid()}>{hash && hash.mws}</td>
   ]
 
   if (isHost)
-    if (index !== self && !player.isBot)
+    if (index !== self && !isBot)
       columns.push(
         <td key={_.uid()}>
           <button onClick={()=> App.send('kick', index)}>
