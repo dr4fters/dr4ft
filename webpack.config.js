@@ -24,19 +24,7 @@ module.exports = {
     }
   },
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   template: './public/index.template',
-    //   filename: '../index.html',
-    //   inject: 'body'
-    // })
     new webpack.NamedModulesPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'node_modules/engine.io-client/engine.io.js', to: 'engine.io.js' },
-      { from: 'node_modules/normalize.css/normalize.css', to: 'normalize.css' }
-    ]),
-    new WebpackShellPlugin({
-      onBuildStart:['node onBuildStart', 'node src/make cards', 'node src/make score']
-    })
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.less'],

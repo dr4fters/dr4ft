@@ -19,13 +19,11 @@
     "url": "https://github.com/dr4fters/dr4ft.git"
   },
   "scripts": {
-    "dev-install": "make install",
-    "start": "webpack && node run",
+    "start": "node scripts/run",
     "watch": "webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
-    "build": "webpack",
-    "heroku-prebuild": "node onBuildStart && node src/make/cards"
+    "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -60,8 +58,6 @@
   "devDependencies": {
     "css-loader": "^0.28.7",
     "path": "^0.12.7",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
     "style-loader": "^0.19.0",
     "webpack-dev-server": "^2.9.1"
   }
