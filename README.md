@@ -6,16 +6,23 @@
 It supports all of the features of `drafts.ninja`, and more.
 
 dr4ft is a NodeJS application.<br>
-dr4ft is written in [ES6] and transpiled with [Traceur], and uses [React]
+dr4ft is written in [ES6] and transpiled with [Traceur] and [BabelJS], and uses [React]
 on the client-side.
 
 Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new).
 
 # Installation
 
-Install NodeJS, then just run `make run`
+Install NodeJS, then just run `npm install && npm start`
 in your terminal and visit [http://localhost:1337](http://localhost:1337).
 
+# Docker
+
+If you want, instead of hosting the server on your system, you can create a dr4ft container.
+
+Just download docker and build the container:<br>`docker build -t dr4ftApp .`
+
+Then run it:<br>`docker run -dp 1337:1337 dr4ftApp`<br> and visit [http://localhost:1337](http://localhost:1337).
 
 <br><br>
 The project is unaffiliated with Wizards of the Coast,
