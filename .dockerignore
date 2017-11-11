@@ -1,0 +1,4 @@
+data/*
+!data/mws.json
+node_modules
+public/lib
