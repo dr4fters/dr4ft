@@ -147,6 +147,7 @@ let events = {
     let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state
     let savename = App.state.type === 'draft' ? App.state.sets[0] + '-draft' : App.state.type
     App.state.filename = savename + '-' + new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","-")
+    App.save("filename", App.state.filename)
     seats = Number(seats)
     let options = { type, seats, title, isPrivate, fourPack, modernOnly, totalChaos }
 

@@ -74,7 +74,6 @@ let App = {
     router(App)
   },
   register(component) {
-    App.restore()
     App.connect()
 
     App.on('set', App.set)
