@@ -128,7 +128,7 @@ const Copy = () => (
 )
 
 const Log = () => (
-  /draft/.test(App.state.type)
+  /draft|chaos/.test(App.state.type)
   ? <div>
       <button className='connected-component'
               onClick={App._emit('getLog')}>
