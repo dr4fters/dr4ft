@@ -138,7 +138,7 @@ let App = {
     if(App.component) {
       App.component.setState(App.state)
     } else {
-      console.log("App trying to update a componenent while not mounted!")
+      console.log("Err: App trying to update a component while not mounted!")
     }
   },
   _emit(...args) {

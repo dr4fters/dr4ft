@@ -159,7 +159,7 @@ let events = {
         sets = sets.slice(0, 3)
       options.sets = sets
     }
-
+    resetZones()
     App.send('create', options)
   },
   pool(cards) {
@@ -433,6 +433,15 @@ function sortLandsBeforeNonLands(lhs, rhs) {
   let lhsIsLand = isLand(lhs)
   let rhsIsLand = isLand(rhs)
   return rhsIsLand - lhsIsLand
+}
+
+function resetZones() {
+  Zones = {
+    pack: {},
+    main: {},
+    side: {},
+    junk: {}
+  }
 }
 
 export function getZone(zoneName) {
