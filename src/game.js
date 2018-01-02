@@ -184,10 +184,26 @@ module.exports = class Game extends Room {
       h.isHost = true
       sock.once('start', this.start.bind(this))
       sock.on('kick', this.kick.bind(this))
+      sock.on('swap', this.swap.bind(this))
     }
     h.on('meta', this.meta.bind(this))
     this.players.push(h)
     this.greet(h)
+    this.meta()
+  }
+
+  swap(players) {
+    let i = players[0],
+        j = players[1],
+        l = this.players.length
+
+    if( j < 0 || j >= l  )
+      return;
+
+    [this.players[i], this.players[j]] = [this.players[j], this.players[i]];
+
+    this.players.forEach((p, i) =>
+      p.send('set', { self: i }))
     this.meta()
   }
 
@@ -350,7 +366,7 @@ module.exports = class Game extends Room {
     this.meta()
   }
 
-  start({addBots, useTimer, timerLength}) {
+  start({addBots, useTimer, timerLength, shufflePlayers}) {
     var src = this.cube ? this.cube : this.sets
     var {players} = this
     var p
@@ -383,7 +399,9 @@ module.exports = class Game extends Room {
     if (addBots)
       while (players.length < this.seats)
         players.push(new Bot)
-    _.shuffle(players)
+
+    if(shufflePlayers)
+      _.shuffle(players)
 
     if (/chaos/.test(this.type)) {
       this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos)
