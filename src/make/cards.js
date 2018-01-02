@@ -376,8 +376,18 @@ function doSet(rawSet, code) {
       Cards[lc].sets[code] = card.sets[code]
     else
       Cards[lc] = card
-  }
 
+    //Taking care of DoubleFaced Cards URL
+    if(card.isDoubleFaced) {
+      rawSet.cards.some(x=> {
+        if(x.name == card.names[1]) {
+          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseid}&type=card`
+          return true
+        }
+      })
+    }
+  }
+  
   if (!rawSet.booster)
     return
 
@@ -433,7 +443,10 @@ function doCard(rawCard, cards, code, set) {
       [code]: { rarity,
         url: picUrl
       }
-    }
+    },
+    layout: rawCard.layout,
+    isDoubleFaced: rawCard.layout == "double-faced",
+    names: rawCard.names
   }
 
   set[rarity].push(name.toLowerCase())
