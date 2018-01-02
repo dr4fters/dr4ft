@@ -81,7 +81,7 @@ export default React.createClass({
                 disabled: !App.state.useTimer,
                 valueLink: App.link('timerLength')
               }, timers),'')),
-          LBox('shufflePlayers', 'shuffle players'),
+          LBox('shufflePlayers', 'Random Seating'),
           d.div({}, startButton, readyReminderText)
         )
       )
