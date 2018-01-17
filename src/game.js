@@ -7,7 +7,7 @@ let Sock = require('./sock')
 
 let SECOND = 1000
 let MINUTE = 1000 * 60
-let HOUR   = 1000 * 60 * 60
+let HOUR   = 1000 * 60 * 60 * 100
 
 let games = {}
 
