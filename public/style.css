@@ -300,7 +300,7 @@ input[type=button]:disabled:active, button:disabled:active {
   right: 0;
 
   background: rgba(200, 200, 200, 0.25);
-  background-image: url('foil.png');
+  background-image: url('media/foil.png');
   background-size: 240px 340px;
 }
 

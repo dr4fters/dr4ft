@@ -34,18 +34,18 @@ function before() {
 
   for (card of raw.TSB.cards)
 	card.rarity = 'special'
-  
+
   raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
 
-  // Add set codes here to have them removed 
+  // Add set codes here to have them removed
   for (var removeSet of ['TSB','ITP','CP1','CP2','CP3']) {
 	  if (raw[removeSet]) {
 	    delete raw[removeSet]
     }
 	  else {
 	    console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)")
-    }	  
-  }	
+    }
+  }
   raw.PLC.booster = Array(11).fill('common')
   raw.FUT.booster = Array(11).fill('common')
 
@@ -387,7 +387,7 @@ function doSet(rawSet, code) {
       })
     }
   }
-  
+
   if (!rawSet.booster)
     return
 
@@ -433,7 +433,6 @@ function doCard(rawCard, cards, code, set) {
     colors[0].toLowerCase()
 
   var picUrl = rawCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
-  //console.log(rawCard.name + rawCard.types)
   cards[name] = { color, name,
     type: rawCard.types[rawCard.types.length - 1],
     cmc: rawCard.cmc || 0,

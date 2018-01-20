@@ -1,0 +1,23 @@
+import React from "react"
+
+export const STRINGS = {
+  BRANDING: {
+    SITE_TITLE: ['dr4ft', 'com'].join('.'),
+    SITE_NAME: <span>DR<img src='4.png' alt='4'/>FT</span>,
+    DEFAULT_USERNAME: 'dr4fter',
+    PAYPAL: '',
+  },
+
+  PAGE_SECTIONS: {
+    MOTD: null, // message of the day; can be a React element
+
+    FOOTER:
+      <div>
+        <strong>dr4ft</strong>is a fork of
+        the <code>drafts.ninja</code> arxanas fork of
+        the <code >draft</code> project by aeosynth.
+        Contributions welcome! <a href = 'https://github.com/dr4fters/dr4ft'>
+        https: //github.com/dr4fters/dr4ft</a>
+      </div>
+  }
+}

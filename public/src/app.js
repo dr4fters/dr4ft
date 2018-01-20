@@ -1,5 +1,8 @@
-import _ from '../lib/utils'
-import EventEmitter from '../lib/ee'
+import React from "react"
+import { render } from "react-dom"
+
+import _ from "Lib/utils"
+import EventEmitter from 'Lib/ee'
 import {STRINGS} from './config'
 
 function message(msg) {
@@ -62,7 +65,6 @@ let App = {
       return App.state.round === -1
     },
   },
-
   init(router) {
     App.on('set', App.set)
     App.on('error', App.error)
@@ -71,6 +73,15 @@ let App = {
     App.restore()
     App.connect()
     router(App)
+  },
+  register(component) {
+    App.connect()
+
+    App.on('set', App.set)
+    App.on('error', App.error)
+    App.on('route', App.route)
+
+    App.component = component
   },
   restore() {
     for (let key in this.state) {
@@ -94,10 +105,12 @@ let App = {
     let options = {
       query: { id, name }
     }
-    let ws = this.ws = eio(location.host, options)
-    ws.on('open' , ()=> console.log('open'))
-    ws.on('close', ()=> console.log('close'))
-    ws.on('message', message)
+    if(!this.ws) {
+      this.ws = eio(location.href, options)
+      this.ws.on('open' , ()=> console.log('open'))
+      this.ws.on('close', ()=> console.log('close'))
+      this.ws.on('message', message)
+    }
   },
   send(...args) {
     let msg = JSON.stringify(args)
@@ -123,7 +136,11 @@ let App = {
     App.update()
   },
   update() {
-    React.renderComponent(App.component, document.body)
+    if(App.component) {
+      App.component.setState(App.state)
+    } else {
+      console.log("Err: App trying to update a component while not mounted!")
+    }
   },
   _emit(...args) {
     return App.emit.bind(App, ...args)

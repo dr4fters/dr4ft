@@ -1,39 +1,50 @@
-import _ from '../../lib/utils'
-import App from '../app'
-let d = React.DOM
+import React, {Component} from "react"
 
-export default React.createClass({
-  getInitialState() {
-    return {
+import _ from "Lib/utils"
+import App from 'Src/app'
+
+export default class Chat extends Component{
+  constructor(props) {
+    super(props)
+    this.state = {
       messages: []
     }
-  },
+  }
+  // getInitialState() {
+  //   return {
+  //     messages: []
+  //   }
+  // };
   componentDidMount() {
-    this.refs.entry.getDOMNode().focus()
-    App.on('hear', this.hear)
+    // this.refs.entry.getDOMNode().focus()
+    App.on('hear', this.hear.bind(this))
     App.on('chat', messages => this.setState({ messages }))
-  },
+  };
   componentWillUnmount() {
     App.off('hear')
     App.off('chat')
-  },
+  };
   render() {
     // must be mounted to receive messages
-    return d.div({ className: `chat-container ${App.state.chat ? '' : 'chat-container-hidden'}` },
-      d.div({ className: 'chat' },
-        d.div({ className: 'messages', ref: 'messages'},
-          this.state.messages.map(this.Message)),
-        this.Entry()))
-  },
-
+    return (
+      <div className={`chat-container ${App.state.chat ? '' : 'chat-container-hidden'}`}>
+        <div className='chat'>
+          <div className='messages' ref='messages'>
+            {this.state.messages.map(this.Message)}
+          </div>
+          {this.Entry()}
+        </div>
+      </div>
+    )
+  };
   hear(msg) {
     this.state.messages.push(msg)
     this.forceUpdate(this.scrollChat)
-  },
+  };
   scrollChat() {
-    let el = this.refs.messages.getDOMNode()
+    let el = this.refs.messages
     el.scrollTop = el.scrollHeight
-  },
+  };
   Message(msg) {
     if (!msg)
       return
@@ -44,24 +55,19 @@ export default React.createClass({
     let minutes = _.pad(2, '0', date.getMinutes())
     time = `${hours}:${minutes}`
 
-    return d.div({},
-      d.time({}, time),
-      ' ',
-      d.span({ className: 'name' }, name),
-      ' ',
-      text)
-  },
-
+    return (
+      <div>
+        <time>{time}</time>
+        {' '}
+        <span className='name'>{name}</span>
+        {' '}
+        {text}
+      </div>
+    )
+  };
   Entry() {
-    return d.input({
-      className: 'chat-input',
-      type: 'text',
-      ref: 'entry',
-      onKeyDown: this.key,
-      placeholder: '/nick name'
-    })
-  },
-
+    return <input autoFocus className='chat-input' type='text' ref='entry' onKeyDown={this.key.bind(this)} placeholder='/nick name' />
+  };
   key(e) {
     if (e.key !== 'Enter')
       return
@@ -77,8 +83,7 @@ export default React.createClass({
       this.command(text.slice(1))
     else
       App.send('say', text)
-  },
-
+  };
   command(raw) {
     let [, command, arg] = raw.match(/(\w*)\s*(.*)/)
     arg = arg.trim()
@@ -101,11 +106,10 @@ export default React.createClass({
       default:
         text = `unsupported command: ${command}`
     }
-
     this.state.messages.push({ text,
       time: Date.now(),
       name: ''
     })
     this.forceUpdate(this.scrollChat)
   }
-})
+}

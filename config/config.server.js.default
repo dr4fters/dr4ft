@@ -2,9 +2,7 @@
 
 const execSync = require('child_process').execSync
 
-let versionInfo = execSync('git describe --always --long')
-  .toString()
-  .trim()
+let versionInfo = "noVersion"
 let versionInfoParts = versionInfo.split('-')
 
 const VERSION =
@@ -21,7 +19,7 @@ const VERSION =
   : versionInfo
 
 module.exports = {
-  PORT: 1337,
+  PORT: process.env.PORT || 1337,
   VERSION,
   STRINGS: {
     BRANDING: {
