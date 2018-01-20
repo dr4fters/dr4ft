@@ -3,6 +3,7 @@ import React, {Component} from "react"
 import _ from "Lib/utils"
 import App from 'Src/app'
 import {getZone} from 'Src/cards'
+import {Spaced} from "Src/utils.jsx"
 
 class Cols extends Component {
   constructor(props) {
@@ -74,7 +75,7 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
     return (
       <div key={_.uid()} className='zone'>
         <h1>
-          {`${zoneName} ${sum}`}
+         <Spaced elements={[zoneName, sum]}/>
         </h1>
         {cols}
       </div>

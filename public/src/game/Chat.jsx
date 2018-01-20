@@ -10,13 +10,7 @@ export default class Chat extends Component{
       messages: []
     }
   }
-  // getInitialState() {
-  //   return {
-  //     messages: []
-  //   }
-  // };
   componentDidMount() {
-    // this.refs.entry.getDOMNode().focus()
     App.on('hear', this.hear.bind(this))
     App.on('chat', messages => this.setState({ messages }))
   };

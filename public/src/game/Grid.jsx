@@ -16,17 +16,18 @@ const zone = (zoneName) => {
   const values = _.values(zone)
   const cards = _.flat(values)
 
+  const zoneTitle = zoneName + (zoneName === 'pack' ? " " + App.state.round : "");
   const zoneHelper
-  = `Pick ${App.state.cards - cards.length}
-    ${zoneName === 'pack'
-      ? ' /  ' + cards[0].packSize.toString()
-      : ""}
-    ${cards.length === 1 ? 'card' : 'cards' }`
+  = App.state.didGameStart
+  ? zoneName === 'pack'
+    ? `Pick ${App.state.cards - cards.length} / ${cards[0].packSize.toString()} ${cards.length === 1 ? 'card' : 'cards' }`
+    : cards.length
+  : 0
 
   return (
     <div className='zone' key={_.uid()}>
       <h1>
-        <Spaced elements={[`${zoneName} ${App.state.round}`, zoneHelper]}/>
+        <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
       {cards.map(card => <Card card={card} zoneName={zoneName} />)}
     </div>
