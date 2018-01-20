@@ -264,7 +264,6 @@ module.exports = class Game extends Room {
       this.players.forEach(p => p.err(msg))
 
     delete games[this.id]
-    //console.log(`game ${this.id} destroyed`)
     Game.broadcastGameInfo()
 
     this.emit('kill')

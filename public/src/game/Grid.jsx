@@ -17,7 +17,7 @@ const zone = (zoneName) => {
   const cards = _.flat(values)
 
   const zoneHelper
-  = `${cards.length}
+  = `Pick ${App.state.cards - cards.length}
     ${zoneName === 'pack'
       ? ' /  ' + cards[0].packSize.toString()
       : ""}
@@ -26,7 +26,7 @@ const zone = (zoneName) => {
   return (
     <div className='zone' key={_.uid()}>
       <h1>
-        <Spaced elements={[zoneName, zoneHelper]}/>
+        <Spaced elements={[`${zoneName} ${App.state.round}`, zoneHelper]}/>
       </h1>
       {cards.map(card => <Card card={card} zoneName={zoneName} />)}
     </div>

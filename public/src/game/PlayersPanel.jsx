@@ -55,7 +55,7 @@ class PlayerEntries extends Component {
 
 const PlayerEntry = ({player, index}) => {
   const {players, self, didGameStart, isHost} = App.state
-  const {isBot, isReadyToStart, name, packs, time, hash} = player
+  const {isBot, name, packs, time, hash} = player
   const {length} = players
 
   const opp
@@ -74,12 +74,6 @@ const PlayerEntry = ({player, index}) => {
   = <span className={isBot ? 'icon-bot' : 'icon-connected'}
           title={isBot ? 'This player is a bot.': ''} />
 
-  const readyCheckbox
-  = <input type="checkbox"
-        checked={isReadyToStart}
-        disabled='true'
-        onChange={App._emit('readyToStart')} />
-
   const columns = [
     <td key={_.uid()}>{index + 1}</td>,
     <td key={_.uid()}>{connectionStatusIndicator}</td>,
@@ -90,19 +84,18 @@ const PlayerEntry = ({player, index}) => {
     <td key={_.uid()}>{hash && hash.mws}</td>
   ]
 
-
-
   if (isHost) {
     //Move Player
-    columns.push(
-      <td key={_.uid()}>
-        <button onClick={()=> App.send('swap', [index, index - 1])}>
-          <img src="../../media/arrow-up.png" width="16px"/>
-        </button>
-        <button onClick={()=> App.send('swap', [index, index + 1])}>
-          <img src="../../media/arrow-down.png" width="16px"/>
-        </button>
-      </td>)
+    if(!didGameStart)
+      columns.push(
+        <td key={_.uid()}>
+          <button onClick={()=> App.send('swap', [index, index - 1])}>
+            <img src="../../media/arrow-up.png" width="16px"/>
+          </button>
+          <button onClick={()=> App.send('swap', [index, index + 1])}>
+            <img src="../../media/arrow-down.png" width="16px"/>
+          </button>
+        </td>)
     //Kick button
     if (index !== self && !isBot)
       columns.push(
