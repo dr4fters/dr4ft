@@ -15,7 +15,7 @@ const Header = () => (
 )
 
 const ApplicationError = () => (
-  <p className='error'>{App.state.error}</p>
+  <p className='error'>{App.err}</p>
 )
 
 const ServerInfo = () => {
