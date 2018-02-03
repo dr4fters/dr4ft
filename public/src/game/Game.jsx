@@ -15,7 +15,6 @@ import Chat from "./Chat"
 
 
 export default class Game extends Component {
-  //TODO: voir si on peut pas se passer du constructor (voir state = {})
   constructor(props) {
     super(props)
     this.state = this.props.state

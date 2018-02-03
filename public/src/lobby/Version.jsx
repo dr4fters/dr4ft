@@ -1,6 +1,5 @@
 import React from "react"
 
-//TODO: Read the remote origin url!
 export default function Version({version}) {
     return (
         <p>Running Version{' '}
