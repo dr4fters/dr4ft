@@ -13,6 +13,8 @@ var COLORS = {
 var Cards = {}
 var Sets = {}
 
+var setsToIgnore = ['TSB','ITP','CP1','CP2','CP3'];
+
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
@@ -38,7 +40,7 @@ function before() {
   raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
 
   // Add set codes here to have them removed
-  for (var removeSet of ['TSB','ITP','CP1','CP2','CP3']) {
+  for (var removeSet of setsToIgnore) {
 	  if (raw[removeSet]) {
 	    delete raw[removeSet]
     }
