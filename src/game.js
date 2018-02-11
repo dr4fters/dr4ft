@@ -46,16 +46,14 @@ module.exports = class Game extends Room {
       if (type != 'chaos') {
         Object.assign(this, {
           sets,
-          format: sets.join(' / ')
+          packsInfo: sets.join(' / ')
         })
       } else {
-        this.format = 'CHAOS'
+        this.packsInfo = ''
       }
     } else {
-      let format = type
-      if (type === 'cube draft')
-        format += ' ' + cube.packs + 'x' + cube.cards
-      Object.assign(this, { cube, format })
+      let packsInfo = (type === 'cube draft') ? cube.packs + 'x' + cube.cards : ""
+      Object.assign(this, { cube, packsInfo })
     }
 
     var gameID = _.id()
@@ -70,7 +68,6 @@ module.exports = class Game extends Room {
     this.renew()
     games[gameID] = this
 
-    //console.log(`game ${id} created`)
     Game.broadcastGameInfo()
   }
 
@@ -128,7 +125,6 @@ module.exports = class Game extends Room {
       numActiveGames: Game.numActiveGames(),
     })
     Game.broadcastRoomInfo()
-    //console.log(`there are now ${Game.totalNumPlayers()} total players in ${Game.numGames()} games, ${Game.numActiveGames()} active`)
   }
 
   static broadcastRoomInfo() {
@@ -149,7 +145,8 @@ module.exports = class Game extends Room {
         usedSeats,
         totalSeats,
         name: game.name,
-        format: game.format,
+        packsInfo: game.packsInfo,
+        type: game.type,
         timeCreated: game.timeCreated,
       })
     }
@@ -227,7 +224,7 @@ module.exports = class Game extends Room {
       isHost: h.isHost,
       round: this.round,
       self: this.players.indexOf(h),
-      format: this.format,
+      packsInfo: this.packsInfo,
     })
   }
 
@@ -383,7 +380,7 @@ module.exports = class Game extends Room {
         p.send('pool', p.pool)
         p.send('set', { round: -1 })
       }
-      console.log(`${this.type} using ${this.format} game ${this.id} started with ${this.players.length} players`)
+      console.log(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`)
       Game.broadcastGameInfo()
       return
     }
@@ -393,7 +390,7 @@ module.exports = class Game extends Room {
       p.timerLength = timerLength
     }
 
-    console.log(`${this.type} using ${this.format} game ${this.id} started with ${this.players.length} players and ${this.seats} seats`)
+    console.log(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players and ${this.seats} seats`)
     Game.broadcastGameInfo()
     if (addBots)
       while (players.length < this.seats)

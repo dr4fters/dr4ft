@@ -118,10 +118,10 @@ let events = {
     App.state.log = draftLog
   },
   getLog() {
-    let {id, format, log, players, self, sets, type} = App.state
+    let {id, packsInfo, log, players, self, sets, type} = App.state
     let isCube = /cube/.test(type)
     let date = new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","_")
-    let filename = `Draft_${format.replace(/\W/g, "")}_${date}.log`
+    let filename = `Draft_${packsInfo.replace(/\W/g, "")}_${date}.log`
     let data = [
       `Event #: ${id}`,
       `Time: ${date}`,

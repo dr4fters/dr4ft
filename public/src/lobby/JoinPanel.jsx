@@ -9,7 +9,8 @@ export default function JoinPanel({roomInfo}) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Format</th>
+                <th>Type</th>
+                <th>Infos</th>
                 <th>Players</th>
                 <th/>
               </tr>
@@ -17,7 +18,8 @@ export default function JoinPanel({roomInfo}) {
             <tbody>
               {roomInfo.map(room => <tr key={room}>
                 <td>{room.title}</td>
-                <td>{room.format}</td>
+                <td>{room.type}</td>
+                <td>{room.packsInfo}</td>
                 <td>{room.usedSeats}/{room.totalSeats}</td>
                 <td>
                   <a href={`#g/${room.id}`} className='join-room-link'>

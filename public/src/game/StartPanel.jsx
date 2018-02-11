@@ -5,21 +5,22 @@ import App from 'Src/app'
 import {Select, Checkbox} from "Src/utils"
 
 const StartPanel = () => (
-  (App.state.isHost && !App.state.didGameStart)
-  ? <fieldset className='start-controls fieldset'>
-      <legend className='legend game-legend'>Start game</legend>
-      <StartControls/>
+   <fieldset className='start-controls fieldset'>
+      <legend className='legend game-legend'>Game</legend>
+      <div>Type: {App.state.type}</div>
+      <div>Infos: {App.state.packsInfo}</div>
+      {(App.state.isHost && !App.state.didGameStart)
+        ? <StartControls/>
+        : <div />}
     </fieldset>
-  : <div/>
 )
 
 const StartControls = () => {
-  const {players, type, format, useTimer, timerLength} = App.state
+  const {players, type, useTimer, timerLength} = App.state
   const isDraft = type !== 'sealed' && type !== 'cube sealed'
 
   return (
     <div>
-      <div>Format: {format}</div>
       {isDraft
         ? <Options/>
         : <div/>}
