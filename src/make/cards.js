@@ -420,7 +420,7 @@ function doCard(rawCard, cards, code, set) {
   name = _.ascii(name)
 
   if (name in cards) {
-    if (/^split$/i.test(layout)) {
+    if (/^split$|^aftermath$/i.test(layout)) {
       var card = cards[name]
       card.cmc += cmc
       if (card.color !== color)
