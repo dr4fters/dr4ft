@@ -20,9 +20,9 @@ in your terminal and visit [http://localhost:1337](http://localhost:1337).
 
 If you want, instead of hosting the server on your system, you can create a dr4ft container.
 
-Just download docker and build the container:<br>`docker build -t dr4ftApp .`
+Just download docker and build the container:<br>`docker build -t dr4ft-app .`
 
-Then run it:<br>`docker run -dp 1337:1337 dr4ftApp`<br> and visit [http://localhost:1337](http://localhost:1337).
+Then run it:<br>`docker run -dp 1337:1337 dr4ft-app`<br> and visit [http://localhost:1337](http://localhost:1337).
 
 <br><br>
 The project is unaffiliated with Wizards of the Coast,
