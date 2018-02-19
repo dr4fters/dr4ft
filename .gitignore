@@ -1,6 +1,7 @@
 *.swp
 .DS_Store
 node_modules
+.vscode
 
 data
 public/out

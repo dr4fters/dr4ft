@@ -7,16 +7,11 @@
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <link rel="stylesheet" href="style.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <script src="lib/react.js"></script>
-  <script src="lib/engine.io.js"></script>
-  <script src="lib/traceur.js"></script>
-  <script src="lib/piwik.js"></script>
 </head>
 <body>
-  <script>
-    System
-    .import('./src/init')
-    .catch(function(err) { console.log(err.message) })
-  </script>
+  <div id="root" />
+  <script type="text/javascript" src="lib/engine.io.js"></script>
+  <script type="text/javascript" src="lib/react.js"></script>
+  <script type="text/javascript" src="lib/app.js"></script>
 </body>
 </html>

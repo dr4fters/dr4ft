@@ -13,6 +13,8 @@ var COLORS = {
 var Cards = {}
 var Sets = {}
 
+var setsToIgnore = ['TSB','ITP','CP1','CP2','CP3'];
+
 before()
 
 var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
@@ -34,18 +36,18 @@ function before() {
 
   for (card of raw.TSB.cards)
 	card.rarity = 'special'
-  
+
   raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
 
-  // Add set codes here to have them removed 
-  for (var removeSet of ['TSB','ITP','CP1','CP2','CP3']) {
+  // Add set codes here to have them removed
+  for (var removeSet of setsToIgnore) {
 	  if (raw[removeSet]) {
 	    delete raw[removeSet]
     }
 	  else {
 	    console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)")
-    }	  
-  }	
+    }
+  }
   raw.PLC.booster = Array(11).fill('common')
   raw.FUT.booster = Array(11).fill('common')
 
@@ -387,7 +389,7 @@ function doSet(rawSet, code) {
       })
     }
   }
-  
+
   if (!rawSet.booster)
     return
 
@@ -400,53 +402,58 @@ function doSet(rawSet, code) {
 }
 
 function doCard(rawCard, cards, code, set) {
-  var rarity = rawCard.rarity.split(' ')[0].toLowerCase()
-  if (rarity === 'basic')
-    if (/snow-covered/.test(rawCard.name.toLowerCase()))
+  var {name, mciNumber, layout, names, cmc, color, colors, types, text, manaCost, url, multiverseid} = rawCard
+  var rarity = rawCard.rarity.split(' ')[0].toLowerCase();
+
+  if (/^basic/i.test(rarity))
+    if (/snow-covered/i.test(name))
       rarity = 'special'
     else
       return
 
-  var {name} = rawCard
-  if (['double-faced', 'flip'].indexOf(rawCard.layout) > -1
-    && rawCard.number.indexOf('b') > -1)
+  // Keep only the non-flipped cards
+  // Flipped cards have an mciNumber containing the letter b
+  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber))
     return
 
-  if (rawCard.layout === 'split' || rawCard.layout === 'aftermath')
-    name = rawCard.names.join(' // ')
+  if (/split|aftermath/i.test(layout))
+    name = names.join(' // ')
 
   name = _.ascii(name)
 
   if (name in cards) {
-    if (rawCard.layout === 'split') {
+    if (/^split$|^aftermath$/i.test(layout)) {
       var card = cards[name]
-      card.cmc += rawCard.cmc
-      if (card.color !== rawCard.color)
+      card.cmc += cmc
+      if (card.color !== color)
         card.color = 'multicolor'
     }
     return
   }
 
-  var {colors} = rawCard
-  var color = !colors ? 'colorless' :
-    colors.length > 1 ? 'multicolor' :
-    colors[0].toLowerCase()
+  var color = !colors
+              ? 'colorless'
+              : colors.length > 1
+                  ? 'multicolor'
+                  : colors[0].toLowerCase()
 
-  var picUrl = rawCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${rawCard.multiverseid}&type=card`
-  //console.log(rawCard.name + rawCard.types)
-  cards[name] = { color, name,
-    type: rawCard.types[rawCard.types.length - 1],
-    cmc: rawCard.cmc || 0,
-    text: rawCard.text || '',
-    manaCost: rawCard.manaCost || '',
+  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseid}&type=card`
+
+  cards[name] = {
+    color,
+    name,
+    type: types[types.length - 1],
+    cmc: cmc || 0,
+    text: text || '',
+    manaCost: manaCost || '',
     sets: {
       [code]: { rarity,
         url: picUrl
       }
     },
-    layout: rawCard.layout,
-    isDoubleFaced: rawCard.layout == "double-faced",
-    names: rawCard.names
+    layout: layout,
+    isDoubleFaced: /^double-faced$/i.test(layout),
+    names: names
   }
 
   set[rarity].push(name.toLowerCase())

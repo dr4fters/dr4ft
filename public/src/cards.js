@@ -1,4 +1,4 @@
-import _ from '../lib/utils'
+import _ from 'Lib/utils'
 import App from './app'
 
 let Cards = {
@@ -77,10 +77,13 @@ let events = {
 
     App.update()
   },
-  copy(ref) {
-    let node = ref.getDOMNode()
-    node.value = filetypes.txt()
-    node.select()
+  copy() {
+    let textField = document.createElement('textarea')
+    textField.value = filetypes.txt()
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove()
     hash()
   },
   download() {
@@ -115,10 +118,10 @@ let events = {
     App.state.log = draftLog
   },
   getLog() {
-    let {id, format, log, players, self, sets, type} = App.state
+    let {id, packsInfo, log, players, self, sets, type} = App.state
     let isCube = /cube/.test(type)
     let date = new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","_")
-    let filename = `Draft_${format.replace(/\W/g, "")}_${date}.log`
+    let filename = `Draft_${packsInfo.replace(/\W/g, "")}_${date}.log`
     let data = [
       `Event #: ${id}`,
       `Time: ${date}`,
@@ -144,6 +147,7 @@ let events = {
     let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state
     let savename = App.state.type === 'draft' ? App.state.sets[0] + '-draft' : App.state.type
     App.state.filename = savename + '-' + new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","-")
+    App.save("filename", App.state.filename)
     seats = Number(seats)
     let options = { type, seats, title, isPrivate, fourPack, modernOnly, totalChaos }
 
@@ -155,7 +159,7 @@ let events = {
         sets = sets.slice(0, 3)
       options.sets = sets
     }
-
+    resetZones()
     App.send('create', options)
   },
   pool(cards) {
@@ -256,6 +260,7 @@ let events = {
       manaSymbolsToAdd[i]--
     }
 
+    if (colorsToAdd.length > 0) {
     let mainDeckSize = Object.keys(Zones['main'])
       .map(x => Zones['main'][x])
       .reduce((a, b) => a + b)
@@ -270,6 +275,7 @@ let events = {
       Zones['main'][land]++
 
       j = (j + 1) % colorsToAdd.length
+    }
     }
 
     App.update()
@@ -427,6 +433,15 @@ function sortLandsBeforeNonLands(lhs, rhs) {
   let lhsIsLand = isLand(lhs)
   let rhsIsLand = isLand(rhs)
   return rhsIsLand - lhsIsLand
+}
+
+function resetZones() {
+  Zones = {
+    pack: {},
+    main: {},
+    side: {},
+    junk: {}
+  }
 }
 
 export function getZone(zoneName) {
