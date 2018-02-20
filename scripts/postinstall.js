@@ -1,6 +1,7 @@
 const fs = require('fs')
 const os = require("os")
 const allSets = require("../src/make/allsets")
+const configFiles = ['config.client.js', 'config.server.js']
 
 // Download Allsets.json
 if(!fs.existsSync("data/AllSets.json")) {
@@ -22,5 +23,8 @@ if (!fs.existsSync(libDir)) {
 }
 
 console.log("Installing configurations...")
-fs.createReadStream('config/config.client.js.default').pipe(fs.createWriteStream('config.client.js'));
-fs.createReadStream('config/config.server.js.default').pipe(fs.createWriteStream('config.server.js'));
+configFiles.forEach(config => {
+  if(!fs.existsSync(config)) {
+    fs.createReadStream(`config/${config}.default`).pipe(fs.createWriteStream(config));
+  }
+});
