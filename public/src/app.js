@@ -31,11 +31,11 @@ let App = {
     totalChaos: false,
     type: 'draft',
     sets: [
+      'RIX',
+      'RIX',
       'XLN',
-      'XLN',
-      'XLN',
-      'XLN',
-      'XLN',
+      'RIX',
+      'RIX',
       'XLN'
     ],
     list: '',
