@@ -322,6 +322,7 @@ function after() {
   removeBonusCards("AKH", 269)
   removeBonusCards("HOU", 199)
   removeBonusCards("XLN", 279)
+  removeBonusCards("RIX", 196)
 
   Sets.OGW.common.push('wastes')// wastes are twice as common
 }

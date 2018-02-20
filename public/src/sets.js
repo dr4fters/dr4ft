@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
     "Amonkhet": "AKH",
