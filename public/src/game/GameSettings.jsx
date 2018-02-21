@@ -33,7 +33,7 @@ const GameSettings = () => (
 )
 
 const SortCards = () => (
-  <div>
+  <div className="settings-sort-cards">
     Sort cards by:
     <div className= 'connected-container' >
       {['cmc', 'color', 'type', 'rarity'].map(sort =>

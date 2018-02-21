@@ -7,11 +7,13 @@ import {Select, Checkbox} from "Src/utils"
 const StartPanel = () => (
    <fieldset className='start-controls fieldset'>
       <legend className='legend game-legend'>Game</legend>
-      <div>Type: {App.state.type}</div>
-      <div>Infos: {App.state.packsInfo}</div>
-      {(App.state.isHost && !App.state.didGameStart)
-        ? <StartControls/>
-        : <div />}
+      <span>
+        <div>Type: {App.state.type}</div>
+        <div>Infos: {App.state.packsInfo}</div>
+        {(App.state.isHost && !App.state.didGameStart)
+          ? <StartControls/>
+          : <div />}
+      </span>
     </fieldset>
 )
 

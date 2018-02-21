@@ -423,7 +423,7 @@ input[type=button]:disabled:active, button:disabled:active {
   flex-shrink: 0;
 }
 
-.deck-settings tr:first-of-type {
+.deck-settings thead tr:first-of-type {
   text-align: center;
 }
 
@@ -452,4 +452,8 @@ input[type=button]:disabled:active, button:disabled:active {
 
 .copy-controls {
   margin-top: 3px;
+}
+
+.settings-sort-cards {
+  padding-top: 5px;
 }
