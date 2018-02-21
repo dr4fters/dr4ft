@@ -403,7 +403,7 @@ function doSet(rawSet, code) {
 }
 
 function doCard(rawCard, cards, code, set) {
-  var {name, mciNumber, layout, names, cmc, color, colors, types, text, manaCost, url, multiverseid} = rawCard
+  var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, text, manaCost, url, multiverseid} = rawCard
   var rarity = rawCard.rarity.split(' ')[0].toLowerCase();
 
   if (/^basic/i.test(rarity))
@@ -413,8 +413,8 @@ function doCard(rawCard, cards, code, set) {
       return
 
   // Keep only the non-flipped cards
-  // Flipped cards have an mciNumber containing the letter b
-  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber))
+  // Flipped cards have an mciNumber or a number containing the letter b
+  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber + number))
     return
 
   if (/split|aftermath/i.test(layout))
