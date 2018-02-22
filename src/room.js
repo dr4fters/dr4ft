@@ -3,6 +3,7 @@ let Sock = require('./sock')
 
 module.exports = class extends EventEmitter {
   constructor({isPrivate}) {
+    super()
     this.messages = Array(50)
     this.socks = []
     this.isPrivate = isPrivate

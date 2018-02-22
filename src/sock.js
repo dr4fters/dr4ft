@@ -5,7 +5,6 @@ let {STRINGS} = require('../config.server')
 let allSocks = []
 
 function broadcastNumUsers() {
-  //console.log(`there are now ${allSocks.length} connected users`)
   Sock.broadcast('set', { numUsers: allSocks.length })
 }
 
@@ -28,6 +27,7 @@ var mixins = {
 
 class Sock extends EventEmitter {
   constructor(ws) {
+    super()
     this.ws = ws
     var {id='', name=STRINGS.BRANDING.DEFAULT_USERNAME} = ws.request._query
     this.id = id.slice(0, 25)

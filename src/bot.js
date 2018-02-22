@@ -3,6 +3,7 @@ var {EventEmitter} = require('events')
 
 module.exports = class extends EventEmitter {
   constructor() {
+    super()
     Object.assign(this, {
       isBot: true,
       isConnected: true,

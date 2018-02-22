@@ -5,6 +5,7 @@ var hash = require('./hash')
 
 module.exports = class extends EventEmitter {
   constructor(sock) {
+    super()
     Object.assign(this, {
       isBot: false,
       isConnected: false,

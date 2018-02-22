@@ -1,20 +1,13 @@
-const CONFIG = require('../config.server')
+const config = require('../config.server')
+const http = require('http')
+const eio = require('engine.io')
+const send = require('send')
+const router = require('../src/router')
 
-var http = require('http')
-var eio = require('engine.io')
-var send = require('send')
-var traceur = require('traceur')
-
-traceur.require.makeDefault(function(path) {
-  return path.indexOf('node_modules') === -1
-})
-
-var router = require('../src/router')
-
-var server = http.createServer(function(req, res) {
+const server = http.createServer(function(req, res) {
   send(req, req.url, { root: 'public' }).pipe(res)
-}).listen(CONFIG.PORT)
-var eioServer = eio(server).on('connection', router)
+}).listen(config.PORT)
+const eioServer = eio(server).on('connection', router)
 
 require('log-timestamp')
-console.log(`Started up ${CONFIG.VERSION}`)
+console.log(`Started up ${config.VERSION}`)

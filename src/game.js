@@ -35,9 +35,6 @@ let games = {}
 module.exports = class Game extends Room {
   constructor({id, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos}) {
     super({isPrivate})
-    super({fourPack})
-    super({modernOnly})
-    super({totalChaos})
     this.modernOnly = modernOnly
     this.totalChaos = totalChaos
 
@@ -154,7 +151,7 @@ module.exports = class Game extends Room {
   }
 
   name(name, sock) {
-    super(name, sock)
+    super.name(name, sock)
     sock.h.name = sock.name
     this.meta()
   }
@@ -166,7 +163,7 @@ module.exports = class Game extends Room {
         p.attach(sock)
         this.greet(p)
         this.meta()
-        super(sock)
+        super.join(sock)
         return
       }
     }
@@ -174,7 +171,7 @@ module.exports = class Game extends Room {
     if (this.didGameStart)
       return sock.err('game already started')
 
-    super(sock)
+    super.join(sock)
 
     var h = new Human(sock)
     if (h.id === this.hostID) {
