@@ -272,6 +272,7 @@ input[type=button]:disabled:active, button:disabled:active {
   position: relative;
   margin: 0;
   cursor: pointer;
+  padding: 1 px;
 }
 
 .card:hover:before, .autopick-card:before {
