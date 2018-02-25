@@ -1,14 +1,14 @@
-import React from "react"
+import React from "react";
 
-import _ from "Lib/utils"
-import App from "Src/app"
-import {Checkbox} from "Src/utils"
+import _ from "Lib/utils";
+import App from "Src/app";
+import {Checkbox} from "Src/utils";
 
-import GameTypes from "./GameTypes"
-import GameOptions from "./GameOptions"
+import GameTypes from "./GameTypes";
+import GameOptions from "./GameOptions";
 
 const CreatePanel = () => {
-  const {title, seats} = App.state
+  const {title, seats} = App.state;
 
   return (
     <fieldset className='fieldset'>
@@ -17,17 +17,17 @@ const CreatePanel = () => {
       </legend>
       <div>
         <label>
-          Game title:{' '}
+          Game title:{" "}
           <input type='text'
-                 value={title}
-                 onChange={(e) => {App.save("title", e.currentTarget.value)}}
-                 />
+            value={title}
+            onChange={(e) => {App.save("title", e.currentTarget.value);}}
+          />
         </label>
       </div>
       <div>
-        Number of players:{' '}
-        <select value={seats} onChange={(e) => {App.save("seats", e.currentTarget.value)}}>
-          {_.seq(100, 2).map((x, key) =>
+        Number of players:{" "}
+        <select value={seats} onChange={(e) => {App.save("seats", e.currentTarget.value);}}>
+          {_.seq(100, 2).map(x =>
             <option key={_.uid()}>{x}</option>)}
         </select>
       </div>
@@ -37,12 +37,12 @@ const CreatePanel = () => {
       <GameTypes/>
       <GameOptions/>
       <p>
-        <button onClick={App._emit('create')}>
+        <button onClick={App._emit("create")}>
           Create room
         </button>
       </p>
     </fieldset>
-  )
-}
+  );
+};
 
-export default CreatePanel
+export default CreatePanel;

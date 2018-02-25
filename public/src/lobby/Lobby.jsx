@@ -1,21 +1,21 @@
-import React, {Component} from "react"
+import React, {Component} from "react";
 
-import App from 'Src/app'
-import {STRINGS} from 'Src/config'
+import App from "Src/app";
+import {STRINGS} from "Src/config";
 
-import Header from './Header'
-import JoinPanel from './JoinPanel'
-import NewsPanel from './NewsPanel'
-import CreatePanel from './CreatePanel'
-import Version from './Version'
+import Header from "./Header";
+import JoinPanel from "./JoinPanel";
+import NewsPanel from "./NewsPanel";
+import CreatePanel from "./CreatePanel";
+import Version from "./Version";
 
 export default class Lobby extends Component {
   componentDidMount() {
-    App.register(this)
+    App.register(this);
   }
   render() {
-    document.title = STRINGS.BRANDING.SITE_TITLE
-    const { roomInfo, serverVersion } = App.state
+    document.title = STRINGS.BRANDING.SITE_TITLE;
+    const { roomInfo, serverVersion } = App.state;
 
     return (
       <div className="container">
@@ -29,6 +29,6 @@ export default class Lobby extends Component {
           <Version version={serverVersion}/>
         </div>
       </div>
-    )
+    );
   }
 }

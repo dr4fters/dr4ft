@@ -1,37 +1,42 @@
-import React from "react"
+import React from "react";
+import PropTypes from "prop-types";
 
-import _ from "Lib/utils"
-import App from "Src/app"
-import {Checkbox, Select, Textarea} from "Src/utils"
+import _ from "Lib/utils";
+import App from "Src/app";
+import {Checkbox, Select, Textarea} from "Src/utils";
 
-import Set from "./Set"
+import Set from "./Set";
 
 const GameOptions = () => {
-  const {sets, fourPack, type} = App.state
+  const {sets, fourPack, type} = App.state;
 
   switch (type) {
-    case 'draft':
-      return <DraftOptions sets={sets}/>
-    case 'sealed':
-      return <SealedOptions sets={sets} fourPack={fourPack}/>
-    case 'cube draft':
-      return <CubeDraft/>
-    case 'cube sealed':
-      return <CubeList/>
-    case 'chaos':
-      return <Chaos />
+  case "draft":
+    return <DraftOptions sets={sets}/>;
+  case "sealed":
+    return <SealedOptions sets={sets} fourPack={fourPack}/>;
+  case "cube draft":
+    return <CubeDraft/>;
+  case "cube sealed":
+    return <CubeList/>;
+  case "chaos":
+    return <Chaos />;
   }
 
-}
+};
 
-const DraftOptions = ({ sets }) => (
+const DraftOptions = ({sets}) => (
   <Sets sets={sets} from={0} to={3}/>
-)
+);
 
-const SealedOptions = ({ sets, fourPack }) => {
+DraftOptions.propTypes = {
+  sets: PropTypes.array
+};
+
+const SealedOptions = ({sets, fourPack}) => {
   const pivot = fourPack
     ? 2
-    : 3
+    : 3;
   return (
     <div>
       <div>
@@ -44,37 +49,43 @@ const SealedOptions = ({ sets, fourPack }) => {
         <Checkbox link='fourPack' side='right' text='4 Pack Sealed: '/>
       </div>
     </div>
-  )
-}
+  );
+};
+
+SealedOptions.propTypes = {
+  sets: PropTypes.array,
+  fourPack: PropTypes.bool
+};
+
 
 const Sets = ({ sets, from, to = sets.length }) => (
   sets
-  .map((set, i) => <Set selectedSet={set} index={i} key={_.uid()}/>)
-  .slice(from, to)
-)
+    .map((set, i) => <Set selectedSet={set} index={i} key={_.uid()}/>)
+    .slice(from, to)
+);
 
 const CubeDraft = () => (
   <div>
     <CubeList />
     <CubeOptions/>
   </div>
-)
+);
 
 const CubeList = () => (
   <div>
     <div>one card per line</div>
     <Textarea placeholder='cube list' link='list'/>
   </div>
-)
+);
 
 const CubeOptions = () => (
   <div>
     <Select link="cards" opts={_.seq(15,8)} />
-    {' '}cards
+    {" "}cards
     <Select link="packs" opts={_.seq(12,3)} />
-    {' '}packs
+    {" "}packs
   </div>
-)
+);
 
 
 const Chaos = () => (
@@ -86,6 +97,6 @@ const Chaos = () => (
       <Checkbox link='totalChaos' side='right' text='Total Chaos: '/>
     </div>
   </div>
-)
+);
 
-export default GameOptions
+export default GameOptions;

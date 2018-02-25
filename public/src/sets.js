@@ -116,4 +116,4 @@ export default {
   random: {
     "Random Set": "RNG"
   }
-}
+};

@@ -1,8 +1,8 @@
-import App from './app'
-import router from './router'
+import App from "./app";
+import router from "./router";
 
-App.init(router)
+App.init(router);
 
 if (module.hot) {
-  module.hot.accept()
+  module.hot.accept();
 }

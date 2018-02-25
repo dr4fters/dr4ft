@@ -1,7 +1,8 @@
-import React, {Component} from "react"
+import React from "react";
+import PropTypes from "prop-types";
 
-import App from './app'
-import _ from "Lib/utils"
+import App from "./app";
+import _ from "Lib/utils";
 
 /**
  * Utils offers a list of "connected" tools
@@ -10,47 +11,63 @@ import _ from "Lib/utils"
 
 export const Checkbox = ({link, text, side, onChange}) => (
   <div>
-    {side == 'right'
+    {side == "right"
       ? text
-      : ''}
+      : ""}
     <input
       type="checkbox"
       onChange={onChange || function (e) {
-      App.save(link, e.currentTarget.checked)
-    }}
-      checked={App.state[link]}/> {side == 'left'
+        App.save(link, e.currentTarget.checked);
+      }}
+      checked={App.state[link]}/> {side == "left"
       ? text
-      : ''}
+      : ""}
   </div>
-)
+);
+
+Checkbox.propTypes = {
+  link: PropTypes.string,
+  text: PropTypes.string,
+  side: PropTypes.string,
+  onChange: PropTypes.func
+};
 
 export const Spaced = ({elements}) => (
   elements
-  .map(x => <span key={_.uid()}>{x}</span>)
-  .reduce((prev, curr) => [
-    prev,
-    <span key = { _.uid() } className = 'spacer-dot' />,
-    curr
-  ])
-)
+    .map(x => <span key={_.uid()}>{x}</span>)
+    .reduce((prev, curr) => [
+      prev,
+      <span key = { _.uid() } className = 'spacer-dot' />,
+      curr
+    ])
+);
 
-export const Select = ({ link, opts, ...rest }) => (
+export const Select = ({link, opts, ...rest}) => (
   <select
     onChange={(e) => {
-      App.save(link, e.currentTarget.value)
+      App.save(link, e.currentTarget.value);
     }}
     value={App.state[link]}
     {...rest}>
-      {opts.map(opt =>
-        <option key={_.uid()}>{opt}</option>
-      )}
+    {opts.map(opt =>
+      <option key={_.uid()}>{opt}</option>
+    )}
   </select>
-)
+);
 
-export const Textarea = ({ link, ...rest}) => (
+Select.propTypes = {
+  link: PropTypes.string,
+  opts: PropTypes.array
+};
+
+export const Textarea = ({link, ...rest}) => (
   <textarea
     onChange=
-      { (e) => { App.save("list", e.currentTarget.value) } }
+      { (e) => { App.save("list", e.currentTarget.value); } }
     value={App.state[link]}
     {...rest} />
-)
+);
+
+Textarea.propTypes = {
+  link: PropTypes.string
+};
