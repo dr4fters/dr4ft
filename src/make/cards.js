@@ -1,96 +1,97 @@
-var fs = require('fs')
-var _ = require('../_')
-var raw = require('../../data/AllSets')
+var fs = require("fs");
+var _ = require("../_");
+var raw = require("../../data/AllSets");
+const logger = require("../logger");
 
 var COLORS = {
-  W: 'White',
-  U: 'Blue',
-  B: 'Black',
-  R: 'Red',
-  G: 'Green'
-}
+  W: "White",
+  U: "Blue",
+  B: "Black",
+  R: "Red",
+  G: "Green"
+};
 
-var Cards = {}
-var Sets = {}
+var Cards = {};
+var Sets = {};
 
-var setsToIgnore = ['TSB','ITP','CP1','CP2','CP3'];
+var setsToIgnore = ["TSB","ITP","CP1","CP2","CP3"];
 
-before()
+before();
 
-var types = ['core', 'expansion', 'commander', 'planechase', 'starter', 'un']
-var codes = ['EMA', 'MMA', 'VMA', 'CNS', 'TPR', 'MM2', 'EXP', 'MPS', 'CN2', 'MM3', 'MPS_AKH', "IMA"]
+var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
+var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA"];
 for (var code in raw) {
-  var set = raw[code]
+  var set = raw[code];
   if (types.indexOf(set.type) > -1
     || codes.indexOf(code) > -1)
-    doSet(set, code)
+    doSet(set, code);
 }
 
-after()
+after();
 
-fs.writeFileSync('data/cards.json', JSON.stringify(Cards, null, 2))
-fs.writeFileSync('data/sets.json', JSON.stringify(Sets, null, 2))
+fs.writeFileSync("data/cards.json", JSON.stringify(Cards, null, 2));
+fs.writeFileSync("data/sets.json", JSON.stringify(Sets, null, 2));
 
 function before() {
-  raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== 'token')
+  raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== "token");
 
   for (card of raw.TSB.cards)
-	card.rarity = 'special'
+    card.rarity = "special";
 
-  raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards)
+  raw.TSP.cards = raw.TSP.cards.concat(raw.TSB.cards);
 
   // Add set codes here to have them removed
   for (var removeSet of setsToIgnore) {
-	  if (raw[removeSet]) {
-	    delete raw[removeSet]
+    if (raw[removeSet]) {
+      delete raw[removeSet];
     }
-	  else {
-	    console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)")
+    else {
+      logger.warning("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)");
     }
   }
-  raw.PLC.booster = Array(11).fill('common')
-  raw.FUT.booster = Array(11).fill('common')
+  raw.PLC.booster = Array(11).fill("common");
+  raw.FUT.booster = Array(11).fill("common")
 
-  ;['BFZ', 'OGW'].forEach(setName => {
+  ;["BFZ", "OGW"].forEach(setName => {
     for (card of raw[setName].cards)
-      if (card.text && card.text.startsWith('Devoid'))
+      if (card.text && card.text.startsWith("Devoid"))
         card.colors = card.manaCost
-          .replace(/[\d{}]/g, '')
-          .replace(/(.)\1+/g, '$1')
-          .split('')
-          .map(c => COLORS[c])
-  })
+          .replace(/[\d{}]/g, "")
+          .replace(/(.)\1+/g, "$1")
+          .split("")
+          .map(c => COLORS[c]);
+  });
 
-  var card
+  var card;
   for (card of raw.EMN.cards)
-    if (card.layout === 'double-faced' || card.layout === 'meld')
-      card.rarity = 'special'
+    if (card.layout === "double-faced" || card.layout === "meld")
+      card.rarity = "special";
   for (card of raw.SOI.cards)
-    if (card.layout === 'double-faced')
-      card.rarity = 'special'
+    if (card.layout === "double-faced")
+      card.rarity = "special";
   for (card of raw.ISD.cards)
-    if (card.layout === 'double-faced')
-      card.rarity = 'special'
+    if (card.layout === "double-faced")
+      card.rarity = "special";
   for (card of raw.DGM.cards)
     if (/Guildgate/.test(card.name))
-      card.rarity = 'special'
+      card.rarity = "special";
   for (card of raw.CNS.cards)
-    if ((card.type === 'Conspiracy')
+    if ((card.type === "Conspiracy")
       || /draft/.test(card.text))
-      card.rarity = 'special'
+      card.rarity = "special";
   for (card of raw.FRF.cards)
-    if (card.types[0] === 'Land'
-      && (card.name !== 'Crucible of the Spirit Dragon'))
-      card.rarity = 'special'
+    if (card.types[0] === "Land"
+      && (card.name !== "Crucible of the Spirit Dragon"))
+      card.rarity = "special";
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
   // appear in Magic 2015 booster packs.
-  raw.M15.cards = raw.M15.cards.filter(x => parseInt(x.number) < 270)
-  raw.ORI.cards = raw.ORI.cards.filter(x => parseInt(x.number) < 273)
+  raw.M15.cards = raw.M15.cards.filter(x => parseInt(x.number) < 270);
+  raw.ORI.cards = raw.ORI.cards.filter(x => parseInt(x.number) < 273);
   //raw.KLD.cards = raw.KLD.cards.filter(x => parseInt(x.number) < 265)
 
-  raw.OGW.cards.find(x => x.name === 'Wastes').rarity = 'Common'
+  raw.OGW.cards.find(x => x.name === "Wastes").rarity = "Common";
 }
 
 function after() {
@@ -104,7 +105,7 @@ function after() {
       "code": "EXP"
     },
     "KLD": {
-      "cards": ['cataclysmic gearhulk', 'torrential gearhulk', 'noxious gearhulk', 'combustible gearhulk', 'verdurous gearhulk', 'aether vial', "champion's helm", 'chromatic lantern', 'chrome mox', 'cloudstone curio', 'crucible of worlds', 'gauntlet of power', 'hangarback walker', 'lightning greaves', 'lotus petal', 'mana crypt', 'mana vault', "mind's eye", 'mox opal', "painter's servant", 'rings of brighthearth', 'scroll rack', 'sculpting steel', 'sol ring', 'solemn simulacrum', 'static orb', 'steel overseer', 'sword of feast and famine', 'sword of fire and ice', 'sword of light and shadow'],
+      "cards": ["cataclysmic gearhulk", "torrential gearhulk", "noxious gearhulk", "combustible gearhulk", "verdurous gearhulk", "aether vial", "champion's helm", "chromatic lantern", "chrome mox", "cloudstone curio", "crucible of worlds", "gauntlet of power", "hangarback walker", "lightning greaves", "lotus petal", "mana crypt", "mana vault", "mind's eye", "mox opal", "painter's servant", "rings of brighthearth", "scroll rack", "sculpting steel", "sol ring", "solemn simulacrum", "static orb", "steel overseer", "sword of feast and famine", "sword of fire and ice", "sword of light and shadow"],
       "code": "MPS"
     },
     "AER": {
@@ -119,22 +120,21 @@ function after() {
       "cards": ["Armageddon","Capsize","Forbid","Omniscience","Opposition","Sunder","Threads of Disloyalty","Avatar of Woe","Damnation","Desolation Angel","Diabolic Edict","Doomsday","No Mercy","Slaughter Pact","Thoughtseize","Blood Moon","Boil","Shatterstorm","Through the Breach","Choke","The Locust God","Lord of Extinction","The Scarab God","The Scorpion God"],
       "code": "MPS_AKH"
     }
-  }
+  };
   for (var masterset in masterpiecelist) {
-    if (Sets[masterset]['special']) {
-      Sets[masterset]['special']['masterpieces'] = []
+    if (Sets[masterset]["special"]) {
+      Sets[masterset]["special"]["masterpieces"] = [];
       //masterpiecelist[masterset]['cards']
     } else {
-      Sets[masterset]['special'] = {
+      Sets[masterset]["special"] = {
         "masterpieces": []
-      }
-      for (var mpindex in masterpiecelist[masterset]['cards']) {
-        Sets[masterset]['special']['masterpieces'].push(masterpiecelist[masterset]['cards'][mpindex].toLowerCase())
+      };
+      for (var mpindex in masterpiecelist[masterset]["cards"]) {
+        Sets[masterset]["special"]["masterpieces"].push(masterpiecelist[masterset]["cards"][mpindex].toLowerCase());
       }
     }
-    var mastercards = masterpiecelist[masterset]['cards']
   }
-  var {EMN} = Sets
+  var {EMN} = Sets;
   EMN.special = {
     "mythic":[
       "gisela, the broken blade",
@@ -165,9 +165,9 @@ function after() {
       "lone rider",
       "cryptolith fragment"
     ]
-  }
-  EMN.size = 8
-  var {SOI} = Sets
+  };
+  EMN.size = 8;
+  var {SOI} = Sets;
   SOI.special = {
     "mythic": [
       "archangel avacyn",
@@ -210,96 +210,96 @@ function after() {
       "hinterland logger",
       "solitary hunter"
     ]
-  }
-  SOI.size = 8
-  var {ISD} = Sets
+  };
+  SOI.size = 8;
+  var {ISD} = Sets;
   ISD.special = {
     mythic: [
-        'garruk relentless'
+      "garruk relentless"
     ],
     rare: [
-        'bloodline keeper',
-        'daybreak ranger',
-        'instigator gang',
-        'kruin outlaw',
-        'ludevic\'s test subject',
-        'mayor of avabruck'
+      "bloodline keeper",
+      "daybreak ranger",
+      "instigator gang",
+      "kruin outlaw",
+      "ludevic's test subject",
+      "mayor of avabruck"
     ],
     uncommon: [
-        'civilized scholar',
-        'cloistered youth',
-        'gatstaf shepherd',
-        'hanweir watchkeep',
-        'reckless waif',
-        'screeching bat',
-        'ulvenwald mystics'
+      "civilized scholar",
+      "cloistered youth",
+      "gatstaf shepherd",
+      "hanweir watchkeep",
+      "reckless waif",
+      "screeching bat",
+      "ulvenwald mystics"
     ],
     common: [
-        'delver of secrets',
-        'grizzled outcasts',
-        'thraben sentry',
-        'tormented pariah',
-        'village ironsmith',
-        'villagers of estwald'
+      "delver of secrets",
+      "grizzled outcasts",
+      "thraben sentry",
+      "tormented pariah",
+      "village ironsmith",
+      "villagers of estwald"
     ]
-  }
-  var {DKA} = Sets
+  };
+  var {DKA} = Sets;
   DKA.special = {
     mythic: [
-      'elbrus, the binding blade',
-      'huntmaster of the fells'
+      "elbrus, the binding blade",
+      "huntmaster of the fells"
     ],
     rare: [
-      'mondronen shaman',
-      'ravenous demon'
+      "mondronen shaman",
+      "ravenous demon"
     ],
     uncommon: [
-      'afflicted deserter',
-      'chalice of life',
-      'lambholt elder',
-      'soul seizer'
+      "afflicted deserter",
+      "chalice of life",
+      "lambholt elder",
+      "soul seizer"
     ],
     common: [
-      'chosen of markov',
-      'hinterland hermit',
-      'loyal cathar',
-      'scorned villager'
+      "chosen of markov",
+      "hinterland hermit",
+      "loyal cathar",
+      "scorned villager"
     ]
-  }
-  var {DGM} = Sets
-  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1)
+  };
+  var {DGM} = Sets;
+  DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1);
   DGM.special = {
     gate: DGM.special,
     shock: [
-      'blood crypt',
-      'breeding pool',
-      'godless shrine',
-      'hallowed fountain',
-      'overgrown tomb',
-      'sacred foundry',
-      'steam vents',
-      'stomping ground',
-      'temple garden',
-      'watery grave',
-      'maze\'s end'
+      "blood crypt",
+      "breeding pool",
+      "godless shrine",
+      "hallowed fountain",
+      "overgrown tomb",
+      "sacred foundry",
+      "steam vents",
+      "stomping ground",
+      "temple garden",
+      "watery grave",
+      "maze's end"
     ]
-  }
-  alias(DGM.special.shock, 'DGM')
+  };
+  alias(DGM.special.shock, "DGM");
 
-  var {FRF} = Sets
+  var {FRF} = Sets;
   for (let card of FRF.special)
-    Cards[card].sets.FRF.rarity = / /.test(card) ? 'common' : 'basic'
+    Cards[card].sets.FRF.rarity = / /.test(card) ? "common" : "basic";
   FRF.special = {
     common: FRF.special,
     fetch: [
-      'flooded strand',
-      'bloodstained mire',
-      'wooded foothills',
-      'windswept heath',
-      'polluted delta',
+      "flooded strand",
+      "bloodstained mire",
+      "wooded foothills",
+      "windswept heath",
+      "polluted delta",
     ]
-  }
-  alias(FRF.special.fetch, 'FRF')
+  };
+  alias(FRF.special.fetch, "FRF");
 
   /* this got moved to removeBonusCards function
   var KLDRaw = raw.KLD.cards
@@ -317,14 +317,14 @@ function after() {
 
   // if a card has cards that don't appear in boosters over a certain card #
   // send them to removeBonusCards with their set code and the highest numbered booster card
-  removeBonusCards("KLD", 264)
-  removeBonusCards("AER", 184)
-  removeBonusCards("AKH", 269)
-  removeBonusCards("HOU", 199)
-  removeBonusCards("XLN", 279)
-  removeBonusCards("RIX", 196)
+  removeBonusCards("KLD", 264);
+  removeBonusCards("AER", 184);
+  removeBonusCards("AKH", 269);
+  removeBonusCards("HOU", 199);
+  removeBonusCards("XLN", 279);
+  removeBonusCards("RIX", 196);
 
-  Sets.OGW.common.push('wastes')// wastes are twice as common
+  Sets.OGW.common.push("wastes");// wastes are twice as common
 }
 
 function removeBonusCards(setCode, maxNumber) {
@@ -332,14 +332,14 @@ function removeBonusCards(setCode, maxNumber) {
   // ex: KLD planeswalker decks have cards numbered > 264 that are not in boosters
   // setCode is 3 letter set code
   // maxNumber is the highest number of a main set card
-  var setRaw = raw[setCode].cards
+  var setRaw = raw[setCode].cards;
   //var {setCode} = Sets
   for (let cardindex in setRaw) {
-    var card = setRaw[cardindex]
+    var card = setRaw[cardindex];
     if (card.number > maxNumber) {
-      for (var rarity of ['common', 'uncommon', 'rare', 'mythic']) {
+      for (var rarity of ["common", "uncommon", "rare", "mythic"]) {
         if (Sets[setCode][rarity].indexOf(card.name.toLowerCase()) > -1) {
-          Sets[setCode][rarity].splice(Sets[setCode][rarity].indexOf(card.name.toLowerCase()), 1)
+          Sets[setCode][rarity].splice(Sets[setCode][rarity].indexOf(card.name.toLowerCase()), 1);
         }
       }
     }
@@ -349,104 +349,104 @@ function removeBonusCards(setCode, maxNumber) {
 function alias(arr, code) {
   // some boosters contain reprints which are not in the set proper
   for (var cardName of arr) {
-    var {sets} = Cards[cardName]
-    var codes = Object.keys(sets)
-    var last = codes[codes.length - 1]
-    sets[code] = sets[last]
+    var {sets} = Cards[cardName];
+    var codes = Object.keys(sets);
+    var last = codes[codes.length - 1];
+    sets[code] = sets[last];
   }
 }
 
 function doSet(rawSet, code) {
-  var cards = {}
+  var cards = {};
   var set = {
     common: [],
     uncommon: [],
     rare: [],
     mythic: [],
     special: [],
-  }
-  var card
+  };
+  var card;
 
   for (card of rawSet.cards)
-    doCard(card, cards, code, set)
+    doCard(card, cards, code, set);
 
   //because of split cards, do this only after processing the entire set
   for (var cardName in cards) {
-    card = cards[cardName]
-    var lc = cardName.toLowerCase()
+    card = cards[cardName];
+    var lc = cardName.toLowerCase();
 
     if (lc in Cards)
-      Cards[lc].sets[code] = card.sets[code]
+      Cards[lc].sets[code] = card.sets[code];
     else
-      Cards[lc] = card
+      Cards[lc] = card;
 
     //Taking care of DoubleFaced Cards URL
     if(card.isDoubleFaced) {
       rawSet.cards.some(x=> {
         if(x.name == card.names[1]) {
-          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseid}&type=card`
-          return true
+          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseid}&type=card`;
+          return true;
         }
-      })
+      });
     }
   }
 
   if (!rawSet.booster)
-    return
+    return;
 
-  for (var rarity of ['mythic', 'special'])
+  for (var rarity of ["mythic", "special"])
     if (!set[rarity].length)
-      delete set[rarity]
+      delete set[rarity];
 
-  set.size = rawSet.booster.filter(x => x === 'common').length
-  Sets[code] = set
+  set.size = rawSet.booster.filter(x => x === "common").length;
+  Sets[code] = set;
 }
 
 function doCard(rawCard, cards, code, set) {
-  var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, text, manaCost, url, multiverseid} = rawCard
-  var rarity = rawCard.rarity.split(' ')[0].toLowerCase();
+  var {name, number, mciNumber = "", layout, names, cmc, colors, types, text, manaCost, url, multiverseid} = rawCard;
+  var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
   if (/^basic/i.test(rarity))
     if (/snow-covered/i.test(name))
-      rarity = 'special'
+      rarity = "special";
     else
-      return
+      return;
 
   // Keep only the non-flipped cards
   // Flipped cards have an mciNumber or a number containing the letter b
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber + number))
-    return
+    return;
 
   if (/split|aftermath/i.test(layout))
-    name = names.join(' // ')
+    name = names.join(" // ");
 
-  name = _.ascii(name)
+  name = _.ascii(name);
 
   if (name in cards) {
     if (/^split$|^aftermath$/i.test(layout)) {
-      var card = cards[name]
-      card.cmc += cmc
+      var card = cards[name];
+      card.cmc += cmc;
       if (card.color !== color)
-        card.color = 'multicolor'
+        card.color = "multicolor";
     }
-    return
+    return;
   }
 
   var color = !colors
-              ? 'colorless'
-              : colors.length > 1
-                  ? 'multicolor'
-                  : colors[0].toLowerCase()
+    ? "colorless"
+    : colors.length > 1
+      ? "multicolor"
+      : colors[0].toLowerCase();
 
-  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseid}&type=card`
+  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseid}&type=card`;
 
   cards[name] = {
     color,
     name,
     type: types[types.length - 1],
     cmc: cmc || 0,
-    text: text || '',
-    manaCost: manaCost || '',
+    text: text || "",
+    manaCost: manaCost || "",
     sets: {
       [code]: { rarity,
         url: picUrl
@@ -455,7 +455,7 @@ function doCard(rawCard, cards, code, set) {
     layout: layout,
     isDoubleFaced: /^double-faced$/i.test(layout),
     names: names
-  }
+  };
 
-  set[rarity].push(name.toLowerCase())
+  set[rarity].push(name.toLowerCase());
 }
