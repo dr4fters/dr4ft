@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react";
 
-import {STRINGS} from "Src/config"
-import {Spaced} from 'Src/utils'
-import App from "Src/app"
+import {STRINGS} from "Src/config";
+import {Spaced} from "Src/utils";
+import App from "Src/app";
 
 const Header = () => (
   <header>
@@ -12,28 +12,28 @@ const Header = () => (
     <ServerInfo />
     <ApplicationError />
   </header>
-)
+);
 
 const ApplicationError = () => (
   <p className='error'>{App.err}</p>
-)
+);
 
 const ServerInfo = () => {
-  const {numUsers, numPlayers, numActiveGames} = App.state
+  const {numUsers, numPlayers, numActiveGames} = App.state;
   const users = `${numUsers} ${numUsers === 1
-    ? 'user'
-    : 'users'} connected`
+    ? "user"
+    : "users"} connected`;
 
   const players = `${numPlayers}
      ${numPlayers === 1
-    ? 'player'
-    : 'players'}
+    ? "player"
+    : "players"}
       playing ${numActiveGames}
         ${numActiveGames === 1
-      ? 'game'
-      : 'games'}`
+    ? "game"
+    : "games"}`;
 
-  return <p><Spaced elements={[users, players]}/></p>
-}
+  return <p><Spaced elements={[users, players]}/></p>;
+};
 
-export default Header
+export default Header;

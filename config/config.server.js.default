@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const execSync = require('child_process').execSync
+const execSync = require("child_process").execSync;
 
-var versionInfo = "noVersion"
+var versionInfo = "noVersion";
 try {
-  versionInfo = execSync('git describe --always --long')
-  .toString().trim()
+  versionInfo = execSync("git describe --always --long")
+    .toString().trim();
 } catch(err) {
 }
 
-let versionInfoParts = versionInfo.split('-')
+let versionInfoParts = versionInfo.split("-");
 
 const VERSION =
   versionInfoParts.length === 3
@@ -19,17 +19,17 @@ const VERSION =
   // version 2.0.0, at commit `123abc`. (In the `git-describe` output, there is
   // always a `g` before the commit hash, which stands for 'git', so we remove
   // that.)
-  ? `${versionInfoParts[0]}+${versionInfoParts[1]} (${versionInfoParts[2].slice(1)})`
+    ? `${versionInfoParts[0]}+${versionInfoParts[1]} (${versionInfoParts[2].slice(1)})`
 
-  // If there is no tag, just display the commit hash.
-  : versionInfo
+    // If there is no tag, just display the commit hash.
+    : versionInfo;
 
 module.exports = {
   PORT: process.env.PORT || 1337,
   VERSION,
   STRINGS: {
     BRANDING: {
-      DEFAULT_USERNAME: 'dr4fter',
+      DEFAULT_USERNAME: "dr4fter",
     }
   }
 }

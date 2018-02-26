@@ -1,11 +1,18 @@
-import React from "react"
+import React from "react";
+import PropTypes from "prop-types";
 
-export default function Version({version}) {
-    return (
-        <p>Running Version{' '}
-            <a href={`https://github.com/dr4fters/dr4ft/commit/${version}`}>
-                {version}
-            </a>
-        </p>
-    )
-}
+const Version = ({version}) => {
+  return (
+    <p>Running Version{" "}
+      <a href={`https://github.com/dr4fters/dr4ft/commit/${version}`}>
+        {version}
+      </a>
+    </p>
+  );
+};
+
+Version.propTypes = {
+  version: PropTypes.string
+};
+
+export default Version;

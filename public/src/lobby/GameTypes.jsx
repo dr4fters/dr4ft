@@ -1,12 +1,13 @@
-import React from "react"
+import React from "react";
+import PropTypes from "prop-types";
 
-import App from "Src/app"
+import App from "Src/app";
 
 const GameTypes = () => {
-  const types = ['draft', 'sealed', 'cube draft', 'cube sealed', 'chaos']
+  const types = ["draft", "sealed", "cube draft", "cube sealed", "chaos"];
   return (
     <div>
-      <p>Game type:{' '}
+      <p>Game type:{" "}
         <span className='connected-container'>
           {types.map((type, key) =>
             <GameType type={type} key={key} isChecked={App.state.type == type}/>
@@ -14,8 +15,8 @@ const GameTypes = () => {
         </span>
       </p>
     </div>
-  )
-}
+  );
+};
 
 const GameType = ({type, isChecked}) => (
   <label className='radio-label connected-component'>
@@ -25,10 +26,15 @@ const GameType = ({type, isChecked}) => (
       type='radio'
       value={type}
       onChange={() => {
-        App.save("type", type)
+        App.save("type", type);
       }}
       checked={isChecked}/> {type}
   </label>
-)
+);
 
-export default GameTypes
+GameType.propTypes = {
+  type: PropTypes.string,
+  isChecked: PropTypes.bool
+};
+
+export default GameTypes;

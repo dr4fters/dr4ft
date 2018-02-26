@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 
 export const STRINGS = {
   BRANDING: {
-    SITE_TITLE: ['dr4ft', 'com'].join('.'),
+    SITE_TITLE: ["dr4ft", "info"].join("."),
     SITE_NAME: <span>DR<img src='4.png' alt='4'/>FT</span>,
-    DEFAULT_USERNAME: 'dr4fter',
-    PAYPAL: '',
+    DEFAULT_USERNAME: "dr4fter",
+    PAYPAL: "",
   },
 
   PAGE_SECTIONS: {
@@ -20,4 +20,4 @@ export const STRINGS = {
         https: //github.com/dr4fters/dr4ft</a>
       </div>
   }
-}
+};
