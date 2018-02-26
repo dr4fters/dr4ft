@@ -2,12 +2,6 @@ const fs = require("fs");
 const allSets = require("../src/make/allsets");
 const configFiles = ["config.client.js", "config.server.js"];
 const logger = require("../src/logger");
-const serverConfig = require("../config.server");
-
-// Create the log dir
-if(!fs.existsSync(serverConfig.LOGDIR)) {
-  fs.mkdirSync(serverConfig.LOGDIR);
-}
 
 // Download Allsets.json
 if(!fs.existsSync("data/AllSets.json")) {
@@ -34,4 +28,12 @@ configFiles.forEach(config => {
     fs.createReadStream(`config/${config}.default`).pipe(fs.createWriteStream(config));
   }
 });
+
+const serverConfig = require("../config.server");
+
+// Create the log dir
+if(!fs.existsSync(serverConfig.LOGDIR)) {
+  fs.mkdirSync(serverConfig.LOGDIR);
+  logger.info(`Created directory ${serverConfig.LOGDIR}...`);
+}
 logger.info("Finished installing configurations...");
