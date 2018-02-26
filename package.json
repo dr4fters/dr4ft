@@ -19,7 +19,7 @@
     "url": "https://github.com/dr4fters/dr4ft.git"
   },
   "scripts": {
-    "start": "node scripts/run",
+    "start": "node app",
     "watch": "webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
@@ -33,9 +33,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
+    "body-parser": "^1.18.2",
     "ee": "git://github.com/aeosynth/ee",
     "engine.io": "^1.4.1",
     "engine.io-client": "^1.4.1",
+    "express": "^4.16.2",
+    "helmet": "^3.11.0",
     "jsonfile": "^2.4.0",
     "log-timestamp": "^0.1.2",
     "node-fetch": "^1.0.3",
@@ -44,7 +47,8 @@
     "react-dom": "^16.0.0",
     "send": "^0.11.1",
     "utils": "git://github.com/arxanas/utils",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
     "css-loader": "^0.28.7",

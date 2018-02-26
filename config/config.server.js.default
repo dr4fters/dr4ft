@@ -1,12 +1,14 @@
 "use strict";
 
 const execSync = require("child_process").execSync;
+const logger = require("./src/logger");
 
 var versionInfo = "noVersion";
 try {
   versionInfo = execSync("git describe --always --long")
     .toString().trim();
 } catch(err) {
+  logger.error(err);
 }
 
 let versionInfoParts = versionInfo.split("-");
@@ -31,5 +33,6 @@ module.exports = {
     BRANDING: {
       DEFAULT_USERNAME: "dr4fter",
     }
-  }
-}
+  },
+  LOGDIR: process.env.LOGDIR || "./data/log/"
+};
