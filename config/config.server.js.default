@@ -1,14 +1,14 @@
+/* eslint no-console: "off" */
 "use strict";
 
 const execSync = require("child_process").execSync;
-const logger = require("./src/logger");
 
 var versionInfo = "noVersion";
 try {
   versionInfo = execSync("git describe --always --long")
     .toString().trim();
 } catch(err) {
-  logger.error(err);
+  console.log(err);
 }
 
 let versionInfoParts = versionInfo.split("-");
