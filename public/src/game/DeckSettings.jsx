@@ -42,7 +42,7 @@ const ManaSymbols = () => {
       <td />
       {manaSymbols.map(x =>
         <td key={_.uid()}>
-          <img src={url(x)}/>
+          <img src={url(x)} alt={x}/>
         </td>)
       }
     </tr>
