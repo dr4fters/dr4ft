@@ -16,8 +16,10 @@ export const STRINGS = {
         <strong>dr4ft</strong> is a fork of
         the <code>drafts.ninja</code> arxanas fork of
         the <code >draft</code> project by aeosynth.
-        Contributions welcome! &nbsp; <img src='https://image.flaticon.com/icons/svg/25/25231.svg' alt='GitHub' align='top' height='18'>
-        <a href='https://github.com/dr4fters/dr4ft'>dr4fters/dr4ft</a>
+        Contributions welcome!
+        <a href='https://github.com/dr4fters/dr4ft'>
+        <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="GitHub" align="top" height="18"> 
+        dr4fters/dr4ft</a>
       </div>
   }
 };
