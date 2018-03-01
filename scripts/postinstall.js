@@ -6,7 +6,7 @@ const allSets = require("../src/make/allsets");
 // Download Allsets.json
 if(!fs.existsSync("data/AllSets.json")) {
   console.log("No AllSets.json detected. Downloading the file...");
-  allSets.download("http://mtgjson.com/json/AllSets.json", "data/AllSets.json", () => {
+  allSets.download("https://mtgjson.com/json/AllSets.json", "data/AllSets.json", () => {
     console.log("Download of AllSets.json completed");
   });
 }
