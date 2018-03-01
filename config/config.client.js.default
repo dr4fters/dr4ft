@@ -17,7 +17,7 @@ export const STRINGS = {
         the <code>drafts.ninja</code> arxanas fork of
         the <code >draft</code> project by aeosynth.
         Contributions welcome! <a href = 'https://github.com/dr4fters/dr4ft'>
-        https: //github.com/dr4fters/dr4ft</a>
+        https://github.com/dr4fters/dr4ft</a>
       </div>
   }
 };
