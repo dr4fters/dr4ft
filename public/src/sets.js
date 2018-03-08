@@ -1,12 +1,5 @@
 export default {
   expansion: {
-    "Masters 25": "A25",
-    "Iconic Masters": "IMA",
-    "Modern Masters 2017": "MM3",
-    "Eternal Masters": "EMA",
-    "Modern Masters 2015": "MM2",
-    "Vintage Masters": "VMA",
-    "Modern Masters": "MMA",
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
@@ -106,7 +99,13 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   masters: {
-    
+    "Masters 25": "M25",
+    "Iconic Masters": "IMA",
+    "Modern Masters 2017": "MM3",
+    "Eternal Masters": "EMA",
+    "Modern Masters 2015": "MM2",
+    "Vintage Masters": "VMA",
+    "Modern Masters": "MMA",
   },
   other: {
     "Tempest Remastered": "TPR",
