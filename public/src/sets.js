@@ -80,8 +80,8 @@ export default {
   },
   core: {
     "Magic Origins": "ORI",
-    "Magic 2015 Core Set": "M15",
-    "Magic 2014 Core Set": "M14",
+    "Magic 2015": "M15",
+    "Magic 2014": "M14",
     "Magic 2013": "M13",
     "Magic 2012": "M12",
     "Magic 2011": "M11",
@@ -104,14 +104,19 @@ export default {
     "Modern Masters 2017": "MM3",
     "Eternal Masters": "EMA",
     "Modern Masters 2015": "MM2",
+    "Tempest Remastered": "TPR",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
+    "Chronicles": "CHR"
+  },
+  funny: {
+    "Unstable": "UST",
+    "Unhinged": "UNH",
+    "Unglued": "UGL"
   },
   other: {
-    "Tempest Remastered": "TPR",
+    "Conspiracy: Take the Crown": "CN2",
     "Conspiracy": "CNS",
-    "Unhinged": "UNH",
-    "Unglued": "UGL",
     "Starter 1999": "S99",
     "Portal Three Kingdoms": "PTK",
     "Portal Second Age": "PO2",
