@@ -51,12 +51,11 @@ gamesRouter
       seats[int],
       type[enum:"draft","sealed","cube sealed","cube draft","chaos"],
       sets[stringArray(for example "XLN,XLN,XLN"],
-      cube[boolean],
+      cube[object],
       isPrivate[boolean],
       fourPack[boolean],
       modernOnly[boolean],
-      totalChaos[boolean],
-      webhook[string], //to ping!
+      totalChaos[boolean]
   */
   .post("/", checkGameCreateParams, (req, res) => {
     const game = new Game(req.body);

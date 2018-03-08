@@ -1,6 +1,6 @@
 var assert = require("assert");
 var _ = require("./_");
-var {Cards} = require("./data");
+var {Sets, Cards} = require("./data");
 var BASICS = [
   "Forest",
   "Island",
@@ -62,14 +62,36 @@ module.exports = {
 
     return true;
   },
-  game({seats, type, cube}) {
-    assert(typeof seats === "number", "seats should be a number");
-    assert(2 <= seats && seats <= 100, "seats' number should be between 2 and 100");
+  game({seats, type, sets, cube, isPrivate, fourPack, modernOnly = true, totalChaos = true}) {
     assert(["draft", "sealed", "cube draft", "cube sealed", "chaos"].includes(type),
       "type can be draft, selaed, cube draft or cube sealed");
+    assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
+    assert(typeof seats === "number", "seats must be a number");
+    assert(2 <= seats && seats <= 100, "seats' number must be between 2 and 100");
 
-    if (/cube/.test(type))
+    switch(type) {
+    case "draft":
+    case "sealed":
+      assert(Array.isArray(sets), "sets must be an array");
+      sets.forEach(set =>
+        assert(Sets[set] !== undefined, `set ${set} is invalid or does not exist`));
+      if("sealed" === type) {
+        assert(typeof fourPack === "boolean", "fourPack must be a boolean");
+        assert(!fourPack || sets.length < 4, "sets must be at least 4");
+      } else {
+        assert(sets.length == 3, "sets length must be 3");
+      }
+      break;
+    case "cube draft":
+    case "cube sealed":
+      assert(typeof cube === "object", "cube must be an object");
       transform(cube, seats, type);
+      break;
+    case "chaos":
+      assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
+      assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
+      break;
+    }
   },
 
   start({addBots, useTimer, timerLength, shufflePlayers}) {

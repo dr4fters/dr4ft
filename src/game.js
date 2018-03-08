@@ -405,7 +405,7 @@ module.exports = class Game extends Room {
       seatNumber: seat,
       playerName: player.name,
       id: player.id,
-      pool: player.pool.map(card => card.name),
+      pool: player.pool.map(card => card.name)
     };
   }
 
