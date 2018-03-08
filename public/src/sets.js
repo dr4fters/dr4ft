@@ -1,5 +1,5 @@
 export default {
-  Expansions: {
+  expansion: {
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
@@ -78,7 +78,7 @@ export default {
     "Antiquities": "ATQ",
     "Arabian Nights": "ARN"
   },
-  Core Sets: {
+  core: {
     "Magic Origins": "ORI",
     "Magic 2015": "M15",
     "Magic 2014": "M14",
@@ -98,7 +98,7 @@ export default {
     "Limited Edition Beta": "LEB",
     "Limited Edition Alpha": "LEA"
   },
-  Master Sets: {
+  masters: {
     "Masters 25": "A25",
     "Iconic Masters": "IMA",
     "Modern Masters 2017": "MM3",
@@ -109,12 +109,12 @@ export default {
     "Modern Masters": "MMA",
     "Chronicles": "CHR"
   },
-  Un Sets: {
+  funny: {
     "Unstable": "UST",
     "Unhinged": "UNH",
     "Unglued": "UGL"
   },
-  Other Sets: {
+  other: {
     "Conspiracy: Take the Crown": "CN2",
     "Conspiracy": "CNS",
     "Starter 1999": "S99",
@@ -122,7 +122,7 @@ export default {
     "Portal Second Age": "PO2",
     "Portal": "POR"
   },
-  Random: {
+  random: {
     "Random Set": "RNG"
   }
 };
