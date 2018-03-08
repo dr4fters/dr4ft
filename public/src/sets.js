@@ -98,14 +98,18 @@ export default {
     "Limited Edition Beta": "LEB",
     "Limited Edition Alpha": "LEA"
   },
-  other: {
+  masters: {
+  	"Masters 25": "A25",
+  	"Iconic Masters": "IMA",
     "Modern Masters 2017": "MM3",
     "Eternal Masters": "EMA",
     "Modern Masters 2015": "MM2",
-    "Tempest Remastered": "TPR",
-    "Conspiracy": "CNS",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
+  },
+  other: {
+    "Tempest Remastered": "TPR",
+    "Conspiracy": "CNS",
     "Unhinged": "UNH",
     "Unglued": "UGL",
     "Starter 1999": "S99",
