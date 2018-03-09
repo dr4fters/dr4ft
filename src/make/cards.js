@@ -414,10 +414,10 @@ function doCard(rawCard, cards, code, set) {
 
   // Keep only the non-flipped cards
   // Flipped cards have an mciNumber or a number containing the letter b
-  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber + number))
-    return
+  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber))
+    return;
 
-  if (/split|aftermath/i.test(layout))
+    if (/split|aftermath/i.test(layout))
     name = names.join(' // ')
 
   name = _.ascii(name)
