@@ -5,8 +5,7 @@ module.exports = {
   devtool: "cheap-eval-source-map",
   context: __dirname,
   entry: {
-    app: "./public/src/init.js",
-    react: ["react", "react-dom"]
+    app: "./public/src/init.js"
   },
   output: {
     path: path.join(__dirname, "./public/lib"),
@@ -52,5 +51,9 @@ module.exports = {
         loader: "url-loader"
       }
     ]
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   }
 };
