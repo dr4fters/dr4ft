@@ -18,6 +18,8 @@ if (!fs.existsSync(libDir)) {
   fs.mkdirSync(libDir);
   fs.symlinkSync("../../node_modules/utils/utils.js", `${libDir}/utils.js`)
   fs.symlinkSync("../../node_modules/ee/ee.js", `${libDir}/ee.js`)
+  fs.symlinkSync("../../node_modules/react/umd/react.production.min.js", `${libDir}/react.js`)
+  fs.symlinkSync("../../node_modules/react-dom/umd/react-dom.production.min.js", `${libDir}/react-dom.js`)
   fs.createReadStream('node_modules/engine.io-client/engine.io.js').pipe(fs.createWriteStream(`${libDir}/engine.io.js`));
   fs.createReadStream('node_modules/normalize.css/normalize.css').pipe(fs.createWriteStream(`${libDir}/normalize.css`));
 }
