@@ -81,13 +81,13 @@ function content() {
   let totalChaosBox = d.div({}, RBox('totalChaos', 'Total Chaos: '))
 
   switch(App.state.type) {
-    case 'draft' : return setsTop
-    case 'sealed':
+    case 'Draft' : return setsTop
+    case 'Sealed':
       if (App.state.fourPack) { return [setsFourOne, setsFourTwo, fourPackBox] }
       else { return [setsTop, setsBot, fourPackBox] }
-    case 'cube draft' : return [cube, cubeDraft]
-    case 'cube sealed': return cube
-    case 'chaos': return [chaos, modernOnlyBox, totalChaosBox]
+    case 'Cube Draft' : return [cube, cubeDraft]
+    case 'Cube Sealed': return cube
+    case 'Chaos': return [chaos, modernOnlyBox, totalChaosBox]
   }
 }
 
