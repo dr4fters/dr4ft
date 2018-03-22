@@ -31,4 +31,5 @@ and is licensed under the MIT license.
 
   [ES6]: https://github.com/lukehoban/es6features
   [Traceur]: https://github.com/google/traceur-compiler
+  [BabelJS]: https://github.com/babel/babel
   [React]: https://github.com/facebook/react
