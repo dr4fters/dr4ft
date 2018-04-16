@@ -13,9 +13,9 @@
 .inner {
   margin-left: auto;
   margin-right: auto;
-  width: 700px;
+  width: 685px;
   padding: 1em;
-  border: solid blue;
+  border: 5px solid #089dff;
 }
 
 .loading_website {
