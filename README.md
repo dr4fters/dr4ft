@@ -6,8 +6,7 @@
 It supports all of the features of `drafts.ninja`, and more.
 
 dr4ft is a NodeJS application.<br>
-dr4ft is written in [ES6] and transpiled with [Traceur] and [BabelJS], and uses [React]
-on the client-side.
+dr4ft is written in [ES6] and transpiled with [BabelJS], and uses [React] on the client-side.
 
 Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new).
 
@@ -30,5 +29,5 @@ and is licensed under the MIT license.
 
 
   [ES6]: https://github.com/lukehoban/es6features
-  [Traceur]: https://github.com/google/traceur-compiler
+  [BabelJS]: https://github.com/babel/babel
   [React]: https://github.com/facebook/react
