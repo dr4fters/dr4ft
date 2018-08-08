@@ -82,6 +82,12 @@ function before() {
     if (card.types[0] === 'Land'
       && (card.name !== 'Crucible of the Spirit Dragon'))
       card.rarity = 'special'
+  for (card of raw.M19.cards)
+    if (card.types[0] === 'Land'
+      && (["Cinder Barrens", "Forsaken Sanctuary", "Foul Orchard", "Highland Lake",
+          "Meandering River", "Stone Quarry", "Submerged Boneyard", "Timber Gorge",
+          "Tranquil Expanse", "Woodland Stream"].includes(card.name)))
+      card.rarity = 'special'
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
@@ -323,6 +329,7 @@ function after() {
   removeBonusCards("HOU", 199)
   removeBonusCards("XLN", 279)
   removeBonusCards("RIX", 196)
+  removeBonusCards("M19", 280)
 
   Sets.OGW.common.push('wastes')// wastes are twice as common
 }
@@ -359,6 +366,7 @@ function alias(arr, code) {
 function doSet(rawSet, code) {
   var cards = {}
   var set = {
+    basic: [],
     common: [],
     uncommon: [],
     rare: [],
@@ -410,7 +418,7 @@ function doCard(rawCard, cards, code, set) {
     if (/snow-covered/i.test(name))
       rarity = 'special'
     else
-      return
+      rarity = 'basic'
 
   // Keep only the non-flipped cards
   // Flipped cards have an mciNumber or a number containing the letter b

@@ -37,7 +37,7 @@ function pickFoil(set) {
 
 function toPack(code) {
   var set = Sets[code]
-  var {common, uncommon, rare, mythic, special, size} = set
+  var {basic, common, uncommon, rare, mythic, special, size} = set
 
   if (mythic && !_.rand(8))
     rare = mythic
@@ -132,6 +132,12 @@ function toPack(code) {
       else
         special = special.common
       break
+    case 'M19':
+      //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+      const dualLand = _.rand(12) < 6;
+      pack.push(_.choose(1, dualLand ? special : basic))
+      special = false; // to desactivate the pick of special card
+      break;
   }
   var masterpiece = ''
   if (special) {

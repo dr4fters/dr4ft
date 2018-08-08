@@ -79,6 +79,7 @@ export default {
     "Arabian Nights": "ARN"
   },
   core: {
+    "Magic 2019": "M19",
     "Magic Origins": "ORI",
     "Magic 2015": "M15",
     "Magic 2014": "M14",
