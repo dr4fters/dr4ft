@@ -137,7 +137,7 @@ function toPack(code) {
       // 5/12 of times -> dual-land
       // 7/12 of times -> basic land
       const dualLands = common.filter(cardName => Cards[cardName].type === "Land")
-      common = common.filter(cardName => dualLands.includes(cardName)) //delete dualLands from possible choice as common slot
+      common = common.filter(cardName => !dualLands.includes(cardName)) //delete dualLands from possible choice as common slot
       const isDualLand = _.rand(12) < 6;
       const land = _.choose(1, isDualLand ? dualLands : basic)
       pack.push(land)
