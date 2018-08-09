@@ -40,7 +40,7 @@
     "log-timestamp": "^0.1.2",
     "node-fetch": "^1.0.3",
     "normalize.css": "^8.0.0",
-    "react": "^16.0.0",
+    "react": "^16.4.2",
     "react-dom": "^16.0.0",
     "send": "^0.11.1",
     "utils": "git://github.com/arxanas/utils.git",
