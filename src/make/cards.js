@@ -82,10 +82,6 @@ function before() {
     if (card.types[0] === 'Land'
       && (card.name !== 'Crucible of the Spirit Dragon'))
       card.rarity = 'special'
-  for (card of raw.M19.cards)
-    if (card.types[0] === 'Land'
-      && (card.rarity === 'Common'))
-      card.rarity = 'special'
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
   // Each sample deck has several cards numbered 270 and higher that do not
