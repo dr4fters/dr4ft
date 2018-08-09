@@ -132,6 +132,33 @@ function toPack(code) {
       else
         special = special.common
       break
+    case 'DOM':
+      // Every booster must contain a legendary creature either as uncommon or rare
+      let hasLegendaryCreature = false;
+      const isLegendaryCreature = cardName => {
+        const card = Cards[cardName];
+        return card.supertypes.includes("Legendary") && card.type === "Creature";
+      }
+
+      pack.some(cardName => {
+        return hasLegendaryCreature = isLegendaryCreature(cardName);
+      });
+
+      if (!hasLegendaryCreature) {
+        // Choose to replace an uncommon or rare slot
+        if (_.rand(4) === 0) {
+          var packIndex = 3;
+          var isMythic = mythic.includes(pack[packIndex]);
+          var pool = isMythic ? mythic : rare;
+        } else {
+          // Uncommon slot
+          var packIndex = 0;
+          var pool = uncommon;
+        }
+        const legendaryCreatures = pool.filter(isLegendaryCreature);
+        pack[packIndex] = _.choose(1, legendaryCreatures);
+      }
+      break;
   }
   var masterpiece = ''
   if (special) {
