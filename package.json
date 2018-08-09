@@ -34,7 +34,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
     "ee": "git://github.com/aeosynth/ee.git",
-    "engine.io": "^1.4.1",
+    "engine.io": "^3.2.0",
     "engine.io-client": "^3.2.1",
     "jsonfile": "^4.0.0",
     "log-timestamp": "^0.1.2",
