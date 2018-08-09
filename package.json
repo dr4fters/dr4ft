@@ -36,7 +36,7 @@
     "ee": "git://github.com/aeosynth/ee.git",
     "engine.io": "^1.4.1",
     "engine.io-client": "^1.4.1",
-    "jsonfile": "^2.4.0",
+    "jsonfile": "^4.0.0",
     "log-timestamp": "^0.1.2",
     "node-fetch": "^1.0.3",
     "normalize.css": "^3.0.1",
