@@ -134,9 +134,13 @@ function toPack(code) {
       break
     case 'M19':
       //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
-      const dualLand = _.rand(12) < 6;
-      pack.push(_.choose(1, dualLand ? special : basic))
-      special = false; // to desactivate the pick of special card
+      // 5/12 of times -> dual-land
+      // 7/12 of times -> basic land
+      const isDualLand = _.rand(12) < 6;
+      const land = _.choose(1, dualLand ? special : basic)
+      land.rarity = 'Land' // Fix rarity
+      pack.push(land)
+      special = false; // to deactivate the pick of special card
       break;
   }
   var masterpiece = ''
