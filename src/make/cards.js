@@ -84,9 +84,7 @@ function before() {
       card.rarity = 'special'
   for (card of raw.M19.cards)
     if (card.types[0] === 'Land'
-      && (["Cinder Barrens", "Forsaken Sanctuary", "Foul Orchard", "Highland Lake",
-          "Meandering River", "Stone Quarry", "Submerged Boneyard", "Timber Gorge",
-          "Tranquil Expanse", "Woodland Stream"].includes(card.name)))
+      && (card.rarity === 'Common'))
       card.rarity = 'special'
 
   //http://mtgsalvation.gamepedia.com/Magic_2015/Sample_decks
