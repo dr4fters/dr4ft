@@ -42,7 +42,7 @@
     "normalize.css": "^8.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "send": "^0.11.1",
+    "send": "^0.16.2",
     "utils": "git://github.com/arxanas/utils.git",
     "webpack": "^4.16.5"
   },
