@@ -133,6 +133,7 @@ function toPack(code) {
         special = special.common
       break
     case 'DOM':
+      // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
       // Every booster must contain a legendary creature either as uncommon or rare
       let hasLegendaryCreature = false;
       const isLegendaryCreature = cardName => {
