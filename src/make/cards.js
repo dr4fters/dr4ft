@@ -323,6 +323,7 @@ function after() {
   removeBonusCards("HOU", 199)
   removeBonusCards("XLN", 279)
   removeBonusCards("RIX", 196)
+  removeBonusCards("M19", 280)
 
   Sets.OGW.common.push('wastes')// wastes are twice as common
 }
@@ -359,6 +360,7 @@ function alias(arr, code) {
 function doSet(rawSet, code) {
   var cards = {}
   var set = {
+    basic: [],
     common: [],
     uncommon: [],
     rare: [],
@@ -410,7 +412,7 @@ function doCard(rawCard, cards, code, set) {
     if (/snow-covered/i.test(name))
       rarity = 'special'
     else
-      return
+      rarity = 'basic'
 
   // Keep only the non-flipped cards
   // Flipped cards have an mciNumber or a number containing the letter b
