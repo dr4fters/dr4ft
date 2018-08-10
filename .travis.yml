@@ -88,3 +88,14 @@ matrix:
 #      - docker ps -a
 #    after_script:
 #      - docker images
+
+#notifications:
+#  email: false
+#  webhooks:
+#    urls:
+#      - dr4ft gitter url here
+#    on_success: change
+#    on_failure: change
+#    on_start: never
+#    on_cancel: change
+#    on_error: change
