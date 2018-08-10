@@ -1,7 +1,7 @@
 #normal matrix.include setup
 matrix:
   include:
-    - name: Build and run Node.js app on newest Node.js
+    - name: Install Node.js app on newest Node.js
       language: node_js
       node_js: node
       cache:
