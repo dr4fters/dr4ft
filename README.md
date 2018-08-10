@@ -1,3 +1,7 @@
+<p align="center">
+  dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/public/4.png" height="14">ft
+</p>
+
 <p align='center'>
   <a href="https://travis-ci.com/dr4fters/dr4ft"><img src=https://travis-ci.com/dr4fters/dr4ft.svg?branch=master></a>
   <a href="https://david-dm.org/dr4fters/dr4ft"><img src=https://david-dm.org/dr4fters/dr4ft.svg></a>
