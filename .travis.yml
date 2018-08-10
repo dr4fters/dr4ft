@@ -6,7 +6,7 @@ matrix:
       node_js: node
       cache:
         directories:
-        - node_modules
+          - node_modules
       install:
         - npm install
       script: skip    # no tests configured yet
