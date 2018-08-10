@@ -1,31 +1,16 @@
-#normal matrix setup
-language: node_js
-
-node_js:
-  - node     # latest stable Node.js release
-#  - lts/*    # latest LTS Node.js release
-
-install:
-  - npm install
-
-#cache:
-#  directories:
-#    - "node_modules"
-
+#normal matrix.include setup
 matrix:
   include:
-#    - name: Build and run Docker image (with 'Dockerfile'), default Docker
-#      language: generic
-#      services:
-#        - docker
-#      script:
-#        - docker --version
-#        - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
-#        - docker run -dp 1337:1337 dr4ft-app
-#        - docker ps -a
-#      after_script:
-#        - docker images
-    - name: Build and run Docker image (with 'Dockerfile'), newest Docker
+    - name: Build and run Node.js app on newest Node.js
+      language: node_js
+#     node_js: node
+#      cache:
+#        directories:
+#        - node_modules
+      install:
+        - npm install
+
+    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
       language: generic
       addons:
         apt:
@@ -41,6 +26,7 @@ matrix:
       after_script:
         - docker images
 
+#-------------------------------------------------
 #nodejs + docker in stages setup
 #jobs:
 #  include:
