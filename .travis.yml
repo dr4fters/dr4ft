@@ -3,7 +3,7 @@ matrix:
   include:
     - name: Build and run Node.js app on newest Node.js
       language: node_js
-#     node_js: node
+      node_js: node
 #      cache:
 #        directories:
 #        - node_modules
