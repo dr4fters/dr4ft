@@ -9,23 +9,23 @@ matrix:
           - node_modules
       install:
         - npm install
-      script: skip    # no tests configured yet
+      script: skip    # skips default 'npm test' command in 'script' step; no tests configured yet
 
-    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
-      language: generic
-      addons:
-        apt:
-          packages:
-            - docker-ce
-      services:
-        - docker
-      script:
-        - docker --version
-        - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
-        - docker run -dp 1337:1337 dr4ft-app
-        - docker ps -a
-      after_script:
-        - docker images
+#    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
+#      language: generic
+#      addons:
+#        apt:
+#          packages:
+#            - docker-ce
+#      services:
+#        - docker
+#      script:
+#        - docker --version
+#        - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
+#        - docker run -dp 1337:1337 dr4ft-app
+#        - docker ps -a
+#      after_script:
+#        - docker images
 
 #-------------------------------------------------
 #nodejs + docker in stages setup
