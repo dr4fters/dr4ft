@@ -4,11 +4,12 @@ matrix:
     - name: Build and run Node.js app on newest Node.js
       language: node_js
       node_js: node
-#      cache:
-#        directories:
-#        - node_modules
+      cache:
+        directories:
+        - node_modules
       install:
         - npm install
+      script: skip    # no tests configured yet
 
     - name: Build and run Docker image (with 'Dockerfile') on newest Docker
       language: generic
