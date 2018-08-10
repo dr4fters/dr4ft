@@ -1,4 +1,8 @@
-[![dependencies](https://david-dm.org/dr4fters/dr4ft.svg)](https://david-dm.org/dr4fters/dr4ft) [![devDependencies](https://david-dm.org/dr4fters/dr4ft/dev-status.svg)](https://david-dm.org/dr4fters/dr4ft?type=dev)
+<p align='center'>
+  <a href="https://travis-ci.com/dr4fters/dr4ft"><img src=https://travis-ci.com/dr4fters/dr4ft.svg?branch=master></a>
+  <a href="https://david-dm.org/dr4fters/dr4ft"><img src=https://david-dm.org/dr4fters/dr4ft.svg></a>
+  <a href="https://david-dm.org/dr4fters/dr4ft?type=dev"><img src=https://david-dm.org/dr4fters/dr4ft/dev-status.svg></a>
+</p> <br>
 
 
 # dr4ft [![Join the chat at https://gitter.im/dr4fters/dr4ft](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
