@@ -25,14 +25,14 @@ matrix:
     - name: ESLint
       language: node_js
       node_js: node
-      env: allowed_to_fail
+      env: eslint
       install:
         - npm install -g eslint
         - npm install -g eslint-plugin-react
       script:
         - npm test
   allow_failures:
-    - env: allowed_to_fail
+    - env: eslint
   fast_finish: true
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
