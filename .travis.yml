@@ -4,7 +4,7 @@ env:    # needed as empty for allow_failure on env to work, see https://docs.tra
 
 matrix:
   include:
-    - name: Install Node.js app on newest Node.js
+    - name: Install Node.js app (newest Node.js)
       language: node_js
       node_js: node
       cache:
@@ -13,7 +13,7 @@ matrix:
       install:
         - npm install
       script: skip
-    - name: Install Node.js app on newest Node.js LTS
+    - name: Install Node.js app (newest Node.js LTS)
       language: node_js
       node_js: lts/*
       cache:
@@ -22,6 +22,21 @@ matrix:
       install:
         - npm install
       script: skip
+    - name: Build and run Docker image (newest Docker)
+      language: generic
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      services:
+        - docker
+      script:
+        - docker --version
+        - docker build --tag dr4ft-app .
+        - docker run -dp 1337:1337 dr4ft-app
+        - docker ps -a
+      after_script:
+        - docker images
     - name: ESLint
       language: node_js
       node_js: node
