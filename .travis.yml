@@ -9,7 +9,8 @@ matrix:
           - node_modules
       install:
         - npm install
-      script: skip    # skips default 'npm test' command in 'script' step; no tests configured yet
+      script:
+        - npm test
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
 #      language: generic
