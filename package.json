@@ -24,6 +24,7 @@
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
     "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack"
+    "pretest": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
