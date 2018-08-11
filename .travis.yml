@@ -27,7 +27,7 @@ matrix:
       node_js: node
       env: allowed_to_fail
       install:
-        - npm install -g eslint
+        - npm install eslint --save-dev
       script:
         - npm test
   allow_failures:
