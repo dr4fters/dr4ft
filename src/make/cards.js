@@ -44,8 +44,8 @@ function before() {
     if (raw[removeSet]) {
       delete raw[removeSet];
     }
-  else {
-    console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)");
+    else {
+      console.log("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)");
     }
   }
   raw.PLC.booster = Array(11).fill("common");
