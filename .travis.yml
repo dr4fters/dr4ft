@@ -22,12 +22,13 @@ matrix:
       install:
         - npm install
       script: skip
-    - name: ESLint Check
+    - name: ESLint
       language: node_js
       node_js: node
       env: allowed_to_fail
       install:
-        - npm install eslint --save-dev
+        - npm install -g eslint
+        - npm install -g eslint-plugin-react
       script:
         - npm test
   allow_failures:
