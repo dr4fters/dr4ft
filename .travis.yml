@@ -26,10 +26,8 @@ matrix:
       language: node_js
       node_js: node
       env: allowed_to_fail
-      cache:
-        directories:
-          - node_modules
-      install: skip
+      install:
+        - npm install -g eslint
       script:
         - npm test
   allow_failures:
