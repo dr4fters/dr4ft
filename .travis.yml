@@ -1,4 +1,7 @@
 #normal matrix.include setup
+
+env:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
+
 matrix:
   include:
     - name: Install Node.js app on newest Node.js
@@ -22,11 +25,13 @@ matrix:
     - name: ESLint Check
       language: node_js
       node_js: node
+      env: allowed_to_fail
       install: skip
       script:
         - npm test
   allow_failures:
-    - name: ESLint
+    - env: allowed_to_fail
+  fast_finish: true
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
 #      language: generic
