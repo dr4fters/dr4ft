@@ -16,7 +16,7 @@
 *dr4ft* is a <kbd>Node</kbd> application.<br>
 *dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
 
-**Bugs or feature requests?** Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
+Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
 
 
 <br>
