@@ -185,7 +185,8 @@ function toCards(pool, code, foilCard, masterpiece) {
     var {sets} = card;
 
     if (isCube)
-      [code] = Object.keys(sets);
+      [code] = Object.keys(sets)
+        .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)) // #121: Filter Invocations art
 
     card.code = mws[code] || code;
     var set = sets[code];
