@@ -37,7 +37,7 @@ function pickFoil(set) {
 
 function toPack(code) {
   var set = Sets[code]
-  var {common, uncommon, rare, mythic, special, size} = set
+  var {basic, common, uncommon, rare, mythic, special, size} = set
 
   if (mythic && !_.rand(8))
     rare = mythic
@@ -132,6 +132,16 @@ function toPack(code) {
       else
         special = special.common
       break
+    case 'M19':
+      //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+      // 5/12 of times -> dual-land
+      // 7/12 of times -> basic land
+      const dualLands = common.filter(cardName => Cards[cardName].type === "Land")
+      common = common.filter(cardName => !dualLands.includes(cardName)) //delete dualLands from possible choice as common slot
+      const isDualLand = _.rand(12) < 6;
+      const land = _.choose(1, isDualLand ? dualLands : basic)
+      pack.push(land)
+      break;
   }
   var masterpiece = ''
   if (special) {
@@ -176,6 +186,7 @@ function toCards(pool, code, foilCard, masterpiece) {
 
     if (isCube)
       [code] = Object.keys(sets)
+        .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)) // #121: Filter Invocations art
 
     card.code = mws[code] || code
     var set = sets[code]
