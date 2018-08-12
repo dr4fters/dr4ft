@@ -12,14 +12,10 @@
 
 # dr4ft [![Join the chat at https://gitter.im/dr4fters/dr4ft](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[dr4ft](http://dr4ft.info) is a fork of arxanas' `drafts.ninja` fork of aeosynth's `draft` project.<br>
-It supports all of the features of `drafts.ninja`, and more.
+*dr4ft* is a <kbd>Node</kbd> application.<br>
+*dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
 
-
-dr4ft is a NodeJS application.<br>
-dr4ft is written in [ES6] and transpiled with [BabelJS], and uses [React] on the client-side.
-
-Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new).
+**Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new).**
 
 
 
@@ -36,19 +32,23 @@ It supports all of the features of `drafts.ninja`, and more.
 
 # Installation
 
+### Direct
+
 1) Install [Node.js](https://nodejs.org/download/)
-2) Run `npm install && npm start` in your terminal
+2) Run `npm install && npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
 
 
+### Docker
 
-# Docker
+If you want, instead of hosting the server on your system, you can create a *dr4ft* container.
 
-If you want, instead of hosting the server on your system, you can create a dr4ft container.
-
-Just download docker and build the container:<br>`docker build -t dr4ft-app .`
-
-Then run it:<br>`docker run -dp 1337:1337 dr4ft-app`<br> and visit [http://localhost:1337](http://localhost:1337).
+1) Install [Docker](https://www.docker.com/)
+2) Build the container:<br>
+`docker build -t dr4ft-app .`
+3) Run it:<br>
+`docker run -dp 1337:1337 dr4ft-app`<br>
+4) Visit [http://localhost:1337](http://localhost:1337)
 
 <br>
 
@@ -60,6 +60,6 @@ Then run it:<br>`docker run -dp 1337:1337 dr4ft-app`<br> and visit [http://local
 
 <!-- this are reference links -->
   [ES6]: https://github.com/lukehoban/es6features
-  [BabelJS]: https://github.com/babel/babel
+  [Babel]: https://github.com/babel/babel
   [React]: https://github.com/facebook/react
   
