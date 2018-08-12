@@ -6,18 +6,20 @@
   <a href="https://travis-ci.com/dr4fters/dr4ft"><img src=https://travis-ci.com/dr4fters/dr4ft.svg?branch=master></a>
   <a href="https://david-dm.org/dr4fters/dr4ft"><img src=https://david-dm.org/dr4fters/dr4ft.svg></a>
   <a href="https://david-dm.org/dr4fters/dr4ft?type=dev"><img src=https://david-dm.org/dr4fters/dr4ft/dev-status.svg></a>
-</p> <br>
+</p>
 
 
+<br>
 
 # dr4ft [![Join the chat at https://gitter.im/dr4fters/dr4ft](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 *dr4ft* is a <kbd>Node</kbd> application.<br>
 *dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
 
-**Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new).**
+**Bugs or feature requests?** Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
 
 
+<br>
 
 # Project History
 
@@ -29,6 +31,7 @@ It supports all of the features of `drafts.ninja`, and more.
 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by *dev-id*, **current project**)
 
 
+<br>
 
 # Installation
 
@@ -41,14 +44,15 @@ It supports all of the features of `drafts.ninja`, and more.
 
 ### Docker
 
-If you want, instead of hosting the server on your system, you can create a *dr4ft* container.
-
+You can also create a Docker image and run that in a container:
 1) Install [Docker](https://www.docker.com/)
 2) Build the container:<br>
 `docker build -t dr4ft-app .`
 3) Run it:<br>
 `docker run -dp 1337:1337 dr4ft-app`<br>
 4) Visit [http://localhost:1337](http://localhost:1337)
+
+
 
 <br>
 
