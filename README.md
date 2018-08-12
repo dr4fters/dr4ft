@@ -36,8 +36,9 @@ It supports all of the features of `drafts.ninja`, and more.
 
 # Installation
 
-Install NodeJS, then just run `npm install && npm start`
-in your terminal and visit [http://localhost:1337](http://localhost:1337).
+1) Install [Node.js](https://nodejs.org/download/)
+2) Run `npm install && npm start` in your terminal
+3) Visit [http://localhost:1337](http://localhost:1337)
 
 
 
