@@ -23,7 +23,8 @@
     "watch": "webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
-    "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack"
+    "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack",
+    "pretest": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -51,6 +52,7 @@
     "eslint": "^5.3.0",
     "eslint-plugin-react": "^7.7.0",
     "style-loader": "^0.22.1",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
   }
 }

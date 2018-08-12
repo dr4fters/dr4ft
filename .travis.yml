@@ -1,0 +1,141 @@
+#normal matrix.include setup
+env:    # key needs exist on top level for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
+
+matrix:
+  include:
+    - name: Install Node.js app (newest Node.js)
+      language: node_js
+      node_js: node
+      cache:
+        directories:
+          - node_modules
+      install:
+        - npm install
+      script: skip
+    - name: Install Node.js app (newest Node.js LTS)
+      language: node_js
+      node_js: lts/*
+      cache:
+        directories:
+          - node_modules
+      install:
+        - npm install
+      script: skip
+    - name: Build and run Docker image (newest Docker)
+      language: generic
+      env: docker
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      script:
+        - docker --version
+        - docker build --tag dr4ft-app .
+        - docker run -dp 1337:1337 dr4ft-app
+        - docker ps -a
+      after_script:
+        - docker images
+    - name: ESLint
+      language: node_js
+      node_js: node
+      env: eslint
+      install:
+        - npm install -g eslint
+        - npm install -g eslint-plugin-react
+      script:
+        - npm test
+  allow_failures:
+    - env: eslint
+    - env: docker
+  fast_finish: true    # mark build as failed/passed as soon as possible, don't wait for the allow_failures build to finish! See https://docs.travis-ci.com/user/customizing-the-build#fast-finishing
+
+#    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
+#      language: generic
+#      addons:
+#        apt:
+#          packages:
+#            - docker-ce
+#      services:
+#        - docker
+#      script:
+#        - docker --version
+#        - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
+#        - docker run -dp 1337:1337 dr4ft-app
+#        - docker ps -a
+#      after_script:
+#        - docker images
+
+#-------------------------------------------------
+#nodejs + docker in stages setup
+#jobs:
+#  include:
+#  - stage: Tests
+#    name: Install (on latest Node.js)
+#    language: node_js
+#    node_js:
+#       - node     # latest stable Node.js release
+#    #   - lts/*    # latest LTS Node.js release
+#    install:
+#      - npm install
+#    # script:
+#    #   - npm start
+#    # after_script:
+#    #    - npm test
+#    # cache:
+#    #    directories:
+#    #      - "node_modules"
+#  - stage: Tests
+#    name: Install (on latest Node.js LTS)
+#    language: node_js
+#    node_js:
+#       - lts/*    # latest LTS Node.js release
+#    install:
+#      - npm install
+#    # script:
+#    #   - npm start
+#    # after_script:
+#    #    - npm test
+#    # cache:
+#    #    directories:
+#    #      - "node_modules"
+#  - stage: Tests
+#    name: Build and run Docker image (with 'Dockerfile')
+#    language: generic
+#    services:
+#      - docker
+#    script:
+#      - docker --version
+#      - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
+#      - docker run -dp 1337:1337 dr4ft-app
+#      - docker ps -a
+#    after_script:
+#      - docker images
+#  - stage: Tests
+#    name: Build and run Docker image (with 'Dockerfile'), newest Docker
+#    language: generic
+#    addons:
+#      apt:
+#        packages:
+#          - docker-ce
+#    services:
+#      - docker
+#    script:
+#      - docker --version
+#      - docker build --tag dr4ft-app .    # builds from the Dockerfile in repo root
+#      - docker run -dp 1337:1337 dr4ft-app
+#      - docker ps -a
+#    after_script:
+#      - docker images
+
+#notifications:
+#  email: false
+#  webhooks:
+#    urls:
+#      - put dr4ft gitter hook url here
+#    on_success: change
+#    on_failure: change
+#    on_start: never
+#    on_cancel: change
+#    on_error: change
