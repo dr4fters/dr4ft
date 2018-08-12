@@ -35,8 +35,10 @@ Just download docker and build the container:<br>`docker build -t dr4ft-app .`
 Then run it:<br>`docker run -dp 1337:1337 dr4ft-app`<br> and visit [http://localhost:1337](http://localhost:1337).
 
 <br><br>
-<sub>*The project is unaffiliated with Wizards of the Coast,
-and is licensed under the MIT license.*</sub>
+
+<p align='center'>
+  <sub><i>The project is unaffiliated with Wizards of the Coast, and is licensed under the MIT license.</i></sub>
+</p>
 
 
 
