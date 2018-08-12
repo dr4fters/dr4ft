@@ -1,7 +1,6 @@
 #normal matrix.include setup
 
-#env:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
-name:
+env:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
 
 matrix:
   include:
@@ -48,8 +47,7 @@ matrix:
       script:
         - npm test
   allow_failures:
-    - name: ESLint
-#    - env: eslint
+    - env: eslint
   fast_finish: true    # mark build as failed/passed as soon as possible, don't wait for the allow_failures build to finish! See https://docs.travis-ci.com/user/customizing-the-build#fast-finishing
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
