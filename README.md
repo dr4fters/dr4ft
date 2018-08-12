@@ -26,9 +26,9 @@
 [dr4ft](http://dr4ft.info) is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project.<br>
 It supports all of the features of `drafts.ninja`, and more.
 
->`draft` (created by *aeosynth*, discontinued)<br>
->&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` fork (created by *arxanas*, discontinued)<br>
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by *dev-id*, **current project**)
+`draft` (created by *aeosynth*, discontinued)<br>
+&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` fork (created by *arxanas*, discontinued)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by *dev-id*, **current project**)
 
 
 <br>
@@ -44,7 +44,7 @@ It supports all of the features of `drafts.ninja`, and more.
 
 ### Docker
 
-You can also create a Docker image and run that in a container:
+You can also create a Docker image and run the app in a container:
 1) Install [Docker](https://www.docker.com/)
 2) Build the container:<br>
 `docker build -t dr4ft-app .`
