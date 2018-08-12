@@ -12,7 +12,7 @@
 
 <br>
 
-# dr4ft [![Join the chat at https://gitter.im/dr4fters/dr4ft](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# dr4ft [![Chat](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft)
 
 *dr4ft* is a <kbd>Node</kbd> application.<br>
 *dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
