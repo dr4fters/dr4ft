@@ -23,14 +23,14 @@ Bugs or feature requests? Feel free to [open an issue](https://github.com/dr4fte
 
 
 
-# History
+# Project History
 
 [dr4ft](http://dr4ft.info) is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project.<br>
 It supports all of the features of `drafts.ninja`, and more.
 
->`draft` (created by aeosynth, *discontinued*)<br>
->&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` fork (created by arxanas, *discontinued*)<br>
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by dev-id, **current project**)
+>`draft` (created by *aeosynth*, discontinued)<br>
+>&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` fork (created by *arxanas*, discontinued)<br>
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by *dev-id*, **current project**)
 
 
 
