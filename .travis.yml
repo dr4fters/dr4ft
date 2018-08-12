@@ -1,5 +1,7 @@
 #normal matrix.include setup
-name:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
+
+#env:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
+name:
 
 matrix:
   include:
@@ -47,6 +49,7 @@ matrix:
         - npm test
   allow_failures:
     - name: ESLint
+#    - env: eslint
   fast_finish: true    # mark build as failed/passed as soon as possible, don't wait for the allow_failures build to finish! See https://docs.travis-ci.com/user/customizing-the-build#fast-finishing
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
@@ -131,7 +134,7 @@ matrix:
 #  email: false
 #  webhooks:
 #    urls:
-#      - put dr4ft gitter hook url here
+#      - dr4ft gitter url here
 #    on_success: change
 #    on_failure: change
 #    on_start: never
