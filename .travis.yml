@@ -1,6 +1,5 @@
 #normal matrix.include setup
-
-env:    # needed as empty for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
+env:    # key needs exist on top level for allow_failure on env to work, see https://docs.travis-ci.com/user/customizing-the-build/#matching-jobs-with-allow_failures
 
 matrix:
   include:
@@ -132,7 +131,7 @@ matrix:
 #  email: false
 #  webhooks:
 #    urls:
-#      - dr4ft gitter url here
+#      - put dr4ft gitter hook url here
 #    on_success: change
 #    on_failure: change
 #    on_start: never
