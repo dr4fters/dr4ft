@@ -1,5 +1,5 @@
 <p align="center">
-  dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/public/4.png" height="14">ft
+  dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/public/4.png" alt="4" height="14">ft
 </p>
 
 <p align='center'>
@@ -25,11 +25,11 @@ Found **bugs** or have **feature requests**? Feel free to [open an issue](https:
 
 # Project History
 
-[dr4ft](http://dr4ft.info) is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project:
+[*dr4ft*](http://dr4ft.info) is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project:
 
-`draft` (created by *aeosynth*, discontinued)<br>
-&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` fork (created by *arxanas*, discontinued)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (created by *dev-id*, **current project**)
+`draft` (discontinued)<br>
+&nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` (fork, discontinued)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (fork, **current main project**)
 
 It supports all their features, and many more.
 
@@ -41,7 +41,7 @@ It supports all their features, and many more.
 
 ### Direct
 
-1) Install [Node.js](https://nodejs.org/download/)
+1) Install [Node.js](https://nodejs.org/en/download/)
 2) Run `npm install && npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
 
