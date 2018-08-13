@@ -27,7 +27,7 @@ Found **bugs** or have **feature requests**? Feel free to [open an issue](https:
 
 [*dr4ft*](http://dr4ft.info) is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project:
 
-`draft` (discontinued)<br>
+`draft` (initial project, discontinued)<br>
 &nbsp;&nbsp;&nbsp; ↳ `drafts.ninja` (fork, discontinued)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↳ **`dr4ft`** (fork, **current main project**)
 
