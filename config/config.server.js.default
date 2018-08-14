@@ -32,4 +32,4 @@ module.exports = {
       DEFAULT_USERNAME: "dr4fter",
     }
   }
-}
+};
