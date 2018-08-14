@@ -125,19 +125,19 @@ module.exports = class extends EventEmitter {
     var picked;
     var notPicked = [];
     for (var card in pack) {
-      pack[card].charAt(0) === '-' ?
+      pack[card].charAt(0) === "-" ?
         picked = pack[card].slice(4) :
-        notPicked.push( pack[card].slice(4) )
+        notPicked.push( pack[card].slice(4) );
     }
-    let namePool = pool.map(card => card.name)
-    this.draftStats.push( { picked, notPicked, pool: namePool } )
+    let namePool = pool.map(card => card.name);
+    this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
   pick(index) {
     var pack = this.packs.shift();
     var card = pack.splice(index, 1)[0];
 
     this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
-    this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool)
+    this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
 
     var pickcard = card.name;
     if (card.foil == true)
