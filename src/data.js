@@ -1,11 +1,11 @@
 try {
-  var Cards = require('../data/cards')
-  var Sets = require('../data/sets')
+  var Cards = require("../data/cards");
+  var Sets = require("../data/sets");
 } catch(err) {
-  Cards = {}
-  Sets = {}
+  Cards = {};
+  Sets = {};
 }
 
 module.exports = { Cards, Sets,
-  mws: require('../data/mws')
-}
+  mws: require("../data/mws")
+};
