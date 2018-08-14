@@ -132,14 +132,14 @@ function toPack(code) {
     else
       special = special.common;
     break;
-  case 'DOM':
+  case "DOM":
     // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
     // Every booster must contain a legendary creature either as uncommon or rare
     let hasLegendaryCreature = false;
     const isLegendaryCreature = cardName => {
       const card = Cards[cardName];
       return card.supertypes.includes("Legendary") && card.type === "Creature";
-    }
+    };
 
     pack.some(cardName => {
       return hasLegendaryCreature = isLegendaryCreature(cardName);
@@ -155,20 +155,20 @@ function toPack(code) {
         // Uncommon slot
         var packIndex = 0;
         var pool = uncommon;
-        }
+      }
       const legendaryCreatures = pool.filter(isLegendaryCreature);
       pack[packIndex] = _.choose(1, legendaryCreatures);
     }
     break;
-  case 'M19':
+  case "M19":
     //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
     // 5/12 of times -> dual-land
     // 7/12 of times -> basic land
-    const dualLands = common.filter(cardName => Cards[cardName].type === "Land")
-    common = common.filter(cardName => !dualLands.includes(cardName)) //delete dualLands from possible choice as common slot
+    const dualLands = common.filter(cardName => Cards[cardName].type === "Land");
+    common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
     const isDualLand = _.rand(12) < 6;
-    const land = _.choose(1, isDualLand ? dualLands : basic)
-    pack.push(land)
+    const land = _.choose(1, isDualLand ? dualLands : basic);
+    pack.push(land);
     break;
   }
   var masterpiece = "";
