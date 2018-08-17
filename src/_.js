@@ -2,7 +2,6 @@ module.exports = {
   ascii(s) {
     return s.replace(/[Æâàáéíöúû’]/g, c => {
       switch (c) {
-      case "Æ": return "AE";
       case "â": case "à": case "á": return "a";
       case "é": return "e";
       case "í": return "i";
