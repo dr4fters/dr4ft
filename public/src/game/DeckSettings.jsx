@@ -115,7 +115,7 @@ const Download = () => {
         className='download-filename connected-component'
         placeholder='filename'
         value={App.state["filename"]}
-        onChange={e => { App.save("filename", e.currentTarget.checked); }} />
+        onChange={e => { App.save("filename", e.currentTarget.value); }} />
       {select}
       <span className='download-button'/>
     </div>
