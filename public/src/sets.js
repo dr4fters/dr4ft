@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Dominaria": "DOM",
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",

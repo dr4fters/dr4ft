@@ -407,7 +407,7 @@ function doSet(rawSet, code) {
 }
 
 function doCard(rawCard, cards, code, set) {
-  var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, text, manaCost, url, multiverseid} = rawCard;
+  var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, supertypes, text, manaCost, url, multiverseid} = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
   if (/^basic/i.test(rarity))
@@ -458,7 +458,8 @@ function doCard(rawCard, cards, code, set) {
     },
     layout: layout,
     isDoubleFaced: /^double-faced$/i.test(layout),
-    names: names
+    names: names,
+    supertypes: supertypes || []
   };
 
   set[rarity].push(name.toLowerCase());
