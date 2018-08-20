@@ -18,7 +18,7 @@ var setsToIgnore = ["TSB","ITP","CP1","CP2","CP3"];
 before();
 
 var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
-var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA"];
+var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD"];
 for (var code in raw) {
   var set = raw[code];
   if (types.indexOf(set.type) > -1

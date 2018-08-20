@@ -116,6 +116,7 @@ export default {
     "Unglued": "UGL"
   },
   other: {
+    "Battlebond": "BBD",
     "Conspiracy: Take the Crown": "CN2",
     "Conspiracy": "CNS",
     "Starter 1999": "S99",
