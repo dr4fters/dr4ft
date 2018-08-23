@@ -57,8 +57,8 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
     let cols = [];
 
     for (let key in zone) {
-      let items = zone[key].map(card =>
-        <div key={_.uid()}
+      let items = zone[key].map((card, index) =>
+        <div key={index}
           onClick={App._emit("click", zoneName, card.name)}
           onMouseEnter={e => onMouseEnter(card, e)}
           onMouseLeave={onMouseLeave} >
@@ -68,7 +68,7 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
 
       sum += items.length;
       cols.push(
-        <div key={_.uid()} className='col'>
+        <div key={key} className='col'>
           <div>
             {`${key} - ${items.length} cards`}
           </div>
@@ -78,7 +78,7 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
     }
 
     return (
-      <div key={_.uid()} className='zone'>
+      <div key={zoneName} className='zone'>
         <h1>
           <Spaced elements={[zoneName, sum]}/>
         </h1>

@@ -60,7 +60,7 @@ SealedOptions.propTypes = {
 
 const Sets = ({ sets, from, to = sets.length }) => (
   sets
-    .map((set, i) => <Set selectedSet={set} index={i} key={_.uid()}/>)
+    .map((set, i) => <Set selectedSet={set} index={i} key={i}/>)
     .slice(from, to)
 );
 

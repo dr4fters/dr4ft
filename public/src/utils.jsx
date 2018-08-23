@@ -34,10 +34,10 @@ Checkbox.propTypes = {
 
 export const Spaced = ({elements}) => (
   elements
-    .map(x => <span key={_.uid()}>{x}</span>)
+    .map((x, index) => <span key={index}>{x}</span>)
     .reduce((prev, curr) => [
       prev,
-      <span key = { _.uid() } className = 'spacer-dot' />,
+      <span key = {prev+curr} className = 'spacer-dot' />,
       curr
     ])
 );
@@ -49,8 +49,8 @@ export const Select = ({link, opts, ...rest}) => (
     }}
     value={App.state[link]}
     {...rest}>
-    {opts.map(opt =>
-      <option key={_.uid()}>{opt}</option>
+    {opts.map((opt, index) =>
+      <option key={index}>{opt}</option>
     )}
   </select>
 );

@@ -40,8 +40,8 @@ const ManaSymbols = () => {
   return (
     <tr>
       <td />
-      {manaSymbols.map(x =>
-        <td key={_.uid()}>
+      {manaSymbols.map((x, index) =>
+        <td key={index}>
           <img src={url(x)} alt={x}/>
         </td>)
       }
@@ -52,8 +52,8 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{zoneName}</td>
-    {BASICS.map(cardName =>
-      <td key={_.uid()}>
+    {BASICS.map((cardName, index) =>
+      <td key={index}>
         <input
           className='number'
           min={0}

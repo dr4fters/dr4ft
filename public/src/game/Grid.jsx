@@ -29,11 +29,11 @@ const zone = (zoneName) => {
     : 0;
 
   return (
-    <div className='zone' key={_.uid()}>
+    <div className='zone' key={zoneName}>
       <h1>
         <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
-      {cards.map(card => <Card key={_.uid()} card={card} zoneName={zoneName} />)}
+      {cards.map((card, index) => <Card key={index} card={card} zoneName={zoneName} />)}
     </div>
   );
 };
@@ -78,7 +78,7 @@ class Card extends Component {
       : "";
 
     return (
-      <span key={_.uid()}
+      <span key={card}
         className={className}
         title={title}
         onClick={App._emit("click", zoneName, card.name)}

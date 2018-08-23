@@ -36,8 +36,8 @@ const SortCards = () => (
   <div className="settings-sort-cards">
     Sort cards by:
     <div className= 'connected-container' >
-      {["cmc", "color", "type", "rarity"].map(sort =>
-        <label key={_.uid()} className='radio-label connected-component'>
+      {["cmc", "color", "type", "rarity"].map((sort, index) =>
+        <label key={index} className='radio-label connected-component'>
           <input checked= {sort === App.state.sort}
             className='radio-input'
             name= 'sort-order'
