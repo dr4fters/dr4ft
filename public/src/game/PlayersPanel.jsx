@@ -46,7 +46,7 @@ class PlayerEntries extends Component {
   }
   render() {
     return (
-      App.state.players.map((p,i) => <PlayerEntry key ={_.uid()} player={p} index={i} />)
+      App.state.players.map((p,i) => <PlayerEntry key ={i} player={p} index={i} />)
     );
   }
 }
@@ -73,20 +73,20 @@ const PlayerEntry = ({player, index}) => {
     title={isBot ? "This player is a bot.": ""} />;
 
   const columns = [
-    <td key={_.uid()}>{index + 1}</td>,
-    <td key={_.uid()}>{connectionStatusIndicator}</td>,
-    <td key={_.uid()}>{name}</td>,
-    <td key={_.uid()}>{packs}</td>,
-    <td key={_.uid()}>{time}</td>,
-    <td key={_.uid()}>{hash && hash.cock}</td>,
-    <td key={_.uid()}>{hash && hash.mws}</td>
+    <td key={0}>{index + 1}</td>,
+    <td key={1}>{connectionStatusIndicator}</td>,
+    <td key={2}>{name}</td>,
+    <td key={3}>{packs}</td>,
+    <td key={4}>{time}</td>,
+    <td key={5}>{hash && hash.cock}</td>,
+    <td key={6}>{hash && hash.mws}</td>
   ];
 
   if (isHost) {
     //Move Player
     if(!didGameStart)
       columns.push(
-        <td key={_.uid()}>
+        <td key={7}>
           <button onClick={()=> App.send("swap", [index, index - 1])}>
             <img src="../../media/arrow-up.png" width="16px"/>
           </button>
@@ -97,17 +97,17 @@ const PlayerEntry = ({player, index}) => {
     //Kick button
     if (index !== self && !isBot)
       columns.push(
-        <td key={_.uid()}>
+        <td key={8}>
           <button onClick={()=> App.send("kick", index)}>
             kick
           </button>
         </td>);
     else
-      columns.push(<td key={_.uid()}/>);
+      columns.push(<td key={9}/>);
 
   }
 
-  return <tr key={_.uid()} className={className}>{columns}</tr>;
+  return <tr className={className}>{columns}</tr>;
 };
 
 PlayerEntry.propTypes = {

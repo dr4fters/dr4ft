@@ -16,7 +16,7 @@ Grid.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
-const zone = (zoneName) => {
+const zone = (zoneName, index) => {
   const zone = getZone(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
@@ -29,11 +29,11 @@ const zone = (zoneName) => {
     : 0;
 
   return (
-    <div className='zone' key={_.uid()}>
+    <div className='zone' key={index}>
       <h1>
         <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
-      {cards.map(card => <Card key={_.uid()} card={card} zoneName={zoneName} />)}
+      {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
     </div>
   );
 };
@@ -78,8 +78,7 @@ class Card extends Component {
       : "";
 
     return (
-      <span key={_.uid()}
-        className={className}
+      <span className={className}
         title={title}
         onClick={App._emit("click", zoneName, card.name)}
         onMouseEnter={this.onMouseEnter}
