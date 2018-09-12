@@ -38,7 +38,7 @@
     "engine.io": "^3.2.0",
     "engine.io-client": "^3.2.1",
     "jsonfile": "^4.0.0",
-    "log-timestamp": "^0.1.2",
+    "log-timestamp": "^0.2.1",
     "node-fetch": "^2.2.0",
     "normalize.css": "^8.0.0",
     "react": "^16.5.0",
