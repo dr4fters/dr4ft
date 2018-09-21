@@ -175,6 +175,7 @@ function toPack(code) {
     const guildGates = common.filter(cardName => Cards[cardName].type === "Land" && Cards[cardName].sets["GRN"].rarity == "common");
     common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
     pack.push(..._.choose(2, guildGates));
+    size = size - 1;
     break;
   }
   var masterpiece = "";
