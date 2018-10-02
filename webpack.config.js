@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: "cheap-eval-source-map",
@@ -9,8 +10,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "./public/lib"),
-    filename: "[name].js",
-    publicPath: "/"
+    filename: "[name]-[hash].js",
+    publicPath: "lib"
   },
   devServer: {
     contentBase: path.join(__dirname, "public"),
@@ -21,6 +22,10 @@ module.exports = {
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
+    new HtmlWebpackPlugin({
+      template: './public/index.html.tpl',
+      filename: __dirname + '/public/index.html'
+    })
   ],
   resolve: {
     extensions: [".js", ".jsx", ".css", ".less"],

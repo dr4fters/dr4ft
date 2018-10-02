@@ -23,6 +23,5 @@
   <script type="text/javascript" src="lib/engine.io.js"></script>
   <script type="text/javascript" src="lib/react.js"></script>
   <script type="text/javascript" src="lib/react-dom.js"></script>
-  <script type="text/javascript" src="lib/app.js"></script>
 </body>
 </html>

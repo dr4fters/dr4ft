@@ -7,6 +7,7 @@ data
 public/out
 public/lib
 public/src/config.js
+public/index.html
 
 config.client.js
 config.server.js
