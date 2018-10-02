@@ -24,7 +24,8 @@
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
     "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack",
-    "pretest": "eslint --ignore-path .gitignore ."
+    "pretest": "eslint --ignore-path .gitignore .",
+    "build": "NODE_ENV=production webpack -p --progress --colors"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -37,6 +38,7 @@
     "ee": "git://github.com/dr4fters/ee.git",
     "engine.io": "^3.2.0",
     "engine.io-client": "^3.2.1",
+    "html-webpack-plugin": "3.2.0",
     "jsonfile": "^4.0.0",
     "log-timestamp": "^0.2.1",
     "node-fetch": "^2.2.0",
