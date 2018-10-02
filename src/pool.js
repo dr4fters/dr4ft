@@ -170,6 +170,12 @@ function toPack(code) {
     const land = _.choose(1, isDualLand ? dualLands : basic);
     pack.push(land);
     break;
+  case "GRN":
+    // No basics. Always 1 common slots are occupied by guildgates
+    const guildGates = common.filter(cardName => Cards[cardName].type === "Land" && Cards[cardName].sets["GRN"].rarity == "common");
+    common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
+    pack.push(_.choose(1, guildGates));
+    break;
   }
   var masterpiece = "";
   if (special) {
