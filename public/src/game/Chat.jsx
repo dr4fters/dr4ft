@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 
 export default class Chat extends Component{

@@ -1,6 +1,6 @@
 import React from "react";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Checkbox} from "Src/utils";
 

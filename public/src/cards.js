@@ -1,4 +1,4 @@
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "./app";
 
 let Cards = {
