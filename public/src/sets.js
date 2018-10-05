@@ -1,5 +1,6 @@
 export default {
   expansion: {
+    "Guilds of Ravnica": "GRN",
     "Dominaria": "DOM",
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
