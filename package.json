@@ -20,12 +20,12 @@
   },
   "scripts": {
     "start": "node scripts/run",
-    "watch": "webpack --watch -d --display-error-details",
+    "watch": "rm -rf built/ && webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
-    "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack",
+    "postinstall": "rm -rf built/ && node scripts/postinstall && node src/make/cards && node src/make/score && webpack",
     "pretest": "eslint --ignore-path .gitignore .",
-    "build": "NODE_ENV=production webpack -p --progress --colors"
+    "build": "rm -rf built/ && NODE_ENV=production webpack -p --progress --colors"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
