@@ -22,7 +22,7 @@ matrix:
         - npm install
       script: skip
     - name: Build and run Docker image (newest Docker)
-      language: generic
+      language: minimal
       env: docker
       services:
         - docker
@@ -52,7 +52,7 @@ matrix:
   fast_finish: true    # mark build as failed/passed as soon as possible, don't wait for the allow_failures build to finish! See https://docs.travis-ci.com/user/customizing-the-build#fast-finishing
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
-#      language: generic
+#      language: minimal
 #      addons:
 #        apt:
 #          packages:
@@ -102,7 +102,7 @@ matrix:
 #    #      - "node_modules"
 #  - stage: Tests
 #    name: Build and run Docker image (with 'Dockerfile')
-#    language: generic
+#    language: minimal
 #    services:
 #      - docker
 #    script:
