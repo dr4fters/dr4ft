@@ -1,15 +1,12 @@
 const fs = require("fs");
 const allSets = require("../src/make/allsets");
 const configFiles = ["config.client.js", "config.server.js"];
-
-// Delete old AllSets.json
-if (fs.existsSync("data/AllSets.json")) {
-  fs.unlinkSync("data/AllSets.json");
-}
+const executeProcess = require("./executeProcess")
 
 // Download Allsets.json
-allSets.download("http://mtgjson.com/json/AllSets.json", "data/AllSets.json", () => {
-  console.log("Download of AllSets.json finished");
+allSets.download(() => {
+  executeProcess("src/make/cards");
+  executeProcess("src/make/score");
 });
 
 console.log("Installing configurations...");

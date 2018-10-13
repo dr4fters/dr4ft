@@ -34,7 +34,7 @@ module.exports = {
     extensions: [".js", ".jsx", ".css", ".less"],
     alias: {
       Src: path.resolve(__dirname, "public/src"),
-      NodePackages: path.resolve(__dirname, "node_modules"),
+      NodePackages: path.resolve(__dirname, "node_modules")
     }
   },
   module: {
