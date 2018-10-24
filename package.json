@@ -43,7 +43,7 @@
     "log-timestamp": "^0.2.1",
     "node-fetch": "^2.2.0",
     "normalize.css": "^8.0.0",
-    "react": "^16.5.2",
+    "react": "^16.6.0",
     "react-dom": "^16.5.2",
     "send": "^0.16.2",
     "utils": "git://github.com/dr4fters/utils.git",
