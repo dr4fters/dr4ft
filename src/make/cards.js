@@ -411,6 +411,11 @@ function doCard(rawCard, cards, code, set) {
   var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, supertypes, text, manaCost, url, multiverseid} = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
+  //Fix GRN guilgate names
+  if(code === "GRN" && /\s\(.\)$/.test(name)) {
+    name = name.substring(0, name.length - 4);
+  }
+
   if (/^basic/i.test(rarity))
     if (/snow-covered/i.test(name))
       rarity = "special";
