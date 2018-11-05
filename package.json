@@ -47,7 +47,7 @@
     "react-dom": "^16.6.0",
     "send": "^0.16.2",
     "utils": "git://github.com/dr4fters/utils.git",
-    "webpack": "^4.23.1"
+    "webpack": "^4.24.0"
   },
   "devDependencies": {
     "css-loader": "^1.0.1",
