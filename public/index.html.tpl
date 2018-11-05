@@ -2,8 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="lib/normalize.css">
-  <!-- https://github.com/driftyco/ionicons/issues/129 -->
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/latest/normalize.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <link rel="stylesheet" href="style.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -20,8 +19,5 @@
           </div>
         </div>
   </div>
-  <script type="text/javascript" src="lib/engine.io.js"></script>
-  <script type="text/javascript" src="lib/react.js"></script>
-  <script type="text/javascript" src="lib/react-dom.js"></script>
 </body>
 </html>

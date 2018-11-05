@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {BASICS, Zones} from "Src/cards";
 import {Select} from "Src/utils";

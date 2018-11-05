@@ -1,7 +1,8 @@
 /*global eio */
-import _ from "Lib/utils";
-import EventEmitter from "Lib/ee";
+import _ from "NodePackages/utils/utils";
+import EventEmitter from "NodePackages/ee/ee";
 import {STRINGS} from "./config";
+import eio from "engine.io-client";
 
 function message(msg) {
   let args = JSON.parse(msg);
