@@ -42,7 +42,7 @@
     "jsonfile": "^4.0.0",
     "log-timestamp": "^0.2.1",
     "node-fetch": "^2.3.0",
-    "react": "^16.6.1",
+    "react": "^16.6.3",
     "react-dom": "^16.6.1",
     "send": "^0.16.2",
     "utils": "git://github.com/dr4fters/utils.git",
