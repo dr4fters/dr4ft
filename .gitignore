@@ -11,3 +11,6 @@ config.client.js
 config.server.js
 
 built/
+npm-debug.log
+coverage/
+.nyc_output/

@@ -15,22 +15,6 @@ var Sets = {};
 
 var setsToIgnore = ["TSB","ITP","CP1","CP2","CP3"];
 
-before();
-
-var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
-var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
-for (var code in raw) {
-  var set = raw[code];
-  if (types.indexOf(set.type) > -1
-    || codes.indexOf(code) > -1)
-    doSet(set, code);
-}
-
-after();
-
-fs.writeFileSync("data/cards.json", JSON.stringify(Cards, null, 2));
-fs.writeFileSync("data/sets.json", JSON.stringify(Sets, null, 2));
-
 function before() {
   raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== "token");
 
@@ -389,26 +373,23 @@ function doSet(rawSet, code) {
     if(card.isDoubleFaced) {
       rawSet.cards.some(x=> {
         if(x.name == card.names[1]) {
-          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseid}&type=card`;
+          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
           return true;
         }
       });
     }
   }
 
-  if (!rawSet.booster)
-    return;
-
   for (var rarity of ["mythic", "special"])
     if (!set[rarity].length)
       delete set[rarity];
 
-  set.size = rawSet.booster.filter(x => x === "common").length;
+  set.size = !rawSet.booster ? 4 : rawSet.booster.filter(x => x === "common").length;
   Sets[code] = set;
 }
 
 function doCard(rawCard, cards, code, set) {
-  var {name, number, mciNumber = "", layout, names, cmc, color, colors, types, supertypes, text, manaCost, url, multiverseid} = rawCard;
+  var {name, number, layout, names, cmc, colors, types, supertypes, text, manaCost, url, multiverseId} = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
   //Fix GRN guilgate names
@@ -424,7 +405,7 @@ function doCard(rawCard, cards, code, set) {
 
   // Keep only the non-flipped cards
   // Flipped cards have an mciNumber or a number containing the letter b
-  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(mciNumber))
+  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
 
   if (/split|aftermath/i.test(layout))
@@ -448,9 +429,10 @@ function doCard(rawCard, cards, code, set) {
       ? "multicolor"
       : colors[0].toLowerCase();
 
-  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseid}&type=card`;
+  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
 
   cards[name] = {
+    multiverseId,
     color,
     name,
     type: types[types.length - 1],
@@ -469,4 +451,34 @@ function doCard(rawCard, cards, code, set) {
   };
 
   set[rarity].push(name.toLowerCase());
+}
+
+function makeCards() {
+  console.log(`Parsing AllSets.json to produce cards.json`);
+  before();
+  var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
+  var codes = ["UMA", "EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
+  
+  for (var code in raw) {
+    var set = raw[code];
+    if (types.indexOf(set.type) > -1
+    || codes.indexOf(code) > -1) {
+      doSet(set, code);
+    } else {
+      console.log(`Set ${code} excluded`);
+    }
+  }
+  
+  after();
+  
+  fs.writeFileSync("data/cards.json", JSON.stringify(Cards, null, 2));
+  fs.writeFileSync("data/sets.json", JSON.stringify(Sets, null, 2));
+  console.log(`Parsing AllSets.json finished`);
+}
+
+module.exports = makeCards;
+
+//Allow this script to be called directly from commandline.
+if (!module.parent) {
+  makeCards();
 }
