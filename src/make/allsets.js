@@ -1,10 +1,11 @@
 var https = require("https");
 var fs = require("fs");
+const parseCards = require("./cards");
 
 const allSetsPath = "data/AllSets.json";
 const mtgJsonURL = "https://mtgjson.com/v4/json/AllSets.json";
 
-exports.download = (onFileDownloaded, onError) => {
+exports.download = (onError) => {
   https.get(mtgJsonURL, response => {
     const lastMTGJsonUpdate = new Date(response.headers["last-modified"]).getTime();
     
@@ -26,7 +27,7 @@ exports.download = (onFileDownloaded, onError) => {
     response.pipe(file);
     file.on("finish", () => {
       console.log("Fetch AllSets.json finished. Updating the cards and sets data");
-      file.close(onFileDownloaded);  // close() is async, call cb after close completes.
+      file.close(parseCards);  // close() is async, call cb after close completes.
       console.log("Cards and sets updated");
     });
     
