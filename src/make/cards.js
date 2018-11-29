@@ -391,7 +391,7 @@ function doSet(rawSet, code) {
 
 // Some card with MTGJsonv4 may not have an URL or MultiverseId to guess the Picture
 // We guess a picture from the other printings of the card
-const findPicUrl = ({url, multiverseId, printings = []}) => {
+const findPicUrl = ({name, url, multiverseId, printings = []}) => {
   if (url || multiverseId) {
     return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
   } else {
@@ -434,7 +434,7 @@ function doCard(rawCard, cards, code, set) {
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
 
-  var picUrl = findPicUrl({url, multiverseId, printings});
+  var picUrl = findPicUrl({name, url, multiverseId, printings});
 
   if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
