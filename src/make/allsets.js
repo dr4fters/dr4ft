@@ -5,7 +5,8 @@ const parseCards = require("./cards");
 const allSetsPath = "data/AllSets.json";
 const mtgJsonURL = "https://mtgjson.com/v4/json/AllSets.json";
 
-exports.download = (onError) => {
+const download = (onError) => {
+  console.log("Checking if AllSets.json is up to date");
   https.get(mtgJsonURL, response => {
     const lastMTGJsonUpdate = new Date(response.headers["last-modified"]).getTime();
     
@@ -39,3 +40,12 @@ exports.download = (onError) => {
     }
   });
 };
+
+module.exports = {
+  download
+};
+
+//Allow this script to be called directly from commandline.
+if (!module.parent) {
+  download();
+}

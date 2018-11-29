@@ -13,7 +13,7 @@ var COLORS = {
 var Cards = {};
 var Sets = {};
 
-var setsToIgnore = ["TSB","ITP","CP1","CP2","CP3"];
+var setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
 
 function before() {
   raw.UGL.cards = raw.UGL.cards.filter(x => x.layout !== "token");
@@ -73,18 +73,16 @@ function before() {
   raw.M15.cards = raw.M15.cards.filter(x => parseInt(x.number) < 270);
   raw.ORI.cards = raw.ORI.cards.filter(x => parseInt(x.number) < 273);
   //raw.KLD.cards = raw.KLD.cards.filter(x => parseInt(x.number) < 265)
-
-  raw.OGW.cards.find(x => x.name === "Wastes").rarity = "Common";
 }
 
 function after() {
   var masterpiecelist = {
     "BFZ": {
-      "cards": ["prairie stream","sunken hollow","smoldering marsh","cinder glade","canopy vista","hallowed fountain","watery grave","blood crypt","stomping ground","temple garden","godless shrine","steam vents","overgrown tomb","sacred foundry","breeding pool","flooded strand","polluted delta","bloodstained mire","wooded foothills","windswept heath","marsh flats","scalding tarn","verdant catacombs","arid mesa","misty rainforest"],
+      "cards": ["prairie stream", "sunken hollow", "smoldering marsh", "cinder glade", "canopy vista", "hallowed fountain", "watery grave", "blood crypt", "stomping ground", "temple garden", "godless shrine", "steam vents", "overgrown tomb", "sacred foundry", "breeding pool", "flooded strand", "polluted delta", "bloodstained mire", "wooded foothills", "windswept heath", "marsh flats", "scalding tarn", "verdant catacombs", "arid mesa", "misty rainforest"],
       "code": "EXP"
     },
     "OGW": {
-      "cards": ["mystic gate","sunken ruins","graven cairns","fire-lit thicket","wooded bastion","fetid heath","cascade bluffs","twilight mire","rugged prairie","flooded grove","ancient tomb","dust bowl","eye of ugin","forbidden orchard","horizon canopy","kor haven","mana confluence","strip mine","tectonic edge","wasteland"],
+      "cards": ["mystic gate", "sunken ruins", "graven cairns", "fire-lit thicket", "wooded bastion", "fetid heath", "cascade bluffs", "twilight mire", "rugged prairie", "flooded grove", "ancient tomb", "dust bowl", "eye of ugin", "forbidden orchard", "horizon canopy", "kor haven", "mana confluence", "strip mine", "tectonic edge", "wasteland"],
       "code": "EXP"
     },
     "KLD": {
@@ -92,15 +90,15 @@ function after() {
       "code": "MPS"
     },
     "AER": {
-      "cards": ["Paradox Engine","Planar Bridge","Arcbound Ravager","Black Vise","Chalice of the Void","Defense Grid","Duplicant","Engineered Explosives","Ensnaring Bridge","Extraplanar Lens","Grindstone","Meekstone","Oblivion Stone","Ornithopter","Sphere of Resistance","Staff of Domination","Sundering Titan","Sword of Body and Mind","Sword of War and Peace","Trinisphere","Vedalken Shackles","Wurmcoil Engine"],
+      "cards": ["Paradox Engine", "Planar Bridge", "Arcbound Ravager", "Black Vise", "Chalice of the Void", "Defense Grid", "Duplicant", "Engineered Explosives", "Ensnaring Bridge", "Extraplanar Lens", "Grindstone", "Meekstone", "Oblivion Stone", "Ornithopter", "Sphere of Resistance", "Staff of Domination", "Sundering Titan", "Sword of Body and Mind", "Sword of War and Peace", "Trinisphere", "Vedalken Shackles", "Wurmcoil Engine"],
       "code": "MPS"
     },
     "AKH": {
-      "cards": ["Austere Command","Aven Mindcensor","Containment Priest","Loyal Retainers","Worship","Wrath of God","Consecrated Sphinx","Counterbalance","Counterspell","Cryptic Command","Daze","Divert","Force of Will","Pact of Negation","Spell Pierce","Stifle","Attrition","Dark Ritual","Diabolic Intent","Entomb","Mind Twist","Aggravated Assault","Chain Lightning","Maelstrom Pulse","Vindicate","Hazoret the Fervent","Kefnet the Mindful","Oketra the True","Bontu the Glorified","Rhonas the Indomitable"],
+      "cards": ["Austere Command", "Aven Mindcensor", "Containment Priest", "Loyal Retainers", "Worship", "Wrath of God", "Consecrated Sphinx", "Counterbalance", "Counterspell", "Cryptic Command", "Daze", "Divert", "Force of Will", "Pact of Negation", "Spell Pierce", "Stifle", "Attrition", "Dark Ritual", "Diabolic Intent", "Entomb", "Mind Twist", "Aggravated Assault", "Chain Lightning", "Maelstrom Pulse", "Vindicate", "Hazoret the Fervent", "Kefnet the Mindful", "Oketra the True", "Bontu the Glorified", "Rhonas the Indomitable"],
       "code": "MPS_AKH"
     },
     "HOU": {
-      "cards": ["Armageddon","Capsize","Forbid","Omniscience","Opposition","Sunder","Threads of Disloyalty","Avatar of Woe","Damnation","Desolation Angel","Diabolic Edict","Doomsday","No Mercy","Slaughter Pact","Thoughtseize","Blood Moon","Boil","Shatterstorm","Through the Breach","Choke","The Locust God","Lord of Extinction","The Scarab God","The Scorpion God"],
+      "cards": ["Armageddon", "Capsize", "Forbid", "Omniscience", "Opposition", "Sunder", "Threads of Disloyalty", "Avatar of Woe", "Damnation", "Desolation Angel", "Diabolic Edict", "Doomsday", "No Mercy", "Slaughter Pact", "Thoughtseize", "Blood Moon", "Boil", "Shatterstorm", "Through the Breach", "Choke", "The Locust God", "Lord of Extinction", "The Scarab God", "The Scorpion God"],
       "code": "MPS_AKH"
     }
   };
@@ -118,26 +116,26 @@ function after() {
     }
     var mastercards = masterpiecelist[masterset]["cards"];
   }
-  var {EMN} = Sets;
+  var { EMN } = Sets;
   EMN.special = {
-    "mythic":[
+    "mythic": [
       "gisela, the broken blade",
       "ulrich of the krallenhorde"
     ],
-    "rare":[
+    "rare": [
       "voldaren pariah",
       "docent of perfection",
       "bruna, the fading light",
       "hanweir garrison",
       "hanweir battlements"
     ],
-    "common":[
+    "common": [
       "ulvenwald captive",
       "vildin-pack outcast",
       "midnight scavengers",
       "graf rats"
     ],
-    "uncommon":[
+    "uncommon": [
       "tangleclaw werewolf",
       "shrill howler",
       "conduit of storms",
@@ -151,7 +149,7 @@ function after() {
     ]
   };
   EMN.size = 8;
-  var {SOI} = Sets;
+  var { SOI } = Sets;
   SOI.special = {
     "mythic": [
       "archangel avacyn",
@@ -196,7 +194,7 @@ function after() {
     ]
   };
   SOI.size = 8;
-  var {ISD} = Sets;
+  var { ISD } = Sets;
   ISD.special = {
     mythic: [
       "garruk relentless"
@@ -227,7 +225,7 @@ function after() {
       "villagers of estwald"
     ]
   };
-  var {DKA} = Sets;
+  var { DKA } = Sets;
   DKA.special = {
     mythic: [
       "elbrus, the binding blade",
@@ -250,7 +248,7 @@ function after() {
       "scorned villager"
     ]
   };
-  var {DGM} = Sets;
+  var { DGM } = Sets;
   DGM.mythic.splice(DGM.mythic.indexOf("maze's end"), 1);
   DGM.special = {
     gate: DGM.special,
@@ -270,7 +268,7 @@ function after() {
   };
   alias(DGM.special.shock, "DGM");
 
-  var {FRF} = Sets;
+  var { FRF } = Sets;
   for (let card of FRF.special)
     Cards[card].sets.FRF.rarity = / /.test(card) ? "common" : "basic";
   FRF.special = {
@@ -337,7 +335,7 @@ function removeBonusCards(setCode, maxNumber) {
 function alias(arr, code) {
   // some boosters contain reprints which are not in the set proper
   for (var cardName of arr) {
-    var {sets} = Cards[cardName];
+    var { sets } = Cards[cardName];
     var codes = Object.keys(sets);
     var last = codes[codes.length - 1];
     sets[code] = sets[last];
@@ -345,6 +343,9 @@ function alias(arr, code) {
 }
 
 function doSet(rawSet, code) {
+  if (code == "UMA") {
+    var toto = "test";
+  }
   var cards = {};
   var set = {
     basic: [],
@@ -370,10 +371,10 @@ function doSet(rawSet, code) {
       Cards[lc] = card;
 
     //Taking care of DoubleFaced Cards URL
-    if(card.isDoubleFaced) {
-      rawSet.cards.some(x=> {
-        if(x.name == card.names[1]) {
-          card.flippedCardURL=`http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
+    if (card.isDoubleFaced) {
+      rawSet.cards.some(x => {
+        if (x.name == card.names[1]) {
+          card.flippedCardURL = `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
           return true;
         }
       });
@@ -388,12 +389,37 @@ function doSet(rawSet, code) {
   Sets[code] = set;
 }
 
+// Some card with MTGJsonv4 may not have an URL or MultiverseId to guess the Picture
+// We guess a picture from the other printings of the card
+const findPicUrl = ({url, multiverseId, printings = []}) => {
+  if (url || multiverseId) {
+    return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
+  } else {
+    var picUrl;
+    printings.some(printing => {
+      if (raw[printing]) {
+        const maybeCard = raw[printing].cards.find(c => c.name === name);
+        if (maybeCard && (maybeCard.url || maybeCard.multiverseId)) {
+          picUrl = maybeCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${maybeCard.multiverseId}&type=card`;
+          return true;
+        }
+      }
+    });
+    return picUrl;
+  }
+};
+
 function doCard(rawCard, cards, code, set) {
-  var {name, number, layout, names, cmc, colors, types, supertypes, text, manaCost, url, multiverseId} = rawCard;
+  var { name, number, layout, names, cmc, colors, types, supertypes, text, manaCost, url, multiverseId, printings } = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
+  // With MTGJsonv4, a new rarity exists
+  if ("timeshifted" == rarity) {
+    return;
+  }
+
   //Fix GRN guilgate names
-  if(code === "GRN" && /\s\(.\)$/.test(name)) {
+  if (code === "GRN" && /\s\(.\)$/.test(name)) {
     name = name.substring(0, name.length - 4);
   }
 
@@ -407,6 +433,8 @@ function doCard(rawCard, cards, code, set) {
   // Flipped cards have an mciNumber or a number containing the letter b
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
+
+  var picUrl = findPicUrl({url, multiverseId, printings});
 
   if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
@@ -429,8 +457,6 @@ function doCard(rawCard, cards, code, set) {
       ? "multicolor"
       : colors[0].toLowerCase();
 
-  var picUrl = url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
-
   cards[name] = {
     multiverseId,
     color,
@@ -440,7 +466,8 @@ function doCard(rawCard, cards, code, set) {
     text: text || "",
     manaCost: manaCost || "",
     sets: {
-      [code]: { rarity,
+      [code]: {
+        rarity,
         url: picUrl
       }
     },
@@ -454,26 +481,26 @@ function doCard(rawCard, cards, code, set) {
 }
 
 function makeCards() {
-  console.log(`Parsing AllSets.json to produce cards.json`);
+  console.log("Parsing AllSets.json to produce cards.json");
   before();
   var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
   var codes = ["UMA", "EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
-  
+
   for (var code in raw) {
     var set = raw[code];
     if (types.indexOf(set.type) > -1
-    || codes.indexOf(code) > -1) {
+      || codes.indexOf(code) > -1) {
       doSet(set, code);
     } else {
       console.log(`Set ${code} excluded`);
     }
   }
-  
+
   after();
-  
+
   fs.writeFileSync("data/cards.json", JSON.stringify(Cards, null, 2));
   fs.writeFileSync("data/sets.json", JSON.stringify(Sets, null, 2));
-  console.log(`Parsing AllSets.json finished`);
+  console.log("Parsing AllSets.json finished");
 }
 
 module.exports = makeCards;
