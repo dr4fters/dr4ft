@@ -343,9 +343,6 @@ function alias(arr, code) {
 }
 
 function doSet(rawSet, code) {
-  if (code == "UMA") {
-    var toto = "test";
-  }
   var cards = {};
   var set = {
     basic: [],
@@ -391,7 +388,7 @@ function doSet(rawSet, code) {
 
 // Some card with MTGJsonv4 may not have an URL or MultiverseId to guess the Picture
 // We guess a picture from the other printings of the card
-const findPicUrl = ({name, url, multiverseId, printings = []}) => {
+const findPicUrl = ({ name, url, multiverseId, printings = [] }) => {
   if (url || multiverseId) {
     return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
   } else {
@@ -410,7 +407,7 @@ const findPicUrl = ({name, url, multiverseId, printings = []}) => {
 };
 
 function doCard(rawCard, cards, code, set) {
-  var { name, number, layout, names, cmc, colors, types, supertypes, text, manaCost, url, multiverseId, printings } = rawCard;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, text, manaCost, url, multiverseId, printings } = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
   // With MTGJsonv4, a new rarity exists
@@ -434,7 +431,7 @@ function doCard(rawCard, cards, code, set) {
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
 
-  var picUrl = findPicUrl({name, url, multiverseId, printings});
+  var picUrl = findPicUrl({ name, url, multiverseId, printings });
 
   if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
@@ -444,7 +441,7 @@ function doCard(rawCard, cards, code, set) {
   if (name in cards) {
     if (/^split$|^aftermath$/i.test(layout)) {
       var card = cards[name];
-      card.cmc += cmc;
+      card.cmc += convertedManaCost;
       if (card.color !== color)
         card.color = "multicolor";
     }
@@ -453,17 +450,18 @@ function doCard(rawCard, cards, code, set) {
 
   var color = !colors || !colors.length
     ? "colorless"
-    : colors.length > 1
-      ? "multicolor"
-      : colors[0].toLowerCase();
+    : !Array.isArray(colors)
+      ? colors.toLowerCase()
+      : colors.length > 1 
+        ? "multicolor"
+        : COLORS[colors[0].toUpperCase()];
 
   cards[name] = {
     multiverseId,
     color,
     name,
     type: types[types.length - 1],
-    cmc: cmc || 0,
-    text: text || "",
+    cmc: convertedManaCost || 0,
     manaCost: manaCost || "",
     sets: {
       [code]: {
