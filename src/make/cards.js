@@ -3,11 +3,11 @@ var _ = require("../_");
 var raw = require("../../data/AllSets");
 
 var COLORS = {
-  W: "White",
-  U: "Blue",
-  B: "Black",
-  R: "Red",
-  G: "Green"
+  W: "white",
+  U: "blue",
+  B: "black",
+  R: "red",
+  G: "green"
 };
 
 var Cards = {};
@@ -35,15 +35,15 @@ function before() {
   raw.PLC.booster = Array(11).fill("common");
   raw.FUT.booster = Array(11).fill("common")
 
-  ;["BFZ", "OGW"].forEach(setName => {
-    for (card of raw[setName].cards)
-      if (card.text && card.text.startsWith("Devoid"))
-        card.colors = card.manaCost
-          .replace(/[\d{}]/g, "")
-          .replace(/(.)\1+/g, "$1")
-          .split("")
-          .map(c => COLORS[c]);
-  });
+    ;["BFZ", "OGW"].forEach(setName => {
+      for (card of raw[setName].cards)
+        if (card.text && card.text.startsWith("Devoid"))
+          card.colors = card.manaCost
+            .replace(/[\d{}]/g, "")
+            .replace(/(.)\1+/g, "$1")
+            .split("")
+            .map(c => COLORS[c]);
+    });
 
   var card;
   for (card of raw.EMN.cards)
@@ -415,11 +415,6 @@ function doCard(rawCard, cards, code, set) {
     return;
   }
 
-  //Fix GRN guilgate names
-  if (code === "GRN" && /\s\(.\)$/.test(name)) {
-    name = name.substring(0, name.length - 4);
-  }
-
   if (/^basic/i.test(rarity))
     if (/snow-covered/i.test(name))
       rarity = "special";
@@ -452,9 +447,11 @@ function doCard(rawCard, cards, code, set) {
     ? "colorless"
     : !Array.isArray(colors)
       ? colors.toLowerCase()
-      : colors.length > 1 
+      : colors.length > 1
         ? "multicolor"
-        : COLORS[colors[0].toUpperCase()];
+        : Object.keys(COLORS).includes(colors[0])
+          ? COLORS[colors[0].toUpperCase()]
+          : colors[0]; // shouldn't happen
 
   cards[name] = {
     multiverseId,
