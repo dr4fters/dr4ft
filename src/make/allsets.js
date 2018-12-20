@@ -4,8 +4,9 @@ var fs = require("fs");
 const allSetsPath = "data/AllSets.json";
 const mtgJsonURL = "https://mtgjson.com/json/AllSets.json";
 
-exports.download = (onFileDownloaded, onError) => {
-  https.get(mtgJsonURL, response => {
+exports.download = (onFileDownloaded, onError) => { 
+     onFileDownloaded();
+  /*https.get(mtgJsonURL, response => {
     const lastMTGJsonUpdate = new Date(response.headers["last-modified"]).getTime();
     
     // Delete old AllSets.json
@@ -30,5 +31,5 @@ exports.download = (onFileDownloaded, onError) => {
     if(onError) {
       onError(err)
     }
-  });
+  });*/
 };

@@ -17,12 +17,12 @@ var setsToIgnore = ["TSB","ITP","CP1","CP2","CP3"];
 
 before();
 
+
 var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
-var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
+var codes = ["EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MP2", "IMA", "BBD", "A25"];
 for (var code in raw) {
   var set = raw[code];
-  if (types.indexOf(set.type) > -1
-    || codes.indexOf(code) > -1)
+  if (types.indexOf(set.type) > -1 || codes.indexOf(code) > -1)
     doSet(set, code);
 }
 
@@ -49,9 +49,9 @@ function before() {
     }
   }
   raw.PLC.booster = Array(11).fill("common");
-  raw.FUT.booster = Array(11).fill("common")
+  raw.FUT.booster = Array(11).fill("common");
 
-  ;["BFZ", "OGW"].forEach(setName => {
+  ["BFZ", "OGW"].forEach(setName => {
     for (card of raw[setName].cards)
       if (card.text && card.text.startsWith("Devoid"))
         card.colors = card.manaCost
@@ -113,13 +113,15 @@ function after() {
     },
     "AKH": {
       "cards": ["Austere Command","Aven Mindcensor","Containment Priest","Loyal Retainers","Worship","Wrath of God","Consecrated Sphinx","Counterbalance","Counterspell","Cryptic Command","Daze","Divert","Force of Will","Pact of Negation","Spell Pierce","Stifle","Attrition","Dark Ritual","Diabolic Intent","Entomb","Mind Twist","Aggravated Assault","Chain Lightning","Maelstrom Pulse","Vindicate","Hazoret the Fervent","Kefnet the Mindful","Oketra the True","Bontu the Glorified","Rhonas the Indomitable"],
-      "code": "MPS_AKH"
+      "code": "MP2"
     },
     "HOU": {
       "cards": ["Armageddon","Capsize","Forbid","Omniscience","Opposition","Sunder","Threads of Disloyalty","Avatar of Woe","Damnation","Desolation Angel","Diabolic Edict","Doomsday","No Mercy","Slaughter Pact","Thoughtseize","Blood Moon","Boil","Shatterstorm","Through the Breach","Choke","The Locust God","Lord of Extinction","The Scarab God","The Scorpion God"],
-      "code": "MPS_AKH"
+      "code": "MP2"
     }
   };
+
+
   for (var masterset in masterpiecelist) {
     if (Sets[masterset]["special"]) {
       Sets[masterset]["special"]["masterpieces"] = [];
@@ -372,6 +374,7 @@ function doSet(rawSet, code) {
   };
   var card;
 
+
   for (card of rawSet.cards)
     doCard(card, cards, code, set);
 
@@ -396,14 +399,14 @@ function doSet(rawSet, code) {
     }
   }
 
-  if (!rawSet.booster)
+  if (!rawSet.boosterV3)
     return;
 
   for (var rarity of ["mythic", "special"])
     if (!set[rarity].length)
       delete set[rarity];
 
-  set.size = rawSet.booster.filter(x => x === "common").length;
+  set.size = rawSet.boosterV3.filter(x => x === "common").length;
   Sets[code] = set;
 }
 
@@ -440,6 +443,10 @@ function doCard(rawCard, cards, code, set) {
         card.color = "multicolor";
     }
     return;
+  }
+
+  if (rarity == "timeshifted") {
+    rarity="special";
   }
 
   var color = !colors || !colors.length
