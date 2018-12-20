@@ -1,11 +1,11 @@
-var http = require("http");
+var https = require("https");
 var fs = require("fs");
 
 const allSetsPath = "data/AllSets.json";
-const mtgJsonURL = "http://mtgjson.com/json/AllSets.json";
+const mtgJsonURL = "https://mtgjson.com/json/AllSets.json";
 
 exports.download = (onFileDownloaded, onError) => {
-  http.get(mtgJsonURL, response => {
+  https.get(mtgJsonURL, response => {
     const lastMTGJsonUpdate = new Date(response.headers["last-modified"]).getTime();
     
     // Delete old AllSets.json
