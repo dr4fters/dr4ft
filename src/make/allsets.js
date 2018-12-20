@@ -25,10 +25,10 @@ const download = (onError) => {
     console.log("Downloading AllSets.json");
     const file = fs.createWriteStream(allSetsPath);
     response.pipe(file);
-    file.on("finish", () => {
+    file.on("finish", async () => {
       console.log("Fetch AllSets.json finished. Updating the cards and sets data");
       const parseCards = require("./cards");
-      file.close(parseCards);  // close() is async, call cb after close completes.
+      await file.close(parseCards);  // close() is async, call cb after close completes.
       console.log("Cards and sets updated");
     });
     
