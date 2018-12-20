@@ -46,7 +46,7 @@
     "react-dom": "^16.6.3",
     "send": "^0.16.2",
     "utils": "git://github.com/dr4fters/utils.git",
-    "webpack": "^4.27.1"
+    "webpack": "^4.28.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.5.2",
