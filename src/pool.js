@@ -93,6 +93,7 @@ function toPack(code) {
   case "MM2":
   case "MM3":
   case "IMA":
+  case "UMA":
     special = selectRarity(set);
     foilCard = true;
     break;

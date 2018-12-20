@@ -102,6 +102,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   masters: {
+    "Ultimate Masters": "UMA",
     "Masters 25": "A25",
     "Iconic Masters": "IMA",
     "Modern Masters 2017": "MM3",
