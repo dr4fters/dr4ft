@@ -2,7 +2,7 @@ var https = require("https");
 var fs = require("fs");
 
 const allSetsPath = "data/AllSets.json";
-const mtgJsonURL = "https://mtgjson.com/v4/json/AllSets.json";
+const mtgJsonURL = "https://mtgjson.com/json/AllSets.json";
 
 const download = (onError) => {
   console.log("Checking if AllSets.json is up to date");
