@@ -14,7 +14,7 @@ ADD . .
 # Install the dependencies
 RUN npm install --unsafe-perm
 
-# Publish the port 1337
+# Publish the port
 EXPOSE 1337
 
 # Run the server
