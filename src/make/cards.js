@@ -372,7 +372,7 @@ function doSet(rawSet, code) {
       rawSet.cards.some(x => {
         if (x.name == card.names[1]) {
 //          card.flippedCardURL = `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
-          card.flippedCardURL = `https://scryfall.com/docs/api/cards/multiverse/{x.multiverseId}?format=image`;
+	  card.flippedCardURL = `https://api.scryfall.com/cards/multiverse/${x.multiverseId}?format=image`;
           return true;
         }
       });
@@ -392,14 +392,15 @@ function doSet(rawSet, code) {
 const findPicUrl = ({ name, url, multiverseId, printings = [] }) => {
   if (url || multiverseId) {
 //    return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
-    return url || `https://scryfall.com/docs/api/cards/multiverse/{multiverseId}?format=image`;
+    return url || `https://api.scryfall.com/cards/multiverse/${multiverseId}?format=image`;
   } else {
     var picUrl;
     printings.some(printing => {
       if (raw[printing]) {
         const maybeCard = raw[printing].cards.find(c => c.name === name);
         if (maybeCard && (maybeCard.url || maybeCard.multiverseId)) {
-          picUrl = maybeCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${maybeCard.multiverseId}&type=card`;
+//          picUrl = maybeCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${maybeCard.multiverseId}&type=card`;
+          picUrl = maybeCard.url || `https://api.scryfall.com/cards/multiverse/${maybeCard.multiverseId}?format=image`;
           return true;
         }
       }
