@@ -371,7 +371,8 @@ function doSet(rawSet, code) {
     if (card.isDoubleFaced) {
       rawSet.cards.some(x => {
         if (x.name == card.names[1]) {
-          card.flippedCardURL = `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
+//          card.flippedCardURL = `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
+          card.flippedCardURL = `https://scryfall.com/docs/api/cards/multiverse/{x.multiverseId}?format=image`;
           return true;
         }
       });
@@ -390,7 +391,8 @@ function doSet(rawSet, code) {
 // We guess a picture from the other printings of the card
 const findPicUrl = ({ name, url, multiverseId, printings = [] }) => {
   if (url || multiverseId) {
-    return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
+//    return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
+    return url || `https://scryfall.com/docs/api/cards/multiverse/{multiverseId}?format=image`;
   } else {
     var picUrl;
     printings.some(printing => {
