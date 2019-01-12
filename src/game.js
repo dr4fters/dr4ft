@@ -263,6 +263,20 @@ module.exports = class Game extends Room {
     this.emit("kill");
   }
 
+  uploadDraftStats() {
+    var draftStats = this.cube ? 
+      { list: this.cube.list } : { sets: this.sets };
+    draftStats.id = this.id;
+    draftStats.draft = {};
+
+    for (var p of this.players) 
+      if (!p.isBot) draftStats.draft[p.id] = p.draftStats;
+
+    var fs = require("fs");
+    var file = `./data/draftStats/${this.id}.json`;
+    fs.writeFileSync(file, JSON.stringify(draftStats, undefined, 2));
+  }
+
   end() {
     var humans = 0;
     for (var p of this.players)
@@ -300,6 +314,7 @@ module.exports = class Game extends Room {
     this.renew();
     this.round = -1;
     this.meta({ round: -1 });
+    if(this.type === "draft" || this.type === "cube draft") this.uploadDraftStats();
   }
 
   pass(p, pack) {
