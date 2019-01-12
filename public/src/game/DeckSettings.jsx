@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {BASICS, Zones} from "Src/cards";
 import {Select} from "Src/utils";
@@ -40,8 +40,8 @@ const ManaSymbols = () => {
   return (
     <tr>
       <td />
-      {manaSymbols.map(x =>
-        <td key={_.uid()}>
+      {manaSymbols.map((x, index) =>
+        <td key={index}>
           <img src={url(x)} alt={x}/>
         </td>)
       }
@@ -52,8 +52,8 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{zoneName}</td>
-    {BASICS.map(cardName =>
-      <td key={_.uid()}>
+    {BASICS.map((cardName, index) =>
+      <td key={index}>
         <input
           className='number'
           min={0}
@@ -115,7 +115,7 @@ const Download = () => {
         className='download-filename connected-component'
         placeholder='filename'
         value={App.state["filename"]}
-        onChange={e => { App.save("filename", e.currentTarget.checked); }} />
+        onChange={e => { App.save("filename", e.currentTarget.value); }} />
       {select}
       <span className='download-button'/>
     </div>

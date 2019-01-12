@@ -4,9 +4,13 @@ node_modules
 .vscode
 
 data
-public/out
-public/lib
 public/src/config.js
+public/index.html
 
 config.client.js
 config.server.js
+
+built/
+npm-debug.log
+coverage/
+.nyc_output/

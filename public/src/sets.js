@@ -1,5 +1,7 @@
 export default {
   expansion: {
+    "Guilds of Ravnica": "GRN",
+    "Dominaria": "DOM",
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
@@ -100,6 +102,7 @@ export default {
     "Limited Edition Alpha": "LEA"
   },
   masters: {
+    "Ultimate Masters": "UMA",
     "Masters 25": "A25",
     "Iconic Masters": "IMA",
     "Modern Masters 2017": "MM3",
@@ -116,6 +119,7 @@ export default {
     "Unglued": "UGL"
   },
   other: {
+    "Battlebond": "BBD",
     "Conspiracy: Take the Crown": "CN2",
     "Conspiracy": "CNS",
     "Starter 1999": "S99",

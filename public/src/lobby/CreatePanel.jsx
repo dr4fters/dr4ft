@@ -1,6 +1,6 @@
 import React from "react";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Checkbox} from "Src/utils";
 
@@ -27,8 +27,8 @@ const CreatePanel = () => {
       <div>
         Number of players:{" "}
         <select value={seats} onChange={(e) => {App.save("seats", e.currentTarget.value);}}>
-          {_.seq(100, 2).map(x =>
-            <option key={_.uid()}>{x}</option>)}
+          {_.seq(100, 2).map((x, i) =>
+            <option key={i}>{x}</option>)}
         </select>
       </div>
       <div>

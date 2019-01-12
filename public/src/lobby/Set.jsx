@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import sets from "Src/sets";
 
@@ -17,15 +17,15 @@ const Set = ({index, selectedSet}) => {
     for (let name in allSets) {
       let code = allSets[name];
       options.push(
-        <option value={code} key={_.uid()}>{name}</option>
+        <option value={code} key={name}>{name}</option>
       );
     }
     groups.push(
-      <optgroup label={setType} key={_.uid()}>{options}</optgroup>
+      <optgroup label={setType} key={setType}>{options}</optgroup>
     );
   }
   return (
-    <select value={selectedSet} onChange={onSetChange} key={_.uid()}>
+    <select value={selectedSet} onChange={onSetChange} key={index}>
       {groups}
     </select>
   );

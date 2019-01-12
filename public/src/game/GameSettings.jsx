@@ -1,6 +1,6 @@
 import React from "react";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Checkbox} from "Src/utils";
 
@@ -36,8 +36,8 @@ const SortCards = () => (
   <div className="settings-sort-cards">
     Sort cards by:
     <div className= 'connected-container' >
-      {["cmc", "color", "type", "rarity"].map(sort =>
-        <label key={_.uid()} className='radio-label connected-component'>
+      {["cmc", "color", "type", "rarity"].map((sort, index) =>
+        <label key={index} className='radio-label connected-component'>
           <input checked= {sort === App.state.sort}
             className='radio-input'
             name= 'sort-order'
