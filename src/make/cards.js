@@ -397,7 +397,7 @@ const findPicUrl = ({ name, url, scryfallId, printings = [] }) => {
     printings.some(printing => {
       if (raw[printing]) {
         const maybeCard = raw[printing].cards.find(c => c.name === name);
-        if (maybeCard && (maybeCard.url || maybeCard.multiverseId)) {
+        if (maybeCard && (maybeCard.url || maybeCard.scryfallId)) {
           picUrl = maybeCard.url || `https://api.scryfall.com/cards/${maybeCard.scryfallId}?format=image`;
           return true;
         }
@@ -455,7 +455,7 @@ function doCard(rawCard, cards, code, set) {
           : colors[0]; // shouldn't happen
 
   cards[name] = {
-    multiverseId,
+    scryfallId,
     color,
     name,
     type: types[types.length - 1],
