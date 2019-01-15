@@ -30,9 +30,9 @@ let App = {
     totalChaos: false,
     type: "draft",
     sets: [
-      "GRN",
-      "GRN",
-      "GRN",
+      "RNA",
+      "RNA",
+      "RNA",
       "GRN",
       "GRN",
       "GRN"
