@@ -25,8 +25,7 @@ for (let name in Cards)
     color: "colorless",
     rarity: "basic",
     type: "Land",
-    url: "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&" +
-      `multiverseid=${Cards[name]}`
+    url: "https://api.scryfall.com/cards/multiverse/"+`${Cards[name]}`+"?format=image"
   };
 
 let rawPack, clicked;
