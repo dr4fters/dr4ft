@@ -372,8 +372,7 @@ function doSet(rawSet, code) {
     if (card.isDoubleFaced) {
       rawSet.cards.some(x => {
         if (x.name == card.names[1]) {
-//          card.flippedCardURL = `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${x.multiverseId}&type=card`;
-	  card.flippedCardURL = `https://api.scryfall.com/cards/multiverse/${x.multiverseId}?format=image`;
+          card.flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image&face=back`;
           return true;
         }
       });
@@ -390,18 +389,16 @@ function doSet(rawSet, code) {
 
 // Some card with MTGJsonv4 may not have an URL or MultiverseId to guess the Picture
 // We guess a picture from the other printings of the card
-const findPicUrl = ({ name, url, multiverseId, printings = [] }) => {
-  if (url || multiverseId) {
-//    return url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${multiverseId}&type=card`;
-    return url || `https://api.scryfall.com/cards/multiverse/${multiverseId}?format=image`;
+const findPicUrl = ({ name, url, scryfallId, printings = [] }) => {
+  if (url || scryfallId) {
+    return url || `https://api.scryfall.com/cards/${scryfallId}?format=image`;
   } else {
     var picUrl;
     printings.some(printing => {
       if (raw[printing]) {
         const maybeCard = raw[printing].cards.find(c => c.name === name);
-        if (maybeCard && (maybeCard.url || maybeCard.multiverseId)) {
-//          picUrl = maybeCard.url || `http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${maybeCard.multiverseId}&type=card`;
-          picUrl = maybeCard.url || `https://api.scryfall.com/cards/multiverse/${maybeCard.multiverseId}?format=image`;
+        if (maybeCard && (maybeCard.url || maybeCard.scryfallId)) {
+          picUrl = maybeCard.url || `https://api.scryfall.com/cards/${maybeCard.scryfallId}?format=image`;
           return true;
         }
       }
@@ -411,7 +408,7 @@ const findPicUrl = ({ name, url, multiverseId, printings = [] }) => {
 };
 
 function doCard(rawCard, cards, code, set) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, text, manaCost, url, multiverseId, printings } = rawCard;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, text, manaCost, url, scryfallId, printings } = rawCard;
   var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
 
   // With MTGJsonv4, a new rarity exists
@@ -430,7 +427,7 @@ function doCard(rawCard, cards, code, set) {
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
 
-  var picUrl = findPicUrl({ name, url, multiverseId, printings });
+  var picUrl = findPicUrl({ name, url, scryfallId, printings });
 
   if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
@@ -458,7 +455,7 @@ function doCard(rawCard, cards, code, set) {
           : colors[0]; // shouldn't happen
 
   cards[name] = {
-    multiverseId,
+    scryfallId,
     color,
     name,
     type: types[types.length - 1],
