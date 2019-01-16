@@ -25,7 +25,7 @@ for (let name in Cards)
     color: "colorless",
     rarity: "basic",
     type: "Land",
-    url: "https://api.scryfall.com/cards/"+`${Cards[name]}`+"?format=image"
+    url: "https://api.scryfall.com/cards/multiverse/"+`${Cards[name]}`+"?format=image"
   };
 
 let rawPack, clicked;
