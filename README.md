@@ -46,7 +46,11 @@ It supports all their features, and many more.
 ### Native
 
 1) Install [Node.js](https://nodejs.org/en/download/)
-2) Run `npm install && npm start`
+2) Run
+```bash
+$ sudo npm install --unsafe-perm
+$ npm start
+```
 3) Visit [http://localhost:1337](http://localhost:1337)
 
 
