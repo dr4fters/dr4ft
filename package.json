@@ -7,11 +7,19 @@
     "url": "https://github.com/dr4fters/dr4ft/issues"
   },
   "license": "MIT",
-  "author": "James Campos <james.r.campos@gmail.com>",
+  "author": "Dr4fters Team <zach@dr4ft.info>",
   "contributors": [
+    {
+      "name": "Zach Halpern",
+      "email": "zach@dr4ft.info"
+    },
     {
       "name": "Hervé Huneau",
       "email": "herve.huneau@gmail.com"
+    },
+    {
+      "name": "Ben Wagner",
+      "email": "benjaminpwagner@gmail.com"
     }
   ],
   "repository": {
