@@ -1,17 +1,17 @@
 const { createLogger, format, transports } = require("winston");
-const { combine, timestamp, label, printf } = format;
+const { combine, timestamp, printf } = format;
 const { LOGDIR } = require("../config.server");
+const fs = require( "fs" );
 
-const myFormat = printf(info => {
-  return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
-});
+if ( !fs.existsSync( LOGDIR ) ) {
+  fs.mkdirSync( LOGDIR );
+}
 
 const logger = createLogger({
   level: "info",
   format: combine(
-    label({ label: "Dr4ft"}),
-    timestamp(),
-    myFormat
+    timestamp({ format: "YYYY-MM-DD HH:mm:ss,SSSZZ" }),
+    printf(info => `${info.timestamp} [${info.level.toUpperCase()}] ${info.message}`),
   ),
   transports: [
     //
@@ -23,18 +23,9 @@ const logger = createLogger({
   ]
 });
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
+// If we're not in production then log to the `console`
 if (process.env.NODE_ENV !== "production") {
-  logger.add(new transports.Console({
-    format: combine(
-      label({ label: "Dr4ft"}),
-      timestamp(),
-      myFormat
-    )
-  }));
+  logger.add(new transports.Console());
 }
 
 module.exports = logger;
