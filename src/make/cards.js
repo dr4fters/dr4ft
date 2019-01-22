@@ -1,8 +1,9 @@
-var fs = require("fs");
-var _ = require("../_");
-var raw = require("../../data/AllSets");
+const fs = require("fs");
+const _ = require("../_");
+const raw = require("../../data/AllSets");
+const logger = require("../logger");
 
-var COLORS = {
+const COLORS = {
   W: "white",
   U: "blue",
   B: "black",
@@ -477,7 +478,7 @@ function doCard(rawCard, cards, code, set) {
 }
 
 function makeCards() {
-  console.log("Parsing AllSets.json to produce cards.json");
+  logger.info("Parsing AllSets.json to produce cards.json");
   before();
   var types = ["core", "expansion", "commander", "planechase", "starter", "un"];
   var codes = ["UMA", "EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
@@ -488,7 +489,7 @@ function makeCards() {
       || codes.indexOf(code) > -1) {
       doSet(set, code);
     } else {
-      console.log(`Set ${code} excluded`);
+      logger.debug(`Set ${code} excluded`);
     }
   }
 
@@ -496,7 +497,7 @@ function makeCards() {
 
   fs.writeFileSync("data/cards.json", JSON.stringify(Cards, null, 2));
   fs.writeFileSync("data/sets.json", JSON.stringify(Sets, null, 2));
-  console.log("Parsing AllSets.json finished");
+  logger.info("Parsing AllSets.json finished");
 }
 
 module.exports = makeCards;

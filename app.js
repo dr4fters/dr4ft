@@ -10,6 +10,11 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const app = express();
 
+const allSets = require("./src/make/allsets");
+
+// Download Allsets.json if there's a new one and make the card DB
+allSets.download();
+
 const server = http.createServer(app);
 const io = eio(server);
 io.on("connection", router);
@@ -19,7 +24,7 @@ app.use(helmet());
 app.use(bodyParser.json()); // for parsing application/json
 
 //routing
-app.use(express.static("public"));
+app.use(express.static("built"));
 app.use("/api", apiRouter);
 
 server.listen(config.PORT);
