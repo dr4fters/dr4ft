@@ -7,11 +7,19 @@
     "url": "https://github.com/dr4fters/dr4ft/issues"
   },
   "license": "MIT",
-  "author": "James Campos <james.r.campos@gmail.com>",
+  "author": "Dr4fters Team <zach@dr4ft.info>",
   "contributors": [
+    {
+      "name": "Zach Halpern",
+      "email": "zach@dr4ft.info"
+    },
     {
       "name": "Hervé Huneau",
       "email": "herve.huneau@gmail.com"
+    },
+    {
+      "name": "Ben Wagner",
+      "email": "benjaminpwagner@gmail.com"
     }
   ],
   "repository": {
@@ -19,46 +27,42 @@
     "url": "https://github.com/dr4fters/dr4ft.git"
   },
   "scripts": {
-    "start": "node app",
-    "watch": "webpack --watch -d --display-error-details",
+    "start": "node scripts/run",
+    "watch": "rm -rf built/ && webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",
-    "postinstall": "node scripts/postinstall && node src/make/cards && node src/make/score && webpack"
+    "postinstall": "rm -rf built/ && node scripts/postinstall && webpack",
+    "pretest": "eslint --ignore-path .gitignore .",
+    "build": "rm -rf built/ && NODE_ENV=production webpack -p --progress --colors"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
-    "body-parser": "^1.18.2",
-    "ee": "git://github.com/aeosynth/ee",
-    "engine.io": "^1.4.1",
-    "engine.io-client": "^1.4.1",
-    "express": "^4.16.2",
-    "helmet": "^3.11.0",
-    "jsonfile": "^2.4.0",
-    "log-timestamp": "^0.1.2",
-    "node-fetch": "^1.0.3",
-    "normalize.css": "^3.0.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "send": "^0.11.1",
-    "utils": "git://github.com/arxanas/utils",
-    "uuid": "^3.2.1",
-    "webpack": "^3.6.0",
-    "winston": "^3.0.0-rc1"
+    "ee": "git://github.com/dr4fters/ee.git",
+    "engine.io": "^3.3.2",
+    "engine.io-client": "^3.3.1",
+    "html-webpack-plugin": "3.2.0",
+    "jsonfile": "^4.0.0",
+    "log-timestamp": "^0.2.1",
+    "node-fetch": "^2.3.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "send": "^0.16.2",
+    "utils": "git://github.com/dr4fters/utils.git",
+    "webpack": "^4.28.4"
   },
   "devDependencies": {
-    "css-loader": "^0.28.7",
-    "eslint": "^4.18.1",
-    "eslint-plugin-react": "^7.7.0",
-    "style-loader": "^0.19.0",
-    "webpack-dev-server": "^2.9.1"
-  },
-  "engines" : { 
-    "node" : ">=8.5.0"
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^2.1.0",
+    "eslint": "^5.12.1",
+    "eslint-plugin-react": "^7.12.4",
+    "style-loader": "^0.23.1",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }

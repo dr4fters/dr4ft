@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Zones} from "Src/cards";
 
@@ -62,9 +62,9 @@ Game.propTypes = {
 const CardsZone = () => {
   const pack
   = Object.keys(Zones.pack).length
-    ? <Grid key={_.uid()} zones={["pack"]} />
-    : <div key={_.uid()}/>;
+    ? <Grid key={"pack"} zones={["pack"]} />
+    : <div key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
-  const pool = App.state.cols ? <Cols key={_.uid()} {...props}/> : <Grid key={_.uid()} {...props} />;
+  const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
   return [pack, pool];
 };

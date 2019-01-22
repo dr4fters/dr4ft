@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "Lib/utils";
+import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Checkbox, Select, Textarea} from "Src/utils";
 
@@ -60,7 +60,7 @@ SealedOptions.propTypes = {
 
 const Sets = ({ sets, from, to = sets.length }) => (
   sets
-    .map((set, i) => <Set selectedSet={set} index={i} key={_.uid()}/>)
+    .map((set, i) => <Set selectedSet={set} index={i} key={i}/>)
     .slice(from, to)
 );
 

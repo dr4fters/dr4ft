@@ -3,12 +3,10 @@ let {EventEmitter} = require("events");
 module.exports = class extends EventEmitter {
   constructor({isPrivate}) {
     super();
-
     this.messages = Array(50);
     this.socks = [];
     this.isPrivate = isPrivate;
     this.timeCreated = new Date;
-
   }
   join(sock) {
     this.socks.push(sock);

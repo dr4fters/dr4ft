@@ -37,7 +37,7 @@ function pickFoil(set) {
 
 function toPack(code) {
   var set = Sets[code];
-  var {common, uncommon, rare, mythic, special, size} = set;
+  var {basic, common, uncommon, rare, mythic, special, size} = set;
 
   if (mythic && !_.rand(8))
     rare = mythic;
@@ -93,6 +93,7 @@ function toPack(code) {
   case "MM2":
   case "MM3":
   case "IMA":
+  case "UMA":
     special = selectRarity(set);
     foilCard = true;
     break;
@@ -131,6 +132,51 @@ function toPack(code) {
       special = special.uncommon;
     else
       special = special.common;
+    break;
+  case "DOM":
+    // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
+    // Every booster must contain a legendary creature either as uncommon or rare
+    let hasLegendaryCreature = false;
+    const isLegendaryCreature = cardName => {
+      const card = Cards[cardName];
+      return card.supertypes.includes("Legendary") && card.type === "Creature";
+    };
+
+    pack.some(cardName => {
+      return hasLegendaryCreature = isLegendaryCreature(cardName);
+    });
+
+    if (!hasLegendaryCreature) {
+      // Choose to replace an uncommon or rare slot
+      if (_.rand(4) === 0) {
+        var packIndex = 3;
+        var isMythic = mythic.includes(pack[packIndex]);
+        var pool = isMythic ? mythic : rare;
+      } else {
+        // Uncommon slot
+        var packIndex = 0;
+        var pool = uncommon;
+      }
+      const legendaryCreatures = pool.filter(isLegendaryCreature);
+      pack[packIndex] = _.choose(1, legendaryCreatures);
+    }
+    break;
+  case "M19":
+    //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+    // 5/12 of times -> dual-land
+    // 7/12 of times -> basic land
+    const dualLands = common.filter(cardName => Cards[cardName].type === "Land");
+    common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
+    const isDualLand = _.rand(12) < 6;
+    const land = _.choose(1, isDualLand ? dualLands : basic);
+    pack.push(land);
+    break;
+  case "GRN":
+  case "RNA":
+    // No basics. Always 1 common slots are occupied by guildgates
+    const guildGates = common.filter(cardName => Cards[cardName].type === "Land" && Cards[cardName].sets[code].rarity == "common");
+    common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
+    pack.push(_.choose(1, guildGates));
     break;
   }
   var masterpiece = "";
@@ -174,7 +220,8 @@ function toCards(pool, code, foilCard, masterpiece) {
     var {sets} = card;
 
     if (isCube)
-      [code] = Object.keys(sets);
+      [code] = Object.keys(sets)
+        .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)); // #121: Filter Invocations art
 
     card.code = mws[code] || code;
     var set = sets[code];

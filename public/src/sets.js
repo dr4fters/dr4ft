@@ -1,5 +1,8 @@
 export default {
   expansion: {
+    "Ravnica Allegiance": "RNA",
+    "Guilds of Ravnica": "GRN",
+    "Dominaria": "DOM",
     "Rivals of Ixalan": "RIX",
     "Ixalan": "XLN",
     "Hour of Devastation": "HOU",
@@ -79,9 +82,10 @@ export default {
     "Arabian Nights": "ARN"
   },
   core: {
+    "Core Set 2019": "M19",
     "Magic Origins": "ORI",
-    "Magic 2015 Core Set": "M15",
-    "Magic 2014 Core Set": "M14",
+    "Magic 2015": "M15",
+    "Magic 2014": "M14",
     "Magic 2013": "M13",
     "Magic 2012": "M12",
     "Magic 2011": "M11",
@@ -98,16 +102,27 @@ export default {
     "Limited Edition Beta": "LEB",
     "Limited Edition Alpha": "LEA"
   },
-  other: {
+  masters: {
+    "Ultimate Masters": "UMA",
+    "Masters 25": "A25",
+    "Iconic Masters": "IMA",
     "Modern Masters 2017": "MM3",
     "Eternal Masters": "EMA",
     "Modern Masters 2015": "MM2",
     "Tempest Remastered": "TPR",
-    "Conspiracy": "CNS",
     "Vintage Masters": "VMA",
     "Modern Masters": "MMA",
+    "Chronicles": "CHR"
+  },
+  funny: {
+    "Unstable": "UST",
     "Unhinged": "UNH",
-    "Unglued": "UGL",
+    "Unglued": "UGL"
+  },
+  other: {
+    "Battlebond": "BBD",
+    "Conspiracy: Take the Crown": "CN2",
+    "Conspiracy": "CNS",
     "Starter 1999": "S99",
     "Portal Three Kingdoms": "PTK",
     "Portal Second Age": "PO2",

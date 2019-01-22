@@ -1,6 +1,6 @@
 var assert = require("assert");
 var _ = require("./_");
-var {Sets, Cards} = require("./data");
+var {Cards, Sets} = require("./data");
 var BASICS = [
   "Forest",
   "Island",

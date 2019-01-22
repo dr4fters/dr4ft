@@ -37,13 +37,14 @@ module.exports = class extends EventEmitter {
     });
     //if 50% of cards doesn't have a score, we're going to pick randomly
     if (scoredcards / cardcount < .5) {
-      index = _.rand(cardcount);
+      var randpick = _.rand(cardcount);
+      this.picks.push(pack[randpick].name);
+      pack.splice(randpick, 1);
     }
-
-    var card = pack[index];
-    this.picks.push(card.name);
-    this.pool.push(card);
-    pack.splice(index, 1);
+    else {
+      this.picks.push(pack[index].name);
+      pack.splice(index, 1);
+    }
     this.emit("pass", pack);
   }
   send(){}
