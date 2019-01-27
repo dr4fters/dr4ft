@@ -443,7 +443,7 @@ module.exports = class Game extends Room {
         p.send("pool", p.pool);
         p.send("set", { round: -1 });
       }
-      console.log(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`);
+      logger.info(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`);
       Game.broadcastGameInfo();
       return;
     }

@@ -37,6 +37,7 @@ let App = {
       "GRN",
       "GRN"
     ],
+    availableSets: {},
     list: "",
     cards: 15,
     packs: 3,
@@ -107,6 +108,9 @@ let App = {
     if(!this.ws) {
       this.ws = eio(location.href, options);
       this.ws.on("message", message);
+      this.ws.on("sets", (sets) => {
+        this.state.availableSets = sets;
+      });
     }
   },
   send(...args) {

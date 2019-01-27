@@ -8,12 +8,16 @@ const apiRouter = require("./src/api/");
 const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
+const schedule = require("node-schedule");
 const app = express();
 
 const allSets = require("./src/make/allsets");
 
 // Download Allsets.json if there's a new one and make the card DB
 allSets.download();
+schedule.scheduleJob("0 * * * *", () => {
+  allSets.download();
+} );
 
 const server = http.createServer(app);
 const io = eio(server);

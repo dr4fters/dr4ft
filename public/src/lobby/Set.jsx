@@ -3,23 +3,22 @@ import PropTypes from "prop-types";
 
 import _ from "NodePackages/utils/utils";
 import App from "Src/app";
-import sets from "Src/sets";
 
-const Set = ({index, selectedSet}) => {
+const Set = ({ index, selectedSet }) => {
   const onSetChange = (e) => {
     App.state.sets[index] = e.currentTarget.value;
     App.save("sets", App.state.sets);
   };
   let groups = [];
-  for (let setType in sets) {
-    const allSets = sets[setType];
+  for (let setType in App.state.availableSets) {
+    const allSets = App.state.availableSets[setType];
     let options = [];
-    for (let name in allSets) {
-      let code = allSets[name];
+    allSets.forEach(({ code, name }) => {
       options.push(
-        <option value={code} key={name}>{name}</option>
+        <option value={code} key={code}>{name}</option>
       );
-    }
+
+    })
     groups.push(
       <optgroup label={setType} key={setType}>{options}</optgroup>
     );

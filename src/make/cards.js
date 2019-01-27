@@ -347,6 +347,9 @@ function alias(arr, code) {
 function doSet(rawSet, code) {
   var cards = {};
   var set = {
+    name: rawSet.name,
+    type: rawSet.type,
+    releaseDate: rawSet.releaseDate,
     basic: [],
     common: [],
     uncommon: [],
