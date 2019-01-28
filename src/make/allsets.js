@@ -3,7 +3,7 @@ const https = require("https");
 const rp = require("request-promise-native");
 const unzip = require("unzip");
 const logger = require("../logger");
-const {reloadSets} = require("../sets-service");
+const { reloadSets } = require("../sets-service");
 
 const allSetsPath = "data/AllSets.json";
 const mtgJsonURL = "https://mtgjson.com/json/AllSets.json.zip";
@@ -22,7 +22,7 @@ const isVersionUpToDate = async () => {
   };
   //TODO: use new Promise and forget about rp
   const remoteVersion = await rp(options);
-  
+
   if (fs.existsSync(setsVersion) && !isVersionNewer(remoteVersion, require("../../data/version.json"))) {
     return true;
   }
@@ -40,7 +40,7 @@ const fetchZip = () => (
         .pipe(unzip.Parse())
         .on("entry", (entry) => {
           const fileName = entry.path;
-          if(fileName == "AllSets.json") {
+          if (fileName == "AllSets.json") {
             logger.info("Updating AllSets.json");
             const file = fs.createWriteStream(allSetsPath);
             entry.pipe(file)
@@ -54,15 +54,16 @@ const fetchZip = () => (
 const download = async () => {
   logger.info("Checking if AllSets.json is up to date");
   const isUpToDate = await isVersionUpToDate();
-  if(!isUpToDate) {
+  if (!isUpToDate) {
     await fetchZip();
     logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
     const parseCards = require("./cards");
     parseCards();
     reloadSets();
     logger.info("Cards and sets updated");
+  } else {
+    logger.info("AllSets.json is up to date");
   }
-  return;
 };
 
 module.exports = {

@@ -27,7 +27,7 @@
     "url": "https://github.com/dr4fters/dr4ft.git"
   },
   "scripts": {
-    "start": "node app",
+    "start": "node scripts/run",
     "watch": "rm -rf built/ && webpack --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
     "server": "webpack-dev-server --open --inline --hot",

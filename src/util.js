@@ -74,7 +74,7 @@ module.exports = {
     case "sealed":
       assert(Array.isArray(sets), "sets must be an array");
       sets.forEach(set =>
-        assert(Sets[set] !== undefined, `set ${set} is invalid or does not exist`));
+        assert(Sets[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
       if("sealed" === type) {
         assert(typeof fourPack === "boolean", "fourPack must be a boolean");
         assert(!fourPack || sets.length < 4, "sets must be at least 4");
