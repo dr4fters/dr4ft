@@ -29,14 +29,7 @@ let App = {
     modernOnly: false,
     totalChaos: false,
     type: "draft",
-    sets: [
-      "RNA",
-      "RNA",
-      "RNA",
-      "GRN",
-      "GRN",
-      "GRN"
-    ],
+    sets: [],
     availableSets: {},
     list: "",
     cards: 15,
@@ -108,9 +101,6 @@ let App = {
     if(!this.ws) {
       this.ws = eio(location.href, options);
       this.ws.on("message", message);
-      this.ws.on("sets", (sets) => {
-        this.state.availableSets = sets;
-      });
     }
   },
   send(...args) {

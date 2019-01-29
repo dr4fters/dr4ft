@@ -3,6 +3,8 @@ const readSetsFile = () => JSON.parse(fs.readFileSync("data/sets.json", "UTF-8")
 
 let toReload = false;
 let sets;
+let latestSet;
+
 const getSets = () => {
   if (!toReload && sets) {
     return sets;
@@ -11,6 +13,12 @@ const getSets = () => {
   const AllSets = readSetsFile();
   for (let code in AllSets) {
     const { type, name, releaseDate } = AllSets[code];
+
+    if (!latestSet) {
+      latestSet = { code, type, name, releaseDate };
+    } else if (Number(releaseDate.replace(/-/g, "")) > Number(latestSet.releaseDate.replace(/-/g, ""))) {
+      latestSet = { code, type, name, releaseDate };
+    }
 
     //We do not want to play with these types of set (unplayable or lacking cards)
     if (["masterpiece", "starter", "planechase", "commander"].includes(type)) {
@@ -41,12 +49,20 @@ const getRandomSet = () => {
   const allSets = getSets();
   const allTypes = Object.keys(allSets);
   let randomType = allTypes[allTypes.length * Math.random() << 0];
-  //Avoid
+  
+  //Avoid random set
   while (randomType == "random") {
     randomType = allTypes[allTypes.length * Math.random() << 0];
   }
   const randomSets = allSets[randomType];
   return randomSets[randomSets.length * Math.random() << 0];
+};
+
+const getLatestReleasedSet = () => {
+  if (!latestSet) {
+    getSets();
+  }
+  return latestSet;
 };
 
 const reloadSets = () => toReload = true;
@@ -55,4 +71,5 @@ module.exports = {
   getSets,
   reloadSets,
   getRandomSet,
+  getLatestReleasedSet,
 };

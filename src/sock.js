@@ -1,6 +1,6 @@
 const { EventEmitter } = require("events");
 const { STRINGS } = require("../config.server");
-const { getSets } = require("./sets-service");
+const { getSets, getLatestReleasedSet } = require("./sets-service");
 
 // All sockets currently connected to the server.
 let allSocks = [];
@@ -40,7 +40,7 @@ class Sock extends EventEmitter {
     for (var key in mixins)
       this[key] = mixins[key].bind(this);
 
-    this.send("set", { availableSets: getSets() });
+    this.send("set", { availableSets: getSets(), latestSet: getLatestReleasedSet() });
     allSocks.push(this);
     broadcastNumUsers();
     ws.on("message", message.bind(this));
