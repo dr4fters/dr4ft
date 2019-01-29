@@ -3,6 +3,7 @@ import React from "react";
 import {STRINGS} from "Src/config";
 import {Spaced} from "Src/utils";
 import App from "Src/app";
+import FileUpload from "./FileUpload";
 
 const Header = () => (
   <header>
@@ -11,6 +12,10 @@ const Header = () => (
     </h1>
     <ServerInfo />
     <ApplicationError />
+    <div>
+        <h2> File upload </h2>
+        <FileUpload />
+      </div>
   </header>
 );
 

@@ -3,6 +3,8 @@ const schedule = require("node-schedule");
 const eio = require("engine.io");
 const express = require("express");
 const helmet = require("helmet");
+const fileUpload = require("express-fileupload");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("./src/logger");
 const router = require("./src/router");
@@ -11,9 +13,12 @@ const allSets = require("./src/make/allsets");
 const config = require("./config.server");
 const app = express();
 
+
 //Middlewares
 app.use(helmet());
 app.use(bodyParser.json()); // for parsing application/json
+app.use(cors());
+app.use(fileUpload());
 
 //routing
 app.use(express.static("built"));
