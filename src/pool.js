@@ -1,5 +1,5 @@
 var _ = require("./_");
-var { Cards, Sets, mws } = require("./data");
+var { getCards, getSets, getMws } = require("./data");
 const { getRandomSet } = require("./sets-service");
 
 function selectRarity(set) {
@@ -37,7 +37,7 @@ function pickFoil(set) {
 }
 
 function toPack(code) {
-  var set = Sets[code];
+  var set = getSets()[code];
   var { basic, common, uncommon, rare, mythic, special, size } = set;
 
   if (mythic && !_.rand(8))
@@ -139,7 +139,7 @@ function toPack(code) {
     // Every booster must contain a legendary creature either as uncommon or rare
     let hasLegendaryCreature = false;
     const isLegendaryCreature = cardName => {
-      const card = Cards[cardName];
+      const card = getCards()[cardName];
       return card.supertypes.includes("Legendary") && card.type === "Creature";
     };
 
@@ -166,7 +166,7 @@ function toPack(code) {
     //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
     // 5/12 of times -> dual-land
     // 7/12 of times -> basic land
-    const dualLands = common.filter(cardName => Cards[cardName].type === "Land");
+    const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
     common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
     const isDualLand = _.rand(12) < 6;
     const land = _.choose(1, isDualLand ? dualLands : basic);
@@ -175,7 +175,7 @@ function toPack(code) {
   case "GRN":
   case "RNA":
     // No basics. Always 1 common slots are occupied by guildgates
-    const guildGates = common.filter(cardName => Cards[cardName].type === "Land" && Cards[cardName].sets[code].rarity == "common");
+    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
     common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
     pack.push(_.choose(1, guildGates));
     break;
@@ -216,7 +216,7 @@ function toCards(pool, code, foilCard, masterpiece) {
   var isCube = !code;
   var packSize = pool.length;
   return pool.map(cardName => {
-    var card = Object.assign({}, Cards[cardName]);
+    var card = Object.assign({}, getCards()[cardName]);
     card.packSize = packSize;
     var { sets } = card;
 
@@ -224,7 +224,7 @@ function toCards(pool, code, foilCard, masterpiece) {
       [code] = Object.keys(sets)
         .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)); // #121: Filter Invocations art
 
-    card.code = mws[code] || code;
+    card.code = getMws()[code] || code;
     var set = sets[code];
 
     if (masterpiece == card.name.toString().toLowerCase()) {
@@ -285,7 +285,7 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
         setlist = modernSets;
       }
       else {
-        for (let code in Sets)
+        for (let code in getSets())
           if (code != "UNH" && code != "UGL")
             setlist.push(code);
       }
@@ -306,18 +306,18 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
             var chaosPool = [];
             setindex = _.rand(setlist.length);
             if (setlist[setindex].mythic && !_.rand(8)) {
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].mythic));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].mythic));
             }
             else {
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].rare));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].rare));
             }
             for (let k = 0; k < 3; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].uncommon));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].uncommon));
             }
             for (let k = 0; k < 11; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].common));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].common));
             }
             pools.push(toCards(chaosPool));
           }

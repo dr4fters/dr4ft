@@ -3,7 +3,7 @@ const https = require("https");
 const rp = require("request-promise-native");
 const unzip = require("unzip");
 const logger = require("../logger");
-const { reloadSets } = require("../sets-service");
+const { writeCards, writeSets } = require("../data");
 const parseCards = require("./cards");
 
 const allSetsPath = "data/AllSets.json";
@@ -70,14 +70,6 @@ const prepareAllSets = (raw) => {
     if (card.types[0] === "Land"
       && (card.name !== "Crucible of the Spirit Dragon"))
       card.rarity = "special";
-
-  // Delete promo cards of sets
-  for (let setCode in raw) {
-    const set = raw[setCode];
-    if (set.baseSetSize) {
-      set.cards = set.cards.filter(({ number }) => parseInt(number) <= set.baseSetSize);
-    }
-  }
 };
 
 const postParseSets = (sets, cards) => {
@@ -355,11 +347,9 @@ const download = async () => {
     const { allSets, allCards } = parseCards(rawSets);
     postParseSets(allSets, allCards);
     logger.info("Parsing AllSets.json finished");
-    fs.writeFileSync("data/sets.json", JSON.stringify(allSets));
-    fs.writeFileSync("data/cards.json", JSON.stringify(allCards));
+    writeCards(allCards);
+    writeSets(allSets);
     logger.info("Writing sets.json and cards.json finished");
-    reloadSets();
-    logger.info("Cards and sets updated");
   } else {
     logger.info("AllSets.json is up to date");
   }

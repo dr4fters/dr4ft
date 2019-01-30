@@ -1,16 +1,15 @@
-const fs = require("fs");
-const readSetsFile = () => JSON.parse(fs.readFileSync("data/sets.json", "UTF-8"));
+const { getSets: getSavedSets } = require("./data");
 
-let toReload = false;
 let sets;
 let latestSet;
 
 const getSets = () => {
-  if (!toReload && sets) {
+  if (sets) {
     return sets;
   }
   sets = {};
-  const AllSets = readSetsFile();
+
+  const AllSets = getSavedSets();
   for (let code in AllSets) {
     const { type, name, releaseDate } = AllSets[code];
 
@@ -41,7 +40,6 @@ const getSets = () => {
     });
   }
 
-  toReload = false;
   return sets;
 };
 
@@ -49,7 +47,7 @@ const getRandomSet = () => {
   const allSets = getSets();
   const allTypes = Object.keys(allSets);
   let randomType = allTypes[allTypes.length * Math.random() << 0];
-  
+
   //Avoid random set
   while (randomType == "random") {
     randomType = allTypes[allTypes.length * Math.random() << 0];
@@ -65,11 +63,8 @@ const getLatestReleasedSet = () => {
   return latestSet;
 };
 
-const reloadSets = () => toReload = true;
-
 module.exports = {
   getSets,
-  reloadSets,
   getRandomSet,
   getLatestReleasedSet,
 };

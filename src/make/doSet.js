@@ -26,7 +26,8 @@ const findPicUrl = ({ name, url, scryfallId, printings = [], rawSets }) => {
   }
 };
 
-function doSet(rawSet, code, rawSets, allCards) {
+function doSet(rawSet, rawSets = {}, allCards = {}) {
+  const code = rawSet.code;
   var cards = {};
   var set = {
     name: rawSet.name,
@@ -41,8 +42,12 @@ function doSet(rawSet, code, rawSets, allCards) {
   };
   var card;
 
-  for (card of rawSet.cards)
-    doCard(card, cards, code, set, rawSets);
+  for (card of rawSet.cards) {
+    // Delete promo cards of sets
+    if (!rawSet.baseSetSize || rawSet.baseSetSize >= card.number) {
+      doCard(card, cards, code, set, rawSets);
+    }
+  }
 
   //because of split cards, do this only after processing the entire set
   for (var cardName in cards) {
