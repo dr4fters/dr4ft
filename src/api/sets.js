@@ -26,6 +26,7 @@ setsRouter
         return;
       }
 
+      json.type = "custom"; //Force set as custom
       const parsedSet = doSet(json, {}, newCards);
 
       logger.info(`adding new set with code "${json.code}" to database`);
