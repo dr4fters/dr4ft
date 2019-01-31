@@ -1,9 +1,8 @@
 import React from "react";
 
-import {STRINGS} from "Src/config";
-import {Spaced} from "Src/utils";
+import { STRINGS } from "Src/config";
+import { Spaced } from "Src/utils";
 import App from "Src/app";
-import FileUpload from "./FileUpload";
 
 const Header = () => (
   <header>
@@ -12,10 +11,6 @@ const Header = () => (
     </h1>
     <ServerInfo />
     <ApplicationError />
-    <div>
-        <h2> File upload </h2>
-        <FileUpload />
-      </div>
   </header>
 );
 
@@ -24,21 +19,21 @@ const ApplicationError = () => (
 );
 
 const ServerInfo = () => {
-  const {numUsers, numPlayers, numActiveGames} = App.state;
+  const { numUsers, numPlayers, numActiveGames } = App.state;
   const users = `${numUsers} ${numUsers === 1
     ? "user"
     : "users"} connected`;
 
   const players = `${numPlayers}
      ${numPlayers === 1
-    ? "player"
-    : "players"}
+      ? "player"
+      : "players"}
       playing ${numActiveGames}
         ${numActiveGames === 1
-    ? "game"
-    : "games"}`;
+      ? "game"
+      : "games"}`;
 
-  return <p><Spaced elements={[users, players]}/></p>;
+  return <p><Spaced elements={[users, players]} /></p>;
 };
 
 export default Header;

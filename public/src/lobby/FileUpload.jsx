@@ -5,36 +5,46 @@ class FileUpload extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploadStatus: false
+            uploadStatus: false,
+            fileName: "Import custom set"
         };
-        this.handleUploadImage = this.handleUploadImage.bind(this);
+        this.onChangeFile = this.onChangeFile.bind(this);
     }
 
-
-    handleUploadImage(ev) {
-        ev.preventDefault();
-
+    onChangeFile({ target }) {
         const data = new FormData();
-        data.append("file", this.uploadInput.files[0]);
+        data.append("file", target.files[0]);
         fetch("/api/sets/upload", {
             method: "POST",
             body: data
         })
-        .then(response => {
-            response.json().then(console.log)
-        });
+            .then(response => {
+                if (/^2/.exec(response.status)) {
+                    this.setState({
+                        fileName: "Upload completed!"
+                    });
+                } else {
+                    this.setState({
+                        fileName: "Upload error: " + response.statusText
+                    });
+                }
+            })
+            .catch(error => {
+                this.setState({
+                    fileName: "Upload error: " + error.statusText
+                });
+            });
+
+        this.setState({
+            fileName: target.value.split('\\').pop()
+        })
     }
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.handleUploadImage}>
-                    <div>
-                        <input accept=".json" ref={(ref) => { this.uploadInput = ref; }} type="file" />
-                    </div>
-                    <button type>Upload</button>
-
-                </form>
+            <div style={{"display": "inline"}}>
+                <input type="file" name="file" onChange={this.onChangeFile} id="file" className="inputfile" accept=".json" />
+                <label for="file">{this.state.fileName}</label>
             </div>
         )
     }

@@ -6,6 +6,7 @@ import {Checkbox} from "Src/utils";
 
 import GameTypes from "./GameTypes";
 import GameOptions from "./GameOptions";
+import FileUpload from "./FileUpload";
 
 const CreatePanel = () => {
   const {title, seats} = App.state;
@@ -41,6 +42,7 @@ const CreatePanel = () => {
           Create room
         </button>
       </p>
+      <FileUpload />
     </fieldset>
   );
 };
