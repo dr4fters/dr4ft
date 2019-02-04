@@ -87,39 +87,39 @@ time {
   padding: 3px 5px;
 }
 
-input[type=button], button, input[type=text], textarea, select {
+input[type=button], .uploadFile, input[type=button], button, input[type=text], textarea, select {
   font-size: 16px;
   line-height: 16px;
   padding: 3px;
 }
 
-input[type=button], button, input[type=text], textarea {
+input[type=button], .uploadFile, button, input[type=text], textarea {
   border: solid #d0d0d0 1px;
 }
 
-input[type=button], button {
+input[type=button], .uploadFile, button {
   background-color: #f0f0f0;
   padding: 5px;
 }
 
-input[type=button]:hover, button:hover, input[type=text]:hover, textarea:hover {
+input[type=button]:hover, .uploadFile:hover, button:hover, input[type=text]:hover, textarea:hover {
   border-color: #909090;
 }
 
-input[type=button]:active, button:active {
+input[type=button]:active, .uploadFile:active, button:active {
   box-shadow: 0 0 1px 0 black inset;
 }
 
-input[type=button]:disabled, button:disabled {
+input[type=button]:disabled, .uploadFile:disabled,button:disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
-input[type=button]:disabled:hover, button:disabled:hover {
+input[type=button]:disabled:hover, .uploadFile:disabled:hover, button:disabled:hover {
   border: solid #ccc 1px;
 }
 
-input[type=button]:disabled:active, button:disabled:active {
+input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled:active {
   box-shadow: none;
 }
 
@@ -372,6 +372,10 @@ input[type=button]:disabled:active, button:disabled:active {
   color: red;
 }
 
+.success {
+  color: green;
+}
+
 .zone {
   border-top: solid #ccc 1px;
   clear: both;
@@ -498,26 +502,4 @@ input[type=button]:disabled:active, button:disabled:active {
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
-}
-
-.inputfile + label {
-  font-size: 1.25em;
-  font-weight: 700;
-  /* color: white; */
-  /* background-color: black; */
-  display: inline-block;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-  background-color: red;
-}
-
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
-
-.inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
 }

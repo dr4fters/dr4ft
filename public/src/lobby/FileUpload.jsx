@@ -4,14 +4,23 @@ class FileUpload extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            uploadStatus: false,
-            fileName: "Import custom set"
-        };
+        this.state = this.defaultState();
         this.onChangeFile = this.onChangeFile.bind(this);
     }
 
+    defaultState() {
+        return {
+            fileName: "Import custom set",
+            resultStatus: "",
+            resultClass: "success"
+        };
+    }
+
     onChangeFile({ target }) {
+        if (!target.files[0]) {
+            return this.setState(this.defaultState());
+        }
+
         const data = new FormData();
         data.append("file", target.files[0]);
         fetch("/api/sets/upload", {
@@ -21,31 +30,39 @@ class FileUpload extends Component {
             .then(response => {
                 if (/^2/.exec(response.status)) {
                     this.setState({
-                        fileName: "Upload completed!"
+                        resultStatus: "Upload completed!",
+                        resultClass: "success"
                     });
                 } else {
                     this.setState({
-                        fileName: "Upload error: " + response.statusText
+                        resultStatus: "Upload error: " + response.statusText,
+                        resultClass: "error"
                     });
                 }
             })
             .catch(error => {
                 this.setState({
-                    fileName: "Upload error: " + error.statusText
+                    resultStatus: "Upload error: " + error.statusText,
+                    resultClass: "error"
                 });
             });
 
         this.setState({
-            fileName: target.value.split('\\').pop()
-        })
+            fileName: target.value.split('\\').pop(),
+            resultClass: "success"
+        });
     }
 
     render() {
         return (
-            <div style={{"display": "inline"}}>
+            <fieldset className='fieldset'>
+                <legend className='legend'>
+                    Upload Custom Set
+                </legend>
                 <input type="file" name="file" onChange={this.onChangeFile} id="file" className="inputfile" accept=".json" />
-                <label for="file">{this.state.fileName}</label>
-            </div>
+                <label className="uploadFile" for="file">{this.state.fileName}</label>
+                <p className={this.state.resultClass}>{this.state.resultStatus}</p>
+            </fieldset>
         )
     }
 }
