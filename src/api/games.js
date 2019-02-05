@@ -7,7 +7,7 @@ const assert = require("assert");
 
 const checkGameId = (req, res, next) => {
   req.game = Rooms.get(req.params.gameId);
-  if(!req.game) {
+  if (!req.game) {
     res.status(404).json({
       message: `No game found with Id ${req.params.gameId}`
     });
@@ -20,7 +20,7 @@ const checkGameSecret = (req, res, next) => {
   try {
     assert(req.game.secret === req.query.secret, "The secret provided doesn't fit gameId's secret");
     next();
-  } catch(err) {
+  } catch (err) {
     res.status(400).json(err.message);
   }
 };
@@ -29,7 +29,7 @@ const checkGameStartParams = (req, res, next) => {
   try {
     Util.start(req.body);
     next();
-  } catch(err) {
+  } catch (err) {
     res.status(400).json(err.message);
   }
 };
@@ -38,7 +38,7 @@ const checkGameCreateParams = (req, res, next) => {
   try {
     Util.game(req.body);
     next();
-  } catch(err) {
+  } catch (err) {
     res.status(400).json(err.message);
   }
 };
