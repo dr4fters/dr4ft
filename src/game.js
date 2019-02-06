@@ -10,7 +10,7 @@ let Sock = require("./sock");
 
 let SECOND = 1000;
 let MINUTE = 1000 * 60;
-let HOUR   = 1000 * 60 * 60;
+let HOUR = 1000 * 60 * 60;
 
 let games = {};
 
@@ -36,15 +36,15 @@ let games = {};
 })();
 
 module.exports = class Game extends Room {
-  constructor({hostId, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos}) {
-    super({isPrivate});
+  constructor({ hostId, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos }) {
+    super({ isPrivate });
     this.modernOnly = modernOnly;
     this.totalChaos = totalChaos;
     this.bots = 0;
 
     if (sets) {
       if (fourPack) {
-        sets = sets.slice(0,4);
+        sets = sets.slice(0, 4);
       }
       if (type != "chaos") {
         Object.assign(this, {
@@ -61,7 +61,8 @@ module.exports = class Game extends Room {
 
     var gameID = _.id();
     const secret = uuid.v4();
-    Object.assign(this, { title, seats, type, isPrivate,
+    Object.assign(this, {
+      title, seats, type, isPrivate,
       delta: -1,
       hostID: hostId,
       id: gameID,
@@ -201,7 +202,7 @@ module.exports = class Game extends Room {
       j = players[1],
       l = this.players.length;
 
-    if( j < 0 || j >= l  )
+    if (j < 0 || j >= l)
       return;
 
     [this.players[i], this.players[j]] = [this.players[j], this.players[i]];
@@ -248,7 +249,7 @@ module.exports = class Game extends Room {
     this.meta();
   }
 
-  meta(state={}) {
+  meta(state = {}) {
     state.players = this.players.map(p => ({
       hash: p.hash,
       name: p.name,
@@ -274,12 +275,12 @@ module.exports = class Game extends Room {
   }
 
   uploadDraftStats() {
-    var draftStats = this.cube ? 
+    var draftStats = this.cube ?
       { list: this.cube.list } : { sets: this.sets };
     draftStats.id = this.id;
     draftStats.draft = {};
 
-    for (var p of this.players) 
+    for (var p of this.players)
       if (!p.isBot) draftStats.draft[p.id] = p.draftStats;
 
     var fs = require("fs");
@@ -318,13 +319,14 @@ module.exports = class Game extends Room {
     }
     var jsonfile = require("jsonfile");
     var file = "./data/cap.json";
-    jsonfile.writeFile(file, draftcap, {flag: "a"}, function (err) {
-      if (err) logger.error(err);});
+    jsonfile.writeFile(file, draftcap, { flag: "a" }, function (err) {
+      if (err) logger.error(err);
+    });
 
     this.renew();
     this.round = -1;
     this.meta({ round: -1 });
-    if(this.type === "draft" || this.type === "cube draft") this.uploadDraftStats();
+    if (this.type === "draft" || this.type === "cube draft") this.uploadDraftStats();
   }
 
   pass(p, pack) {
@@ -348,7 +350,7 @@ module.exports = class Game extends Room {
       for (let p of this.players) {
         p.cap.packs[this.round] = p.picks;
         p.picks = [];
-        if(!p.isBot) {
+        if (!p.isBot) {
           p.draftLog.round[this.round] = p.draftLog.pack;
           p.draftLog.pack = [];
         }
@@ -357,7 +359,7 @@ module.exports = class Game extends Room {
     if (this.round++ === this.rounds)
       return this.end();
 
-    var {players} = this;
+    var { players } = this;
     this.packCount = players.length;
     this.delta *= -1;
 
@@ -366,7 +368,7 @@ module.exports = class Game extends Room {
         p.getPack(this.pool.pop());
 
     //let the bots play
-    this.meta = ()=>{};
+    this.meta = () => { };
     var index = players.findIndex(p => !p.isBot);
     var count = players.length;
     while (--count) {
@@ -385,7 +387,7 @@ module.exports = class Game extends Room {
   }
 
   getStatus() {
-    const {players, didGameStart, round} = this;
+    const { players, didGameStart, round } = this;
     return {
       didGameStart: didGameStart,
       currentPack: round,
@@ -400,13 +402,13 @@ module.exports = class Game extends Room {
     };
   }
 
-  getDecks({seat, id}) {
-    if(typeof seat == "number") {
+  getDecks({ seat, id }) {
+    if (typeof seat == "number") {
       const player = this.players[seat];
       return this._getPlayerDeck(player, seat);
     }
 
-    if(typeof id == "string") {
+    if (typeof id == "string") {
       const player = this.players.find(p => p.id == id);
       const seat = this.players.findIndex(p => p.id == id);
       return this._getPlayerDeck(player, seat);
@@ -424,15 +426,15 @@ module.exports = class Game extends Room {
     };
   }
 
-  start({addBots, useTimer, timerLength, shufflePlayers}) {
+  start({ addBots, useTimer, timerLength, shufflePlayers }) {
     var src = this.cube ? this.cube : this.sets;
-    var {players} = this;
+    var { players } = this;
     var p;
 
     if (!players.every(x => x.isReadyToStart))
       return;
 
-    Object.assign(this, {addBots, useTimer, timerLength, shufflePlayers});
+    Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
     this.renew();
 
     if (/sealed/.test(this.type)) {
@@ -460,7 +462,7 @@ module.exports = class Game extends Room {
         this.bots++;
       }
 
-    if(shufflePlayers)
+    if (shufflePlayers)
       _.shuffle(players);
 
     if (/chaos/.test(this.type)) {
