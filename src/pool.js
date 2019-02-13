@@ -1,5 +1,6 @@
 var _ = require("./_");
-var {Cards, Sets, mws} = require("./data");
+var { getCards, getSets, getMws } = require("./data");
+const { getRandomSet } = require("./sets-service");
 
 function selectRarity(set) {
   // average pack contains:
@@ -36,8 +37,8 @@ function pickFoil(set) {
 }
 
 function toPack(code) {
-  var set = Sets[code];
-  var {basic, common, uncommon, rare, mythic, special, size} = set;
+  var set = getSets()[code];
+  var { basic, common, uncommon, rare, mythic, special, size } = set;
 
   if (mythic && !_.rand(8))
     rare = mythic;
@@ -51,7 +52,7 @@ function toPack(code) {
   );
 
   if (code == "SOI")
-  //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
+    //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
     if (_.rand(8) == 0) {
       size = size - 1;
       if (_.rand(15) < 3)
@@ -138,7 +139,7 @@ function toPack(code) {
     // Every booster must contain a legendary creature either as uncommon or rare
     let hasLegendaryCreature = false;
     const isLegendaryCreature = cardName => {
-      const card = Cards[cardName];
+      const card = getCards()[cardName];
       return card.supertypes.includes("Legendary") && card.type === "Creature";
     };
 
@@ -165,16 +166,16 @@ function toPack(code) {
     //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
     // 5/12 of times -> dual-land
     // 7/12 of times -> basic land
-    const dualLands = common.filter(cardName => Cards[cardName].type === "Land");
+    const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
     common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
     const isDualLand = _.rand(12) < 6;
     const land = _.choose(1, isDualLand ? dualLands : basic);
-    pack.push(land);
+    pack.push(...land);
     break;
   case "GRN":
   case "RNA":
     // No basics. Always 1 common slots are occupied by guildgates
-    const guildGates = common.filter(cardName => Cards[cardName].type === "Land" && Cards[cardName].sets[code].rarity == "common");
+    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
     common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
     pack.push(_.choose(1, guildGates));
     break;
@@ -186,7 +187,6 @@ function toPack(code) {
         size = size - 1;
         specialpick = _.choose(1, special.masterpieces);
         specialpick = specialpick[0];
-        console.log("Masterpiece! " + specialpick);
         pack.push(specialpick);
         masterpiece = specialpick;
       }
@@ -216,15 +216,15 @@ function toCards(pool, code, foilCard, masterpiece) {
   var isCube = !code;
   var packSize = pool.length;
   return pool.map(cardName => {
-    var card = Object.assign({}, Cards[cardName]);
+    var card = Object.assign({}, getCards()[cardName]);
     card.packSize = packSize;
-    var {sets} = card;
+    var { sets } = card;
 
     if (isCube)
       [code] = Object.keys(sets)
         .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)); // #121: Filter Invocations art
 
-    card.code = mws[code] || code;
+    card.code = getMws()[code] || code;
     var set = sets[code];
 
     if (masterpiece == card.name.toString().toLowerCase()) {
@@ -259,13 +259,7 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
   else {
     for (i = 0; i < src.length; i++) {
       if (src[i] == "RNG") {
-        var rnglist = [];
-        for (var rngcode in Sets)
-          //TODO check this against public/src/data.js
-          if (rngcode != "UNH" && rngcode != "UGL")
-            rnglist.push(rngcode);
-        var rngindex = _.rand(rnglist.length);
-        src[i] = rnglist[rngindex];
+        src[i] = getRandomSet().code;
       }
     }
   }
@@ -286,20 +280,20 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
           : [].concat(...src.map(toPack)));
     } else {
       var setlist = [];
-      var modernSets = ["AER","KLD","EMN","SOI","OGW","BFZ","ORI","DTK","FRF","KTK","M15","JOU","BNG","THS","M14","DGM","GTC","RTR","M13","AVR","DKA","ISD","M12","NPH","MBS","SOM","M11","ROE","WWK","ZEN","M10","ARB","CON","ALA","EVE","SHM","MOR","LRW","10E","FUT","PLC","TSP","CSP","DIS","GPT","RAV","9ED","SOK","8ED","BOK","CHK","5DN","DST","MRD"];
+      var modernSets = ["AER", "KLD", "EMN", "SOI", "OGW", "BFZ", "ORI", "DTK", "FRF", "KTK", "M15", "JOU", "BNG", "THS", "M14", "DGM", "GTC", "RTR", "M13", "AVR", "DKA", "ISD", "M12", "NPH", "MBS", "SOM", "M11", "ROE", "WWK", "ZEN", "M10", "ARB", "CON", "ALA", "EVE", "SHM", "MOR", "LRW", "10E", "FUT", "PLC", "TSP", "CSP", "DIS", "GPT", "RAV", "9ED", "SOK", "8ED", "BOK", "CHK", "5DN", "DST", "MRD"];
       if (modernOnly) {
         setlist = modernSets;
       }
       else {
-        for (var code in Sets)
+        for (let code in getSets())
           if (code != "UNH" && code != "UGL")
             setlist.push(code);
       }
       if (!(totalChaos)) {
-        for (var i = 0; i < 3; i++) {
-          for (var j = 0; j < playerCount; j++) {
-            var setindex = _.rand(setlist.length);
-            var code = setlist[setindex];
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < playerCount; j++) {
+            let setindex = _.rand(setlist.length);
+            let code = setlist[setindex];
             setlist.splice(setindex, 1);
             pools.push(toPack(code));
           }
@@ -312,18 +306,18 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
             var chaosPool = [];
             setindex = _.rand(setlist.length);
             if (setlist[setindex].mythic && !_.rand(8)) {
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].mythic));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].mythic));
             }
             else {
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].rare));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].rare));
             }
-            for (var k = 0; k < 3; k++) {
+            for (let k = 0; k < 3; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].uncommon));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].uncommon));
             }
-            for (var k = 0; k < 11; k++) {
+            for (let k = 0; k < 11; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, Sets[setlist[setindex]].common));
+              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].common));
             }
             pools.push(toCards(chaosPool));
           }
@@ -331,8 +325,8 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
       }
     }
   } else {
-    for (var code of src.reverse())
-      for (var i = 0; i < playerCount; i++)
+    for (let code of src.reverse())
+      for (let i = 0; i < playerCount; i++)
         pools.push(toPack(code));
   }
   return pools;

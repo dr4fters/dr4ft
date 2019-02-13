@@ -1,3 +1,4 @@
+/* eslint no-console: "off" */
 "use strict";
 
 const execSync = require("child_process").execSync;
@@ -7,6 +8,7 @@ try {
   versionInfo = execSync("git describe --always --long")
     .toString().trim();
 } catch(err) {
+  console.log(err);
 }
 
 let versionInfoParts = versionInfo.split("-");
@@ -31,5 +33,6 @@ module.exports = {
     BRANDING: {
       DEFAULT_USERNAME: "dr4fter",
     }
-  }
+  },
+  LOGDIR: process.env.LOGDIR || "./data/log/"
 };

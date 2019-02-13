@@ -1,6 +1,6 @@
 var assert = require("assert");
 var _ = require("./_");
-var {Cards, Sets} = require("./data");
+var { getCards, getSets } = require("./data");
 var BASICS = [
   "Forest",
   "Island",
@@ -10,13 +10,13 @@ var BASICS = [
 ];
 
 function transform(cube, seats, type) {
-  var {list, cards, packs} = cube;
+  var { list, cards, packs } = cube;
 
-  assert(typeof list === "string", "typeof list");
-  assert(typeof cards === "number", "typeof cards");
-  assert(5 <= cards && cards <= 30, "cards range");
-  assert(typeof packs === "number", "typeof packs");
-  assert(3 <= packs && packs <= 12, "packs range");
+  assert(typeof list === "string", "cube.list must be a string");
+  assert(typeof cards === "number", "cube.cards must be a number");
+  assert(5 <= cards && cards <= 30, "cube.cards range must be between 5 and 30");
+  assert(typeof packs === "number", "cube.packs must be a number");
+  assert(3 <= packs && packs <= 12, "cube.packs range must be between 3 and 12");
 
   list = list.split("\n").map(_.ascii);
 
@@ -28,7 +28,7 @@ function transform(cube, seats, type) {
 
   var bad = [];
   for (var cardName of list)
-    if (!(cardName in Cards))
+    if (!(cardName in getCards()))
       bad.push(cardName);
 
   if (bad.length) {
@@ -41,7 +41,7 @@ function transform(cube, seats, type) {
   cube.list = list;
 }
 
-var util = module.exports = {
+module.exports = {
   deck(deck, pool) {
     pool = _.count(pool, "name");
 
@@ -62,17 +62,43 @@ var util = module.exports = {
 
     return true;
   },
-  game({seats, type, sets, cube}) {
-    assert(typeof seats === "number", "typeof seats");
-    assert(2 <= seats && seats <= 100, "seats range");
-    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos"].indexOf(type) > -1,
-      "indexOf type");
+  game({ seats, type, sets, cube, isPrivate, fourPack, modernOnly = true, totalChaos = true }) {
+    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos"].includes(type),
+      "type can be draft, sealed, cube draft or cube sealed");
+    assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
+    assert(typeof seats === "number", "seats must be a number");
+    assert(2 <= seats && seats <= 100, "seats' number must be between 2 and 100");
 
-    if (/cube/.test(type))
-      transform(cube, seats, type);
-    //remove the below check for now to allow Random sets
-    //TODO add if check for Random set
-    //else
-    //  sets.forEach(set => assert(set in Sets, `${set} in Sets`))
+    switch (type) {
+      case "draft":
+      case "sealed":
+        assert(Array.isArray(sets), "sets must be an array");
+        sets.forEach(set =>
+          assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
+        if ("sealed" === type) {
+          assert(typeof fourPack === "boolean", "fourPack must be a boolean");
+          assert(!fourPack || sets.length < 4, "sets must be at least 4");
+        } else {
+          assert(sets.length == 3, "sets length must be 3");
+        }
+        break;
+      case "cube draft":
+      case "cube sealed":
+        assert(typeof cube === "object", "cube must be an object");
+        transform(cube, seats, type);
+        break;
+      case "chaos":
+        assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
+        assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
+        break;
+    }
+  },
+
+  start({ addBots, useTimer, timerLength, shufflePlayers }) {
+    assert(typeof addBots === "boolean", "addBots must be a boolean");
+    assert(typeof useTimer === "boolean", "useTimer must be a boolean");
+    assert(typeof shufflePlayers === "boolean", "shufflePlayers must be a boolean");
+    assert(useTimer && ["Fast", "Moderate", "Slow", "Leisurely"].includes(timerLength),
+      "timerLength must be Fast, Moderate, Slow or Leisurely");
   }
 };

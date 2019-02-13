@@ -1,44 +1,66 @@
-var https = require("https");
-var fs = require("fs");
+const fs = require("fs");
+const https = require("https");
+const rp = require("request-promise-native");
+const unzip = require("unzip");
+const logger = require("../logger");
+const updateDatabase = require("./update_database");
 
 const allSetsPath = "data/AllSets.json";
-const mtgJsonURL = "https://mtgjson.com/json/AllSets.json";
+const mtgJsonURL = "https://mtgjson.com/json/AllSets.json.zip";
+const versionURL = "https://mtgjson.com/json/version.json";
+const setsVersion = "data/version.json";
 
-const download = (onError) => {
-  console.log("Checking if AllSets.json is up to date");
-  https.get(mtgJsonURL, response => {
-    const lastMTGJsonUpdate = new Date(response.headers["last-modified"]).getTime();
-    
-    // Delete old AllSets.json
-    if (fs.existsSync(allSetsPath)) {
-      console.log("Found a previous downloaded file. Checking if AllSets.json is up to date");
-      const stats = fs.statSync(allSetsPath);
-      const lastDownload = stats.mtime.getTime();
+const isVersionNewer = (remoteVer, currentVer) => (
+  Number(remoteVer.version.replace(/\./g, "")) > Number(currentVer.version.replace(/\./g, ""))
+);
 
-      if (lastDownload >= lastMTGJsonUpdate) {
-        console.log("AllSets.json is up to date");
-        return;
-      }
-      console.log("Found a new version of AllSets.json. Updating AllSets.json");
-      fs.unlinkSync(allSetsPath);
-    }
-    console.log("Downloading AllSets.json");
-    const file = fs.createWriteStream(allSetsPath);
-    response.pipe(file);
-    file.on("finish", async () => {
-      console.log("Fetch AllSets.json finished. Updating the cards and sets data");
-      const parseCards = require("./cards");
-      await file.close(parseCards);  // close() is async, call cb after close completes.
-      console.log("Cards and sets updated");
+const isVersionUpToDate = async () => {
+  const options = {
+    method: "GET",
+    uri: versionURL,
+    json: true
+  };
+  //TODO: use new Promise and forget about rp
+  const remoteVersion = await rp(options);
+
+  if (fs.existsSync(setsVersion) && !isVersionNewer(remoteVersion, require("../../data/version.json"))) {
+    return true;
+  }
+
+  const version = JSON.stringify(remoteVersion);
+  logger.info(`Found a new version ${version}`);
+  fs.writeFileSync(setsVersion, version);
+  return false;
+};
+
+const fetchZip = () => (
+  new Promise((resolve, reject) => {
+    https.get(mtgJsonURL, response => {
+      response
+        .pipe(unzip.Parse())
+        .on("entry", (entry) => {
+          const fileName = entry.path;
+          if (fileName == "AllSets.json") {
+            logger.info("Updating AllSets.json");
+            const file = fs.createWriteStream(allSetsPath);
+            entry.pipe(file)
+              .on("finish", () => file.close(resolve));
+          }
+        })
+        .on("error", reject);
     });
-    
-  }).on("error", err => { // Handle errors
-    console.log("Could not fetch the file AllSets.json. Please check your connection");
-    fs.unlink(allSetsPath); // Delete the file async. (But we don't check the result)
-    if(onError) {
-      onError(err);
-    }
-  });
+  }));
+
+const download = async () => {
+  logger.info("Checking if AllSets.json is up to date");
+  const isUpToDate = await isVersionUpToDate();
+  if (!isUpToDate) {
+    await fetchZip();
+    logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
+    updateDatabase();
+  } else {
+    logger.info("AllSets.json is up to date");
+  }
 };
 
 module.exports = {

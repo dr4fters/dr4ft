@@ -3,15 +3,18 @@ let Bot = require("./bot");
 let Human = require("./human");
 let Pool = require("./pool");
 let Room = require("./room");
+const Rooms = require("./rooms");
+const logger = require("./logger");
+const uuid = require("uuid");
 let Sock = require("./sock");
 
 let SECOND = 1000;
 let MINUTE = 1000 * 60;
-let HOUR   = 1000 * 60 * 60;
+let HOUR = 1000 * 60 * 60;
 
-let games = {}
+let games = {};
 
-;(function playerTimer() {
+(function playerTimer() {
   for (var id in games) {
     var game = games[id];
     if (game.round < 1)
@@ -21,9 +24,9 @@ let games = {}
         p.pickOnTimeout();
   }
   setTimeout(playerTimer, SECOND);
-})()
+})();
 
-;(function gameTimer() {
+(function gameTimer() {
   var now = Date.now();
   for (var id in games)
     if (games[id].expires < now)
@@ -33,13 +36,16 @@ let games = {}
 })();
 
 module.exports = class Game extends Room {
-  constructor({id, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos}) {
-    super({isPrivate});
+  constructor({ hostId, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos }) {
+    super({ isPrivate });
     this.modernOnly = modernOnly;
     this.totalChaos = totalChaos;
+    this.bots = 0;
 
     if (sets) {
-      if (fourPack) { sets = sets.slice(0,4); }
+      if (fourPack) {
+        sets = sets.slice(0, 4);
+      }
       if (type != "chaos") {
         Object.assign(this, {
           sets,
@@ -54,17 +60,22 @@ module.exports = class Game extends Room {
     }
 
     var gameID = _.id();
-    Object.assign(this, { title, seats, type, isPrivate,
+    const secret = uuid.v4();
+    Object.assign(this, {
+      title, seats, type, isPrivate,
       delta: -1,
-      hostID: id,
+      hostID: hostId,
       id: gameID,
       players: [],
       round: 0,
-      rounds: cube ? cube.packs : 3
+      rounds: cube ? cube.packs : 3,
+      secret
     });
     this.renew();
     games[gameID] = this;
 
+    Rooms.add(gameID, this);
+    this.once("kill", () => Rooms.delete(gameID));
     Game.broadcastGameInfo();
   }
 
@@ -191,7 +202,7 @@ module.exports = class Game extends Room {
       j = players[1],
       l = this.players.length;
 
-    if( j < 0 || j >= l  )
+    if (j < 0 || j >= l)
       return;
 
     [this.players[i], this.players[j]] = [this.players[j], this.players[i]];
@@ -238,7 +249,7 @@ module.exports = class Game extends Room {
     this.meta();
   }
 
-  meta(state={}) {
+  meta(state = {}) {
     state.players = this.players.map(p => ({
       hash: p.hash,
       name: p.name,
@@ -264,12 +275,12 @@ module.exports = class Game extends Room {
   }
 
   uploadDraftStats() {
-    var draftStats = this.cube ? 
+    var draftStats = this.cube ?
       { list: this.cube.list } : { sets: this.sets };
     draftStats.id = this.id;
     draftStats.draft = {};
 
-    for (var p of this.players) 
+    for (var p of this.players)
       if (!p.isBot) draftStats.draft[p.id] = p.draftStats;
 
     var fs = require("fs");
@@ -295,26 +306,27 @@ module.exports = class Game extends Room {
       "cap": []
     };
     var seatnumber = 0;
-    for (var p of this.players) {
+    for (var player of this.players) {
       seatnumber++;
       var playercap = {
-        "id": p.id,
-        "name": p.name,
-        "ip": p.ip,
+        "id": player.id,
+        "name": player.name,
+        "ip": player.ip,
         "seat": seatnumber,
-        "picks": p.cap.packs
+        "picks": player.cap.packs
       };
       draftcap.cap.push(playercap);
     }
     var jsonfile = require("jsonfile");
     var file = "./data/cap.json";
-    jsonfile.writeFile(file, draftcap, {flag: "a"}, function (err) {
-      if (err) console.error(err);});
+    jsonfile.writeFile(file, draftcap, { flag: "a" }, function (err) {
+      if (err) logger.error(err);
+    });
 
     this.renew();
     this.round = -1;
     this.meta({ round: -1 });
-    if(this.type === "draft" || this.type === "cube draft") this.uploadDraftStats();
+    if (this.type === "draft" || this.type === "cube draft") this.uploadDraftStats();
   }
 
   pass(p, pack) {
@@ -335,10 +347,10 @@ module.exports = class Game extends Room {
 
   startRound() {
     if (this.round != 0) {
-      for (var p of this.players) {
+      for (let p of this.players) {
         p.cap.packs[this.round] = p.picks;
         p.picks = [];
-        if(!p.isBot) {
+        if (!p.isBot) {
           p.draftLog.round[this.round] = p.draftLog.pack;
           p.draftLog.pack = [];
         }
@@ -347,21 +359,21 @@ module.exports = class Game extends Room {
     if (this.round++ === this.rounds)
       return this.end();
 
-    var {players} = this;
+    var { players } = this;
     this.packCount = players.length;
     this.delta *= -1;
 
-    for (var p of players)
+    for (let p of players)
       if (!p.isBot)
         p.getPack(this.pool.pop());
 
     //let the bots play
-    this.meta = ()=>{};
+    this.meta = () => { };
     var index = players.findIndex(p => !p.isBot);
     var count = players.length;
     while (--count) {
       index -= this.delta;
-      p = _.at(players, index);
+      let p = _.at(players, index);
       if (p.isBot)
         p.getPack(this.pool.pop());
     }
@@ -370,18 +382,59 @@ module.exports = class Game extends Room {
   }
 
   hash(h, deck) {
-    h.hash = hash(deck);
+    h.hash = this.hash(deck);
     this.meta();
   }
 
-  start({addBots, useTimer, timerLength, shufflePlayers}) {
+  getStatus() {
+    const { players, didGameStart, round } = this;
+    return {
+      didGameStart: didGameStart,
+      currentPack: round,
+      players: players.map((player, index) => (
+        {
+          playerName: player.name,
+          id: player.id,
+          isReadyToStart: player.isReadyToStart,
+          seatNumber: index
+        }
+      ))
+    };
+  }
+
+  getDecks({ seat, id }) {
+    if (typeof seat == "number") {
+      const player = this.players[seat];
+      return this._getPlayerDeck(player, seat);
+    }
+
+    if (typeof id == "string") {
+      const player = this.players.find(p => p.id == id);
+      const seat = this.players.findIndex(p => p.id == id);
+      return this._getPlayerDeck(player, seat);
+    }
+
+    return this.players.map(this._getPlayerDeck);
+  }
+
+  _getPlayerDeck(player, seat) {
+    return {
+      seatNumber: seat,
+      playerName: player.name,
+      id: player.id,
+      pool: player.pool.map(card => card.name)
+    };
+  }
+
+  start({ addBots, useTimer, timerLength, shufflePlayers }) {
     var src = this.cube ? this.cube : this.sets;
-    var {players} = this;
+    var { players } = this;
     var p;
 
     if (!players.every(x => x.isReadyToStart))
       return;
 
+    Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
     this.renew();
 
     if (/sealed/.test(this.type)) {
@@ -392,7 +445,7 @@ module.exports = class Game extends Room {
         p.send("pool", p.pool);
         p.send("set", { round: -1 });
       }
-      console.log(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`);
+      logger.info(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`);
       Game.broadcastGameInfo();
       return;
     }
@@ -402,13 +455,14 @@ module.exports = class Game extends Room {
       p.timerLength = timerLength;
     }
 
-    console.log(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players and ${this.seats} seats`);
     Game.broadcastGameInfo();
     if (addBots)
-      while (players.length < this.seats)
+      while (players.length < this.seats) {
         players.push(new Bot);
+        this.bots++;
+      }
 
-    if(shufflePlayers)
+    if (shufflePlayers)
       _.shuffle(players);
 
     if (/chaos/.test(this.type)) {
@@ -422,5 +476,6 @@ module.exports = class Game extends Room {
       p.send("set", { self: i });
     });
     this.startRound();
+    logger.info(`Game ${this.id} started. ${this.players.length} players ${this.bots} bots type ${this.type} infos ${this.packsInfo}`);
   }
 };

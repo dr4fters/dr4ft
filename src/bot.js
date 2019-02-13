@@ -9,6 +9,7 @@ module.exports = class extends EventEmitter {
       isConnected: true,
       name: "bot",
       packs: [],
+      pool: [],
       time: 0,
       cap: {
         packs: {}

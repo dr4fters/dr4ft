@@ -1,5 +1,4 @@
 var fs = require("fs");
-var fetch = require("node-fetch");
 var {Cards} = require("../data");
 var scores = JSON.parse(fs.readFileSync("./data/scores.json"));
 

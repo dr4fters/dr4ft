@@ -29,14 +29,8 @@ let App = {
     modernOnly: false,
     totalChaos: false,
     type: "draft",
-    sets: [
-      "RNA",
-      "RNA",
-      "RNA",
-      "GRN",
-      "GRN",
-      "GRN"
-    ],
+    sets: [],
+    availableSets: {},
     list: "",
     cards: 15,
     packs: 3,

@@ -1,5 +1,6 @@
-let {EventEmitter} = require("events");
-let {STRINGS} = require("../config.server");
+const { EventEmitter } = require("events");
+const { STRINGS } = require("../config.server");
+const { getSets, getLatestReleasedSet } = require("./sets-service");
 
 // All sockets currently connected to the server.
 let allSocks = [];
@@ -29,7 +30,7 @@ class Sock extends EventEmitter {
   constructor(ws) {
     super();
     this.ws = ws;
-    var {id="", name=STRINGS.BRANDING.DEFAULT_USERNAME} = ws.request._query;
+    var { id = "", name = STRINGS.BRANDING.DEFAULT_USERNAME } = ws.request._query;
     this.id = id.slice(0, 25);
     this.name = name.slice(0, 15);
     //var ip = ws.request.connection.remoteAddress
@@ -39,6 +40,7 @@ class Sock extends EventEmitter {
     for (var key in mixins)
       this[key] = mixins[key].bind(this);
 
+    this.send("set", { availableSets: getSets(), latestSet: getLatestReleasedSet() });
     allSocks.push(this);
     broadcastNumUsers();
     ws.on("message", message.bind(this));
@@ -46,7 +48,7 @@ class Sock extends EventEmitter {
 
     // `this.exit` may be called for other reasons than the socket closing.
     let sock = this;
-    ws.on("close", ()=> {
+    ws.on("close", () => {
       let index = allSocks.indexOf(sock);
       if (index !== -1) {
         allSocks.splice(index, 1);

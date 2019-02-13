@@ -1,12 +1,9 @@
 const {VERSION} = require("../config.server");
-var Game = require("./game");
-var Room = require("./room");
-var Sock = require("./sock");
-var util = require("./util");
+const Game = require("./game");
+const Rooms = require("./rooms");
+const Sock = require("./sock");
+const util = require("./util");
 
-var rooms = {
-  lobby: new Room({isPrivate: true})
-};
 
 function create(opts) {
   try {
@@ -15,23 +12,17 @@ function create(opts) {
     return this.err(err.message);
   }
 
-  opts.id = this.id;
+  opts.hostId = this.id;
   var g = new Game(opts);
-  rooms[g.id] = g;
   this.send("route", "g/" + g.id);
-  g.once("kill", kill);
 }
 
 function join(roomID) {
-  var room = rooms[roomID];
+  var room = Rooms.get(roomID);
   if (!room)
-    return this.err(`room ${roomID} not found`);
+    return this.err(`No game found with id ${roomID}`);
   this.exit();
   room.join(this);
-}
-
-function kill() {
-  delete rooms[this.id];
 }
 
 module.exports = function (ws) {

@@ -1,5 +1,4 @@
 let {EventEmitter} = require("events");
-let Sock = require("./sock");
 
 module.exports = class extends EventEmitter {
   constructor({isPrivate}) {

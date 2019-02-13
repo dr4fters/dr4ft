@@ -35,18 +35,19 @@ The set with code "ABC" named "Abacus" and containing some misc cards would look
 */
 
 const fs = require("fs");
+const logger = require("../logger");
 
 const Cards = require("../../data/cards");
 const Sets = require("../../data/sets");
 const custom = require("../../data/custom");
 
 if (custom.cards) {
-  console.log("Making custom set (old format) " + custom.code);
+  logger.info("Making custom set (old format) " + custom.code);
   makeCustomSet(custom);
-}
+}/*  */
 else {
   for (var customset in custom) {
-    console.log("Making custom set " + customset);
+    logger.info("Making custom set " + customset);
     makeCustomSet(custom[customset]);
   }
 }
@@ -55,7 +56,7 @@ function makeCustomSet(customset) {
   var code = customset.code;
   var packsize = customset.packsize || 10;
   if (Sets[code]) {
-    console.log("already processed, exiting");
+    logger.info("already processed, exiting");
     return;
   }
   const set = Sets[code] = {
