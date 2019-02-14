@@ -310,18 +310,18 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
             var chaosPool = [];
             setindex = _.rand(setlist.length);
             if (setlist[setindex].mythic && !_.rand(8)) {
-              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].mythic));
+              chaosPool.push(_.choose(1, allSets[setlist[setindex]].mythic));
             }
             else {
-              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].rare));
+              chaosPool.push(_.choose(1, allSets[setlist[setindex]].rare));
             }
             for (let k = 0; k < 3; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].uncommon));
+              chaosPool.push(_.choose(1, allSets[setlist[setindex]].uncommon));
             }
             for (let k = 0; k < 11; k++) {
               setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, getSets()[setlist[setindex]].common));
+              chaosPool.push(_.choose(1, allSets[setlist[setindex]].common));
             }
             pools.push(toCards(chaosPool));
           }
