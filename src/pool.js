@@ -288,7 +288,9 @@ module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, tota
       else {
         for (let code in allSets) {
           const { type } = allSets[code];
-          if (type !== "custom" && code != "UNH" && code != "UGL") {
+
+          // We don't want Unstable or Unhinged sets, neither custom sets
+          if (!["custom", "funny"].includes(type)) {
             setlist.push(code);
           }
         }
