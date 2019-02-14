@@ -42,7 +42,7 @@ setsRouter
       writeCards(newCards);
 
       //Moving custom set to custom directory
-      fs.writeFile(`data/custom/${json.code}.json`, json, (err) => {
+      fs.writeFile(`data/custom/${json.code}.json`, JSON.stringify(json), (err) => {
         if (err) {
           logger.error(`Could not save file ${json.code}.json. ${err}`);
           return res.status(500).send(err);
