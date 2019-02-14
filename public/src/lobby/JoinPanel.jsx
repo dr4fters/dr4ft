@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const JoinPanel = ({roomInfo}) => {
   return (
     <fieldset className='fieldset'>
-      <legend className='legend'>Join a room</legend>
+      <legend className='legend'>Join a Room</legend>
       {roomInfo.length
         ? <table className='join-room-table'>
           <thead>

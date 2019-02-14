@@ -13,7 +13,7 @@ const CreatePanel = () => {
   return (
     <fieldset className='fieldset'>
       <legend className='legend'>
-        Create a room
+        Create a Room
       </legend>
       <div>
         <label>
