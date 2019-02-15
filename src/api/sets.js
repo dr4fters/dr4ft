@@ -13,7 +13,7 @@ const CUSTOM_TYPE = "custom";
 
 setsRouter
   .post("/upload", (req, res, next) => {
-    let file = req.files.file;
+    let file = req.files.filepond;
     const content = file.data.toString();
 
     try {
