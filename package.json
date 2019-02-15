@@ -28,12 +28,11 @@
   },
   "scripts": {
     "start": "node scripts/run",
-    "watch": "rimraf built/ && webpack --watch -d --display-error-details",
-    "dev-server": "webpack-dev-server --hot --progress --inline --output-path /lib/app.js --entry ./public/src/init.js --output-filename ./lib/app.js",
-    "server": "webpack-dev-server --open --inline --hot",
-    "postinstall": "rimraf built/ && node scripts/postinstall && webpack",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
+    "dev-server": "webpack-dev-server --config webpack.dev.js",
     "pretest": "eslint --ignore-path .gitignore .",
-    "build": "rimraf built/ && NODE_ENV=production webpack -p --progress --colors"
+    "postinstall": "node scripts/postinstall && webpack --config webpack.prod.js"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -44,6 +43,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
     "body-parser": "^1.18.3",
+    "clean-webpack-plugin": "^1.0.1",
     "cors": "^2.8.5",
     "ee": "git://github.com/dr4fters/ee.git",
     "engine.io": "^3.3.2",
@@ -64,6 +64,7 @@
     "unzip": "^0.1.11",
     "utils": "git://github.com/dr4fters/utils.git",
     "webpack": "^4.29.3",
+    "webpack-merge": "^4.2.1",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -72,7 +73,6 @@
     "eslint": "^5.13.0",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^5.2.0",
-    "rimraf": "^2.6.3",
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
