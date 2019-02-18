@@ -63,7 +63,7 @@
     "send": "^0.16.2",
     "unzip": "^0.1.11",
     "utils": "git://github.com/dr4fters/utils.git",
-    "webpack": "^4.29.3",
+    "webpack": "^4.29.4",
     "webpack-merge": "^4.2.1",
     "winston": "^3.1.0"
   },
