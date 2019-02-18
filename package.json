@@ -62,7 +62,6 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-filepond": "^7.0.1",
-    "react-dom": "^16.8.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "send": "^0.16.2",
