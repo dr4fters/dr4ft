@@ -12,7 +12,7 @@ if (!fs.existsSync("data/custom")) {
 const CUSTOM_TYPE = "custom";
 
 setsRouter
-  .post("/upload", (req, res, next) => {
+  .post("/upload", (req, res) => {
     let file = req.files.file;
     const content = file.data.toString();
 

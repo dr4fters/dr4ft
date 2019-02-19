@@ -96,7 +96,6 @@ const postParseSets = (sets, cards) => {
   for (var masterset in masterpiecelist) {
     if (sets[masterset]["special"]) {
       sets[masterset]["special"]["masterpieces"] = [];
-      //masterpiecelist[masterset]['cards']
     } else {
       sets[masterset]["special"] = {
         "masterpieces": []
@@ -105,7 +104,6 @@ const postParseSets = (sets, cards) => {
         sets[masterset]["special"]["masterpieces"].push(masterpiecelist[masterset]["cards"][mpindex].toLowerCase());
       }
     }
-    var mastercards = masterpiecelist[masterset]["cards"];
   }
   var { EMN } = sets;
   EMN.special = {
