@@ -2,6 +2,7 @@ const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 
 var cards, sets, mws;
+let playableSets, latestSet;
 
 const getSets = () => {
   if (!sets) {
@@ -32,6 +33,68 @@ const writeCards = (newCards) => {
 const writeSets = (newSets) => {
   fs.writeFileSync("data/sets.json", JSON.stringify(newSets));
   sets = newSets;
+  playableSets = null;
+};
+
+const getPlayableSets = () => {
+  if (playableSets) {
+    return playableSets;
+  }
+  playableSets = {};
+
+  const AllSets = getSets();
+  for (let code in AllSets) {
+    const { type, name, releaseDate } = AllSets[code];
+
+    //We do not want to play with these types of set (unplayable or lacking cards)
+    if (["masterpiece", "starter", "planechase", "commander"].includes(type)) {
+      continue;
+    }
+
+    if (!latestSet) {
+      latestSet = { code, type, name, releaseDate };
+    } else if (Number(releaseDate.replace(/-/g, "")) > Number(latestSet.releaseDate.replace(/-/g, ""))) {
+      latestSet = { code, type, name, releaseDate };
+    }
+
+    if (!playableSets[type]) {
+      playableSets[type] = [{ code, name, releaseDate }];
+    } else {
+      playableSets[type].push({ code, name, releaseDate });
+    }
+  }
+
+  //Add random possibility
+  playableSets["random"] = [{ code: "RNG", name: "Random Set" }];
+
+  // sort all keys depending on releaseDate
+  for (let type in playableSets) {
+    playableSets[type].sort((a, b) => {
+      return Number(b.releaseDate.replace(/-/g, "")) - Number(a.releaseDate.replace(/-/g, ""));
+    });
+  }
+
+  return playableSets;
+};
+
+const getRandomSet = () => {
+  const allSets = getPlayableSets();
+  const allTypes = Object.keys(allSets);
+  let randomType = allTypes[allTypes.length * Math.random() << 0];
+
+  //Avoid random set
+  while (randomType == "random") {
+    randomType = allTypes[allTypes.length * Math.random() << 0];
+  }
+  const randomSets = allSets[randomType];
+  return randomSets[randomSets.length * Math.random() << 0];
+};
+
+const getLatestReleasedSet = () => {
+  if (!latestSet) {
+    getPlayableSets();
+  }
+  return latestSet;
 };
 
 module.exports = {
@@ -39,5 +102,8 @@ module.exports = {
   getSets,
   getMws,
   writeCards,
-  writeSets
+  writeSets,
+  getPlayableSets,
+  getRandomSet,
+  getLatestReleasedSet
 };

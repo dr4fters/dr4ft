@@ -1,8 +1,9 @@
 const fs = require("fs");
 const express = require("express");
 const setsRouter = express.Router();
-const { getSets, getCards, writeSets, writeCards } = require("../data");
+const { getSets, getCards, writeSets, writeCards, getPlayableSets, getLatestReleasedSet } = require("../data");
 const doSet = require("../make/doSet");
+const Sock = require("../sock");
 const logger = require("../logger");
 
 if (!fs.existsSync("data/custom")) {
@@ -39,6 +40,7 @@ setsRouter
       logger.info(`adding new set with code "${json.code}" to database`);
       sets[json.code] = parsedSet;
       writeSets(sets);
+      Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
       writeCards(newCards);
 
       //Moving custom set to custom directory
