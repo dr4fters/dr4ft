@@ -40,6 +40,7 @@ module.exports = class Game extends Room {
     super({ isPrivate });
     this.modernOnly = modernOnly;
     this.totalChaos = totalChaos;
+    this.cube = cube;
     this.bots = 0;
 
     if (sets) {
@@ -47,16 +48,29 @@ module.exports = class Game extends Room {
         sets = sets.slice(0, 4);
       }
       if (type != "chaos") {
-        Object.assign(this, {
-          sets,
-          packsInfo: sets.join(" / ")
-        });
-      } else {
-        this.packsInfo = "";
+        this.sets = sets;
       }
-    } else {
-      let packsInfo = (type === "cube draft") ? cube.packs + "x" + cube.cards : "";
-      Object.assign(this, { cube, packsInfo });
+    }
+
+    // Handle packsInfos to show various informations about the game
+    switch(type) {
+    case "draft":
+    case "sealed":
+      this.packsInfo = sets.join(" / ");
+      break;
+    case "cube draft":
+    case "cube sealed":
+      this.packsInfo = `${cube.packs} x ${cube.cards}`;
+      break;
+    case "chaos": {
+      const chaosOptions = [];
+      chaosOptions.push(modernOnly ? "Modern sets only" : "From any set");
+      chaosOptions.push(totalChaos ? "Total Chaos" : "Real booster ");
+      this.packsInfo = `${chaosOptions.join(", ")}`;
+      break;
+    }
+    default:
+      this.packsInfo = "";
     }
 
     var gameID = _.id();
