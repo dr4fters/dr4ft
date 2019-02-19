@@ -19,6 +19,9 @@ function route() {
   switch(route) {
   case "g":
     component = <Game id={ id } />;
+    App.state.players = [];
+    App.send("join", id);
+    App.state.chat = true;
     break;
   case "":
     component = <Lobby />;

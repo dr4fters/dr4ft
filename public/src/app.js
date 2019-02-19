@@ -1,4 +1,3 @@
-/*global eio */
 import _ from "NodePackages/utils/utils";
 import EventEmitter from "NodePackages/ee/ee";
 import {STRINGS} from "./config";

@@ -70,27 +70,27 @@ module.exports = {
     assert(2 <= seats && seats <= 100, "seats' number must be between 2 and 100");
 
     switch (type) {
-      case "draft":
-      case "sealed":
-        assert(Array.isArray(sets), "sets must be an array");
-        sets.forEach(set =>
-          assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
-        if ("sealed" === type) {
-          assert(typeof fourPack === "boolean", "fourPack must be a boolean");
-          assert(!fourPack || sets.length < 4, "sets must be at least 4");
-        } else {
-          assert(sets.length == 3, "sets length must be 3");
-        }
-        break;
-      case "cube draft":
-      case "cube sealed":
-        assert(typeof cube === "object", "cube must be an object");
-        transform(cube, seats, type);
-        break;
-      case "chaos":
-        assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
-        assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
-        break;
+    case "draft":
+    case "sealed":
+      assert(Array.isArray(sets), "sets must be an array");
+      sets.forEach(set =>
+        assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
+      if ("sealed" === type) {
+        assert(typeof fourPack === "boolean", "fourPack must be a boolean");
+        assert(!fourPack || sets.length < 4, "sets must be at least 4");
+      } else {
+        assert(sets.length == 3, "sets length must be 3");
+      }
+      break;
+    case "cube draft":
+    case "cube sealed":
+      assert(typeof cube === "object", "cube must be an object");
+      transform(cube, seats, type);
+      break;
+    case "chaos":
+      assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
+      assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
+      break;
     }
   },
 
