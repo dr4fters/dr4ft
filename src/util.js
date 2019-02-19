@@ -77,7 +77,8 @@ module.exports = {
         assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
       if ("sealed" === type) {
         assert(typeof fourPack === "boolean", "fourPack must be a boolean");
-        assert(!fourPack || sets.length < 4, "sets must be at least 4");
+        const minPacks = fourPack ? 4 : 6;
+        assert(sets.length >=  minPacks, `sets must be at least ${minPacks}`);
       } else {
         assert(sets.length == 3, "sets length must be 3");
       }
