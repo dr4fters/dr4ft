@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 
-import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {Zones} from "Src/cards";
 
@@ -15,22 +13,8 @@ import Chat from "./Chat";
 
 
 export default class Game extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props.state;
+  componentDidMount() {
     App.register(this);
-  }
-  componentWillMount() {
-    App.state.players = [];
-    App.send("join", this.props.id);
-    App.state.chat = true;
-  }
-
-  componentWillReceiveProps({id}) {
-    if (this.props.id === id)
-      return;
-
-    App.send("join", id);
   }
 
   render() {
@@ -53,11 +37,6 @@ export default class Game extends Component {
     );
   }
 }
-
-Game.propTypes = {
-  state: PropTypes.object,
-  id: PropTypes.string.isRequired
-};
 
 const CardsZone = () => {
   const pack
