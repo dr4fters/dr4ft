@@ -40,7 +40,7 @@ export default class Game extends Component {
 
 const CardsZone = () => {
   const pack
-  = Object.keys(Zones.pack).length
+  = !App.state.isGameFinished && Object.keys(Zones.pack).length
     ? <Grid key={"pack"} zones={["pack"]} />
     : <div key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
