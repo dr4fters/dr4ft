@@ -21,6 +21,7 @@ const FileUpload = () => {
         allowRevert={false}
         maxFileSize={"3MB"}
         acceptedFileTypes={["application/json"]}
+        allowMultiple={true}
         files={files}
         server="/api/sets/upload"
         onupdatefiles={fileItems => {
