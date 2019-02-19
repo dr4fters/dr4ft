@@ -27,12 +27,13 @@ const findPicUrl = ({ name, url, scryfallId, printings = [], rawSets }) => {
 };
 
 function doSet(rawSet, rawSets = {}, allCards = {}) {
-  const code = rawSet.code;
+  const { baseSetSize, code } = rawSet;
   var cards = {};
   var set = {
     name: rawSet.name,
     type: rawSet.type,
     releaseDate: rawSet.releaseDate,
+    baseSetSize: baseSetSize,
     basic: [],
     common: [],
     uncommon: [],
@@ -43,10 +44,7 @@ function doSet(rawSet, rawSets = {}, allCards = {}) {
   var card;
 
   for (card of rawSet.cards) {
-    // Delete promo cards of sets
-    if (!rawSet.baseSetSize || rawSet.baseSetSize >= card.number) {
-      doCard(card, cards, code, set, rawSets);
-    }
+    doCard({card, cards, code, set, rawSets, baseSetSize});
   }
 
   //because of split cards, do this only after processing the entire set
@@ -68,9 +66,9 @@ function doSet(rawSet, rawSets = {}, allCards = {}) {
   return set;
 }
 
-function doCard(rawCard, cards, code, set, rawSets) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, printings } = rawCard;
-  var rarity = rawCard.rarity.split(" ")[0].toLowerCase();
+function doCard({card, cards, code, set, rawSets, baseSetSize}) {
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, printings } = card;
+  var rarity = card.rarity.split(" ")[0].toLowerCase();
 
   // With MTGJsonv4, a new rarity exists
   if ("timeshifted" == rarity) {
@@ -101,10 +99,10 @@ function doCard(rawCard, cards, code, set, rawSets) {
 
   if (name in cards) {
     if (/^split$|^aftermath$/i.test(layout)) {
-      var card = cards[name];
-      card.cmc += convertedManaCost;
-      if (card.color !== color)
-        card.color = "multicolor";
+      var c = cards[name];
+      c.cmc += convertedManaCost;
+      if (c.color !== color)
+        c.color = "multicolor";
       return;
     }
   }
@@ -151,7 +149,10 @@ function doCard(rawCard, cards, code, set, rawSets) {
     supertypes: supertypes || []
   };
 
-  set[rarity].push(name.toLowerCase());
+  // Avoid promo cards in sets
+  if (!baseSetSize || baseSetSize >= parseInt(number)) {
+    set[rarity].push(name.toLowerCase());
+  }
 }
 
 module.exports = doSet;
