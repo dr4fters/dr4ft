@@ -1,70 +1,36 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class FileUpload extends Component {
+// Import React FilePond
+import { FilePond, registerPlugin } from "react-filepond";
 
-    constructor(props) {
-        super(props);
-        this.state = this.defaultState();
-        this.onChangeFile = this.onChangeFile.bind(this);
-    }
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
 
-    defaultState() {
-        return {
-            fileName: "Import custom set",
-            resultStatus: "",
-            resultClass: "success"
-        };
-    }
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-    onChangeFile({ target }) {
-        if (!target.files[0]) {
-            return this.setState(this.defaultState());
-        }
+// Register the plugins
+registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
-        const data = new FormData();
-        data.append("file", target.files[0]);
-        fetch("/api/sets/upload", {
-            method: "POST",
-            body: data
-        })
-            .then(response => {
-                if (/^2/.exec(response.status)) {
-                    this.setState({
-                        resultStatus: "Upload completed!",
-                        resultClass: "success"
-                    });
-                } else {
-                    this.setState({
-                        resultStatus: "Upload error: " + response.statusText,
-                        resultClass: "error"
-                    });
-                }
-            })
-            .catch(error => {
-                this.setState({
-                    resultStatus: "Upload error: " + error.statusText,
-                    resultClass: "error"
-                });
-            });
-
-        this.setState({
-            fileName: target.value.split('\\').pop(),
-            resultClass: "success"
-        });
-    }
-
-    render() {
-        return (
-            <fieldset className='fieldset'>
-                <legend className='legend'>
-                    Upload Custom Set
-                </legend>
-                <input type="file" name="file" onChange={this.onChangeFile} id="file" className="inputfile" accept=".json" />
-                <label className="uploadFile" for="file">{this.state.fileName}</label>
-                <p className={this.state.resultClass}>{this.state.resultStatus}</p>
-            </fieldset>
-        )
-    }
-}
+const FileUpload = () => {
+  const [files, setFiles] = useState([]);
+  return (
+    <fieldset className='fieldset'>
+      <legend className='legend'>Upload Custom Set</legend>
+      <FilePond
+        allowRevert={false}
+        maxFileSize={"3MB"}
+        acceptedFileTypes={["application/json"]}
+        allowMultiple={true}
+        files={files}
+        server="/api/sets/upload"
+        onupdatefiles={fileItems => {
+          // Set currently active file objects to this.state
+          setFiles(fileItems.map(fileItem => fileItem.file));
+        }}
+      />
+    </fieldset>
+  );
+};
 
 export default FileUpload;

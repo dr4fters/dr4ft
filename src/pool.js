@@ -1,6 +1,5 @@
 var _ = require("./_");
-var { getCards, getSets, getMws } = require("./data");
-const { getRandomSet } = require("./sets-service");
+var { getCards, getSets, getMws, getRandomSet } = require("./data");
 
 function selectRarity(set) {
   // average pack contains:
