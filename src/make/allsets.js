@@ -1,12 +1,12 @@
 const fs = require("fs");
 const https = require("https");
 const rp = require("request-promise-native");
-const unzip = require("unzipper");
+const AdmZip = require("adm-zip");
+const unzip = require("unzip");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
 
-const mtgJsonURL = "https://mtgjson.com/json/AllSets.zip";
-// const mtgJsonURL = "https://uc5d5a4a35c5b6c1a8fc07c0fe2a.dl.dropboxusercontent.com/cd/0/get/Abodb0SFIlbwoJpKypgVLInetpreqWfF6oYVxHPhj_DKfIiQQtt6OtXxWyz9GXCywt6MqvWNEAECCilo6fpV5WO50KPDEH3GGVP7ls6ziMTYc8EoNr0aGuHSEyP5Plz3pl4/file?_download_id=904706619023873207537301393903506102100065041357274303019794770033&_notify_domain=www.dropbox.com&dl=1";
+const mtgJsonURL = "https://mtgjson.com/json/AllSetFiles.zip";
 const versionURL = "https://mtgjson.com/json/version.json";
 const setsVersion = "data/version.json";
 
@@ -38,7 +38,7 @@ const fetchZip = () => (
     https.get(mtgJsonURL, response => {
       logger.info("Updating AllSets.json");
       response
-        .pipe(unzip.Extract({path: "/tmp/test.zip"}))
+        .pipe(unzip.Parse())
         .on("entry", (entry) => {
 
           if (!fs.existsSync("data/sets")) {
@@ -46,8 +46,9 @@ const fetchZip = () => (
           }
           const file = fs.createWriteStream(`data/sets/${entry.path}`);
           entry.pipe(file)
-            .on("finish", () => file.close(resolve));
+            .on("finish", file.close);
         })
+        .on("finish", resolve)
         .on("error", reject);
     });
   }));

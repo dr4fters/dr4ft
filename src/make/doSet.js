@@ -1,4 +1,5 @@
 const _ = require("../_");
+const logger = require("../logger");
 
 const COLORS = {
   W: "white",
@@ -12,6 +13,7 @@ const findPicUrl = ({ name, url, scryfallId, printings = [], rawSets }) => {
   if (url || scryfallId) {
     return url || `https://api.scryfall.com/cards/${scryfallId}?format=image`;
   } else {
+    logger.warn(`card ${name} doesn't have a picture :( !!`);
     var picUrl;
     printings.some(printing => {
       if (rawSets[printing]) {
