@@ -48,7 +48,6 @@
     "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "adm-zip": "^0.4.13",
     "babel-loader": "^8.0.0",
     "body-parser": "^1.18.3",
     "clean-webpack-plugin": "^1.0.1",

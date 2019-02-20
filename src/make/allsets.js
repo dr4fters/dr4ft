@@ -1,7 +1,6 @@
 const fs = require("fs");
 const https = require("https");
 const rp = require("request-promise-native");
-const AdmZip = require("adm-zip");
 const unzip = require("unzip");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
