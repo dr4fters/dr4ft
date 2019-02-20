@@ -1,5 +1,4 @@
 const _ = require("../_");
-const logger = require("../logger");
 
 const COLORS = {
   W: "white",

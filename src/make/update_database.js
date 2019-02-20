@@ -287,10 +287,9 @@ const updateDatabase = () => {
   const allCards = {};
   const allSets = {};
 
-  // Add sets
+  // Add normal sets
   const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
-  const types = ["core", "expansion", "commander", "planechase", "starter", "un"];
-  const specialSets = ["UMA", "EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
+  const types = ["core", "expansion", "commander", "planechase", "starter", "un", "masters", "draft_innovation", "masterpiece"];
   if (fs.existsSync("data/sets")) {
     const files = fs.readdirSync("data/sets");
     files.forEach(file => {
@@ -304,8 +303,7 @@ const updateDatabase = () => {
       const path = `data/sets/${file}`;
       try {
         const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-        if (json.code &&
-          (types.includes(json.type) || specialSets.includes(json.code))) {
+        if (json.code && types.includes(json.type)) {
           logger.info(`Found set to integrate ${json.code} with path ${path}`);
           prepareSet(json);
 
@@ -314,7 +312,7 @@ const updateDatabase = () => {
           logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
-        logger.error(`Error while parsing file ${path}: ${err}`);
+        logger.error(`Error while integrating the file ${path}: ${err.stack}`);
       }
     });
   }
@@ -334,7 +332,7 @@ const updateDatabase = () => {
             logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {
-          logger.error(`Error while parsing file ${path}: ${err}`);
+          logger.error(`Error while integrating the file ${path}: ${err.stack}`);
         }
       }
     });

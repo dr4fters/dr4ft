@@ -441,55 +441,89 @@ module.exports = class Game extends Room {
   }
 
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
-    var src = this.cube ? this.cube : this.sets;
-    var { players } = this;
-    var p;
+    try {
+      var src = this.cube ? this.cube : this.sets;
+      var { players } = this;
+      var p;
 
-    if (!players.every(x => x.isReadyToStart))
-      return;
+      if (!players.every(x => x.isReadyToStart))
+        return;
 
-    Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
-    this.renew();
+      Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
+      this.renew();
 
-    if (/sealed/.test(this.type)) {
-      this.round = -1;
-      var pools = Pool(src, players.length, true);
-      for (p of players) {
-        p.pool = pools.pop();
-        p.send("pool", p.pool);
-        p.send("set", { round: -1 });
+      if (/sealed/.test(this.type)) {
+        this.round = -1;
+        var pools = Pool(src, players.length, true);
+        for (p of players) {
+          p.pool = pools.pop();
+          p.send("pool", p.pool);
+          p.send("set", { round: -1 });
+        }
+      } else {
+        // Handle draft specificities
+        for (p of players) {
+          p.useTimer = useTimer;
+          p.timerLength = timerLength;
+        }
+
+        Game.broadcastGameInfo();
+        if (addBots)
+          while (players.length < this.seats) {
+            players.push(new Bot);
+            this.bots++;
+          }
+
+        if (shufflePlayers)
+          _.shuffle(players);
+
+        if (/chaos/.test(this.type)) {
+          this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos);
+        }
+        else
+          this.pool = Pool(src, players.length);
+
+        players.forEach((p, i) => {
+          p.on("pass", this.pass.bind(this, p));
+          p.send("set", { self: i });
+        });
+        this.startRound();
       }
-      logger.info(`${this.type} using ${this.packsInfo} game ${this.id} started with ${this.players.length} players`);
+
+      logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
-      return;
+    } catch(err) {
+      logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
+      this.players.forEach(player => {
+        if(!player.isBot) {
+          player.exit();
+          player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: https://github.com/dr4fters/dr4ft/issues");
+        }
+      });
+      delete games[this.id];
+      Game.broadcastGameInfo();
+      this.emit("kill");
     }
+  }
 
-    for (p of players) {
-      p.useTimer = useTimer;
-      p.timerLength = timerLength;
-    }
-
-    Game.broadcastGameInfo();
-    if (addBots)
-      while (players.length < this.seats) {
-        players.push(new Bot);
-        this.bots++;
-      }
-
-    if (shufflePlayers)
-      _.shuffle(players);
-
-    if (/chaos/.test(this.type)) {
-      this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos);
-    }
-    else
-      this.pool = Pool(src, players.length);
-
-    players.forEach((p, i) => {
-      p.on("pass", this.pass.bind(this, p));
-      p.send("set", { self: i });
-    });
-    this.startRound();
-    logger.info(`Game ${this.id} started. ${this.players.length} players ${this.bots} bots type ${this.type} infos ${this.packsInfo}`);
+  toString() {
+    return `
+    Game State
+    ----------
+    id: ${this.id}
+    hostId: ${this.hostID}
+    title: ${this.title}
+    seats: ${this.seats}
+    type: ${this.type}
+    sets: ${this.sets}
+    cube: ${this.cube}
+    isPrivate: ${this.isPrivate}
+    fourPack: ${this.fourPack}
+    modernOnly: ${this.modernOnly}
+    totalChaos: ${this.totalChaos}
+    packsInfos: ${this.packsInfo}
+    players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
+    bots: ${this.bots}
+    `;
   }
 };

@@ -41,6 +41,11 @@ function toPack(code) {
 
   if (mythic && !_.rand(8))
     rare = mythic;
+
+  if (!rare.length) {
+    rare = uncommon; //In some sets rare didn't exist. So we replace them with uncommons
+  }
+
   //make small sets draftable.
   if (size < 10 && code != "SOI" && code != "EMN")
     size = 10;
