@@ -412,7 +412,7 @@ function Key(groups, sort) {
     break;
   case "rarity":
     keys =
-        ["basic", "common", "uncommon", "rare", "mythic", "special"]
+        ["mythic", "rare", "uncommon", "common", "basic", "special"]
           .filter(x => keys.indexOf(x) > -1);
     break;
   case "type":

@@ -46,7 +46,7 @@ let App = {
     filename: "filename",
     filetype: "txt",
     side: false,
-    sort: "color",
+    sort: "rarity",
     log: {},
 
     get didGameStart() {
