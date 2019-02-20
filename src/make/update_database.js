@@ -1,30 +1,9 @@
 const fs = require("fs");
 const logger = require("../logger");
 const { writeCards, writeSets } = require("../data");
-const parseCards = require("./cards");
+const doSet = require("./doSet");
 
-const allSetsPath = "data/AllSets.json";
-
-const prepareAllSets = (raw) => {
-  const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
-  // Add set codes here to have them removed
-  for (var removeSet of setsToIgnore) {
-    if (raw[removeSet]) {
-      delete raw[removeSet];
-    }
-    else {
-      logger.warning("Set " + removeSet + " would be removed but not found in MTGJSON. (in make/cards)");
-    }
-  }
-
-  const types = ["core", "expansion", "commander", "planechase", "starter", "un"];
-  const specialSets = ["UMA", "EMA", "MMA", "VMA", "CNS", "TPR", "MM2", "EXP", "MPS", "CN2", "MM3", "MPS_AKH", "IMA", "BBD", "A25"];
-  for (let setCode in raw) {
-    if (!types.includes(raw[setCode].type) && !specialSets.includes(setCode)) {
-      delete raw[setCode];
-    }
-  }
-
+const prepareSet = (raw) => {
   const COLORS = {
     W: "white",
     U: "blue",
@@ -33,37 +12,54 @@ const prepareAllSets = (raw) => {
     G: "green"
   };
 
-  ["BFZ", "OGW"].forEach(setName => {
-    for (card of raw[setName].cards)
+  if (["BFZ", "OGW"].includes(raw.code)) {
+    for (card of raw.cards) {
       if (card.text && card.text.startsWith("Devoid"))
         card.colors = card.manaCost
           .replace(/[\d{}]/g, "")
           .replace(/(.)\1+/g, "$1")
           .split("")
           .map(c => COLORS[c]);
-  });
+    }
+  }
 
   var card;
-  for (card of raw.EMN.cards)
-    if (card.layout === "double-faced" || card.layout === "meld")
-      card.rarity = "special";
-  for (card of raw.SOI.cards)
-    if (card.layout === "double-faced")
-      card.rarity = "special";
-  for (card of raw.ISD.cards)
-    if (card.layout === "double-faced")
-      card.rarity = "special";
-  for (card of raw.DGM.cards)
-    if (/Guildgate/.test(card.name))
-      card.rarity = "special";
-  for (card of raw.CNS.cards)
-    if ((card.type === "Conspiracy")
-            || /draft/.test(card.text))
-      card.rarity = "special";
-  for (card of raw.FRF.cards)
-    if (card.types[0] === "Land"
-            && (card.name !== "Crucible of the Spirit Dragon"))
-      card.rarity = "special";
+
+  switch (raw.code) {
+  case "EMN": {
+    for (card of raw.cards)
+      if (card.layout === "double-faced" || card.layout === "meld")
+        card.rarity = "special";
+  }
+    break;
+  case "ISD":
+  case "SOI": {
+    for (card of raw.cards)
+      if (card.layout === "double-faced")
+        card.rarity = "special";
+  }
+    break;
+  case "DGM": {
+    for (card of raw.cards)
+      if (/Guildgate/.test(card.name))
+        card.rarity = "special";
+  }
+    break;
+  case "CNS": {
+    for (card of raw.cards)
+      if ((card.type === "Conspiracy")
+          || /draft/.test(card.text))
+        card.rarity = "special";
+  }
+    break;
+  case "FRF": {
+    for (card of raw.cards)
+      if (card.types[0] === "Land"
+          && (card.name !== "Crucible of the Spirit Dragon"))
+        card.rarity = "special";
+  }
+    break;
+  }
 };
 
 const postParseSets = (sets, cards) => {
@@ -288,9 +284,38 @@ const alias = (arr, code, cards) => {
 };
 
 const updateDatabase = () => {
-  const rawSets = JSON.parse(fs.readFileSync(allSetsPath, "UTF-8"));
-  prepareAllSets(rawSets);
+  const allCards = {};
+  const allSets = {};
 
+  // Add normal sets
+  const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
+  const types = ["core", "expansion", "commander", "planechase", "starter", "un", "masters", "draft_innovation", "masterpiece"];
+  if (fs.existsSync("data/sets")) {
+    const files = fs.readdirSync("data/sets");
+    files.forEach(file => {
+      if (!/.json/g.test(file)) {
+        return;
+      }
+      const [setName,] = file.split(".");
+      if (setsToIgnore.includes(setName)) {
+        return;
+      }
+      const path = `data/sets/${file}`;
+      try {
+        const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
+        if (json.code && types.includes(json.type)) {
+          logger.info(`Found set to integrate ${json.code} with path ${path}`);
+          prepareSet(json);
+
+          logger.info(`Parsing ${json.code} started`);
+          allSets[json.code] = doSet(json, allCards);
+          logger.info(`Parsing ${json.code} finished`);
+        }
+      } catch (err) {
+        logger.error(`Error while integrating the file ${path}: ${err.stack}`);
+      }
+    });
+  }
   // Add custom sets
   if (fs.existsSync("data/custom")) {
     const files = fs.readdirSync("data/custom");
@@ -300,18 +325,19 @@ const updateDatabase = () => {
         const path = `data/custom/${file}`;
         try {
           const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-          if (json.code && !rawSets[json.code]) {
+          if (json.code) {
             json.type = "custom";
             logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
-            rawSets[json.code] = json;
+            allSets[json.code] = doSet(json, allCards);
+            logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {
-          logger.error(`Error while parsing file ${path}: ${err}`);
+          logger.error(`Error while integrating the file ${path}: ${err.stack}`);
         }
       }
     });
   }
-  const { allSets, allCards } = parseCards(rawSets);
+
   postParseSets(allSets, allCards);
   logger.info("Parsing AllSets.json finished");
   writeCards(allCards);

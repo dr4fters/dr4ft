@@ -5,8 +5,7 @@ const unzip = require("unzip");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
 
-const allSetsPath = "data/AllSets.json";
-const mtgJsonURL = "https://mtgjson.com/json/AllSets.json.zip";
+const mtgJsonURL = "https://mtgjson.com/json/AllSetFiles.zip";
 const versionURL = "https://mtgjson.com/json/version.json";
 const setsVersion = "data/version.json";
 
@@ -36,17 +35,19 @@ const isVersionUpToDate = async () => {
 const fetchZip = () => (
   new Promise((resolve, reject) => {
     https.get(mtgJsonURL, response => {
+      logger.info("Updating AllSets.json");
       response
         .pipe(unzip.Parse())
         .on("entry", (entry) => {
-          const fileName = entry.path;
-          if (fileName == "AllSets.json") {
-            logger.info("Updating AllSets.json");
-            const file = fs.createWriteStream(allSetsPath);
-            entry.pipe(file)
-              .on("finish", () => file.close(resolve));
+
+          if (!fs.existsSync("data/sets")) {
+            fs.mkdirSync("data/sets");
           }
+          const file = fs.createWriteStream(`data/sets/${entry.path}`);
+          entry.pipe(file)
+            .on("finish", file.close);
         })
+        .on("finish", resolve)
         .on("error", reject);
     });
   }));

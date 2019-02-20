@@ -26,18 +26,32 @@ module.exports = {
     return count;
   },
   choose(n, arr) {
-    // arr.slice(0) copies the entire array
-    if (n === 0)
-      return [];
-
-    // http://en.wikipedia.org/wiki/Fisher–Yates_shuffle
-    var i = arr.length;
-    var end = i - n;
-    while (i > end) {
-      var j = this.rand(i--)
-      ;[arr[i], arr[j]] = [arr[j], arr[i]];
+    switch(true) {
+    // if we want no elements, we return an empty array  
+    case n === 0: return [];
+    // if we want exactly the same number of elements 
+    // as the array length, we return a copy of the array
+    case n === arr.length: return arr.slice(0);
+    // if we want more elements than the array length
+    // we return a copy plus random elements from the array
+    case n > arr.length: {
+      const copy = arr.slice(0);
+      for(n; n > arr.length; n--) {
+        copy.push(arr[this.rand(arr.length)]);
+      }
+      return copy;
     }
-    return arr.slice(-n);
+    default: {
+      // http://en.wikipedia.org/wiki/Fisher–Yates_shuffle
+      var i = arr.length;
+      var end = i - n;
+      while (i > end) {
+        var j = this.rand(i--)
+      ;[arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.slice(-n);
+    }
+    }
   },
   shuffle(arr) {
     return this.choose(arr.length, arr);
