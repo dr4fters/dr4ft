@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { render } from "react-dom";
 
-import Lobby from "./lobby/Lobby";
-import Game  from "./game/Game";
+const Lobby = React.lazy(() => import("./lobby/Lobby"));
+const Game = React.lazy(() => import("./game/Game"));
 let App;
 
 export default function(_App) {
@@ -18,13 +18,21 @@ function route() {
 
   switch(route) {
   case "g":
-    component = <Game id={ id } />;
+    component = (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Game id={ id } />
+      </Suspense>
+    );
     App.state.players = [];
     App.send("join", id);
     App.state.chat = true;
     break;
   case "":
-    component = <Lobby />;
+    component = (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Lobby />
+      </Suspense>
+    );
     break;
   default:
     return App.error(`not found: ${path}`);

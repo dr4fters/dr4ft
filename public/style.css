@@ -32,7 +32,8 @@
 
 /*** Basic styles ***/
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
 }
@@ -58,7 +59,8 @@ label {
 }
 
 textarea {
-  height: 16.5px; /* same as input[type=text] */
+  height: 16.5px;
+  /* same as input[type=text] */
   vertical-align: top;
 }
 
@@ -87,39 +89,63 @@ time {
   padding: 3px 5px;
 }
 
-input[type=button], .uploadFile, input[type=button], button, input[type=text], textarea, select {
+input[type=button],
+.uploadFile,
+input[type=button],
+button,
+input[type=text],
+textarea,
+select {
   font-size: 16px;
   line-height: 16px;
   padding: 3px;
 }
 
-input[type=button], .uploadFile, button, input[type=text], textarea {
+input[type=button],
+.uploadFile,
+button,
+input[type=text],
+textarea {
   border: solid #d0d0d0 1px;
 }
 
-input[type=button], .uploadFile, button {
+input[type=button],
+.uploadFile,
+button {
   background-color: #f0f0f0;
   padding: 5px;
 }
 
-input[type=button]:hover, .uploadFile:hover, button:hover, input[type=text]:hover, textarea:hover {
+input[type=button]:hover,
+.uploadFile:hover,
+button:hover,
+input[type=text]:hover,
+textarea:hover {
   border-color: #909090;
 }
 
-input[type=button]:active, .uploadFile:active, button:active {
+input[type=button]:active,
+.uploadFile:active,
+button:active {
   box-shadow: 0 0 1px 0 black inset;
 }
 
-input[type=button]:disabled, .uploadFile:disabled,button:disabled {
+input[type=button]:disabled,
+.uploadFile:disabled,
+button:disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
-input[type=button]:disabled:hover, .uploadFile:disabled:hover, button:disabled:hover {
+input[type=button]:disabled:hover,
+.uploadFile:disabled:hover,
+button:disabled:hover {
   border: solid #ccc 1px;
 }
 
-input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled:active {
+input[type=button]:disabled:active,
+.uploadFile:disabled:active,
+button:disabled:active {
   box-shadow: none;
 }
 
@@ -149,7 +175,8 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
 
 /** Container of inputs that share a border. **/
 
-.connected-container, .connected-column {
+.connected-container,
+.connected-column {
   position: relative;
   z-index: 0;
 }
@@ -255,7 +282,8 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
   width: 100%;
 }
 
-.join-room-table th, .join-room-table td {
+.join-room-table th,
+.join-room-table td {
   padding: 5px;
 }
 
@@ -270,7 +298,9 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
 
 /** Zones **/
 
-.zone img, #img, .card {
+.zone img,
+#img,
+.card {
   height: 340px;
   width: 240px;
   cursor: pointer;
@@ -307,7 +337,8 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
   padding: 1px;
 }
 
-.card:hover:before, .autopick-card:before {
+.card:hover:before,
+.autopick-card:before {
   content: '';
 
   display: block;
@@ -389,11 +420,14 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
 .self {
   background-color: rgba(0, 255, 0, .1);
 }
+
 .opp {
   background-color: rgba(255, 0, 0, .1);
 }
 
-.icon-connected, .icon-disconnected, .icon-bot {
+.icon-connected,
+.icon-disconnected,
+.icon-bot {
   display: inline-block;
   height: 10px;
   width: 10px;
@@ -417,19 +451,25 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
   text-align: center;
 }
 
-#img, #doubleimg {
+#img,
+#doubleimg {
   position: fixed;
   bottom: 0;
   z-index: 1;
 }
-#img.left, #doubleimg.left {
+
+#img.left,
+#doubleimg.left {
   left: 0;
 }
-#img.right, #doubleimg.right {
+
+#img.right,
+#doubleimg.right {
   right: 0;
 }
 
-#players th, #players td {
+#players th,
+#players td {
   padding-right: .5em;
 }
 
@@ -452,7 +492,8 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
   font-weight: normal;
 }
 
-.game-status, .deck-settings {
+.game-status,
+.deck-settings {
   margin-right: 30px;
 }
 
@@ -470,10 +511,11 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
 
 .deck-settings img {
   height: 32px;
-  width:  32px;
+  width: 32px;
 }
 
-.start-controls, .download-controls {
+.start-controls,
+.download-controls {
   margin-top: 5px;
   padding-top: 5px;
 }
@@ -496,10 +538,15 @@ input[type=button]:disabled:active, .uploadFile:disabled:active, button:disabled
 }
 
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.split-card {
+  transform: rotate(90deg);
+  margin: -50px 50px;
 }
