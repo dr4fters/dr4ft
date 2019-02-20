@@ -27,6 +27,10 @@ class Cols extends Component {
       ? "left"
       : "right";
 
+    if ("split" === card.layout) {
+      className += " split-card";
+    }
+
     this.setState({ card, className });
   }
   onMouseLeave() {
