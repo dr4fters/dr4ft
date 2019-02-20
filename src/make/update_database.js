@@ -1,9 +1,7 @@
 const fs = require("fs");
 const logger = require("../logger");
 const { writeCards, writeSets } = require("../data");
-const parseCards = require("./cards");
-
-const allSetsPath = "data/AllSets.json";
+const doSet = require("./doSet");
 
 const prepareSet = (raw) => {
   const COLORS = {
@@ -286,7 +284,8 @@ const alias = (arr, code, cards) => {
 };
 
 const updateDatabase = () => {
-  const rawSets = {};
+  const allCards = {};
+  const allSets = {};
 
   // Add sets
   const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
@@ -305,11 +304,14 @@ const updateDatabase = () => {
       const path = `data/sets/${file}`;
       try {
         const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-        if (json.code && !rawSets[json.code] &&
+        if (json.code &&
           (types.includes(json.type) || specialSets.includes(json.code))) {
           logger.info(`Found set to integrate ${json.code} with path ${path}`);
           prepareSet(json);
-          rawSets[json.code] = json;
+
+          logger.info(`Parsing ${json.code} started`);
+          allSets[json.code] = doSet(json, allCards);
+          logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
         logger.error(`Error while parsing file ${path}: ${err}`);
@@ -325,10 +327,11 @@ const updateDatabase = () => {
         const path = `data/custom/${file}`;
         try {
           const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-          if (json.code && !rawSets[json.code]) {
+          if (json.code) {
             json.type = "custom";
             logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
-            rawSets[json.code] = json;
+            allSets[json.code] = doSet(json, allCards);
+            logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {
           logger.error(`Error while parsing file ${path}: ${err}`);
@@ -336,7 +339,7 @@ const updateDatabase = () => {
       }
     });
   }
-  const { allSets, allCards } = parseCards(rawSets);
+
   postParseSets(allSets, allCards);
   logger.info("Parsing AllSets.json finished");
   writeCards(allCards);

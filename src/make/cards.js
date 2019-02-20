@@ -7,7 +7,7 @@ function makeCards(rawSets) {
 
   for (var code in rawSets) {
     logger.info(`Parsing ${code} started`);
-    allSets[code] = doSet(rawSets[code], rawSets, allCards);
+    allSets[code] = doSet(rawSets[code], allCards);
     logger.info(`Parsing ${code} finished`);
   }
 

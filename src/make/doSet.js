@@ -9,28 +9,8 @@ const COLORS = {
   G: "green"
 };
 
-const findPicUrl = ({ name, url, scryfallId, printings = [], rawSets }) => {
-  if (url || scryfallId) {
-    return url || `https://api.scryfall.com/cards/${scryfallId}?format=image`;
-  } else {
-    logger.warn(`card ${name} doesn't have a picture :( !!`);
-    var picUrl;
-    printings.some(printing => {
-      if (rawSets[printing]) {
-        const maybeCard = rawSets[printing].cards.find(c => c.name === name);
-        if (maybeCard && (maybeCard.url || maybeCard.scryfallId)) {
-          picUrl = maybeCard.url || `https://api.scryfall.com/cards/${maybeCard.scryfallId}?format=image`;
-          return true;
-        }
-      }
-    });
-    return picUrl;
-  }
-};
-
-function doSet(rawSet, rawSets = {}, allCards = {}) {
+function doSet(rawSet, allCards = {}) {
   const { baseSetSize, code } = rawSet;
-  var cards = {};
   var set = {
     name: rawSet.name,
     type: rawSet.type,
@@ -43,15 +23,15 @@ function doSet(rawSet, rawSets = {}, allCards = {}) {
     mythic: [],
     special: [],
   };
-  var card;
-
-  for (card of rawSet.cards) {
-    doCard({card, cards, code, set, rawSets, baseSetSize});
+  
+  var cards = {};
+  for (const card of rawSet.cards) {
+    doCard({card, cards, code, set, baseSetSize});
   }
 
   //because of split cards, do this only after processing the entire set
   for (var cardName in cards) {
-    card = cards[cardName];
+    const card = cards[cardName];
     var lc = cardName.toLowerCase();
 
     if (lc in allCards)
@@ -68,8 +48,8 @@ function doSet(rawSet, rawSets = {}, allCards = {}) {
   return set;
 }
 
-function doCard({card, cards, code, set, rawSets, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, printings } = card;
+function doCard({card, cards, code, set, baseSetSize}) {
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
 
   // With MTGJsonv4, a new rarity exists
@@ -91,8 +71,6 @@ function doCard({card, cards, code, set, rawSets, baseSetSize}) {
   // Flipped cards have an mciNumber or a number containing the letter b
   if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
     return;
-
-  var picUrl = findPicUrl({ name, url, scryfallId, printings, rawSets });
 
   if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
@@ -141,7 +119,7 @@ function doCard({card, cards, code, set, rawSets, baseSetSize}) {
     sets: {
       [code]: {
         rarity,
-        url: picUrl
+        url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`
       }
     },
     layout: layout,
