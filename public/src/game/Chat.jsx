@@ -37,7 +37,7 @@ export default class Chat extends Component{
   hear(msg) {
     //Notify when hidden chat is closed
     if(!App.state.chat) {
-      vanillaToast.info(`${msg.name} says "${msg.text}""`);
+      vanillaToast.info(`${msg.name}: ${msg.text}`);
     }
     this.state.messages.push(msg);
     this.forceUpdate(this.scrollChat);
