@@ -48,7 +48,7 @@ let App = {
     side: false,
     sort: "rarity",
     log: {},
-    cardSize: "small",
+    cardSize: "normal",
 
     get didGameStart() {
       // both round === 0 and round is undefined
