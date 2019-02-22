@@ -8,7 +8,8 @@
   },
   "license": "MIT",
   "author": "Dr4fters Team <zach@cockatrice.us>",
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Zach Halpern",
       "email": "zach@cockatrice.us"
     },
@@ -73,6 +74,7 @@
     "send": "^0.16.2",
     "unzip": "^0.1.11",
     "utils": "git://github.com/dr4fters/utils.git",
+    "vanilla-toast": "^0.5.0",
     "webpack": "^4.29.5",
     "webpack-merge": "^4.2.1",
     "winston": "^3.1.0"
