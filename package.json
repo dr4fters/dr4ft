@@ -65,7 +65,7 @@
     "log-timestamp": "^0.2.1",
     "node-fetch": "^2.3.0",
     "node-schedule": "^1.3.2",
-    "react": "^16.8.2",
+    "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-filepond": "^7.0.1",
     "request": "^2.88.0",
