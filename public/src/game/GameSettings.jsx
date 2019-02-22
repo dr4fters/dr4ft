@@ -27,6 +27,7 @@ const GameSettings = () => (
           <Checkbox side="left" text="Column view" link="cols" />
         </div>
         <SortCards />
+        <CardsImageQuality />
       </span>
     </fieldset>
   </div>
@@ -47,6 +48,18 @@ const SortCards = () => (
           {sort}
         </label>
       )}
+    </div>
+  </div>
+);
+
+const CardsImageQuality = () => (
+  <div className="settings-cards-size">
+    Card image quality:
+    <div className='connected-container'>
+      {["small", "normal", "large"].map((size, index) => <label key={index} className='radio-label connected-component'>
+        <input checked={size === App.state.cardSize} className='radio-input' name='card-size' onChange={e => App.save("cardSize", e.currentTarget.value)} type='radio' value={size} />
+        {size}
+      </label>)}
     </div>
   </div>
 );
