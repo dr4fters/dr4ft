@@ -3,6 +3,9 @@ import React, {Component} from "react";
 import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 
+import {vanillaToast} from "vanilla-toast";
+import "vanilla-toast/vanilla-toast.css";
+
 export default class Chat extends Component{
   constructor(props) {
     super(props);
@@ -32,6 +35,10 @@ export default class Chat extends Component{
     );
   }
   hear(msg) {
+    //Notify when hidden chat is closed
+    if(!App.state.chat) {
+      vanillaToast.info(`${msg.name} says "${msg.text}""`);
+    }
     this.state.messages.push(msg);
     this.forceUpdate(this.scrollChat);
   }
