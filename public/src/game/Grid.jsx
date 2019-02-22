@@ -85,7 +85,7 @@ class Card extends Component {
         onClick={App._emit("click", zoneName, card.name)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <img src={this.state.url} alt={card.name}/>
+        <img src={`${this.state.url}&version=${App.state.cardSize}`} alt={card.name}/>
       </span>
     );
   }

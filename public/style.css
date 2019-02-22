@@ -550,6 +550,10 @@ button:disabled:active {
   padding-top: 5px;
 }
 
+.settings-cards-size {
+  padding-top: 5px;
+}
+
 .inputfile {
   width: 0.1px;
   height: 0.1px;

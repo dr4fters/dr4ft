@@ -66,7 +66,7 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
           onClick={App._emit("click", zoneName, card.name)}
           onMouseEnter={e => onMouseEnter(card, e)}
           onMouseLeave={onMouseLeave} >
-          <img src={card.url} alt={card.name} />
+          <img src={`${card.url}&version=${App.state.cardSize}`} alt={card.name} />
         </div>
       );
 
@@ -104,7 +104,7 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
       : <img className={className}
         id='img'
         onMouseEnter={e => onMouseEnter(card, e)}
-        src={card.url}/>
+        src={`${card.url}&version=${App.state.cardSize}`}/>
     : <div />
 );
 
