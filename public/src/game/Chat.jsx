@@ -22,7 +22,7 @@ export default class Chat extends Component{
     // must be mounted to receive messages
     return (
       <div className={`chat-container ${App.state.chat ? "" : "chat-container-hidden"}`}>
-        <div className='chat'>
+        <div className='chat' onClick={this.onClickChat}>
           <div className='messages' ref={(ref) => this.messageElement = ref}>
             {this.state.messages.map(this.Message)}
           </div>
@@ -31,6 +31,11 @@ export default class Chat extends Component{
       </div>
     );
   }
+
+  onClickChat() {
+    document.getElementById("chat-input").focus();
+  }
+
   hear(msg) {
     this.state.messages.push(msg);
     this.forceUpdate(this.scrollChat);
@@ -60,7 +65,7 @@ export default class Chat extends Component{
     );
   }
   Entry() {
-    return <input autoFocus className='chat-input' type='text' onKeyDown={this.key.bind(this)} placeholder='/nick name' />;
+    return <input id='chat-input' autoFocus className='chat-input' type='text' onKeyDown={this.key.bind(this)} placeholder='/nick name' />;
   }
   key(e) {
     if (e.key !== "Enter")
