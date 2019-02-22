@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "node scripts/run",
-    "start-dev": "npm run watch & nodemon scripts/run -e html,js,jsx --ignore built",
+    "start-dev": "npm run watch & nodemon scripts/run -e html,js --ignore built --ignore public",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
     "dev-server": "webpack-dev-server --config webpack.dev.js",

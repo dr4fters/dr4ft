@@ -29,11 +29,13 @@ const zone = (zoneName, index) => {
     : 0;
 
   return (
-    <div className='zone' key={index}>
-      <h1>
-        <Spaced elements={[zoneTitle, zoneHelper]}/>
-      </h1>
-      {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
+    <div className='zone-container' key={index}>
+      <div className='zone'>
+        <h1>
+          <Spaced elements={[zoneTitle, zoneHelper]}/>
+        </h1>
+        {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
+      </div>
     </div>
   );
 };

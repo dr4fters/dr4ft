@@ -51,6 +51,22 @@ class PlayerEntries extends Component {
   }
 }
 
+window.onscroll = () => {
+  fixPackTimeToScreen()
+}
+
+const fixPackTimeToScreen = () => {
+  const normalCss = 'position: relative; font-size: 16px; left: 0px; top: 0px; margin-right: 0px;'
+  const fixedCss = 'position: fixed; font-size: 20px; left: 2px; top: 2px; margin-right: 20px; display: flex; justify-self: flex-end;'
+  const {[0]: selfElem} = document.getElementsByClassName('self')
+  const elem = document.getElementById('self-time')
+  const rect = selfElem.getBoundingClientRect();
+  elem.style.cssText 
+  = rect.top < 0 && elem.innerHTML != '0'
+    ? fixedCss
+    : normalCss
+}
+
 const PlayerEntry = ({player, index}) => {
   const {players, self, didGameStart, isHost} = App.state;
   const {isBot, name, packs, time, hash} = player;
@@ -77,7 +93,7 @@ const PlayerEntry = ({player, index}) => {
     <td key={1}>{connectionStatusIndicator}</td>,
     <td key={2}>{name}</td>,
     <td key={3}>{packs}</td>,
-    <td key={4}>{time}</td>,
+    <td id={className==='self' ? 'self-time':''} key={4}>{time}</td>,
     <td key={5}>{hash && hash.cock}</td>,
     <td key={6}>{hash && hash.mws}</td>
   ];
