@@ -1,5 +1,5 @@
 var _ = require("./_");
-var { getCards, getSets, getMws, getRandomSet } = require("./data");
+var { getCards, getSets, getMws, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
 function selectRarity(set) {
   // average pack contains:
@@ -75,115 +75,115 @@ function toPack(code) {
   let foilCard = false;
   let specialrnd;
   switch (code) {
-  case "EMN":
-    if (_.rand(2) < 1)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
+    case "EMN":
+      if (_.rand(2) < 1)
+        special = special.uncommon;
+      else
+        special = special.common;
+      break;
 
-  case "SOI":
-    if (_.rand(106) < 38)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DGM":
-    special = _.rand(20)
-      ? special.gate
-      : special.shock;
-    break;
-  case "EMA":
-  case "MMA":
-  case "MM2":
-  case "MM3":
-  case "IMA":
-  case "UMA":
-    special = selectRarity(set);
-    foilCard = true;
-    break;
-  case "VMA":
-    //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
-    if (_.rand(53))
+    case "SOI":
+      if (_.rand(106) < 38)
+        special = special.uncommon;
+      else
+        special = special.common;
+      break;
+    case "DGM":
+      special = _.rand(20)
+        ? special.gate
+        : special.shock;
+      break;
+    case "EMA":
+    case "MMA":
+    case "MM2":
+    case "MM3":
+    case "IMA":
+    case "UMA":
       special = selectRarity(set);
-    break;
-  case "FRF":
-    special = _.rand(20)
-      ? special.common
-      : special.fetch;
-    break;
-  case "ISD":
-    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-    //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
-    specialrnd = _.rand(121);
-    if (specialrnd == 0)
-      special = special.mythic;
-    else if (specialrnd < 13)
-      special = special.rare;
-    else if (specialrnd < 55)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DKA":
-    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-    //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
-    specialrnd = _.rand(80);
-    if (specialrnd <= 1)
-      special = special.mythic;
-    else if (specialrnd < 8)
-      special = special.rare;
-    else if (specialrnd < 32)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DOM": {
-    // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
-    // Every booster must contain a legendary creature either as uncommon or rare
-    let hasLegendaryCreature = false;
-    const isLegendaryCreature = cardName => {
-      const card = getCards()[cardName];
-      return card.supertypes.includes("Legendary") && card.type === "Creature";
-    };
+      foilCard = true;
+      break;
+    case "VMA":
+      //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
+      if (_.rand(53))
+        special = selectRarity(set);
+      break;
+    case "FRF":
+      special = _.rand(20)
+        ? special.common
+        : special.fetch;
+      break;
+    case "ISD":
+      //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+      //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
+      specialrnd = _.rand(121);
+      if (specialrnd == 0)
+        special = special.mythic;
+      else if (specialrnd < 13)
+        special = special.rare;
+      else if (specialrnd < 55)
+        special = special.uncommon;
+      else
+        special = special.common;
+      break;
+    case "DKA":
+      //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
+      //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
+      specialrnd = _.rand(80);
+      if (specialrnd <= 1)
+        special = special.mythic;
+      else if (specialrnd < 8)
+        special = special.rare;
+      else if (specialrnd < 32)
+        special = special.uncommon;
+      else
+        special = special.common;
+      break;
+    case "DOM": {
+      // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
+      // Every booster must contain a legendary creature either as uncommon or rare
+      let hasLegendaryCreature = false;
+      const isLegendaryCreature = cardName => {
+        const card = getCards()[cardName];
+        return card.supertypes.includes("Legendary") && card.type === "Creature";
+      };
 
-    pack.some(cardName => {
-      return hasLegendaryCreature = isLegendaryCreature(cardName);
-    });
+      pack.some(cardName => {
+        return hasLegendaryCreature = isLegendaryCreature(cardName);
+      });
 
-    if (!hasLegendaryCreature) {
-      var packIndex = 0;
-      var pool = uncommon;
-      // Choose to replace an uncommon(default) or rare slot
-      if (_.rand(4) === 0) {
-        packIndex = 3;
-        var isMythic = mythic.includes(pack[packIndex]);
-        pool = isMythic ? mythic : rare;
+      if (!hasLegendaryCreature) {
+        var packIndex = 0;
+        var pool = uncommon;
+        // Choose to replace an uncommon(default) or rare slot
+        if (_.rand(4) === 0) {
+          packIndex = 3;
+          var isMythic = mythic.includes(pack[packIndex]);
+          pool = isMythic ? mythic : rare;
+        }
+        const legendaryCreatures = pool.filter(isLegendaryCreature);
+        pack[packIndex] = _.choose(1, legendaryCreatures);
       }
-      const legendaryCreatures = pool.filter(isLegendaryCreature);
-      pack[packIndex] = _.choose(1, legendaryCreatures);
+      break;
     }
-    break;
-  }
-  case "M19": {
-    //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
-    // 5/12 of times -> dual-land
-    // 7/12 of times -> basic land
-    const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
-    common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
-    const isDualLand = _.rand(12) < 6;
-    const land = _.choose(1, isDualLand ? dualLands : basic);
-    pack.push(...land);
-    break;
-  }
-  case "GRN":
-  case "RNA": {
-    // No basics. Always 1 common slots are occupied by guildgates
-    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
-    common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
-    pack.push(_.choose(1, guildGates));
-    break;
-  }
+    case "M19": {
+      //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+      // 5/12 of times -> dual-land
+      // 7/12 of times -> basic land
+      const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
+      common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
+      const isDualLand = _.rand(12) < 6;
+      const land = _.choose(1, isDualLand ? dualLands : basic);
+      pack.push(...land);
+      break;
+    }
+    case "GRN":
+    case "RNA": {
+      // No basics. Always 1 common slots are occupied by guildgates
+      const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
+      common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
+      pack.push(_.choose(1, guildGates));
+      break;
+    }
   }
   var masterpiece = "";
   if (special) {
@@ -254,91 +254,101 @@ function toCards(pool, code, foilCard, masterpiece) {
   });
 }
 
-module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, totalChaos) {
-  if (!(src instanceof Array)) {
-    if (!(isChaos)) {
-      var isCube = true;
-      _.shuffle(src.list);
-    }
-  }
-  else {
-    for (i = 0; i < src.length; i++) {
-      if (src[i] == "RNG") {
-        src[i] = getRandomSet().code;
-      }
-    }
-  }
-  if (isSealed) {
-    var count = playerCount;
-    var size = 90;
-  } else {
-    count = playerCount * src.packs;
-    size = src.cards;
-  }
-  var pools = [];
+const SealedCubePool = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
+  return DraftCubePool({
+    cubeList,
+    playersLength,
+    packsNumber: 1,
+    playerPackSize: playerPoolSize
+  });
+};
 
-  if (isCube || isSealed) {
-    if (!(isChaos)) {
-      while (count--)
-        pools.push(isCube
-          ? toCards(src.list.splice(-size))
-          : [].concat(...src.map(toPack)));
-    } else {
-      const allSets = getSets();
-      var setlist = [];
-      var modernSets = ["AER", "KLD", "EMN", "SOI", "OGW", "BFZ", "ORI", "DTK", "FRF", "KTK", "M15", "JOU", "BNG", "THS", "M14", "DGM", "GTC", "RTR", "M13", "AVR", "DKA", "ISD", "M12", "NPH", "MBS", "SOM", "M11", "ROE", "WWK", "ZEN", "M10", "ARB", "CON", "ALA", "EVE", "SHM", "MOR", "LRW", "10E", "FUT", "PLC", "TSP", "CSP", "DIS", "GPT", "RAV", "9ED", "SOK", "8ED", "BOK", "CHK", "5DN", "DST", "MRD"];
-      if (modernOnly) {
-        setlist = modernSets;
-      }
-      else {
-        for (let code in allSets) {
-          const { type } = allSets[code];
-
-          // We don't want Unstable or Unhinged sets, neither custom sets
-          if (!["custom", "funny"].includes(type)) {
-            setlist.push(code);
-          }
-        }
-      }
-      if (!(totalChaos)) {
-        for (let i = 0; i < 3; i++) {
-          for (let j = 0; j < playerCount; j++) {
-            let setindex = _.rand(setlist.length);
-            let code = setlist[setindex];
-            setlist.splice(setindex, 1);
-            pools.push(toPack(code));
-          }
-        }
-      }
-      else {
-        var setindex = 0;
-        for (var i = 0; i < 3; i++) {
-          for (var j = 0; j < playerCount; j++) {
-            var chaosPool = [];
-            setindex = _.rand(setlist.length);
-            if (setlist[setindex].mythic && !_.rand(8)) {
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].mythic));
-            }
-            else {
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].rare));
-            }
-            for (let k = 0; k < 3; k++) {
-              setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].uncommon));
-            }
-            for (let k = 0; k < 11; k++) {
-              setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].common));
-            }
-            pools.push(toCards(chaosPool));
-          }
-        }
-      }
+const DraftCubePool = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
+  var list = cubeList.slice(0);
+  _.shuffle(list);
+  const pool = [];
+  for (let i = 0; i < playersLength; i++) {
+    for (let j = 0; j < packsNumber; j++) {
+      const playerPool = list.splice(0, playerPackSize);
+      pool.push(toCards(playerPool));
     }
-  } else {
-    for (let code of src.reverse())
-      for (let i = 0; i < playerCount; i++)
-        pools.push(toPack(code));
   }
-  return pools;
+  return pool;
+};
+
+// Replace RNG set with real set
+function replaceRNGSet(sets) {
+  for (let i = 0; i < sets.length; i++) {
+    if (sets[i] == "RNG") {
+      sets[i] = getRandomSet().code;
+    }
+  }
+}
+
+const SealedNormal = ({ playersLength, sets }) => {
+  replaceRNGSet(sets);
+  const pool = new Array(playersLength)
+    .fill(sets.flatMap(toPack));
+  return pool;
+};
+
+const DraftNormal = ({ playersLength, sets }) => {
+  replaceRNGSet(sets);
+
+  const pool = sets.flatMap(set =>
+    [...new Array(playersLength).fill(toPack(set))]
+  );
+  return pool.reverse();
+};
+
+// Get a random set and transform it to pack
+function getRandomPack(setList) {
+  const setIndex = _.rand(setList.length);
+  const code = setList[setIndex];
+  return toPack(code);
+}
+
+// Create a complete random pack
+function getTotalChaosPack(setList) {
+  const chaosPool = [];
+  const chooseRandomSet = () => _.choose(1, setList)[0];
+  const randomSet = chooseRandomSet();
+  const isMythic = randomSet.mythic && !_.rand(8);
+  chaosPool.push(_.choose(1, isMythic ? randomSet.mythic : randomSet.rare));
+
+  for (let k = 0; k < 3; k++) {
+    chaosPool.push(_.choose(1, chooseRandomSet().uncommon));
+  }
+
+  for (let k = 0; k < 11; k++) {
+    chaosPool.push(_.choose(1, chooseRandomSet().common));
+  }
+  return toCards(chaosPool);
+}
+
+const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) => {
+  const pool = [];
+  const setList = modernOnly ? getModernList() : getSetsList();
+
+  for (let i = 0; i < playersLength; i++) {
+    const packs = new Array(packsNumber).fill(totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
+    pool.push(...packs);
+  }
+
+  return pool;
+};
+
+const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
+  const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
+  return new Array(playersLength)
+    .fill()
+    .map(() => pool.splice(0, packsNumber).flat());
+};
+
+module.exports = {
+  SealedCubePool,
+  DraftCubePool,
+  SealedNormal,
+  DraftNormal,
+  SealedChaos
 };
