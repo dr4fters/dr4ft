@@ -28,9 +28,9 @@
   },
   "scripts": {
     "start": "node scripts/run",
+    "start-dev": "npm run watch & nodemon scripts/run -e html,js --ignore built --ignore public",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
-    "dev-server": "webpack-dev-server --config webpack.dev.js",
     "pretest": "eslint --ignore-path .gitignore .",
     "postinstall": "node scripts/postinstall && webpack --config webpack.prod.js"
   },
@@ -85,8 +85,8 @@
     "eslint": "^5.14.1",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^6.0.1",
+    "nodemon": "^1.18.10",
     "style-loader": "^0.23.1",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.0"
+    "webpack-cli": "^3.2.3"
   }
 }
