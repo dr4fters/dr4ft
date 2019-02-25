@@ -426,12 +426,26 @@ button:disabled:active {
   background-color: rgba(0, 255, 0, .1);
 }
 
-#self-time {
-  position: relative; 
-  font-size: 16px; 
-  left: 0px; 
-  top: 0px; 
-  margin-right: 0px;
+.self-time-fixed {
+  border: solid 1px black;
+  position: fixed;
+  top: 4px;
+  left: 69%;
+  right: 0;
+  font-size: 20px;
+  width: 80px;
+  padding: 4px;
+  border-radius: 4px;
+  height: 44px;
+  background-color: white;
+}
+
+.self-time-fixed-time {
+  font-size: 20px;
+  position: fixed;
+  top: 34px;
+  left: 71%;
+  right: 0;
 }
 
 .opp {

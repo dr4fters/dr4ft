@@ -36,6 +36,10 @@ const zone = (zoneName, index) => {
         </h1>
         {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
       </div>
+      <div className='self-time-fixed' hidden>
+        {index==0 && <u className='self-time-fixed-message'>Time left</u>}
+        <div className='self-time-fixed-time' />
+      </div>
     </div>
   );
 };

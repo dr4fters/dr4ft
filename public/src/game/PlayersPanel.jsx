@@ -56,15 +56,10 @@ window.onscroll = () => {
 }
 
 const fixPackTimeToScreen = () => {
-  const normalCss = 'position: relative; font-size: 16px; left: 0px; top: 0px; margin-right: 0px;'
-  const fixedCss = 'position: fixed; font-size: 20px; left: 2px; top: 2px; margin-right: 20px; display: flex; justify-self: flex-end;'
-  const {[0]: selfElem} = document.getElementsByClassName('self')
-  const elem = document.getElementById('self-time')
-  const rect = selfElem.getBoundingClientRect();
-  elem.style.cssText 
-  = rect.top < 0 && elem.innerHTML != '0'
-    ? fixedCss
-    : normalCss
+  const selfTime = document.getElementById('self-time')
+  const {[0]: selfTimeFixed} = document.getElementsByClassName('self-time-fixed')
+  const rect = selfTime.getBoundingClientRect()
+  selfTimeFixed.hidden = rect.top > 0 
 }
 
 const PlayerEntry = ({player, index}) => {
@@ -97,6 +92,9 @@ const PlayerEntry = ({player, index}) => {
     <td key={5}>{hash && hash.cock}</td>,
     <td key={6}>{hash && hash.mws}</td>
   ];
+
+  const {[0]: selfTimeFixed} = document.getElementsByClassName('self-time-fixed-time')
+  if (selfTimeFixed && className==='self') selfTimeFixed.innerHTML = time
 
   if (isHost) {
     //Move Player
