@@ -13,7 +13,8 @@ import Chat from "./Chat";
 
 
 export default class Game extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     App.register(this);
   }
 
