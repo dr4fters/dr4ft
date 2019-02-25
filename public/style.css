@@ -238,6 +238,7 @@ button:disabled:active {
   height: 100%;
   position: relative;
   min-width: 25%;
+  z-index: 100;
 }
 
 .chat-container-hidden {
@@ -425,14 +426,14 @@ button:disabled:active {
   border: solid 1px black;
   position: fixed;
   font-size: 20px;
-  min-width: 78px;
-  width: 78px;
+  min-width: 88px;
+  width: 88px;
   padding: 4px;
   border-radius: 4px;
   height: 44px;
   background-color: white;
   transition: left 1s;
-  z-index: 9999;
+  z-index: 99;
 }
 
 #self-time-fixed-time {

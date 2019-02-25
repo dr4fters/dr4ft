@@ -9,7 +9,7 @@ const PlayersPanel = () => (
     <legend className='legend game-legend'>Players</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
-      <u>Time left</u>
+      <u>Time Left</u>
       <div id='self-time-fixed-time' />
     </div>
   </fieldset>
