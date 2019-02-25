@@ -429,7 +429,7 @@ button:disabled:active {
   padding: 4px;
   border-radius: 4px;
   height: 44px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.63);
   transition: left 1s;
   z-index: 99;
 }
@@ -505,6 +505,7 @@ button:disabled:active {
 
 .game .fieldset {
   display: flex;
+  margin: 2px;
 }
 
 .game-legend {
