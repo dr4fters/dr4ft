@@ -378,7 +378,7 @@ module.exports = class Game extends Room {
 
     for (let p of players)
       if (!p.isBot)
-        p.getPack(this.pool.pop());
+        p.getPack(this.pool.shift());
 
     //let the bots play
     this.meta = () => { };
@@ -388,7 +388,7 @@ module.exports = class Game extends Room {
       index -= this.delta;
       let p = _.at(players, index);
       if (p.isBot)
-        p.getPack(this.pool.pop());
+        p.getPack(this.pool.shift());
     }
     this.meta = Game.prototype.meta;
     this.meta({ round: this.round });
@@ -439,7 +439,7 @@ module.exports = class Game extends Room {
   createPool() {
     switch (this.type) {
     case "cube draft": {
-      this.pool = Pool.DraftCubePool({
+      this.pool = Pool.DraftCube({
         cubeList: this.cube.list,
         playersLength: this.players.length,
         packsNumber: this.cube.packs,
@@ -448,7 +448,7 @@ module.exports = class Game extends Room {
       break;
     }
     case "cube sealed": {
-      this.pool = Pool.SealedCubePool({
+      this.pool = Pool.SealedCube({
         cubeList: this.cube,
         playersLength: this.players.length,
         playerPoolSize: 90 //TODO: insert an option frontend to allow changing cube sealed pool size
@@ -494,7 +494,7 @@ module.exports = class Game extends Room {
     this.createPool();
     this.round = -1;
     for (const p of this.players) {
-      p.pool = this.pool.pop();
+      p.pool = this.pool.shift();
       p.send("pool", p.pool);
       p.send("set", { round: -1 });
     }
@@ -507,11 +507,12 @@ module.exports = class Game extends Room {
       p.timerLength = timerLength;
     }
 
-    if (addBots)
+    if (addBots) {
       while (players.length < this.seats) {
         players.push(new Bot);
         this.bots++;
       }
+    }
 
     if (shufflePlayers)
       _.shuffle(players);

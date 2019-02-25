@@ -254,8 +254,8 @@ function toCards(pool, code, foilCard, masterpiece) {
   });
 }
 
-const SealedCubePool = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
-  return DraftCubePool({
+const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
+  return DraftCube({
     cubeList,
     playersLength,
     packsNumber: 1,
@@ -263,45 +263,32 @@ const SealedCubePool = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
   });
 };
 
-const DraftCubePool = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
-  var list = cubeList.slice(0);
+const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
+  let list = cubeList.slice(0); // copy the list to work on it
   _.shuffle(list);
-  const pool = [];
-  for (let i = 0; i < playersLength; i++) {
-    for (let j = 0; j < packsNumber; j++) {
+
+  return new Array(playersLength * packsNumber).fill()
+    .map(() => {
       const playerPool = list.splice(0, playerPackSize);
-      pool.push(toCards(playerPool));
-    }
-  }
-  return pool;
+      return toCards(playerPool);
+    });
 };
 
 // Replace RNG set with real set
-function replaceRNGSet(sets) {
-  for (let i = 0; i < sets.length; i++) {
-    if (sets[i] == "RNG") {
-      sets[i] = getRandomSet().code;
-    }
-  }
-}
+const  replaceRNGSet = (sets) => (
+  sets.map(set => set === "RNG" ? getRandomSet().code : set)
+);
 
-const SealedNormal = ({ playersLength, sets }) => {
-  replaceRNGSet(sets);
-  const pool = new Array(playersLength)
-    .fill()
-    .map(() => sets.flatMap(toPack));
-  return pool;
-};
+const SealedNormal = ({ playersLength, sets }) => (
+  new Array(playersLength).fill(replaceRNGSet(sets))
+    .map(sets => sets.flatMap(toPack))
+);
 
-const DraftNormal = ({ playersLength, sets }) => {
-  replaceRNGSet(sets);
-
-  const pool = sets
+const DraftNormal = ({ playersLength, sets }) => (
+  replaceRNGSet(sets)
     .flatMap(set => new Array(playersLength).fill(set))
-    .map(toPack);
-
-  return pool.reverse();
-};
+    .map(toPack)
+);
 
 // Get a random set and transform it to pack
 function getRandomPack(setList) {
@@ -309,9 +296,9 @@ function getRandomPack(setList) {
   return toPack(code);
 }
 
-function chooseRandomSet(setList) {
-  return _.choose(1, setList)[0];
-}
+const chooseRandomSet = (setList) => (
+  _.choose(1, setList)[0]
+);
 
 // Create a complete random pack
 function getTotalChaosPack(setList) {
@@ -338,27 +325,21 @@ function getTotalChaosPack(setList) {
 }
 
 const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) => {
-  const pool = [];
   const setList = modernOnly ? getModernList() : getSetsList();
 
-  for (let i = 0; i < playersLength; i++) {
-    const packs = new Array(packsNumber).fill().map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
-    pool.push(...packs);
-  }
-
-  return pool;
+  return new Array(playersLength * packsNumber).fill()
+    .map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
 };
 
 const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
   const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
-  return new Array(playersLength)
-    .fill()
+  return new Array(playersLength).fill()
     .map(() => pool.splice(0, packsNumber).flat());
 };
 
 module.exports = {
-  SealedCubePool,
-  DraftCubePool,
+  SealedCube,
+  DraftCube,
   SealedNormal,
   DraftNormal,
   SealedChaos,
