@@ -8,11 +8,7 @@ import { Checkbox, Select, Textarea } from "Src/utils";
 import Set from "./Set";
 
 const GameOptions = () => {
-  let { sets, latestSet, fourPack, type } = App.state;
-  // Set default sets
-  if (sets.length === 0 && latestSet) {
-    App.save("sets", Array(6).fill().map(() => latestSet.code));
-  }
+  const { sets, fourPack, type } = App.state;
 
   switch (type) {
   case "draft":
@@ -23,12 +19,11 @@ const GameOptions = () => {
     return <CubeDraft />;
   case "cube sealed":
     return <CubeSealed />;
-  case "chaos":
-    return <Chaos />;
+  case "chaos draft":
+    return <ChaosDraft />;
   case "chaos sealed":
     return <ChaosSealed />;
   }
-
 };
 
 const DraftOptions = ({ sets }) => (
@@ -106,7 +101,7 @@ const CubeOptions = () => (
   </div>
 );
 
-const Chaos = () => (
+const ChaosDraft = () => (
   <div>
     <div>
       <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />

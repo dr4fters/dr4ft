@@ -1,6 +1,11 @@
 import _ from "NodePackages/utils/utils";
 import App from "./app";
 
+// Migrate to chaos draft
+if (App.state.type === "chaos") {
+  App.state.type = "chaos draft";
+}
+
 let Cards = {
   Plains:   401994,
   Island:   401927,

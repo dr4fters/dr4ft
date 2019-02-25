@@ -64,8 +64,8 @@ module.exports = {
     return true;
   },
   game({ seats, type, sets, cube, isPrivate, fourPack, modernOnly = true, totalChaos = true }) {
-    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos", "chaos sealed"].includes(type),
-      "type can be draft, sealed, chaos, chaos sealed, cube draft or cube sealed");
+    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"].includes(type),
+      "type can be draft, sealed, chaos draft, chaos sealed, cube draft or cube sealed");
     assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
     assert(typeof seats === "number", "seats must be a number");
     assert(2 <= seats && seats <= 100, "seats' number must be between 2 and 100");
@@ -89,7 +89,8 @@ module.exports = {
       assert(typeof cube === "object", "cube must be an object");
       controlCubeSettingsAndTransformList(cube, seats, type);
       break;
-    case "chaos":
+    case "chaos draft":
+    case "chaos sealed":
       assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
       assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
       break;

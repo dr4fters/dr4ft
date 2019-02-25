@@ -133,7 +133,7 @@ const Copy = () => (
 );
 
 const Log = () => (
-  App.state.isGameFinished && /draft|chaos/.test(App.state.type)
+  App.state.isGameFinished && /draft/.test(App.state.type)
     ? <div>
       <button className='connected-component'
         onClick={App._emit("getLog")}>

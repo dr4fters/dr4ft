@@ -44,13 +44,11 @@ module.exports = class Game extends Room {
     this.cube = cube;
     this.bots = 0;
 
-    if (sets) {
+    if (sets && type === "sealed") {
       if (fourPack) {
         sets = sets.slice(0, 4);
       }
-      if (type != "chaos") {
-        this.sets = sets;
-      }
+      this.sets = sets;
     }
 
     // Handle packsInfos to show various informations about the game
@@ -65,7 +63,7 @@ module.exports = class Game extends Room {
     case "cube sealed":
       this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
       break;
-    case "chaos":
+    case "chaos draft":
     case "chaos sealed": {
       const chaosOptions = [];
       chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
@@ -485,7 +483,7 @@ module.exports = class Game extends Room {
       });
       break;
     }
-    case "chaos": {
+    case "chaos draft": {
       this.pool = Pool.DraftChaos({
         playersLength: this.players.length,
         modernOnly: this.modernOnly,
