@@ -288,40 +288,51 @@ function replaceRNGSet(sets) {
 const SealedNormal = ({ playersLength, sets }) => {
   replaceRNGSet(sets);
   const pool = new Array(playersLength)
-    .fill(sets.flatMap(toPack));
+    .fill()
+    .map(() => sets.flatMap(toPack));
   return pool;
 };
 
 const DraftNormal = ({ playersLength, sets }) => {
   replaceRNGSet(sets);
 
-  const pool = sets.flatMap(set =>
-    [...new Array(playersLength).fill(toPack(set))]
-  );
+  const pool = sets
+    .flatMap(set => new Array(playersLength).fill(set))
+    .map(toPack);
+
   return pool.reverse();
 };
 
 // Get a random set and transform it to pack
 function getRandomPack(setList) {
-  const setIndex = _.rand(setList.length);
-  const code = setList[setIndex];
+  const code = chooseRandomSet(setList).code;
   return toPack(code);
+}
+
+function chooseRandomSet(setList) {
+  return _.choose(1, setList)[0];
 }
 
 // Create a complete random pack
 function getTotalChaosPack(setList) {
   const chaosPool = [];
-  const chooseRandomSet = () => _.choose(1, setList)[0];
-  const randomSet = chooseRandomSet();
-  const isMythic = randomSet.mythic && !_.rand(8);
-  chaosPool.push(_.choose(1, isMythic ? randomSet.mythic : randomSet.rare));
+  const randomSet = chooseRandomSet(setList);
+
+  // Check if set has at least rares
+  if (randomSet.rare && randomSet.rare.length > 0) {
+    const isMythic = randomSet.mythic && !_.rand(8);
+    chaosPool.push(_.choose(1, isMythic ? randomSet.mythic : randomSet.rare));
+  } else {
+    //If no rare exists for the set, we pick an uncommon
+    chaosPool.push(_.choose(1, randomSet.uncommon));
+  }
 
   for (let k = 0; k < 3; k++) {
-    chaosPool.push(_.choose(1, chooseRandomSet().uncommon));
+    chaosPool.push(_.choose(1, chooseRandomSet(setList).uncommon));
   }
 
   for (let k = 0; k < 11; k++) {
-    chaosPool.push(_.choose(1, chooseRandomSet().common));
+    chaosPool.push(_.choose(1, chooseRandomSet(setList).common));
   }
   return toCards(chaosPool);
 }
@@ -331,7 +342,7 @@ const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) 
   const setList = modernOnly ? getModernList() : getSetsList();
 
   for (let i = 0; i < playersLength; i++) {
-    const packs = new Array(packsNumber).fill(totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
+    const packs = new Array(packsNumber).fill().map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
     pool.push(...packs);
   }
 
@@ -350,5 +361,6 @@ module.exports = {
   DraftCubePool,
   SealedNormal,
   DraftNormal,
-  SealedChaos
+  SealedChaos,
+  DraftChaos
 };

@@ -271,7 +271,6 @@ module.exports = class Game extends Room {
       packs: p.packs.length,
       isBot: p.isBot,
       isConnected: p.isConnected,
-      isReadyToStart: p.isReadyToStart,
     }));
     for (var p of this.players)
       p.send("set", state);
@@ -405,14 +404,11 @@ module.exports = class Game extends Room {
     return {
       didGameStart: didGameStart,
       currentPack: round,
-      players: players.map((player, index) => (
-        {
-          playerName: player.name,
-          id: player.id,
-          isReadyToStart: player.isReadyToStart,
-          seatNumber: index
-        }
-      ))
+      players: players.map((player, index) => ({
+        playerName: player.name,
+        id: player.id,
+        seatNumber: index
+      }))
     };
   }
 
@@ -440,54 +436,105 @@ module.exports = class Game extends Room {
     };
   }
 
+  createPool() {
+    switch (this.type) {
+    case "cube draft": {
+      this.pool = Pool.DraftCubePool({
+        cubeList: this.cube.list,
+        playersLength: this.players.length,
+        packsNumber: this.cube.packs,
+        playerPackSize: this.cube.cards
+      });
+      break;
+    }
+    case "cube sealed": {
+      this.pool = Pool.SealedCubePool({
+        cubeList: this.cube,
+        playersLength: this.players.length,
+        playerPoolSize: 90 //TODO: insert an option frontend to allow changing cube sealed pool size
+      });
+      break;
+    }
+    case "draft": {
+      this.pool = Pool.DraftNormal({
+        playersLength: this.players.length,
+        sets: this.sets
+      });
+      break;
+    }
+    case "sealed": {
+      this.pool = Pool.SealedNormal({
+        playersLength: this.players.length,
+        sets: this.sets
+      });
+      break;
+    }
+    case "chaos": {
+      this.pool = Pool.DraftChaos({
+        playersLength: this.players.length,
+        modernOnly: this.modernOnly,
+        totalChaos: this.totalChaos
+      });
+      break;
+    }
+    //TODO: insert chaos sealed in frontend
+    case "chaos sealed": {
+      this.pool = Pool.SealedChaos({
+        playersLength: this.players.length,
+        modernOnly: this.modernOnly,
+        totalChaos: this.totalChaos
+      });
+      break;
+    }
+    default: throw new Error(`Type ${this.type} not recognized`);
+    }
+  }
+
+  handleSealed() {
+    this.createPool();
+    this.round = -1;
+    for (const p of this.players) {
+      p.pool = this.pool.pop();
+      p.send("pool", p.pool);
+      p.send("set", { round: -1 });
+    }
+  }
+
+  handleDraft({ addBots, useTimer, timerLength, shufflePlayers }) {
+    const {players} = this;
+    for (const p of players) {
+      p.useTimer = useTimer;
+      p.timerLength = timerLength;
+    }
+
+    if (addBots)
+      while (players.length < this.seats) {
+        players.push(new Bot);
+        this.bots++;
+      }
+
+    if (shufflePlayers)
+      _.shuffle(players);
+
+    players.forEach((p, i) => {
+      p.on("pass", this.pass.bind(this, p));
+      p.send("set", { self: i });
+    });
+
+    this.createPool();
+    this.startRound();
+  }
+
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
-      var src = this.cube ? this.cube : this.sets;
-      var { players } = this;
-      var p;
-
-      if (!players.every(x => x.isReadyToStart))
-        return;
 
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
       if (/sealed/.test(this.type)) {
-        this.round = -1;
-        var pools = Pool(src, players.length, true);
-        for (p of players) {
-          p.pool = pools.pop();
-          p.send("pool", p.pool);
-          p.send("set", { round: -1 });
-        }
+        this.handleSealed();
       } else {
-        // Handle draft specificities
-        for (p of players) {
-          p.useTimer = useTimer;
-          p.timerLength = timerLength;
-        }
-
-        Game.broadcastGameInfo();
-        if (addBots)
-          while (players.length < this.seats) {
-            players.push(new Bot);
-            this.bots++;
-          }
-
-        if (shufflePlayers)
-          _.shuffle(players);
-
-        if (/chaos/.test(this.type)) {
-          this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos);
-        }
-        else
-          this.pool = Pool(src, players.length);
-
-        players.forEach((p, i) => {
-          p.on("pass", this.pass.bind(this, p));
-          p.send("set", { self: i });
-        });
-        this.startRound();
+        this.handleDraft({ addBots, useTimer, timerLength, shufflePlayers });
       }
 
       logger.info(`Game ${this.id} started.\n${this.toString()}`);
