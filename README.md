@@ -14,7 +14,7 @@
 
 # dr4ft [![Chat](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft)
 
-*dr4ft* is a <kbd>Node</kbd> application.<br>
+*dr4ft* is a <kbd>NodeJS</kbd> application.<br>
 *dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
 
 Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
@@ -45,7 +45,7 @@ It supports all their features, and many more.
 
 ### Native
 
-1) Install [Node.js](https://nodejs.org/en/download/)
+1) Install [Node.js](https://nodejs.org/en/download/) >= 11.0.0
 2) Run
 ```bash
 $ sudo npm install --unsafe-perm
@@ -78,4 +78,3 @@ You can also create a Docker image and run the app in a container:
   [ES6]: https://github.com/lukehoban/es6features
   [Babel]: https://github.com/babel/babel
   [React]: https://github.com/facebook/react
-  
