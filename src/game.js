@@ -44,11 +44,8 @@ module.exports = class Game extends Room {
     this.cube = cube;
     this.bots = 0;
 
-    if (sets && type === "sealed") {
-      if (fourPack) {
-        sets = sets.slice(0, 4);
-      }
-      this.sets = sets;
+    if (sets) {
+      this.sets = fourPack ? sets.slice(0, 4) : sets;
     }
 
     // Handle packsInfos to show various informations about the game
