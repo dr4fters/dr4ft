@@ -86,11 +86,17 @@ module.exports = class Game extends Room {
       players: [],
       round: 0,
       rounds: cube ? cube.packs : 3,
-      cubePoolSize: cube.cubePoolSize,
-      packsNumber: cube.packs,
-      playerPackSize: cube.cards,
       secret
     });
+
+    if (cube) {
+      Object.assign(this, {
+        cubePoolSize: cube.cubePoolSize,
+        packsNumber: cube.packs,
+        playerPackSize: cube.cards
+      });
+    }
+
     this.renew();
     games[gameID] = this;
 
@@ -570,10 +576,6 @@ module.exports = class Game extends Room {
     seats: ${this.seats}
     type: ${this.type}
     sets: ${this.sets}
-    cubePoolSize: ${this.cube.cubePoolSize}
-    packsNumber: ${this.cube.packs}
-    playerPackSize: ${this.cube.cards}
-    cube: ${this.cube}
     isPrivate: ${this.isPrivate}
     fourPack: ${this.fourPack}
     modernOnly: ${this.modernOnly}
@@ -581,6 +583,11 @@ module.exports = class Game extends Room {
     packsInfos: ${this.packsInfo}
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
-    `;
+    ${this.cube ? 
+    `cubePoolSize: ${this.cube.cubePoolSize}
+    packsNumber: ${this.cube.packs}
+    playerPackSize: ${this.cube.cards}
+    cube: ${this.cube.list}`
+    : ""}`;
   }
 };
