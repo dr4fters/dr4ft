@@ -391,8 +391,10 @@ module.exports = class Game extends Room {
     this.delta *= -1;
 
     for (let p of players)
-      if (!p.isBot)
+      if (!p.isBot) {
+        p.pickNumber = 0;
         p.getPack(this.pool.shift());
+      }
 
     //let the bots play
     this.meta = () => { };

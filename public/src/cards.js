@@ -96,6 +96,9 @@ let events = {
     let options = {addBots, useTimer, timerLength, shufflePlayers};
     App.send("start", options);
   },
+  pickNumber(pick) {
+    App.save("pickNumber", pick);
+  },
   pack(cards) {
     rawPack = cards;
     let pack = Zones.pack = {};

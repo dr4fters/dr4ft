@@ -24,7 +24,8 @@ module.exports = class extends EventEmitter {
         round : {},
         pack: []
       },
-      draftStats: []
+      draftStats: [],
+      pickNumber: 0
     });
     this.attach(sock);
   }
@@ -112,7 +113,7 @@ module.exports = class extends EventEmitter {
       this.time = 0;
     }
 
-
+    this.send("pickNumber", ++this.pickNumber);
     this.send("pack", pack);
   }
   updateDraftStats(pack, pool) {
