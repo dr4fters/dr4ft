@@ -62,9 +62,13 @@ const fixPackTimeToScreen = () => {
   if (selfTime && selfTimeFixed) {
     const rect = selfTime.getBoundingClientRect()
     const zoneRect = zone.getBoundingClientRect()
+    const selfTimeRect = selfTimeFixed.getBoundingClientRect()
     selfTimeFixed.hidden = rect.top > 0 
-    if (zoneRect.top < 0) selfTimeFixed.style.marginTop = `${5 - zoneRect.top}px`
-    else selfTimeFixed.style.marginTop = '5px'
+    selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`
+    selfTimeFixed.style.top 
+    = zoneRect.top > 0
+      ? `${zoneRect.top + 5}px`
+      : '5px'
   }
 }
 
