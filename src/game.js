@@ -65,10 +65,11 @@ module.exports = class Game extends Room {
     case "cube sealed":
       this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
       break;
-    case "chaos": {
+    case "chaos":
+    case "chaos sealed": {
       const chaosOptions = [];
-      chaosOptions.push(modernOnly ? "Modern sets only" : "From any set");
-      chaosOptions.push(totalChaos ? "Total Chaos" : "Real booster ");
+      chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
+      chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
       this.packsInfo = `${chaosOptions.join(", ")}`;
       break;
     }
