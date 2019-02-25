@@ -210,7 +210,9 @@ module.exports = class Game extends Room {
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
+      sock.removeAllListeners("kick");
       sock.on("kick", this.kick.bind(this));
+      sock.removeAllListeners("swap");
       sock.on("swap", this.swap.bind(this));
     }
     h.on("meta", this.meta.bind(this));

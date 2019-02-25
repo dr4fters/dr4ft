@@ -38,8 +38,11 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close();
 
     sock.mixin(this);
+    sock.removeAllListeners("autopick");
     sock.on("autopick", this._autopick.bind(this));
+    sock.removeAllListeners("pick");
     sock.on("pick", this._pick.bind(this));
+    sock.removeAllListeners("hash");
     sock.on("hash", this._hash.bind(this));
     sock.once("exit", this._farewell.bind(this));
 
@@ -60,6 +63,7 @@ module.exports = class extends EventEmitter {
   }
   _farewell() {
     this.isConnected = false;
+    this.send = () => {};
     this.emit("meta");
   }
   _autopick(index) {
