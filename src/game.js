@@ -59,8 +59,10 @@ module.exports = class Game extends Room {
       this.packsInfo = sets.join(" / ");
       break;
     case "cube draft":
+      this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
+      break;
     case "cube sealed":
-      this.packsInfo = `${cube.packs} x ${cube.cards}`;
+      this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
       break;
     case "chaos": {
       const chaosOptions = [];
