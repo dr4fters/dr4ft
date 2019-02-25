@@ -15,7 +15,9 @@ const Header = () => (
 );
 
 const ApplicationError = () => (
-  <p className='error'>{App.err}</p>
+  <p className='error'>
+    <div dangerouslySetInnerHTML={{__html: App.err}} />
+  </p>
 );
 
 const ServerInfo = () => {
