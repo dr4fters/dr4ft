@@ -426,8 +426,6 @@ button:disabled:active {
   border: solid 1px black;
   position: fixed;
   font-size: 20px;
-  min-width: 88px;
-  width: 88px;
   padding: 4px;
   border-radius: 4px;
   height: 44px;
