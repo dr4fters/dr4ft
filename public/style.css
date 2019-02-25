@@ -238,6 +238,7 @@ button:disabled:active {
   height: 100%;
   position: relative;
   min-width: 25%;
+  z-index: 100;
 }
 
 .chat-container-hidden {
@@ -408,17 +409,34 @@ button:disabled:active {
 }
 
 .zone {
-  border-top: solid #ccc 1px;
   clear: both;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  border-top: solid #ccc 1px;
 }
 
 /** Players **/
 
 .self {
   background-color: rgba(0, 255, 0, .1);
+}
+
+#self-time-fixed {
+  border: solid 1px black;
+  position: fixed;
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 4px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.63);
+  transition: left 1s;
+  z-index: 99;
+}
+
+#self-time-fixed-time {
+  margin-left: 39%;
+  margin-top: 4px;
 }
 
 .opp {
@@ -477,10 +495,13 @@ button:disabled:active {
 .game-controls {
   display: flex;
   margin-bottom: 30px;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .game .fieldset {
   display: flex;
+  margin: 2px;
 }
 
 .game-legend {

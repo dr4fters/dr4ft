@@ -40,7 +40,7 @@ class Cols extends Component {
   render() {
     return (
       <div>
-        <Zones onMouseEnter={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
+        <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
         <ImageHelper onMouseEnter={this.onMouseEnter}
           className={this.state.className}
           card={this.state.card} />
@@ -53,7 +53,7 @@ Cols.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
-const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
+const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   const renderZone = (zoneName) => {
     const zone = getZone(zoneName);
     let sum = 0;
@@ -63,7 +63,7 @@ const Zones = ({onMouseEnter, zoneNames, onMouseLeave}) => {
       let items = zone[key].map((card, index) =>
         <div key={index}
           onClick={App._emit("click", zoneName, card.name)}
-          onMouseEnter={e => onMouseEnter(card, e)}
+          onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
           <img src={`${card.url}&version=${App.state.cardSize}`} alt={card.name} />
         </div>
