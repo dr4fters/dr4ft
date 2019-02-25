@@ -94,7 +94,10 @@ const PlayerEntry = ({player, index}) => {
   ];
 
   const {[0]: selfTimeFixed} = document.getElementsByClassName('self-time-fixed-time')
-  if (selfTimeFixed && className==='self') selfTimeFixed.innerHTML = time
+  if (selfTimeFixed && className==='self') {
+    selfTimeFixed.innerHTML = time
+    fixPackTimeToScreen()
+  }
 
   if (isHost) {
     //Move Player
