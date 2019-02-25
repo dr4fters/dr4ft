@@ -29,9 +29,6 @@ module.exports = {
     switch(true) {
     // if we want no elements, we return an empty array  
     case n === 0: return [];
-    // if we want exactly the same number of elements 
-    // as the array length, we return a copy of the array
-    case n === arr.length: return arr.slice(0);
     // if we want more elements than the array length
     // we return a copy plus random elements from the array
     case n > arr.length: {
