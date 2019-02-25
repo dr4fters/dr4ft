@@ -15,18 +15,18 @@ const GameOptions = () => {
   }
 
   switch (type) {
-    case "draft":
-      return <DraftOptions sets={sets} />;
-    case "sealed":
-      return <SealedOptions sets={sets} fourPack={fourPack} />;
-    case "cube draft":
-      return <CubeDraft />;
-    case "cube sealed":
-      return <CubeList />;
-    case "chaos":
-      return <Chaos />;
-    case "chaos sealed":
-      return <ChaosSealed />;
+  case "draft":
+    return <DraftOptions sets={sets} />;
+  case "sealed":
+    return <SealedOptions sets={sets} fourPack={fourPack} />;
+  case "cube draft":
+    return <CubeDraft />;
+  case "cube sealed":
+    return <CubeSealed />;
+  case "chaos":
+    return <Chaos />;
+  case "chaos sealed":
+    return <ChaosSealed />;
   }
 
 };
@@ -63,7 +63,6 @@ SealedOptions.propTypes = {
   fourPack: PropTypes.bool
 };
 
-
 const Sets = ({ sets, from, to = sets.length }) => (
   sets
     .map((set, i) => <Set selectedSet={set} index={i} key={i} />)
@@ -74,6 +73,20 @@ const CubeDraft = () => (
   <div>
     <CubeList />
     <CubeOptions />
+  </div>
+);
+
+const CubeSealed = () => (
+  <div>
+    <CubeList />
+    <CubeSealedOptions />
+  </div>
+);
+
+const CubeSealedOptions = () => (
+  <div>
+    <Select link="cubePoolSize" opts={_.seq(120, 15)} />
+    {" "}cards per player
   </div>
 );
 

@@ -83,6 +83,9 @@ module.exports = class Game extends Room {
       players: [],
       round: 0,
       rounds: cube ? cube.packs : 3,
+      cubePoolSize: cube.cubePoolSize,
+      packsNumber: cube.packs,
+      playerPackSize: cube.cards,
       secret
     });
     this.renew();
@@ -449,9 +452,9 @@ module.exports = class Game extends Room {
     }
     case "cube sealed": {
       this.pool = Pool.SealedCube({
-        cubeList: this.cube,
+        cubeList: this.cube.list,
         playersLength: this.players.length,
-        playerPoolSize: 90 //TODO: insert an option frontend to allow changing cube sealed pool size
+        playerPoolSize: this.cubePoolSize
       });
       break;
     }
@@ -563,6 +566,9 @@ module.exports = class Game extends Room {
     seats: ${this.seats}
     type: ${this.type}
     sets: ${this.sets}
+    cubePoolSize: ${this.cube.cubePoolSize}
+    packsNumber: ${this.cube.packs}
+    playerPackSize: ${this.cube.cards}
     cube: ${this.cube}
     isPrivate: ${this.isPrivate}
     fourPack: ${this.fourPack}

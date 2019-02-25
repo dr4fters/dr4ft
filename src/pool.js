@@ -264,8 +264,7 @@ const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
 };
 
 const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
-  let list = cubeList.slice(0); // copy the list to work on it
-  _.shuffle(list);
+  let list = _.shuffle(cubeList); // copy the list to work on it
 
   return new Array(playersLength * packsNumber).fill()
     .map(() => {

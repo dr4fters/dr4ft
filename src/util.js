@@ -9,11 +9,12 @@ var BASICS = [
   "Swamp"
 ];
 
-function transform(cube, seats, type) {
-  var { list, cards, packs } = cube;
+function controlCubeSettingsAndTransformList(cube, seats, type) {
+  var { list, cards, packs, cubePoolSize } = cube;
 
   assert(typeof list === "string", "cube.list must be a string");
   assert(typeof cards === "number", "cube.cards must be a number");
+  assert(typeof cubePoolSize === "number", "cube.cubePoolSize must be a number");
   assert(5 <= cards && cards <= 30, "cube.cards range must be between 5 and 30");
   assert(typeof packs === "number", "cube.packs must be a number");
   assert(3 <= packs && packs <= 12, "cube.packs range must be between 3 and 12");
@@ -22,7 +23,7 @@ function transform(cube, seats, type) {
 
   var min = type === "cube draft"
     ? seats * cards * packs
-    : seats * 90;
+    : seats * cubePoolSize;
   assert(min <= list.length && list.length <= 1e5,
     `this cube needs between ${min} and 100,000 cards; it has ${list.length}`);
 
@@ -86,7 +87,7 @@ module.exports = {
     case "cube draft":
     case "cube sealed":
       assert(typeof cube === "object", "cube must be an object");
-      transform(cube, seats, type);
+      controlCubeSettingsAndTransformList(cube, seats, type);
       break;
     case "chaos":
       assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");

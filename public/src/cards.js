@@ -346,9 +346,10 @@ ${codify(Zones.side)}
 };
 
 function cube() {
-  let {list, cards, packs} = App.state;
+  let {list, cards, packs, cubePoolSize} = App.state;
   cards = Number(cards);
   packs = Number(packs);
+  cubePoolSize = Number(cubePoolSize);
 
   list = list
     .split("\n")
@@ -360,7 +361,7 @@ function cube() {
     .filter(x => x)
     .join("\n");
 
-  return { list, cards, packs };
+  return { list, cards, packs, cubePoolSize };
 }
 
 function clickPack(cardName) {

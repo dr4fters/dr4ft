@@ -33,6 +33,7 @@ let App = {
     list: "",
     cards: 15,
     packs: 3,
+    cubePoolSize: 90,
 
     addBots: true,
     shufflePlayers: true,
