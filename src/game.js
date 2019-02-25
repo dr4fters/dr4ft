@@ -477,7 +477,6 @@ module.exports = class Game extends Room {
       });
       break;
     }
-    //TODO: insert chaos sealed in frontend
     case "chaos sealed": {
       this.pool = Pool.SealedChaos({
         playersLength: this.players.length,

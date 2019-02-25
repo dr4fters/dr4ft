@@ -25,6 +25,8 @@ const GameOptions = () => {
       return <CubeList />;
     case "chaos":
       return <Chaos />;
+    case "chaos sealed":
+      return <ChaosSealed />;
   }
 
 };
@@ -91,8 +93,18 @@ const CubeOptions = () => (
   </div>
 );
 
-
 const Chaos = () => (
+  <div>
+    <div>
+      <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
+    </div>
+    <div>
+      <Checkbox link='totalChaos' side='right' text='Total Chaos: ' />
+    </div>
+  </div>
+);
+
+const ChaosSealed = () => (
   <div>
     <div>
       <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
