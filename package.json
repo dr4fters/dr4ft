@@ -8,8 +8,7 @@
   },
   "license": "MIT",
   "author": "Dr4fters Team <zach@cockatrice.us>",
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Zach Halpern",
       "email": "zach@cockatrice.us"
     },
@@ -88,5 +87,8 @@
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.0"
+  },
+  "engines": {
+    "node": "11.0.0"
   }
 }
