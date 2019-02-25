@@ -61,8 +61,8 @@ const fixPackTimeToScreen = () => {
   const {[0]: zone} = document.getElementsByClassName('zone-container')
   if (selfTime && selfTimeFixed) {
     const rect = selfTime.getBoundingClientRect()
-    selfTimeFixed.hidden = rect.top > 0 
     const zoneRect = zone.getBoundingClientRect()
+    selfTimeFixed.hidden = rect.top > 0 
     if (zoneRect.top < 0) selfTimeFixed.style.marginTop = `${0 - zoneRect.top + 5}px`
     else selfTimeFixed.style.marginTop = '5px'
   }
