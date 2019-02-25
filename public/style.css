@@ -432,6 +432,7 @@ button:disabled:active {
   height: 44px;
   background-color: white;
   transition: left 1s;
+  z-index: 9999;
 }
 
 #self-time-fixed-time {
