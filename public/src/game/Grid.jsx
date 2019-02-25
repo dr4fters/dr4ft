@@ -29,21 +29,14 @@ const zone = (zoneName, index) => {
     : 0;
 
   return (
-    <div className='zone-container' key={index}>
-      <div className='zone'>
-        <h1>
-          <Spaced elements={[zoneTitle, zoneHelper]}/>
-        </h1>
-        {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
-      </div>
-      <div className='self-time-fixed' hidden>
-        {index==0 && <u className='self-time-fixed-message'>Time left</u>}
-        <div className='self-time-fixed-time' />
-      </div>
+    <div className='zone' key={index}>
+      <h1>
+        <Spaced elements={[zoneTitle, zoneHelper]}/>
+      </h1>
+      {cards.map((card, i) => <Card key={i+card.name} card={card} zoneName={zoneName} />)}
     </div>
   );
 };
-
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +46,6 @@ class Card extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
-
   onMouseEnter() {
     if(this.props.card.isDoubleFaced) {
       this.setState({
@@ -61,7 +53,6 @@ class Card extends Component {
       });
     }
   }
-
   onMouseLeave() {
     if(this.props.card.isDoubleFaced) {
       this.setState({
@@ -69,20 +60,16 @@ class Card extends Component {
       });
     }
   }
-
   render() {
     const {card, zoneName} = this.props;
     const isAutopickable = zoneName === "pack" && card.isAutopick;
-
     const className =
     `card ${isAutopickable ? "autopick-card " : ""}
     card ${card.foil ? "foil-card " : ""}`;
-
     const title
     = isAutopickable
       ? "This card will be automatically picked if your time expires."
       : "";
-
     return (
       <span className={className}
         title={title}
@@ -94,10 +81,8 @@ class Card extends Component {
     );
   }
 }
-
 Card.propTypes = {
   card: PropTypes.object.isRequired,
   zoneName: PropTypes.string.isRequired
 };
-
 export default Grid;

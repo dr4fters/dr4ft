@@ -412,9 +412,6 @@ button:disabled:active {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-}
-
-.zone-container {
   border-top: solid #ccc 1px;
 }
 
@@ -424,7 +421,7 @@ button:disabled:active {
   background-color: rgba(0, 255, 0, .1);
 }
 
-.self-time-fixed {
+#self-time-fixed {
   border: solid 1px black;
   position: fixed;
   font-size: 20px;
@@ -437,8 +434,9 @@ button:disabled:active {
   transition: left 1s;
 }
 
-.self-time-fixed-time {
-  margin-left: 38%;
+#self-time-fixed-time {
+  margin-left: 39%;
+  margin-top: 4px;
 }
 
 .opp {

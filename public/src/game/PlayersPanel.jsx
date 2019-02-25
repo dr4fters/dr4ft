@@ -8,6 +8,10 @@ const PlayersPanel = () => (
   <fieldset className='fieldset'>
     <legend className='legend game-legend'>Players</legend>
     <PlayersTable />
+    <div id='self-time-fixed' hidden>
+      <u>Time left</u>
+      <div id='self-time-fixed-time' />
+    </div>
   </fieldset>
 );
 
@@ -57,13 +61,13 @@ window.onscroll = () => {
 
 const fixPackTimeToScreen = () => {
   const selfTime = document.getElementById('self-time')
-  const {[0]: selfTimeFixed} = document.getElementsByClassName('self-time-fixed')
-  const {[0]: zone} = document.getElementsByClassName('zone-container')
+  const selfTimeFixed = document.getElementById('self-time-fixed')
+  const {[0]: zone} = document.getElementsByClassName('zone')
   if (selfTime && selfTimeFixed) {
-    const rect = selfTime.getBoundingClientRect()
+    const selfRect = selfTime.getBoundingClientRect()
     const zoneRect = zone.getBoundingClientRect()
     const selfTimeRect = selfTimeFixed.getBoundingClientRect()
-    selfTimeFixed.hidden = rect.top > 0 
+    selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0)
     selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`
     selfTimeFixed.style.top 
     = zoneRect.top > 0
@@ -103,7 +107,7 @@ const PlayerEntry = ({player, index}) => {
     <td key={6}>{hash && hash.mws}</td>
   ];
 
-  const {[0]: selfTimeFixed} = document.getElementsByClassName('self-time-fixed-time')
+  const selfTimeFixed = document.getElementById('self-time-fixed-time')
   if (selfTimeFixed && className==='self') {
     selfTimeFixed.innerHTML = time
     fixPackTimeToScreen()
