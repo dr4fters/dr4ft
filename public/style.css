@@ -418,6 +418,7 @@ button:disabled:active {
   display: flex;
   flex-direction: row;
   border-top: solid #ccc 1px;
+  justify-content: space-between;
 }
 
 /** Players **/
@@ -428,12 +429,10 @@ button:disabled:active {
 
 .self-time-fixed {
   border: solid 1px black;
-  position: fixed;
-  top: 4px;
-  left: 69%;
-  right: 0;
+  position: relative;
+  margin-top: 4px;
   font-size: 20px;
-  width: 80px;
+  min-width: 78px;
   padding: 4px;
   border-radius: 4px;
   height: 44px;
@@ -441,11 +440,7 @@ button:disabled:active {
 }
 
 .self-time-fixed-time {
-  font-size: 20px;
-  position: fixed;
-  top: 34px;
-  left: 71%;
-  right: 0;
+  margin-left: 38%;
 }
 
 .opp {
