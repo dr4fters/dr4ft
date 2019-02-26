@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 let _ = require("./_");
 let Bot = require("./bot");
 let Human = require("./human");
@@ -44,12 +45,7 @@ module.exports = class Game extends Room {
     this.bots = 0;
 
     if (sets) {
-      if (fourPack) {
-        sets = sets.slice(0, 4);
-      }
-      if (type != "chaos") {
-        this.sets = sets;
-      }
+      this.sets = fourPack ? sets.slice(0, 4) : sets;
     }
 
     // Handle packsInfos to show various informations about the game
@@ -59,13 +55,16 @@ module.exports = class Game extends Room {
       this.packsInfo = sets.join(" / ");
       break;
     case "cube draft":
-    case "cube sealed":
-      this.packsInfo = `${cube.packs} x ${cube.cards}`;
+      this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
       break;
-    case "chaos": {
+    case "cube sealed":
+      this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
+      break;
+    case "chaos draft":
+    case "chaos sealed": {
       const chaosOptions = [];
-      chaosOptions.push(modernOnly ? "Modern sets only" : "From any set");
-      chaosOptions.push(totalChaos ? "Total Chaos" : "Real booster ");
+      chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
+      chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
       this.packsInfo = `${chaosOptions.join(", ")}`;
       break;
     }
@@ -85,6 +84,15 @@ module.exports = class Game extends Room {
       rounds: cube ? cube.packs : 3,
       secret
     });
+
+    if (cube) {
+      Object.assign(this, {
+        cubePoolSize: cube.cubePoolSize,
+        packsNumber: cube.packs,
+        playerPackSize: cube.cards
+      });
+    }
+
     this.renew();
     games[gameID] = this;
 
@@ -202,7 +210,9 @@ module.exports = class Game extends Room {
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
+      sock.removeAllListeners("kick");
       sock.on("kick", this.kick.bind(this));
+      sock.removeAllListeners("swap");
       sock.on("swap", this.swap.bind(this));
     }
     h.on("meta", this.meta.bind(this));
@@ -271,7 +281,6 @@ module.exports = class Game extends Room {
       packs: p.packs.length,
       isBot: p.isBot,
       isConnected: p.isConnected,
-      isReadyToStart: p.isReadyToStart,
     }));
     for (var p of this.players)
       p.send("set", state);
@@ -321,13 +330,15 @@ module.exports = class Game extends Room {
     };
     var seatnumber = 0;
     for (var player of this.players) {
+      const test = crypto.createHash("SHA512");
       seatnumber++;
       var playercap = {
         "id": player.id,
         "name": player.name,
         "ip": player.ip,
         "seat": seatnumber,
-        "picks": player.cap.packs
+        "picks": player.cap.packs,
+        "cubeHash": /cube/.test(this.type) ? test.update(this.cube.list.join("")).digest("hex") : ""
       };
       draftcap.cap.push(playercap);
     }
@@ -378,8 +389,10 @@ module.exports = class Game extends Room {
     this.delta *= -1;
 
     for (let p of players)
-      if (!p.isBot)
-        p.getPack(this.pool.pop());
+      if (!p.isBot) {
+        p.pickNumber = 0;
+        p.getPack(this.pool.shift());
+      }
 
     //let the bots play
     this.meta = () => { };
@@ -389,7 +402,7 @@ module.exports = class Game extends Room {
       index -= this.delta;
       let p = _.at(players, index);
       if (p.isBot)
-        p.getPack(this.pool.pop());
+        p.getPack(this.pool.shift());
     }
     this.meta = Game.prototype.meta;
     this.meta({ round: this.round });
@@ -405,14 +418,11 @@ module.exports = class Game extends Room {
     return {
       didGameStart: didGameStart,
       currentPack: round,
-      players: players.map((player, index) => (
-        {
-          playerName: player.name,
-          id: player.id,
-          isReadyToStart: player.isReadyToStart,
-          seatNumber: index
-        }
-      ))
+      players: players.map((player, index) => ({
+        playerName: player.name,
+        id: player.id,
+        seatNumber: index
+      }))
     };
   }
 
@@ -440,54 +450,104 @@ module.exports = class Game extends Room {
     };
   }
 
+  createPool() {
+    switch (this.type) {
+    case "cube draft": {
+      this.pool = Pool.DraftCube({
+        cubeList: this.cube.list,
+        playersLength: this.players.length,
+        packsNumber: this.cube.packs,
+        playerPackSize: this.cube.cards
+      });
+      break;
+    }
+    case "cube sealed": {
+      this.pool = Pool.SealedCube({
+        cubeList: this.cube.list,
+        playersLength: this.players.length,
+        playerPoolSize: this.cubePoolSize
+      });
+      break;
+    }
+    case "draft": {
+      this.pool = Pool.DraftNormal({
+        playersLength: this.players.length,
+        sets: this.sets
+      });
+      break;
+    }
+    case "sealed": {
+      this.pool = Pool.SealedNormal({
+        playersLength: this.players.length,
+        sets: this.sets
+      });
+      break;
+    }
+    case "chaos draft": {
+      this.pool = Pool.DraftChaos({
+        playersLength: this.players.length,
+        modernOnly: this.modernOnly,
+        totalChaos: this.totalChaos
+      });
+      break;
+    }
+    case "chaos sealed": {
+      this.pool = Pool.SealedChaos({
+        playersLength: this.players.length,
+        modernOnly: this.modernOnly,
+        totalChaos: this.totalChaos
+      });
+      break;
+    }
+    default: throw new Error(`Type ${this.type} not recognized`);
+    }
+  }
+
+  handleSealed() {
+    this.createPool();
+    this.round = -1;
+    for (const p of this.players) {
+      p.pool = this.pool.shift();
+      p.send("pool", p.pool);
+      p.send("set", { round: -1 });
+    }
+  }
+
+  handleDraft({ addBots, useTimer, timerLength, shufflePlayers }) {
+    const {players} = this;
+    for (const p of players) {
+      p.useTimer = useTimer;
+      p.timerLength = timerLength;
+    }
+
+    if (addBots) {
+      while (players.length < this.seats) {
+        players.push(new Bot);
+        this.bots++;
+      }
+    }
+
+    if (shufflePlayers)
+      _.shuffle(players);
+
+    players.forEach((p, i) => {
+      p.on("pass", this.pass.bind(this, p));
+      p.send("set", { self: i });
+    });
+
+    this.createPool();
+    this.startRound();
+  }
+
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
-      var src = this.cube ? this.cube : this.sets;
-      var { players } = this;
-      var p;
-
-      if (!players.every(x => x.isReadyToStart))
-        return;
-
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
       if (/sealed/.test(this.type)) {
-        this.round = -1;
-        var pools = Pool(src, players.length, true);
-        for (p of players) {
-          p.pool = pools.pop();
-          p.send("pool", p.pool);
-          p.send("set", { round: -1 });
-        }
+        this.handleSealed();
       } else {
-        // Handle draft specificities
-        for (p of players) {
-          p.useTimer = useTimer;
-          p.timerLength = timerLength;
-        }
-
-        Game.broadcastGameInfo();
-        if (addBots)
-          while (players.length < this.seats) {
-            players.push(new Bot);
-            this.bots++;
-          }
-
-        if (shufflePlayers)
-          _.shuffle(players);
-
-        if (/chaos/.test(this.type)) {
-          this.pool = Pool(src, players.length, true, true, this.modernOnly, this.totalChaos);
-        }
-        else
-          this.pool = Pool(src, players.length);
-
-        players.forEach((p, i) => {
-          p.on("pass", this.pass.bind(this, p));
-          p.send("set", { self: i });
-        });
-        this.startRound();
+        this.handleDraft({ addBots, useTimer, timerLength, shufflePlayers });
       }
 
       logger.info(`Game ${this.id} started.\n${this.toString()}`);
@@ -497,7 +557,7 @@ module.exports = class Game extends Room {
       this.players.forEach(player => {
         if(!player.isBot) {
           player.exit();
-          player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: https://github.com/dr4fters/dr4ft/issues");
+          player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: <a href='https://github.com/dr4fters/dr4ft/issues'>https://github.com/dr4fters/dr4ft/issues</a>");
         }
       });
       delete games[this.id];
@@ -516,7 +576,6 @@ module.exports = class Game extends Room {
     seats: ${this.seats}
     type: ${this.type}
     sets: ${this.sets}
-    cube: ${this.cube}
     isPrivate: ${this.isPrivate}
     fourPack: ${this.fourPack}
     modernOnly: ${this.modernOnly}
@@ -524,6 +583,11 @@ module.exports = class Game extends Room {
     packsInfos: ${this.packsInfo}
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
-    `;
+    ${this.cube ? 
+    `cubePoolSize: ${this.cube.cubePoolSize}
+    packsNumber: ${this.cube.packs}
+    playerPackSize: ${this.cube.cards}
+    cube: ${this.cube.list}`
+    : ""}`;
   }
 };

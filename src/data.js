@@ -97,6 +97,31 @@ const getLatestReleasedSet = () => {
   return latestSet;
 };
 
+const getExpansionOrCoreModernSets = () => {
+  const sets = [];
+  for (const setCode in getSets()) {
+    const set = getSets()[setCode];
+    if (["expansion", "core"].includes(set.type) 
+      && Date.parse("2003-07-26") <= Date.parse(set.releaseDate)) {
+      set.code = setCode;
+      sets.push(set);
+    }
+  }
+  return sets;
+};
+
+const getExansionOrCoreSets = () => {
+  const sets = [];
+  for (const setCode in getSets()) {
+    const set = getSets()[setCode];
+    if (["expansion", "core"].includes(set.type)) {
+      set.code = setCode;
+      sets.push(set);
+    }
+  }
+  return sets;
+};
+
 module.exports = {
   getCards,
   getSets,
@@ -105,5 +130,7 @@ module.exports = {
   writeSets,
   getPlayableSets,
   getRandomSet,
-  getLatestReleasedSet
+  getLatestReleasedSet,
+  getExpansionOrCoreModernSets,
+  getExansionOrCoreSets
 };

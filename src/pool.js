@@ -1,5 +1,5 @@
 var _ = require("./_");
-var { getCards, getSets, getMws, getRandomSet } = require("./data");
+var { getCards, getSets, getMws, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
 function selectRarity(set) {
   // average pack contains:
@@ -254,91 +254,93 @@ function toCards(pool, code, foilCard, masterpiece) {
   });
 }
 
-module.exports = function (src, playerCount, isSealed, isChaos, modernOnly, totalChaos) {
-  if (!(src instanceof Array)) {
-    if (!(isChaos)) {
-      var isCube = true;
-      _.shuffle(src.list);
-    }
-  }
-  else {
-    for (i = 0; i < src.length; i++) {
-      if (src[i] == "RNG") {
-        src[i] = getRandomSet().code;
-      }
-    }
-  }
-  if (isSealed) {
-    var count = playerCount;
-    var size = 90;
-  } else {
-    count = playerCount * src.packs;
-    size = src.cards;
-  }
-  var pools = [];
+const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
+  return DraftCube({
+    cubeList,
+    playersLength,
+    packsNumber: 1,
+    playerPackSize: playerPoolSize
+  });
+};
 
-  if (isCube || isSealed) {
-    if (!(isChaos)) {
-      while (count--)
-        pools.push(isCube
-          ? toCards(src.list.splice(-size))
-          : [].concat(...src.map(toPack)));
-    } else {
-      const allSets = getSets();
-      var setlist = [];
-      var modernSets = ["AER", "KLD", "EMN", "SOI", "OGW", "BFZ", "ORI", "DTK", "FRF", "KTK", "M15", "JOU", "BNG", "THS", "M14", "DGM", "GTC", "RTR", "M13", "AVR", "DKA", "ISD", "M12", "NPH", "MBS", "SOM", "M11", "ROE", "WWK", "ZEN", "M10", "ARB", "CON", "ALA", "EVE", "SHM", "MOR", "LRW", "10E", "FUT", "PLC", "TSP", "CSP", "DIS", "GPT", "RAV", "9ED", "SOK", "8ED", "BOK", "CHK", "5DN", "DST", "MRD"];
-      if (modernOnly) {
-        setlist = modernSets;
-      }
-      else {
-        for (let code in allSets) {
-          const { type } = allSets[code];
+const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
+  let list = _.shuffle(cubeList); // copy the list to work on it
 
-          // We don't want Unstable or Unhinged sets, neither custom sets
-          if (!["custom", "funny"].includes(type)) {
-            setlist.push(code);
-          }
-        }
-      }
-      if (!(totalChaos)) {
-        for (let i = 0; i < 3; i++) {
-          for (let j = 0; j < playerCount; j++) {
-            let setindex = _.rand(setlist.length);
-            let code = setlist[setindex];
-            setlist.splice(setindex, 1);
-            pools.push(toPack(code));
-          }
-        }
-      }
-      else {
-        var setindex = 0;
-        for (var i = 0; i < 3; i++) {
-          for (var j = 0; j < playerCount; j++) {
-            var chaosPool = [];
-            setindex = _.rand(setlist.length);
-            if (setlist[setindex].mythic && !_.rand(8)) {
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].mythic));
-            }
-            else {
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].rare));
-            }
-            for (let k = 0; k < 3; k++) {
-              setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].uncommon));
-            }
-            for (let k = 0; k < 11; k++) {
-              setindex = _.rand(setlist.length);
-              chaosPool.push(_.choose(1, allSets[setlist[setindex]].common));
-            }
-            pools.push(toCards(chaosPool));
-          }
-        }
-      }
-    }
+  return new Array(playersLength * packsNumber).fill()
+    .map(() => {
+      const playerPool = list.splice(0, playerPackSize);
+      return toCards(playerPool);
+    });
+};
+
+// Replace RNG set with real set
+const  replaceRNGSet = (sets) => (
+  sets.map(set => set === "RNG" ? getRandomSet().code : set)
+);
+
+const SealedNormal = ({ playersLength, sets }) => (
+  new Array(playersLength).fill(replaceRNGSet(sets))
+    .map(sets => sets.flatMap(toPack))
+);
+
+const DraftNormal = ({ playersLength, sets }) => (
+  replaceRNGSet(sets)
+    .flatMap(set => new Array(playersLength).fill(set))
+    .map(toPack)
+);
+
+// Get a random set and transform it to pack
+function getRandomPack(setList) {
+  const code = chooseRandomSet(setList).code;
+  return toPack(code);
+}
+
+const chooseRandomSet = (setList) => (
+  _.choose(1, setList)[0]
+);
+
+// Create a complete random pack
+function getTotalChaosPack(setList) {
+  const chaosPool = [];
+  const randomSet = chooseRandomSet(setList);
+
+  // Check if set has at least rares
+  if (randomSet.rare && randomSet.rare.length > 0) {
+    const isMythic = randomSet.mythic && !_.rand(8);
+    chaosPool.push(_.choose(1, isMythic ? randomSet.mythic : randomSet.rare));
   } else {
-    for (let code of src.reverse())
-      for (let i = 0; i < playerCount; i++)
-        pools.push(toPack(code));
+    //If no rare exists for the set, we pick an uncommon
+    chaosPool.push(_.choose(1, randomSet.uncommon));
   }
-  return pools;
+
+  for (let k = 0; k < 3; k++) {
+    chaosPool.push(_.choose(1, chooseRandomSet(setList).uncommon));
+  }
+
+  for (let k = 0; k < 11; k++) {
+    chaosPool.push(_.choose(1, chooseRandomSet(setList).common));
+  }
+  return toCards(chaosPool);
+}
+
+const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) => {
+  const setList = modernOnly ? getModernList() : getSetsList();
+
+  return new Array(playersLength * packsNumber).fill()
+    .map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
+};
+
+const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
+  const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
+  return new Array(playersLength).fill()
+    .map(() => pool.splice(0, packsNumber).flat());
+};
+
+module.exports = {
+  SealedCube,
+  DraftCube,
+  SealedNormal,
+  DraftNormal,
+  SealedChaos,
+  DraftChaos
 };

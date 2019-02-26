@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 
-import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {getZone} from "Src/cards";
 import {Spaced} from "Src/utils.jsx";

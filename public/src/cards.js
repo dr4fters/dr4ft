@@ -1,6 +1,11 @@
 import _ from "NodePackages/utils/utils";
 import App from "./app";
 
+// Migrate to chaos draft
+if (App.state.type === "chaos") {
+  App.state.type = "chaos draft";
+}
+
 let Cards = {
   Plains:   401994,
   Island:   401927,
@@ -91,13 +96,13 @@ let events = {
     _.download(data, filename + "." + filetype);
     hash();
   },
-  readyToStart(e) {
-    App.send("readyToStart", e.target.checked);
-  },
   start() {
     let {addBots, useTimer, timerLength, shufflePlayers} = App.state;
     let options = {addBots, useTimer, timerLength, shufflePlayers};
     App.send("start", options);
+  },
+  pickNumber(pick) {
+    App.save("pickNumber", pick);
   },
   pack(cards) {
     rawPack = cards;
@@ -349,9 +354,10 @@ ${codify(Zones.side)}
 };
 
 function cube() {
-  let {list, cards, packs} = App.state;
+  let {list, cards, packs, cubePoolSize} = App.state;
   cards = Number(cards);
   packs = Number(packs);
+  cubePoolSize = Number(cubePoolSize);
 
   list = list
     .split("\n")
@@ -363,7 +369,7 @@ function cube() {
     .filter(x => x)
     .join("\n");
 
-  return { list, cards, packs };
+  return { list, cards, packs, cubePoolSize };
 }
 
 function clickPack(cardName) {

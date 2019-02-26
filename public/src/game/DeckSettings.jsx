@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 import {BASICS, Zones} from "Src/cards";
 import {Select} from "Src/utils";
@@ -133,7 +132,7 @@ const Copy = () => (
 );
 
 const Log = () => (
-  App.state.isGameFinished && /draft|chaos/.test(App.state.type)
+  App.state.isGameFinished && /draft/.test(App.state.type)
     ? <div>
       <button className='connected-component'
         onClick={App._emit("getLog")}>

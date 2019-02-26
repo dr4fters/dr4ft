@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import App from "Src/app";
 
 const GameTypes = () => {
-  const types = ["draft", "sealed", "cube draft", "cube sealed", "chaos"];
+  const types = ["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"];
   return (
     <div>
       <p>Game type:{" "}

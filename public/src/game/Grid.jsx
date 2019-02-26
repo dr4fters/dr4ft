@@ -24,7 +24,7 @@ const zone = (zoneName, index) => {
   const zoneTitle = zoneName + (zoneName === "pack" ? " " + App.state.round : "");
   const zoneHelper = App.state.didGameStart
     ? zoneName === "pack"
-      ? `Pick ${App.state.cards - cards.length} / ${cards[0].packSize}`
+      ? `Pick ${App.state.pickNumber} / ${cards[0].packSize}`
       : cards.length
     : 0;
 

@@ -11,10 +11,23 @@ import Cols from "./Cols";
 import Grid from "./Grid";
 import Chat from "./Chat";
 
-
 export default class Game extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     App.register(this);
+  }
+
+  leaveGame() {
+    App.send("leave");
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.leaveGame);
+  }
+
+  componentWillUnmount() {
+    this.leaveGame();
+    window.removeEventListener('beforeunload', this.leaveGame);
   }
 
   render() {

@@ -11,7 +11,9 @@ import FileUpload from "./FileUpload";
 import Version from "./Version";
 
 export default class Lobby extends Component {
-  componentDidMount() {
+
+  constructor(props) {
+    super(props);
     App.register(this);
   }
   render() {

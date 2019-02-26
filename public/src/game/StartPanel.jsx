@@ -18,7 +18,7 @@ const StartPanel = () => (
 
 const StartControls = () => {
   const {type} = App.state;
-  const isDraft = type !== "sealed" && type !== "cube sealed";
+  const isDraft = !/sealed/.test(type);
 
   return (
     <div>

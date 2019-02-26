@@ -9,7 +9,6 @@ module.exports = class extends EventEmitter {
     Object.assign(this, {
       isBot: false,
       isConnected: false,
-      isReadyToStart: true,
       id: sock.id,
       ip: sock.ip,
       name: sock.name,
@@ -25,7 +24,8 @@ module.exports = class extends EventEmitter {
         round : {},
         pack: []
       },
-      draftStats: []
+      draftStats: [],
+      pickNumber: 0
     });
     this.attach(sock);
   }
@@ -38,9 +38,11 @@ module.exports = class extends EventEmitter {
       this.sock.ws.close();
 
     sock.mixin(this);
-    sock.on("readyToStart", this._readyToStart.bind(this));
+    sock.removeAllListeners("autopick");
     sock.on("autopick", this._autopick.bind(this));
+    sock.removeAllListeners("pick");
     sock.on("pick", this._pick.bind(this));
+    sock.removeAllListeners("hash");
     sock.on("hash", this._hash.bind(this));
     sock.once("exit", this._farewell.bind(this));
 
@@ -61,10 +63,7 @@ module.exports = class extends EventEmitter {
   }
   _farewell() {
     this.isConnected = false;
-    this.emit("meta");
-  }
-  _readyToStart(value) {
-    this.isReadyToStart = value;
+    this.send = () => {};
     this.emit("meta");
   }
   _autopick(index) {
@@ -118,7 +117,7 @@ module.exports = class extends EventEmitter {
       this.time = 0;
     }
 
-
+    this.send("pickNumber", ++this.pickNumber);
     this.send("pack", pack);
   }
   updateDraftStats(pack, pool) {

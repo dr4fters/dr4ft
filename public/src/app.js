@@ -33,6 +33,7 @@ let App = {
     list: "",
     cards: 15,
     packs: 3,
+    cubePoolSize: 90,
 
     addBots: true,
     shufflePlayers: true,
@@ -124,6 +125,10 @@ let App = {
   },
   set(state) {
     Object.assign(App.state, state);
+    // Set default sets
+    if (App.state.sets.length === 0 && App.state.latestSet) {
+      App.state.sets = Array(6).fill(App.state.latestSet.code);
+    }
     App.update();
   },
   update() {

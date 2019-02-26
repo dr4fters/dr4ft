@@ -3,7 +3,6 @@ const assert = require("assert");
 const Game = require("../src/game");
 
 describe("Acceptance tests for Game class", () => {
-
   describe("can make a game", () => {
     it("should return a new draft", async () => {
       const gameParams = {

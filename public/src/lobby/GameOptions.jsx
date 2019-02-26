@@ -8,25 +8,22 @@ import { Checkbox, Select, Textarea } from "Src/utils";
 import Set from "./Set";
 
 const GameOptions = () => {
-  let { sets, latestSet, fourPack, type } = App.state;
-  // Set default sets
-  if (sets.length === 0 && latestSet) {
-    App.save("sets", Array(6).fill().map(() => latestSet.code));
-  }
+  const { sets, fourPack, type } = App.state;
 
   switch (type) {
-    case "draft":
-      return <DraftOptions sets={sets} />;
-    case "sealed":
-      return <SealedOptions sets={sets} fourPack={fourPack} />;
-    case "cube draft":
-      return <CubeDraft />;
-    case "cube sealed":
-      return <CubeList />;
-    case "chaos":
-      return <Chaos />;
+  case "draft":
+    return <DraftOptions sets={sets} />;
+  case "sealed":
+    return <SealedOptions sets={sets} fourPack={fourPack} />;
+  case "cube draft":
+    return <CubeDraft />;
+  case "cube sealed":
+    return <CubeSealed />;
+  case "chaos draft":
+    return <ChaosDraft />;
+  case "chaos sealed":
+    return <ChaosSealed />;
   }
-
 };
 
 const DraftOptions = ({ sets }) => (
@@ -61,7 +58,6 @@ SealedOptions.propTypes = {
   fourPack: PropTypes.bool
 };
 
-
 const Sets = ({ sets, from, to = sets.length }) => (
   sets
     .map((set, i) => <Set selectedSet={set} index={i} key={i} />)
@@ -72,6 +68,20 @@ const CubeDraft = () => (
   <div>
     <CubeList />
     <CubeOptions />
+  </div>
+);
+
+const CubeSealed = () => (
+  <div>
+    <CubeList />
+    <CubeSealedOptions />
+  </div>
+);
+
+const CubeSealedOptions = () => (
+  <div>
+    <Select link="cubePoolSize" opts={_.seq(120, 15)} />
+    {" "}cards per player
   </div>
 );
 
@@ -91,8 +101,18 @@ const CubeOptions = () => (
   </div>
 );
 
+const ChaosDraft = () => (
+  <div>
+    <div>
+      <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
+    </div>
+    <div>
+      <Checkbox link='totalChaos' side='right' text='Total Chaos: ' />
+    </div>
+  </div>
+);
 
-const Chaos = () => (
+const ChaosSealed = () => (
   <div>
     <div>
       <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
