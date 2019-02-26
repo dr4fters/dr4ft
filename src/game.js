@@ -330,7 +330,7 @@ module.exports = class Game extends Room {
     };
     var seatnumber = 0;
     for (var player of this.players) {
-      const test = crypto.createHash("md5");
+      const test = crypto.createHash("SHA512");
       seatnumber++;
       var playercap = {
         "id": player.id,
