@@ -10,6 +10,10 @@ import GameSettings from "./GameSettings";
 import Cols from "./Cols";
 import Grid from "./Grid";
 import Chat from "./Chat";
+import {STRINGS} from "../config";
+
+import {vanillaToast} from "vanilla-toast";
+import "vanilla-toast/vanilla-toast.css";
 
 export default class Game extends Component {
   constructor(props) {
@@ -22,6 +26,11 @@ export default class Game extends Component {
   }
 
   componentDidMount() {
+    // Alert to change name
+    if (App.state.name == STRINGS.BRANDING.DEFAULT_USERNAME) {
+      vanillaToast.warning(`Welcome, ${App.state.name}! Please set your nickname via the players menu on the left`, {duration: 5000});
+    }
+
     window.addEventListener("beforeunload", this.leaveGame);
   }
 

@@ -100,7 +100,7 @@ const PlayerEntry = ({player, index}) => {
   const columns = [
     <td key={0}>{index + 1}</td>,
     <td key={1}>{connectionStatusIndicator}</td>,
-    <td key={2}>{name}</td>,
+    <td key={2}>{index === self ? <SelfName name={name} /> : name}</td>,
     <td key={3}>{packs}</td>,
     <td id={className==='self' ? 'self-time':''} key={4}>{time}</td>,
     <td key={5}>{hash && hash.cock}</td>,
@@ -144,6 +144,23 @@ const PlayerEntry = ({player, index}) => {
 PlayerEntry.propTypes = {
   player: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
+};
+
+const SelfName = ({ name }) => (
+  <input
+    style={{ width: "150px" }}
+    type='text'
+    maxLength={15}
+    value={name}
+    onChange={(e) => {
+      App.save("name", e.currentTarget.value);
+      App.send("name", e.currentTarget.value);
+    }}
+  />
+);
+
+SelfName.propTypes = {
+  name: PropTypes.string.isRequired,
 };
 
 export default PlayersPanel;
