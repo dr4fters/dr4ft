@@ -406,8 +406,8 @@ function Key(groups, sort) {
       }
 
     if (arr.length) {
-      groups["6/6+"] || (groups["6/6+"] = [])
-      ;[].push.apply(groups["6/6+"], arr);
+      groups["6+"] || (groups["6+"] = [])
+      ;[].push.apply(groups["6+"], arr);
     }
     return groups;
 
