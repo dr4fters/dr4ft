@@ -98,7 +98,7 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
     ? card.isDoubleFaced
       ? <div className={className} id="doubleimg">
         <img className="card" src={card.url} onMouseEnter={e => onMouseEnter(card, e)} />
-        <img className="card" src={card.flippedCardURL} onMouseEnter={e => onMouseEnter(card, e)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={e => onMouseEnter(card, e)} />
       </div>
       : <img className={className}
         id='img'

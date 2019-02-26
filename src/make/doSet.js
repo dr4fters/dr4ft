@@ -1,4 +1,5 @@
 const _ = require("../_");
+const logger = require("../logger");
 
 const COLORS = {
   W: "white",
@@ -25,7 +26,7 @@ function doSet(rawSet, allCards = {}) {
   
   var cards = {};
   for (const card of rawSet.cards) {
-    doCard({card, cards, code, set, baseSetSize});
+    doCard({card, cards, rawSetCards: rawSet.cards, code, set, baseSetSize});
   }
 
   //because of split cards, do this only after processing the entire set
@@ -47,8 +48,8 @@ function doSet(rawSet, allCards = {}) {
   return set;
 }
 
-function doCard({card, cards, code, set, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId } = card;
+function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
 
   // With MTGJsonv4, a new rarity exists
@@ -67,17 +68,18 @@ function doCard({card, cards, code, set, baseSetSize}) {
   }
 
   // Keep only the non-flipped cards
-  // Flipped cards have an mciNumber or a number containing the letter b
-  if (/^double-faced$|^flip$/i.test(layout) && /b/i.test(number))
+  if (side && side !== "a" && !/a/.test(number)) {
+    logger.info(`${name} has side ${side}. avoiding`);
     return;
+  }
 
-  if (/split|aftermath/i.test(layout))
+  if (/split/i.test(layout))
     name = names.join(" // ");
 
   name = _.ascii(name);
 
   if (name in cards) {
-    if (/^split$|^aftermath$/i.test(layout)) {
+    if (/^split$/i.test(layout)) {
       var c = cards[name];
       c.cmc += convertedManaCost;
       if (c.color !== color)
@@ -97,12 +99,16 @@ function doCard({card, cards, code, set, baseSetSize}) {
           : colors[0]; // shouldn't happen
 
 
-  const isDoubleFaced = /^double-faced$/i.test(layout);
+  const isDoubleFaced = /^double-faced$|^transform$|^flip$|^meld$/i.test(layout);
   var flippedCardURL = "";//Taking care of DoubleFaced Cards URL
   if (isDoubleFaced) {
-    cards.some(x => {
+    logger.info(`${name} has side ${side} and other card ${names[1]}`);
+    rawSetCards.some(x => {
       if (x.name == card.names[1]) {
-        flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image&face=back`;
+        flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image`;
+        if(/^double-faced$|^transform$/.test(layout)){
+          flippedCardURL += "&face=back";
+        }
         return true;
       }
     });
