@@ -28,11 +28,11 @@ const PlayerTableHeader = () => (
   <tr>
     <th key="1">#</th>
     <th key="2"/>
-    <th key="3">name</th>
-    <th key="4">packs</th>
-    <th key="7">time</th>
-    <th key="8">cock</th>
-    <th key="9">mws</th>
+    <th key="3">Drafter</th>
+    <th key="4">Packs</th>
+    <th key="7">Timer</th>
+    <th key="8">Trice</th>
+    <th key="9">MWS</th>
   </tr>
 );
 

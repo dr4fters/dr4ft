@@ -58,7 +58,7 @@ const CardsZone = () => {
   = !App.state.isGameFinished && Object.keys(Zones.pack).length
     ? <Grid key={"pack"} zones={["pack"]} />
     : <div key={"pack"}/>;
-  const props = { zones: ["main", "side", "junk"] };
+  const props = { zones: ["mainboard", "sideboard", "junk"] };
   const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
   return [pack, pool];
 };
