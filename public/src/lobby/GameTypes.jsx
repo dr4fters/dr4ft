@@ -28,7 +28,7 @@ const GameType = ({type, isChecked}) => (
       onChange={() => {
         App.save("type", type);
       }}
-      checked={isChecked}/> {type}
+      checked={isChecked}/> {type.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
   </label>
 );
 
