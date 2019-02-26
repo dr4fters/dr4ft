@@ -506,7 +506,7 @@ button:disabled:active {
 
 .game .fieldset {
   display: flex;
-  margin: 2px;
+  margin: 4px;
 }
 
 .game-legend {
