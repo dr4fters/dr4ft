@@ -81,9 +81,6 @@ module.exports = class extends EventEmitter {
       this.sendPack(pack);
   }
   sendPack(pack) {
-    if (pack.length === 1)
-      return this.pick(0);
-
     if (this.useTimer) {
       var timer = [];
       // http://www.wizards.com/contentresources/wizards/wpn/main/documents/magic_the_gathering_tournament_rules_pdf1.pdf pp43
