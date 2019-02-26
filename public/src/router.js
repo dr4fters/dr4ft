@@ -26,6 +26,7 @@ function route() {
     App.state.players = [];
     App.send("join", id);
     App.state.chat = true;
+    App.updateFileName();
     break;
   case "":
     component = (

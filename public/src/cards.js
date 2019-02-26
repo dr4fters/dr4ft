@@ -1,6 +1,5 @@
 import _ from "NodePackages/utils/utils";
 import App from "./app";
-var { DateTime } = require('luxon');
 
 // Migrate to chaos draft
 if (App.state.type === "chaos") {
@@ -149,11 +148,6 @@ let events = {
 
   create() {
     let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state;
-    let savename = App.state.type === "draft" ? App.state.sets[0] + "-draft" : App.state.type;
-
-    // Timezone based on each individual drafter
-    App.state.filename = savename + "-" + DateTime.local().toFormat('yyyy-MM-dd_TT').replace(/:/g, "-");
-    App.save("filename", App.state.filename);
     seats = Number(seats);
     let options = { type, seats, title, isPrivate, fourPack, modernOnly, totalChaos };
 

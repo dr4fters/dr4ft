@@ -274,6 +274,12 @@ module.exports = class Game extends Room {
   }
 
   meta(state = {}) {
+    state.game = {
+      type: this.type,
+      packsInfo: this.packsInfo,
+      sets: this.sets
+    };
+
     state.players = this.players.map(p => ({
       hash: p.hash,
       name: p.name,
