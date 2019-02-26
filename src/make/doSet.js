@@ -1,4 +1,3 @@
-const _ = require("../_");
 const logger = require("../logger");
 
 const COLORS = {
@@ -75,8 +74,6 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
 
   if (/split/i.test(layout))
     name = names.join(" // ");
-
-  name = _.ascii(name);
 
   if (name in cards) {
     if (/^split$/i.test(layout)) {

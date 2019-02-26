@@ -19,7 +19,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
   assert(typeof packs === "number", "cube.packs must be a number");
   assert(3 <= packs && packs <= 12, "cube.packs range must be between 3 and 12");
 
-  list = list.split("\n").map(_.ascii);
+  list = list.split("\n");
 
   var min = type === "cube draft"
     ? seats * cards * packs

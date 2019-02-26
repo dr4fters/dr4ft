@@ -45,7 +45,7 @@ function hash(deck, opts) {
   var data = items.sort().join(opts.separator);
   var digest = crypto
     .createHash(opts.algo)
-    .update(data, "ascii")
+    .update(data)
     .digest("hex");
   return opts.digest(digest);
 }
