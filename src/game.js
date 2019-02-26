@@ -1,4 +1,4 @@
-const md5 = require("crypto").createHash("md5");
+const crypto = require("crypto");
 let _ = require("./_");
 let Bot = require("./bot");
 let Human = require("./human");
@@ -330,6 +330,7 @@ module.exports = class Game extends Room {
     };
     var seatnumber = 0;
     for (var player of this.players) {
+      const test = crypto.createHash("md5");
       seatnumber++;
       var playercap = {
         "id": player.id,
@@ -337,7 +338,7 @@ module.exports = class Game extends Room {
         "ip": player.ip,
         "seat": seatnumber,
         "picks": player.cap.packs,
-        "cubeHash": /cube/.test(this.type) ? md5.update(this.cube.list.join("")).digest("hex") : ""
+        "cubeHash": /cube/.test(this.type) ? test.update(this.cube.list.join("")).digest("hex") : ""
       };
       draftcap.cap.push(playercap);
     }
