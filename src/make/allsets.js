@@ -1,6 +1,5 @@
 const fs = require("fs");
 const https = require("https");
-const rp = require("request-promise-native");
 const unzip = require("unzip");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
@@ -13,24 +12,32 @@ const isVersionNewer = (remoteVer, currentVer) => (
   Number(remoteVer.version.replace(/\./g, "")) > Number(currentVer.version.replace(/\./g, ""))
 );
 
-const isVersionUpToDate = async () => {
-  const options = {
-    method: "GET",
-    uri: versionURL,
-    json: true
-  };
-  //TODO: use new Promise and forget about rp
-  const remoteVersion = await rp(options);
+const isVersionUpToDate = () => (
+  new Promise((resolve, reject) => {
+    https.get(versionURL, res => {
+      var json = "";
+      res.on("data", chunk => { json += chunk; });
+      res.on("end", function () {
+        try {
+          const remoteVersion = JSON.parse(json);
 
-  if (fs.existsSync(setsVersion) && !isVersionNewer(remoteVersion, require("../../data/version.json"))) {
-    return true;
-  }
+          if (fs.existsSync(setsVersion) && !isVersionNewer(remoteVersion, require("../../data/version.json"))) {
+            resolve(true);
+          }
 
-  const version = JSON.stringify(remoteVersion);
-  logger.info(`Found a new version ${version}`);
-  fs.writeFileSync(setsVersion, version);
-  return false;
-};
+          const version = JSON.stringify(remoteVersion);
+          logger.info(`Found a new version ${version}`);
+          fs.writeFileSync(setsVersion, version);
+          resolve(false);
+        } catch(err) {
+          logger.error(`Error while fetching version to ${versionURL}: ${err.stack}`);
+          reject();
+        }
+      });
+    })
+      .on("error", reject);
+  })
+);
 
 const fetchZip = () => (
   new Promise((resolve, reject) => {
