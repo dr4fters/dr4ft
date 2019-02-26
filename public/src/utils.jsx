@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "./app";
-import _ from "NodePackages/utils/utils";
 
 /**
  * Utils offers a list of "connected" tools

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "NodePackages/utils/utils";
 import App from "Src/app";
 
 const Set = ({ index, selectedSet }) => {
@@ -17,8 +16,7 @@ const Set = ({ index, selectedSet }) => {
       options.push(
         <option value={code} key={code}>{name}</option>
       );
-
-    })
+    });
     groups.push(
       <optgroup label={setType} key={setType}>{options}</optgroup>
     );
