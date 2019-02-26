@@ -2,6 +2,7 @@ import _ from "NodePackages/utils/utils";
 import EventEmitter from "NodePackages/ee/ee";
 import {STRINGS} from "./config";
 import eio from "engine.io-client";
+import { DateTime } from "luxon";
 
 function message(msg) {
   let args = JSON.parse(msg);
@@ -50,6 +51,7 @@ let App = {
     sort: "rarity",
     log: {},
     cardSize: "normal",
+    game: {},
 
     get didGameStart() {
       // both round === 0 and round is undefined
@@ -160,6 +162,12 @@ let App = {
 
     return { requestChange, value };
   },
+  updateFileName() {
+    const savename = App.state.game.type === "draft" ? App.state.game.sets[0] + "-draft" : App.state.game.type;
+    // Timezone based on each individual drafter
+    App.state.filename = savename + "-" + DateTime.local().toFormat("yyyy-MM-dd_TT").replace(/:/g, "-");
+    App.save("filename", App.state.filename);
+  }
 };
 
 export default App;

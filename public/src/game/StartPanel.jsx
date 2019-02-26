@@ -7,8 +7,8 @@ const StartPanel = () => (
   <fieldset className='start-controls fieldset'>
     <legend className='legend game-legend'>Game</legend>
     <span>
-      <div>Type: {App.state.type}</div>
-      <div>Infos: {App.state.packsInfo}</div>
+      <div>Type: {App.state.game.type}</div>
+      <div>Infos: {App.state.game.packsInfo}</div>
       {(App.state.isHost && !App.state.didGameStart)
         ? <StartControls/>
         : <div />}
