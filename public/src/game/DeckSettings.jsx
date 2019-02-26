@@ -22,8 +22,8 @@ const LandsPanel = () => (
         <ManaSymbols />
       </thead>
       <tbody>
-        <LandsRow zoneName="main" />
-        <LandsRow zoneName="side" />
+        <LandsRow zoneName="Main" />
+        <LandsRow zoneName="Side" />
       </tbody>
       <tfoot>
         <SuggestLands />
@@ -56,9 +56,9 @@ const LandsRow = ({zoneName}) => (
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName, cardName)}
+          onChange={App._emit("land", zoneName.toLowerCase(), cardName)}
           type='number'
-          value={Zones[zoneName][cardName] || 0}/>
+          value={Zones[zoneName.toLowerCase()][cardName] || 0}/>
       </td>)}
   </tr>
 );
@@ -69,7 +69,7 @@ LandsRow.propTypes = {
 
 const SuggestLands = () => (
   <tr>
-    <td>deck size</td>
+    <td>Deck size</td>
     <td>
       <input
         className='number'
@@ -80,12 +80,12 @@ const SuggestLands = () => (
     </td>
     <td colSpan={2}>
       <button className='land-suggest-button' onClick={App._emit("resetLands")}>
-        reset lands
+        Reset lands
       </button>
     </td>
     <td colSpan={2}>
       <button className='land-suggest-button' onClick={App._emit("suggestLands")}>
-        suggest lands
+        Suggest lands
       </button>
     </td>
   </tr>

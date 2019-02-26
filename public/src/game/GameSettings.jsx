@@ -37,14 +37,14 @@ const SortCards = () => (
   <div className="settings-sort-cards">
     Sort cards by:
     <div className= 'connected-container' >
-      {["cmc", "color", "type", "rarity"].map((sort, index) =>
+      {["CMC", "Color", "Type", "Rarity"].map((sort, index) =>
         <label key={index} className='radio-label connected-component'>
-          <input checked= {sort === App.state.sort}
+          <input checked= {sort.toLowerCase() === App.state.sort}
             className='radio-input'
             name= 'sort-order'
             onChange= {e => App.save("sort", e.currentTarget.value)}
             type='radio'
-            value={sort}/>
+            value={sort.toLowerCase()}/>
           {sort}
         </label>
       )}
@@ -56,8 +56,8 @@ const CardsImageQuality = () => (
   <div className="settings-cards-size">
     Card image quality:
     <div className='connected-container'>
-      {["small", "normal", "large"].map((size, index) => <label key={index} className='radio-label connected-component'>
-        <input checked={size === App.state.cardSize} className='radio-input' name='card-size' onChange={e => App.save("cardSize", e.currentTarget.value)} type='radio' value={size} />
+      {["Small", "Normal", "Large"].map((size, index) => <label key={index} className='radio-label connected-component'>
+        <input checked={size.toLowerCase() === App.state.cardSize} className='radio-input' name='card-size' onChange={e => App.save("cardSize", e.currentTarget.value)} type='radio' value={size.toLowerCase()} />
         {size}
       </label>)}
     </div>

@@ -26,12 +26,12 @@ const ServerInfo = () => {
 
   const players = `${numPlayers}
      ${numPlayers === 1
-      ? "player"
-      : "players"}
+    ? "player"
+    : "players"}
       playing ${numActiveGames}
         ${numActiveGames === 1
-      ? "game"
-      : "games"}`;
+    ? "game"
+    : "games"}`;
 
   return <p><Spaced elements={[users, players]} /></p>;
 };

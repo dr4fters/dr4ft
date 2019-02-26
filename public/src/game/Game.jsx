@@ -22,16 +22,16 @@ export default class Game extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.leaveGame);
+    window.addEventListener("beforeunload", this.leaveGame);
   }
 
   componentWillUnmount() {
     this.leaveGame();
-    window.removeEventListener('beforeunload', this.leaveGame);
+    window.removeEventListener("beforeunload", this.leaveGame);
   }
 
   render() {
-    const moveSettings = App.state.isGameFinished && ['sealed', 'cube draft', 'cube sealed'].includes(App.state.type)
+    const moveSettings = App.state.isGameFinished && ["sealed", "cube draft", "cube sealed"].includes(App.state.type);
     return (
       <div className='container'>
         <audio id='beep' src='/media/beep.wav'/>
