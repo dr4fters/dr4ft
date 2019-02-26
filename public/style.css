@@ -427,18 +427,11 @@ button:disabled:active {
   position: fixed;
   font-size: 20px;
   padding: 4px;
-<<<<<<< HEAD
   min-width: 85px;
   border-radius: 4px;
   height: 44px;
   background-color: rgba(255, 255, 255, 0.63);
   transition: left 0.5s;
-=======
-  border-radius: 4px;
-  height: 44px;
-  background-color: rgba(255, 255, 255, 0.63);
-  transition: left 1s;
->>>>>>> 13692314b3bcfc2c9174487298b4654c6c64d776
   z-index: 99;
 }
 
