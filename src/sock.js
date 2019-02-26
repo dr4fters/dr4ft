@@ -44,6 +44,7 @@ class Sock extends EventEmitter {
     allSocks.push(this);
     broadcastNumUsers();
     ws.on("message", message.bind(this));
+    ws.on("leave", this.exit);
     ws.on("close", this.exit);
 
     // `this.exit` may be called for other reasons than the socket closing.

@@ -18,7 +18,7 @@ export default class Game extends Component {
   }
 
   leaveGame() {
-    App.send("exit");
+    App.send("leave");
   }
 
   componentDidMount() {
