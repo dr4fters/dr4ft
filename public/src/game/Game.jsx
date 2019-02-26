@@ -31,6 +31,7 @@ export default class Game extends Component {
   }
 
   render() {
+    const moveSettings = App.state.isGameFinished && ['sealed', 'cube draft', 'cube sealed'].includes(App.state.type)
     return (
       <div className='container'>
         <audio id='beep' src='/media/beep.wav'/>
@@ -39,9 +40,10 @@ export default class Game extends Component {
             <div className='game-status'>
               <PlayersPanel/>
               <StartPanel/>
+              {moveSettings && <GameSettings />}
             </div>
             <DeckSettings />
-            <GameSettings/>
+            {!moveSettings && <GameSettings/>}
           </div>
           <CardsZone />
         </div>

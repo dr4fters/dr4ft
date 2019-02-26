@@ -40,7 +40,7 @@ body {
 
 body {
   background-color: #fafafa;
-  font-family: 'Helvetica';
+  font-family: 'Helvetica', 'Arial';
   font-size: 16px;
 }
 
@@ -427,10 +427,11 @@ button:disabled:active {
   position: fixed;
   font-size: 20px;
   padding: 4px;
+  min-width: 85px;
   border-radius: 4px;
   height: 44px;
   background-color: rgba(255, 255, 255, 0.63);
-  transition: left 1s;
+  transition: left 0.5s;
   z-index: 99;
 }
 
@@ -501,7 +502,7 @@ button:disabled:active {
 
 .game .fieldset {
   display: flex;
-  margin: 2px;
+  margin: 4px;
 }
 
 .game-legend {
