@@ -2,7 +2,6 @@ import _ from "utils/utils";
 import EventEmitter from "events";
 import {STRINGS} from "./config";
 import eio from "engine.io-client";
-import { DateTime } from "luxon";
 
 function message(msg) {
   let args = JSON.parse(msg);
@@ -162,11 +161,16 @@ let App = {
 
     return { requestChange, value };
   },
-  updateFileName({type, sets}) {
+  updateGameInfos({type, sets, packsInfo}) {
     const savename = type === "draft" ? sets[0] + "-draft" : type;
-    // Timezone based on each individual drafter
-    App.state.filename = savename + "-" + DateTime.local().toFormat("yyyy-MM-dd_TT").replace(/:/g, "-");
-    App.save("filename", App.state.filename);
+    const date = new Date();
+    const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "-" + date.getTime().toString().slice(-8, -3);
+    const filename = `${savename.replace(/\W/, "-")}-${currentTime}`;
+
+    App.set({
+      filename,
+      game: {type, sets, packsInfo}
+    });
   }
 };
 
