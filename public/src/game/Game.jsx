@@ -28,7 +28,7 @@ export default class Game extends Component {
   componentDidMount() {
     // Alert to change name
     if (App.state.name == STRINGS.BRANDING.DEFAULT_USERNAME) {
-      vanillaToast.warning(`Welcome, ${App.state.name}! Please update your nickname in the 'Players' widget in the upper left.`, {duration: 5000});
+      vanillaToast.warning(`Welcome, ${App.state.name}! Please update your nickname via the 'Players' widget in the upper left.`, {duration: 5000});
     }
 
     window.addEventListener("beforeunload", this.leaveGame);
