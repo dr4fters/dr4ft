@@ -168,7 +168,6 @@ let App = {
     const filename = `${savename.replace(/\W/, "-")}-${currentTime}`;
 
     App.set({
-      ...App.state,
       filename,
       game: {type, sets, packsInfo}
     });
