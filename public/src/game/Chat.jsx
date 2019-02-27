@@ -18,8 +18,8 @@ export default class Chat extends Component{
     App.on("chat", messages => this.setState({ messages }));
   }
   componentWillUnmount() {
-    App.off("hear");
-    App.off("chat");
+    App.off("hear", this.hear.bind(this));
+    App.off("chat", messages => this.setState({ messages }));
   }
   render() {
     // must be mounted to receive messages

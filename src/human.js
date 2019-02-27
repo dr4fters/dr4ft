@@ -91,7 +91,7 @@ module.exports = class extends EventEmitter {
       // whereas MTGO starts @ 75s and decrements by 5s per pick
       var MTGOTimes = [75,70,65,60,55,50,45,40,35,30,25,20,15,12,10];
       // and here's a happy medium
-      var AVGTimes = [55,51,47,43,38,34,30,26,22,18,14,13,11,9];
+      var AVGTimes = [55,51,47,43,38,34,30,26,22,18,14,13,11,9,7];
       timer = AVGTimes;
       if (this.timerLength == "Fast") {
         timer = MTRTimes;

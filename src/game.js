@@ -256,7 +256,11 @@ module.exports = class Game extends Room {
       isHost: h.isHost,
       round: this.round,
       self: this.players.indexOf(h),
+    });
+    h.send("gameInfos", {
+      type: this.type,
       packsInfo: this.packsInfo,
+      sets: this.sets
     });
   }
 
@@ -274,12 +278,6 @@ module.exports = class Game extends Room {
   }
 
   meta(state = {}) {
-    const game = {
-      type: this.type,
-      packsInfo: this.packsInfo,
-      sets: this.sets
-    };
-
     state.players = this.players.map(p => ({
       hash: p.hash,
       name: p.name,
@@ -290,7 +288,6 @@ module.exports = class Game extends Room {
     }));
     for (var p of this.players) {
       p.send("set", state);
-      p.send("gameInfos", game);
     }
     Game.broadcastGameInfo();
   }
