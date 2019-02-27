@@ -3,18 +3,30 @@ import React from "react";
 import App from "../app";
 import {Select, Checkbox} from "../utils";
 
-const StartPanel = () => (
-  <fieldset className='start-controls fieldset'>
+const toTitleCase = (phrase) => {
+  return phrase
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+const StartPanel = () => {
+  const gameType = toTitleCase(App.state.game.type)
+
+  return (
+    <fieldset className='start-controls fieldset'>
     <legend className='legend game-legend'>Game</legend>
     <span>
-      <div>Type: {App.state.game.type}</div>
-      <div>Infos: {App.state.game.packsInfo}</div>
+      <div>Type: {gameType}</div>
+      <div>Info: {App.state.game.packsInfo}</div>
       {(App.state.isHost && !App.state.didGameStart)
         ? <StartControls/>
         : <div />}
     </span>
-  </fieldset>
-);
+  	</fieldset>
+  )
+};
 
 const StartControls = () => {
   const {type} = App.state;
