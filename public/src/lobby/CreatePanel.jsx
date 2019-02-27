@@ -1,8 +1,8 @@
 import React from "react";
 
-import _ from "NodePackages/utils/utils";
-import App from "Src/app";
-import {Checkbox} from "Src/utils";
+import _ from "utils/utils";
+import App from "../app";
+import {Checkbox} from "../utils";
 
 import GameTypes from "./GameTypes";
 import GameOptions from "./GameOptions";

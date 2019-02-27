@@ -1,8 +1,7 @@
 import React from "react";
 
-import _ from "NodePackages/utils/utils";
-import App from "Src/app";
-import {Checkbox} from "Src/utils";
+import App from "../app";
+import {Checkbox} from "../utils";
 
 const GameSettings = () => (
   <div className='game-settings'>

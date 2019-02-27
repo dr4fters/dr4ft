@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import App from "Src/app";
+import App from "../app";
 
 const GameTypes = () => {
   const types = ["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"];

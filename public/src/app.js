@@ -1,5 +1,5 @@
-import _ from "NodePackages/utils/utils";
-import EventEmitter from "NodePackages/ee/ee";
+import _ from "utils/utils";
+import EventEmitter from "events";
 import {STRINGS} from "./config";
 import eio from "engine.io-client";
 import { DateTime } from "luxon";
@@ -162,8 +162,8 @@ let App = {
 
     return { requestChange, value };
   },
-  updateFileName() {
-    const savename = App.state.game.type === "draft" ? App.state.game.sets[0] + "-draft" : App.state.game.type;
+  updateFileName({type, sets}) {
+    const savename = type === "draft" ? sets[0] + "-draft" : type;
     // Timezone based on each individual drafter
     App.state.filename = savename + "-" + DateTime.local().toFormat("yyyy-MM-dd_TT").replace(/:/g, "-");
     App.save("filename", App.state.filename);

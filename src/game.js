@@ -274,7 +274,7 @@ module.exports = class Game extends Room {
   }
 
   meta(state = {}) {
-    state.game = {
+    const game = {
       type: this.type,
       packsInfo: this.packsInfo,
       sets: this.sets
@@ -288,8 +288,10 @@ module.exports = class Game extends Room {
       isBot: p.isBot,
       isConnected: p.isConnected,
     }));
-    for (var p of this.players)
+    for (var p of this.players) {
       p.send("set", state);
+      p.send("gameInfos", game);
+    }
     Game.broadcastGameInfo();
   }
 

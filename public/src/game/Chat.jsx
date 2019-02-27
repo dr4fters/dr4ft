@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import _ from "NodePackages/utils/utils";
-import App from "Src/app";
+import _ from "utils/utils";
+import App from "../app";
 
 import {vanillaToast} from "vanilla-toast";
 import "vanilla-toast/vanilla-toast.css";

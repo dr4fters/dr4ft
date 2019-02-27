@@ -25,10 +25,6 @@ module.exports = {
   ],
   resolve: {
     extensions: [".js", ".jsx", ".css", ".less"],
-    alias: {
-      Src: path.resolve(__dirname, "public/src"),
-      NodePackages: path.resolve(__dirname, "node_modules")
-    }
   },
   optimization: {
     splitChunks: {

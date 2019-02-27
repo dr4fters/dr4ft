@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import App from "Src/app";
-import {Zones} from "Src/cards";
+import App from "../app";
+import {Zones} from "../cards";
 
 import PlayersPanel from "./PlayersPanel";
 import StartPanel from "./StartPanel";

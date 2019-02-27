@@ -52,7 +52,6 @@
     "body-parser": "^1.18.3",
     "clean-webpack-plugin": "^1.0.1",
     "cors": "^2.8.5",
-    "ee": "git://github.com/dr4fters/ee.git",
     "engine.io": "^3.3.2",
     "engine.io-client": "^3.3.2",
     "express": "^4.16.4",

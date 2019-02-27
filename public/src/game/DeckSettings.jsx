@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import App from "Src/app";
-import {BASICS, Zones} from "Src/cards";
-import {Select} from "Src/utils";
+import App from "../app";
+import {BASICS, Zones} from "../cards";
+import {Select} from "../utils";
 
 const DeckSettings = () => (
   (App.state.isGameFinished || App.state.didGameStart)
