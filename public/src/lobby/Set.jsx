@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import App from "Src/app";
+import App from "../app";
 
 const Set = ({ index, selectedSet }) => {
   const onSetChange = (e) => {

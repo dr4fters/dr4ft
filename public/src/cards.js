@@ -1,4 +1,4 @@
-import _ from "NodePackages/utils/utils";
+import _ from "utils/utils";
 import App from "./app";
 
 // Migrate to chaos draft

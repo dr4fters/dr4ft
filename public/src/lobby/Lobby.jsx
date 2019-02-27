@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import App from "Src/app";
-import {STRINGS} from "Src/config";
+import App from "../app";
+import {STRINGS} from "../config";
 
 import Header from "./Header";
 import JoinPanel from "./JoinPanel";

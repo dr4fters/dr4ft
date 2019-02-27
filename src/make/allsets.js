@@ -21,14 +21,17 @@ const isVersionUpToDate = () => (
         try {
           const remoteVersion = JSON.parse(json);
 
-          if (fs.existsSync(setsVersion) && !isVersionNewer(remoteVersion, require("../../data/version.json"))) {
-            resolve(true);
+          if (fs.existsSync(setsVersion)) {
+            const version = JSON.parse(fs.readFileSync(setsVersion, "UTF-8"));
+            if (!isVersionNewer(remoteVersion, version)) {
+              return resolve(true);
+            }
           }
-
+          
           const version = JSON.stringify(remoteVersion);
           logger.info(`Found a new version ${version}`);
           fs.writeFileSync(setsVersion, version);
-          resolve(false);
+          return resolve(false);
         } catch(err) {
           logger.error(`Error while fetching version to ${versionURL}: ${err.stack}`);
           reject();
@@ -60,14 +63,18 @@ const fetchZip = () => (
   }));
 
 const download = async () => {
-  logger.info("Checking if AllSets.json is up to date");
-  const isUpToDate = await isVersionUpToDate();
-  if (!isUpToDate) {
-    await fetchZip();
-    logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
-    updateDatabase();
-  } else {
-    logger.info("AllSets.json is up to date");
+  try {
+    logger.info("Checking if AllSets.json is up to date");
+    const isUpToDate = await isVersionUpToDate();
+    if (!isUpToDate) {
+      await fetchZip();
+      logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
+      updateDatabase();
+    } else {
+      logger.info("AllSets.json is up to date");
+    }
+  } catch(err) {
+    logger.error(`Couldn't complete AllSets.json check : ${err}`);
   }
 };
 

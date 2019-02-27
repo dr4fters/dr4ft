@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 
-import App from "Src/app";
-import {getZone} from "Src/cards";
-import {Spaced} from "Src/utils.jsx";
+import App from "../app";
+import {getZone} from "../cards";
+import {Spaced} from "../utils.jsx";
 
 class Cols extends Component {
   constructor(props) {

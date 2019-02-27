@@ -1,7 +1,7 @@
 import React from "react";
 
-import App from "Src/app";
-import {Select, Checkbox} from "Src/utils";
+import App from "../app";
+import {Select, Checkbox} from "../utils";
 
 const StartPanel = () => (
   <fieldset className='start-controls fieldset'>

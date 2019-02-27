@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _ from "NodePackages/utils/utils";
-import App from "Src/app";
-import { Checkbox, Select, Textarea } from "Src/utils";
+import _ from "utils/utils";
+import App from "../app";
+import { Checkbox, Select, Textarea } from "../utils";
 
 import Set from "./Set";
 
