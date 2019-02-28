@@ -52,7 +52,7 @@ module.exports = class Game extends Room {
     switch(type) {
     case "draft":
     case "sealed":
-      this.packsInfo = sets.join(" / ");
+      this.packsInfo = this.sets.join(" / ");
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
