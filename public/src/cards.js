@@ -1,11 +1,6 @@
 import _ from "utils/utils";
 import App from "./app";
 
-// Migrate to chaos draft
-if (App.state.type === "chaos") {
-  App.state.type = "chaos draft";
-}
-
 let Cards = {
   Plains:   401994,
   Island:   401927,
@@ -122,8 +117,8 @@ let events = {
     App.state.log = draftLog;
   },
   getLog() {
-    let {id, log, players, self, sets, type, filename} = App.state;
-    let isCube = /cube/.test(type);
+    let {id, log, players, self, sets, gamesubtype, filename} = App.state;
+    let isCube = /cube/.test(gamesubtype);
     let date = new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","_");
     let data = [
       `Event #: ${id}`,
@@ -147,16 +142,19 @@ let events = {
   },
 
   create() {
-    let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state;
+    let {gametype, gamesubtype, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state;
     seats = Number(seats);
-    let options = { type, seats, title, isPrivate, fourPack, modernOnly, totalChaos };
+    
+    //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
+    // OR change backend to accept "regular draft" instead of "draft" and "regular sealed" instead of "sealed"
+    const type = `${/regular/.test(gamesubtype) ? "" : gamesubtype + " "}${gametype}`;
 
-    if (/cube/.test(type))
+    let options = { type , seats, title, isPrivate, fourPack, modernOnly, totalChaos };
+
+    if (/cube/.test(gamesubtype))
       options.cube = cube();
     else {
       let {sets} = App.state;
-      if (type === "draft")
-        sets = sets.slice(0, 3);
       options.sets = sets;
     }
     resetZones();

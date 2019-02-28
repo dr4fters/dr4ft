@@ -55,25 +55,25 @@ class PlayerEntries extends Component {
 }
 
 window.onscroll = () => {
-  fixPackTimeToScreen()
-}
+  fixPackTimeToScreen();
+};
 
 const fixPackTimeToScreen = () => {
-  const selfTime = document.getElementById('self-time')
-  const selfTimeFixed = document.getElementById('self-time-fixed')
-  const {[0]: zone} = document.getElementsByClassName('zone')
+  const selfTime = document.getElementById("self-time");
+  const selfTimeFixed = document.getElementById("self-time-fixed");
+  const {[0]: zone} = document.getElementsByClassName("zone");
   if (selfTime && selfTimeFixed) {
-    const selfRect = selfTime.getBoundingClientRect()
-    const zoneRect = zone.getBoundingClientRect()
-    const selfTimeRect = selfTimeFixed.getBoundingClientRect()
-    selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0)
-    selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`
+    const selfRect = selfTime.getBoundingClientRect();
+    const zoneRect = zone.getBoundingClientRect();
+    const selfTimeRect = selfTimeFixed.getBoundingClientRect();
+    selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0);
+    selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`;
     selfTimeFixed.style.top 
     = zoneRect.top > 0
-      ? `${zoneRect.top + 5}px`
-      : '5px'
+        ? `${zoneRect.top + 5}px`
+        : "5px";
   }
-}
+};
 
 const PlayerEntry = ({player, index}) => {
   const {players, self, didGameStart, isHost} = App.state;
@@ -101,15 +101,15 @@ const PlayerEntry = ({player, index}) => {
     <td key={1}>{connectionStatusIndicator}</td>,
     <td key={2}>{index === self ? <SelfName name={name} /> : name}</td>,
     <td key={3}>{packs}</td>,
-    <td id={className==='self' ? 'self-time':''} key={4}>{time}</td>,
+    <td id={className==="self" ? "self-time":""} key={4}>{time}</td>,
     <td key={5}>{hash && hash.cock}</td>,
     <td key={6}>{hash && hash.mws}</td>
   ];
 
-  const selfTimeFixed = document.getElementById('self-time-fixed-time')
-  if (selfTimeFixed && className==='self') {
-    selfTimeFixed.innerHTML = time
-    fixPackTimeToScreen()
+  const selfTimeFixed = document.getElementById("self-time-fixed-time");
+  if (selfTimeFixed && className==="self") {
+    selfTimeFixed.innerHTML = time;
+    fixPackTimeToScreen();
   }
 
   if (isHost) {

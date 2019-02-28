@@ -27,8 +27,13 @@ let App = {
     fourPack: false,
     modernOnly: false,
     totalChaos: false,
-    type: "draft",
+    gametype: "draft",
+    gamesubtype: "regular",
     sets: [],
+    regular: {
+      draft: [],
+      sealed: []
+    },
     availableSets: {},
     list: "",
     cards: 15,
@@ -127,8 +132,11 @@ let App = {
   set(state) {
     Object.assign(App.state, state);
     // Set default sets
-    if (App.state.sets.length === 0 && App.state.latestSet) {
-      App.state.sets = Array(6).fill(App.state.latestSet.code);
+    if ( App.state.regular.sealed === 0 && App.state.latestSet) {
+      App.state.regular.sealed = Array(6).fill(App.state.latestSet.code);
+    }
+    if ( App.state.regular.draft === 0 && App.state.latestSet) {
+      App.state.regular.draft = Array(3).fill(App.state.latestSet.code);
     }
     App.update();
   },

@@ -8,12 +8,12 @@ import { Checkbox, Select, Textarea } from "../utils";
 import Set from "./Set";
 
 const GameOptions = () => {
-  const { sets, fourPack, type } = App.state;
+  const { sets, fourPack, gametype, gamesubtype } = App.state;
 
-  switch (type) {
-  case "draft":
+  switch (`${gamesubtype} ${gametype}`) {
+  case "regular draft":
     return <DraftOptions sets={sets} />;
-  case "sealed":
+  case "regular sealed":
     return <SealedOptions sets={sets} fourPack={fourPack} />;
   case "cube draft":
     return <CubeDraft />;
