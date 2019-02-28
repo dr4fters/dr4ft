@@ -56,6 +56,9 @@ let App = {
       // both round === 0 and round is undefined
       return App.state.round;
     },
+    get isSealed() {
+      return /sealed/.test(App.state.game.type);
+    },
     get isGameFinished() {
       return App.state.round === -1;
     },
