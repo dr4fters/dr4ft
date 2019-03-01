@@ -24,16 +24,13 @@ let App = {
     seats: 8,
     title: "",
     isPrivate: true,
-    fourPack: false,
     modernOnly: false,
     totalChaos: false,
     gametype: "draft",
     gamesubtype: "regular",
     sets: [],
-    regular: {
-      draft: [],
-      sealed: []
-    },
+    setsDraft: [],
+    setsSealed: [],
     availableSets: {},
     list: "",
     cards: 15,
@@ -132,11 +129,11 @@ let App = {
   set(state) {
     Object.assign(App.state, state);
     // Set default sets
-    if ( App.state.regular.sealed === 0 && App.state.latestSet) {
-      App.state.regular.sealed = Array(6).fill(App.state.latestSet.code);
+    if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
+      App.state.setsSealed = Array(6).fill(App.state.latestSet.code);
     }
-    if ( App.state.regular.draft === 0 && App.state.latestSet) {
-      App.state.regular.draft = Array(3).fill(App.state.latestSet.code);
+    if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
+      App.state.setsDraft = Array(3).fill(App.state.latestSet.code);
     }
     App.update();
   },

@@ -63,7 +63,7 @@ module.exports = {
 
     return true;
   },
-  game({ seats, type, sets, cube, isPrivate, fourPack, modernOnly = true, totalChaos = true }) {
+  game({ seats, type, sets, cube, isPrivate, modernOnly = true, totalChaos = true }) {
     assert(["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"].includes(type),
       "type can be draft, sealed, chaos draft, chaos sealed, cube draft or cube sealed");
     assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
@@ -74,15 +74,9 @@ module.exports = {
     case "draft":
     case "sealed":
       assert(Array.isArray(sets), "sets must be an array");
+      assert(sets.length > 1, "sets length must be at least 1");
       sets.forEach(set =>
         assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
-      if ("sealed" === type) {
-        assert(typeof fourPack === "boolean", "fourPack must be a boolean");
-        const minPacks = fourPack ? 4 : 6;
-        assert(sets.length >=  minPacks, `sets must be at least ${minPacks}`);
-      } else {
-        assert(sets.length == 3, "sets length must be 3");
-      }
       break;
     case "cube draft":
     case "cube sealed":

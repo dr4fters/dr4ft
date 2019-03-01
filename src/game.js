@@ -37,22 +37,19 @@ let games = {};
 })();
 
 module.exports = class Game extends Room {
-  constructor({ hostId, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos }) {
+  constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos }) {
     super({ isPrivate });
     this.modernOnly = modernOnly;
     this.totalChaos = totalChaos;
     this.cube = cube;
     this.bots = 0;
-
-    if (sets) {
-      this.sets = fourPack ? sets.slice(0, 4) : sets;
-    }
+    this.sets = sets;
 
     // Handle packsInfos to show various informations about the game
     switch(type) {
     case "draft":
     case "sealed":
-      this.packsInfo = sets.join(" / ");
+      this.packsInfo = this.sets.join(" / ");
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
@@ -582,7 +579,6 @@ module.exports = class Game extends Room {
     type: ${this.type}
     sets: ${this.sets}
     isPrivate: ${this.isPrivate}
-    fourPack: ${this.fourPack}
     modernOnly: ${this.modernOnly}
     totalChaos: ${this.totalChaos}
     packsInfos: ${this.packsInfo}

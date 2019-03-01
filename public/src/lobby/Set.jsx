@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 import App from "../app";
 
-const Set = ({ index, selectedSet }) => {
+const Set = ({ index, selectedSet, type }) => {
   const onSetChange = (e) => {
-    App.state.sets[index] = e.currentTarget.value;
-    App.save("sets", App.state.sets);
+    App.state[type][index] = e.currentTarget.value;
+    App.save(type, App.state[type]);
   };
   let groups = [];
   for (let setType in App.state.availableSets) {
@@ -30,7 +30,8 @@ const Set = ({ index, selectedSet }) => {
 
 Set.propTypes = {
   index: PropTypes.number,
-  selectedSet: PropTypes.string
+  selectedSet: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default Set;

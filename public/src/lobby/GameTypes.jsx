@@ -19,7 +19,7 @@ const GameTypes = () => {
           )}
         </span>
       </p>
-      <p>
+      <p>Game mode:{" "}
         <span className='connected-container'>
           {subtypes.map((type, key) =>
             <GameType name={"subtype"} 

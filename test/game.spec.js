@@ -7,7 +7,7 @@ describe("Acceptance tests for Game class", () => {
     it("should return a new draft", async () => {
       const gameParams = {
         hostId: "1", title: "test game", seats: 8, type: "draft", sets: ["GRN", "GRN", "GRN"],
-        cube: null, isPrivate: true, fourPack: false, modernOnly: false, totalChaos: false
+        cube: null, isPrivate: true, modernOnly: false, totalChaos: false
       };
 
       const got = new Game(gameParams);

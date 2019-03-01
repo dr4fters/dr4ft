@@ -576,3 +576,10 @@ button:disabled:active {
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 25% 25% 25%;
+  grid-gap: 10px;
+  padding-top: 10px;
+}
