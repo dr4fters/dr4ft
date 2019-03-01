@@ -568,7 +568,6 @@ button:disabled:active {
   margin: -50px 50px;
 }
 
-
 .flipped {
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
@@ -582,4 +581,7 @@ button:disabled:active {
   grid-template-columns: 25% 25% 25%;
   grid-gap: 10px;
   padding-top: 10px;
+}
+.hidden {
+  display: none;
 }

@@ -28,10 +28,10 @@ const PlayerTableHeader = () => (
     <th key="1">#</th>
     <th key="2"/>
     <th key="3">Drafter</th>
-    <th key="4">Packs</th>
-    <th key="7">Timer</th>
-    <th key="8">Trice</th>
-    <th key="9">MWS</th>
+    <th className={App.state.isSealed ? "hidden": ""} key="4">Packs</th>
+    <th className={App.state.isSealed ? "hidden": ""} key="5">Timer</th>
+    <th key="6">Trice</th>
+    <th key="7">MWS</th>
   </tr>
 );
 
@@ -76,7 +76,7 @@ const fixPackTimeToScreen = () => {
 };
 
 const PlayerEntry = ({player, index}) => {
-  const {players, self, didGameStart, isHost} = App.state;
+  const {players, self, didGameStart, isHost, isSealed} = App.state;
   const {isBot, name, packs, time, hash} = player;
   const {length} = players;
 
@@ -100,8 +100,8 @@ const PlayerEntry = ({player, index}) => {
     <td key={0}>{index + 1}</td>,
     <td key={1}>{connectionStatusIndicator}</td>,
     <td key={2}>{index === self ? <SelfName name={name} /> : name}</td>,
-    <td key={3}>{packs}</td>,
-    <td id={className==="self" ? "self-time":""} key={4}>{time}</td>,
+    <td key={3} className={isSealed ? "hidden": ""} >{packs}</td>,
+    <td id={className==="self" ? "self-time":""} className={isSealed ? "hidden": ""} key={4}>{time}</td>,
     <td key={5}>{hash && hash.cock}</td>,
     <td key={6}>{hash && hash.mws}</td>
   ];

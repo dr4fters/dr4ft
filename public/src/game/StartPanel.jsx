@@ -3,7 +3,7 @@ import React from "react";
 import App from "../app";
 import {Select, Checkbox} from "../utils";
 
-const toTitleCase = (phrase) => {
+const toTitleCase = (phrase = "") => {
   return phrase
     .toLowerCase()
     .split(" ")
