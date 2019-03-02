@@ -20,8 +20,9 @@ const GameOptions = () => {
   case "cube sealed":
     return <CubeSealed />;
   case "chaos draft":
+    return <Chaos packsNumber={"chaosDraftPacksNumber"} />;
   case "chaos sealed":
-    return <Chaos />;
+    return <Chaos packsNumber={"chaosSealedPacksNumber"}/>;
   }
 };
 
@@ -87,8 +88,14 @@ const CubeOptions = () => (
   </div>
 );
 
-const Chaos = () => (
+const Chaos = ({ packsNumber }) => (
   <div>
+    <div>
+      Number of packs:{" "}
+      <Select 
+        link={packsNumber} 
+        opts={_.seq(12, 3)} />
+    </div>
     <div>
       <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
     </div>
@@ -97,5 +104,9 @@ const Chaos = () => (
     </div>
   </div>
 );
+
+Chaos.propTypes = {
+  packsNumber: PropTypes.number
+};
 
 export default GameOptions;

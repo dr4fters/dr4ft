@@ -143,7 +143,7 @@ let events = {
   },
 
   create() {
-    let { gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos } = App.state;
+    let { gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber } = App.state;
     seats = Number(seats);
 
     //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
@@ -152,11 +152,18 @@ let events = {
 
     let options = { type, seats, title, isPrivate, modernOnly, totalChaos };
 
-    if (/cube/.test(gamesubtype))
-      options.cube = cube();
-    else {
+    switch(gamesubtype) {
+    case "regular": {
       const { setsDraft, setsSealed } = App.state;
       options.sets = gametype === "sealed" ? setsSealed : setsDraft;
+      break;
+    } 
+    case "cube": 
+      options.cube = cube();
+      break;
+    case "chaos": 
+      options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
+      break;
     }
     resetZones();
     App.send("create", options);
@@ -334,15 +341,15 @@ ${codify(Zones.side)}
   mwdeck() {
     let arr = []
       ;["main", "side"].forEach(zoneName => {
-        let prefix = zoneName === "side" ? "SB: " : "";
-        let zone = Zones[zoneName];
-        for (let name in zone) {
-          let { code } = Cards[name];
-          let count = zone[name];
-          name = name.replace(" // ", "/");
-          arr.push(`${prefix}${count} [${code}] ${name}`);
-        }
-      });
+      let prefix = zoneName === "side" ? "SB: " : "";
+      let zone = Zones[zoneName];
+      for (let name in zone) {
+        let { code } = Cards[name];
+        let count = zone[name];
+        name = name.replace(" // ", "/");
+        arr.push(`${prefix}${count} [${code}] ${name}`);
+      }
+    });
     return arr.join("\n");
   },
   json() {
@@ -352,14 +359,14 @@ ${codify(Zones.side)}
   txt() {
     let arr = []
       ;["main", "side"].forEach(zoneName => {
-        if (zoneName === "side")
-          arr.push("Sideboard");
-        let zone = Zones[zoneName];
-        for (let name in zone) {
-          let count = zone[name];
-          arr.push(count + " " + name);
-        }
-      });
+      if (zoneName === "side")
+        arr.push("Sideboard");
+      let zone = Zones[zoneName];
+      for (let name in zone) {
+        let count = zone[name];
+        arr.push(count + " " + name);
+      }
+    });
     return arr.join("\n");
   }
 };
@@ -408,33 +415,33 @@ function Key(groups, sort) {
   let arr;
 
   switch (sort) {
-    case "cmc":
-      arr = [];
-      for (let key in groups)
-        if (parseInt(key) >= 6) {
-          [].push.apply(arr, groups[key]);
-          delete groups[key];
-        }
-
-      if (arr.length) {
-        groups["6+"] || (groups["6+"] = [])
-          ;[].push.apply(groups["6+"], arr);
+  case "cmc":
+    arr = [];
+    for (let key in groups)
+      if (parseInt(key) >= 6) {
+        [].push.apply(arr, groups[key]);
+        delete groups[key];
       }
-      return groups;
 
-    case "color":
-      keys =
+    if (arr.length) {
+      groups["6+"] || (groups["6+"] = [])
+      ;[].push.apply(groups["6+"], arr);
+    }
+    return groups;
+
+  case "color":
+    keys =
         ["colorless", "white", "blue", "black", "red", "green", "multicolor"]
           .filter(x => keys.indexOf(x) > -1);
-      break;
-    case "rarity":
-      keys =
+    break;
+  case "rarity":
+    keys =
         ["mythic", "rare", "uncommon", "common", "basic", "special"]
           .filter(x => keys.indexOf(x) > -1);
-      break;
-    case "type":
-      keys = keys.sort();
-      break;
+    break;
+  case "type":
+    keys = keys.sort();
+    break;
   }
 
   let o = {};

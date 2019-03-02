@@ -41,7 +41,8 @@ export const Spaced = ({elements}) => (
     ])
 );
 
-export const Select = ({link, 
+export const Select = ({
+  link, 
   opts, 
   onChange = (e) => { App.save(link, e.currentTarget.value); }, 
   value = App.state[link], 

@@ -26,6 +26,8 @@ let App = {
     isPrivate: true,
     modernOnly: false,
     totalChaos: false,
+    chaosDraftPacksNumber: 3,
+    chaosSealedPacksNumber: 6,
     gametype: "draft",
     gamesubtype: "regular",
     sets: [],
