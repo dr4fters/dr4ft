@@ -92,7 +92,8 @@ const Chaos = ({ packsNumber }) => (
   <div>
     <div>
       Number of packs:{" "}
-      <Select 
+      <Select
+        onChange={(e) => { App.save(packsNumber, parseInt(e.currentTarget.value));}}
         link={packsNumber} 
         opts={_.seq(12, 3)} />
     </div>
