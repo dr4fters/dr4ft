@@ -29,8 +29,8 @@ const StartPanel = () => {
 };
 
 const StartControls = () => {
-  const {type} = App.state;
-  const isDraft = !/sealed/.test(type);
+  const {gametype} = App.state;
+  const isDraft = /draft/.test(gametype);
 
   return (
     <div>

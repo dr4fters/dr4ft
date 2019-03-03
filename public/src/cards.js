@@ -1,17 +1,12 @@
 import _ from "utils/utils";
 import App from "./app";
 
-// Migrate to chaos draft
-if (App.state.type === "chaos") {
-  App.state.type = "chaos draft";
-}
-
 let Cards = {
-  Plains:   401994,
-  Island:   401927,
-  Swamp:    402059,
+  Plains: 401994,
+  Island: 401927,
+  Swamp: 402059,
   Mountain: 401961,
-  Forest:   401886
+  Forest: 401886
 };
 
 export let BASICS = Object.keys(Cards);
@@ -24,13 +19,14 @@ let COLORS_TO_LANDS = {
 };
 
 for (let name in Cards)
-  Cards[name] = {name,
+  Cards[name] = {
+    name,
     cmc: 0,
     code: "BFZ",
     color: "colorless",
     rarity: "basic",
     type: "Land",
-    url: "https://api.scryfall.com/cards/multiverse/"+`${Cards[name]}`+"?format=image"
+    url: "https://api.scryfall.com/cards/multiverse/" + `${Cards[name]}` + "?format=image"
   };
 
 let rawPack, clicked;
@@ -42,7 +38,7 @@ export let Zones = {
 };
 
 function hash() {
-  let {main, side} = Zones;
+  let { main, side } = Zones;
   App.send("hash", { main, side });
 }
 
@@ -91,14 +87,14 @@ let events = {
     hash();
   },
   download() {
-    let {filename, filetype} = App.state;
+    let { filename, filetype } = App.state;
     let data = filetypes[filetype]();
     _.download(data, filename + "." + filetype);
     hash();
   },
   start() {
-    let {addBots, useTimer, timerLength, shufflePlayers} = App.state;
-    let options = {addBots, useTimer, timerLength, shufflePlayers};
+    let { addBots, useTimer, timerLength, shufflePlayers } = App.state;
+    let options = { addBots, useTimer, timerLength, shufflePlayers };
     App.send("start", options);
   },
   pickNumber(pick) {
@@ -109,7 +105,7 @@ let events = {
     let pack = Zones.pack = {};
 
     for (let card of cards) {
-      let {name} = card;
+      let { name } = card;
       Cards[name] = card;
       pack[name] || (pack[name] = 0);
       pack[name]++;
@@ -122,9 +118,9 @@ let events = {
     App.state.log = draftLog;
   },
   getLog() {
-    let {id, log, players, self, sets, type, filename} = App.state;
-    let isCube = /cube/.test(type);
-    let date = new Date().toISOString().slice(0, -5).replace(/-/g,"").replace(/:/g,"").replace("T","_");
+    let { id, log, players, self, sets, gamesubtype, filename } = App.state;
+    let isCube = /cube/.test(gamesubtype);
+    let date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
     let data = [
       `Event #: ${id}`,
       `Time: ${date}`,
@@ -147,20 +143,45 @@ let events = {
   },
 
   create() {
-    let {type, seats, title, isPrivate, fourPack, modernOnly, totalChaos} = App.state;
+    let { gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber } = App.state;
     seats = Number(seats);
-    let options = { type, seats, title, isPrivate, fourPack, modernOnly, totalChaos };
 
-    if (/cube/.test(type))
+    //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
+    // OR change backend to accept "regular draft" instead of "draft" and "regular sealed" instead of "sealed"
+    const type = `${/regular/.test(gamesubtype) ? "" : gamesubtype + " "}${gametype}`;
+
+    let options = { type, seats, title, isPrivate, modernOnly, totalChaos };
+
+    switch(gamesubtype) {
+    case "regular": {
+      const { setsDraft, setsSealed } = App.state;
+      options.sets = gametype === "sealed" ? setsSealed : setsDraft;
+      break;
+    } 
+    case "cube": 
       options.cube = cube();
-    else {
-      let {sets} = App.state;
-      if (type === "draft")
-        sets = sets.slice(0, 3);
-      options.sets = sets;
+      break;
+    case "chaos": 
+      options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
+      break;
     }
     resetZones();
     App.send("create", options);
+  },
+  changeSetsNumber(type, event) {
+    event.preventDefault();
+    const packsNumber = event.currentTarget.value;
+    const sets = App.state[type];
+
+    if (sets.length < packsNumber) {
+      const toAdd = packsNumber - sets.length;
+      const lastSet = sets.slice(-1)[0];
+      sets.push(...new Array(toAdd).fill(lastSet));
+    } else if (sets.length > packsNumber) {
+      sets.splice(packsNumber);
+    }
+
+    App.save(type, sets);
   },
   pool(cards) {
     ["main", "side", "junk"].forEach(zoneName => Zones[zoneName] = {});
@@ -170,7 +191,7 @@ let events = {
       : "main"];
 
     for (let card of cards) {
-      let {name} = card;
+      let { name } = card;
       Cards[name] = card;
 
       zone[name] || (zone[name] = 0);
@@ -319,11 +340,11 @@ ${codify(Zones.side)}
   },
   mwdeck() {
     let arr = []
-    ;["main", "side"].forEach(zoneName => {
+      ;["main", "side"].forEach(zoneName => {
       let prefix = zoneName === "side" ? "SB: " : "";
       let zone = Zones[zoneName];
       for (let name in zone) {
-        let {code} = Cards[name];
+        let { code } = Cards[name];
         let count = zone[name];
         name = name.replace(" // ", "/");
         arr.push(`${prefix}${count} [${code}] ${name}`);
@@ -332,12 +353,12 @@ ${codify(Zones.side)}
     return arr.join("\n");
   },
   json() {
-    let {main, side} = Zones;
+    let { main, side } = Zones;
     return JSON.stringify({ main, side }, null, 2);
   },
   txt() {
     let arr = []
-    ;["main", "side"].forEach(zoneName => {
+      ;["main", "side"].forEach(zoneName => {
       if (zoneName === "side")
         arr.push("Sideboard");
       let zone = Zones[zoneName];
@@ -351,7 +372,7 @@ ${codify(Zones.side)}
 };
 
 function cube() {
-  let {list, cards, packs, cubePoolSize} = App.state;
+  let { list, cards, packs, cubePoolSize } = App.state;
   cards = Number(cards);
   packs = Number(packs);
   cubePoolSize = Number(cubePoolSize);
@@ -393,7 +414,7 @@ function Key(groups, sort) {
   let keys = Object.keys(groups);
   let arr;
 
-  switch(sort) {
+  switch (sort) {
   case "cmc":
     arr = [];
     for (let key in groups)
@@ -453,7 +474,7 @@ export function getZone(zoneName) {
     for (let i = 0; i < zone[cardName]; i++)
       cards.push(Cards[cardName]);
 
-  let {sort} = App.state;
+  let { sort } = App.state;
   let groups = _.group(cards, sort);
   for (let key in groups)
     _.sort(groups[key], sortLandsBeforeNonLands, "color", "cmc", "name");

@@ -576,6 +576,12 @@ button:disabled:active {
   transform: rotate(180deg);
 }
 
+.wrapper {
+  display: grid;
+  grid-template-columns: 25% 25% 25%;
+  grid-gap: 10px;
+  padding-top: 10px;
+}
 .hidden {
   display: none;
 }

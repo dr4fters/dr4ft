@@ -41,12 +41,15 @@ export const Spaced = ({elements}) => (
     ])
 );
 
-export const Select = ({link, opts, ...rest}) => (
+export const Select = ({
+  link, 
+  opts, 
+  onChange = (e) => { App.save(link, e.currentTarget.value); }, 
+  value = App.state[link], 
+  ...rest}) => (
   <select
-    onChange={(e) => {
-      App.save(link, e.currentTarget.value);
-    }}
-    value={App.state[link]}
+    onChange={onChange}
+    value={value}
     {...rest}>
     {opts.map((opt, index) =>
       <option key={index}>{opt}</option>
@@ -56,6 +59,8 @@ export const Select = ({link, opts, ...rest}) => (
 
 Select.propTypes = {
   link: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.any,
   opts: PropTypes.array
 };
 

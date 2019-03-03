@@ -53,7 +53,6 @@ gamesRouter
       sets[stringArray(for example "XLN,XLN,XLN"],
       cube[object],
       isPrivate[boolean],
-      fourPack[boolean],
       modernOnly[boolean],
       totalChaos[boolean]
   */

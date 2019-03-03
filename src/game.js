@@ -37,16 +37,14 @@ let games = {};
 })();
 
 module.exports = class Game extends Room {
-  constructor({ hostId, title, seats, type, sets, cube, isPrivate, fourPack, modernOnly, totalChaos }) {
+  constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
     super({ isPrivate });
     this.modernOnly = modernOnly;
     this.totalChaos = totalChaos;
     this.cube = cube;
     this.bots = 0;
-
-    if (sets) {
-      this.sets = fourPack ? sets.slice(0, 4) : sets;
-    }
+    this.sets = sets;
+    this.chaosPacksNumber = chaosPacksNumber;
 
     // Handle packsInfos to show various informations about the game
     switch(type) {
@@ -63,6 +61,7 @@ module.exports = class Game extends Room {
     case "chaos draft":
     case "chaos sealed": {
       const chaosOptions = [];
+      chaosOptions.push(`${this.chaosPacksNumber} Packs`);
       chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
       chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
       this.packsInfo = `${chaosOptions.join(", ")}`;
@@ -491,6 +490,7 @@ module.exports = class Game extends Room {
     case "chaos draft": {
       this.pool = Pool.DraftChaos({
         playersLength: this.players.length,
+        packsNumber: this.chaosPacksNumber,
         modernOnly: this.modernOnly,
         totalChaos: this.totalChaos
       });
@@ -499,6 +499,7 @@ module.exports = class Game extends Room {
     case "chaos sealed": {
       this.pool = Pool.SealedChaos({
         playersLength: this.players.length,
+        packsNumber: this.chaosPacksNumber,
         modernOnly: this.modernOnly,
         totalChaos: this.totalChaos
       });
@@ -582,9 +583,9 @@ module.exports = class Game extends Room {
     type: ${this.type}
     sets: ${this.sets}
     isPrivate: ${this.isPrivate}
-    fourPack: ${this.fourPack}
     modernOnly: ${this.modernOnly}
     totalChaos: ${this.totalChaos}
+    chaosPacksNumber: ${this.chaosPacksNumber}
     packsInfos: ${this.packsInfo}
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
