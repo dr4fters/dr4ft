@@ -7,7 +7,7 @@ import App from '../app';
 const CubeList = () => {
   const [cubes, setCubes] = useState('')
   const [selectedCube, selectCube] = useState('none')
-  let cubeOptions = [<option value='none' key='none'>None</option>]
+  let cubeOptions = []
 
   const getCubes = async function() {
     const {data: cubes} = await axios.get('/api/cubes')
@@ -38,6 +38,7 @@ const CubeList = () => {
     {cubes && <div id='preset-cubes'>
       <div>Preset Cubes:</div>
       <select onChange={handleChange}>
+        <option value='none' key='none'>None</option>
         <optgroup label="Cube Tutor">
           {cubeOptions}
         </optgroup>
