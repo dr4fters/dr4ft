@@ -249,7 +249,7 @@ Psychic Strike
 Glimpse the Unthinkable
 Notion Rain
 Pilfered Plans
-Connive
+Connive // Concoct
 Mind Grind
 Rakdos Cackler
 Fireblade Artist
@@ -318,7 +318,7 @@ Vraska the Unseen
 Abrupt Decay
 Assassin's Trophy
 Putrefy
-Find
+Find // Finality
 Down // Dirty
 Gaze of Granite
 Coiling Oracle
@@ -357,7 +357,7 @@ Tajic, Legion's Edge
 Aurelia, Exemplar of Justice
 Firemane Avenger
 Aurelia, the Warleader
-Integrity
+Integrity // Intervention
 Boros Charm
 Lightning Helix
 Warleader's Helix
@@ -400,20 +400,16 @@ Spectral Searchlight
 Sunforger
 Azorius Chancery
 Azorius Guildgate
-Azorius Guildgate
 Blood Crypt
 Boros Garrison
 Boros Guildgate
-Boros Guildgate (a)
 Breeding Pool
 Dimir Aqueduct
 Dimir Guildgate
-Dimir Guildgate (a)
 Gateway Plaza
 Ghost Quarter
 Godless Shrine
 Golgari Guildgate
-Golgari Guildgate (b)
 Golgari Rot Farm
 Gruul Guildgate
 Gruul Guildgate
@@ -422,7 +418,6 @@ Guildmages' Forum
 Hallowed Fountain
 Izzet Boilerworks
 Izzet Guildgate
-Izzet Guildgate (a)
 Maze's End
 Orzhov Basilica
 Orzhov Guildgate
@@ -435,7 +430,6 @@ Rix Maadi, Dungeon Palace
 Rogue's Passage
 Sacred Foundry
 Selesnya Guildgate
-Selesnya Guildgate (b)
 Selesnya Sanctuary
 Simic Growth Chamber
 Simic Guildgate

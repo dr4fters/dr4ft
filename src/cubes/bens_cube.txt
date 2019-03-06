@@ -240,7 +240,6 @@ Tombstalker
 Liliana of the Veil
 Liliana Vess
 Ob Nixilis Reignited
-Booster Tutor
 Dark Ritual
 Entomb
 Fatal Push

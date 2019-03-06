@@ -11,11 +11,12 @@ cubesRouter
         console.error(err)
         res.status(500).end()
       } else {
-        let cubes = []
+        let cubes = {}
         fileNames.forEach(name => {
           if (name.includes('.txt')) {
             const cube = fs.readFileSync(`src/cubes/${name}`)
-            cubes.push(cube.toString())
+            const key = name.slice(0, name.length-4)
+            cubes[key] = cube.toString()
           }
         })
         res.status(200).send(cubes)

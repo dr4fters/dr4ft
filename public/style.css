@@ -213,6 +213,10 @@ button:disabled:active {
   flex-direction: row;
 }
 
+#preset-cubes {
+  margin-left: 4px;
+}
+
 /** Lobby **/
 
 .lobby {

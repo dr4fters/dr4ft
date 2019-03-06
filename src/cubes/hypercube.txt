@@ -263,7 +263,7 @@ Sorin, Solemn Visitor
 Vindicate
 Deathrite Shaman
 Vraska, Relic Seeker
-Status
+Status // Statue
 Abrupt Decay
 Assassin's Trophy
 Coiling Oracle
@@ -274,7 +274,7 @@ Fire // Ice
 Izzet Charm
 Electrolyze
 Figure of Destiny
-Integrity
+Integrity // Intervention
 Boros Charm
 Lightning Helix
 Nicol Bolas, God-Pharaoh

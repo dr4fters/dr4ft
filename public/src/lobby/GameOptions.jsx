@@ -1,12 +1,12 @@
-import React, {useState, Fragment, useEffect} from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
-import axios from 'axios'
 
 import _ from "utils/utils";
 import App from "../app";
-import { Checkbox, Select, Textarea } from "../utils";
+import { Checkbox, Select } from "../utils";
 
 import Set from "./Set";
+import CubeList from './CubeList'
 
 const GameOptions = () => {
   const { setsDraft, setsSealed, gametype, gamesubtype } = App.state;
@@ -72,29 +72,6 @@ const CubeSealedOptions = () => (
     {" "}cards per player
   </div>
 );
-
-const CubeList = () => {
-  const [cubes, setCubes] = useState('')
-
-  const getCubes = async function() {
-    const {data: cubes} = await axios.get('/api/cubes')
-    setCubes(cubes)
-  }
-
-  useEffect(() => {
-    // !cubes && getCubes()
-  })
-
-  return <div id='cube-list'>
-    <div className='column'>
-      <div>one card per line</div>
-      <Textarea placeholder='cube list' link='list' />
-    </div>
-    <select>
-
-    </select>
-  </div>
-}
 
 const CubeOptions = () => (
   <div>
