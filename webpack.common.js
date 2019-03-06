@@ -15,7 +15,7 @@ module.exports = {
     publicPath: "/"
   },
   plugins: [
-    new CleanWebpackPlugin(["built"]),
+    new CleanWebpackPlugin(),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html.tpl"
