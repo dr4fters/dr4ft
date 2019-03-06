@@ -208,6 +208,15 @@ button:disabled:active {
   flex-direction: row;
 }
 
+#cube-list {
+  display: flex;
+  flex-direction: row;
+}
+
+#preset-cubes {
+  margin-left: 4px;
+}
+
 /** Lobby **/
 
 .lobby {
@@ -584,4 +593,9 @@ button:disabled:active {
 }
 .hidden {
   display: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
 }

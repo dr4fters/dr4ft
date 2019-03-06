@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import { Checkbox, Select, Textarea } from "../utils";
+import { Checkbox, Select } from "../utils";
 
 import Set from "./Set";
+import CubeList from './CubeList'
 
 const GameOptions = () => {
   const { setsDraft, setsSealed, gametype, gamesubtype } = App.state;
@@ -69,13 +70,6 @@ const CubeSealedOptions = () => (
   <div>
     <Select link="cubePoolSize" opts={_.seq(120, 15)} />
     {" "}cards per player
-  </div>
-);
-
-const CubeList = () => (
-  <div>
-    <div>one card per line</div>
-    <Textarea placeholder='cube list' link='list' />
   </div>
 );
 

@@ -2,10 +2,10 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
+    polyfill: '@babel/polyfill',
     app: "./public/src/init.js"
   },
   output: {
@@ -14,7 +14,6 @@ module.exports = {
     publicPath: "/"
   },
   plugins: [
-    new CleanWebpackPlugin(["built"]),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html.tpl"
@@ -37,9 +36,12 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          "babel-loader"
-        ],
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
       },
       {
         test: /\.css$/,
