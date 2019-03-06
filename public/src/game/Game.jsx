@@ -40,7 +40,7 @@ export default class Game extends Component {
   }
 
   render() {
-    const { gametype, gamesubtype } = App.state;
+    const { gametype, gamesubtype } = App.state
     const moveSettings = App.state.isGameFinished && ["regular sealed", "cube draft", "cube sealed"].includes(`${gamesubtype} ${gametype}`);
     return (
       <div className='container'>
@@ -70,5 +70,6 @@ const CardsZone = () => {
     : <div key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
   const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
-  return [pack, pool];
+  const showPool = !App.state.hidepicks || App.state.isGameFinished
+  return showPool ? [pack, pool] : [pack];
 };
