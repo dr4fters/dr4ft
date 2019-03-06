@@ -62,7 +62,7 @@ const fixPackTimeToScreen = () => {
   const selfTime = document.getElementById("self-time");
   const selfTimeFixed = document.getElementById("self-time-fixed");
   const {[0]: zone} = document.getElementsByClassName("zone");
-  if (selfTime && selfTimeFixed) {
+  if (selfTime && selfTimeFixed && zone) {
     const selfRect = selfTime.getBoundingClientRect();
     const zoneRect = zone.getBoundingClientRect();
     const selfTimeRect = selfTimeFixed.getBoundingClientRect();

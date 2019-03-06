@@ -47,6 +47,7 @@ let App = {
     beep: false,
     chat: true,
     cols: false,
+    hidepicks: false,
     deckSize: 40,
     filename: "filename",
     filetype: "txt",
