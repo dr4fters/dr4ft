@@ -24,7 +24,10 @@ const CubeList = () => {
   const handleChange = (e) => {
     e.preventDefault()
     selectCube(e.target.value)
-    App.state['list'] = cubes[e.target.value]
+    App.state['list'] = 
+    e.target.value === 'none'
+      ? ''
+      : cubes[e.target.value]
   }
 
   return <div id='cube-list'>
