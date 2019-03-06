@@ -31,8 +31,8 @@ let App = {
     gametype: "draft",
     gamesubtype: "regular",
     sets: [],
-    setsDraft: ['RNA', 'RNA', 'RNA'],
-    setsSealed: ['RNA', 'RNA', 'RNA'],
+    setsDraft: [],
+    setsSealed: [],
     availableSets: {},
     list: "",
     cards: 15,
@@ -135,11 +135,12 @@ let App = {
   set(state) {
     Object.assign(App.state, state);
     // Set default sets
+    const latestStandardSet = "RNA"
     if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
-      App.state.setsSealed = Array(6).fill(App.state.latestSet.code);
+      App.state.setsSealed = Array(6).fill(latestStandardSet);
     }
     if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
-      App.state.setsDraft = Array(3).fill(App.state.latestSet.code);
+      App.state.setsDraft = Array(3).fill(latestStandardSet);
     }
     App.update();
   },
