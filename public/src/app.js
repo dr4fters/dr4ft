@@ -136,10 +136,10 @@ let App = {
     Object.assign(App.state, state);
     // Set default sets
     if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
-      App.state.setsSealed = Array(6).fill(App.state.latestSet);
+      App.state.setsSealed = Array(6).fill(App.state.latestSet.code);
     }
     if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
-      App.state.setsDraft = Array(3).fill(App.state.latestSet);
+      App.state.setsDraft = Array(3).fill(App.state.latestSet.code);
     }
     App.update();
   },
