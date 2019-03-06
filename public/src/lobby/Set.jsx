@@ -17,8 +17,9 @@ const Set = ({ index, selectedSet, type }) => {
         <option value={code} key={code}>{name}</option>
       );
     });
+    const label = setType.split('_').reduce((label, word) => `${label} ${word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()}`, '')
     groups.push(
-      <optgroup label={setType} key={setType}>{options}</optgroup>
+      <optgroup label={label} key={setType}>{options}</optgroup>
     );
   }
   return (
