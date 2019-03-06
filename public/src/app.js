@@ -135,12 +135,11 @@ let App = {
   set(state) {
     Object.assign(App.state, state);
     // Set default sets
-    const latestStandardSet = "RNA"
     if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
-      App.state.setsSealed = Array(6).fill(latestStandardSet);
+      App.state.setsSealed = Array(6).fill(App.state.latestSet);
     }
     if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
-      App.state.setsDraft = Array(3).fill(latestStandardSet);
+      App.state.setsDraft = Array(3).fill(App.state.latestSet);
     }
     App.update();
   },
