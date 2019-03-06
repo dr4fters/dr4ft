@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    polyfill: '@babel/polyfill',
+    polyfill: "@babel/polyfill",
     app: "./public/src/init.js"
   },
   output: {
