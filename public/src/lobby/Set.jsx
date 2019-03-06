@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
+import { toTitleCase } from '../utils'
 
 const Set = ({ index, selectedSet, type }) => {
   const onSetChange = (e) => {
@@ -17,9 +18,8 @@ const Set = ({ index, selectedSet, type }) => {
         <option value={code} key={code}>{name}</option>
       );
     });
-    const label = setType.split('_').reduce((label, word) => `${label} ${word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()}`, '')
     groups.push(
-      <optgroup label={label} key={setType}>{options}</optgroup>
+      <optgroup label={toTitleCase(setType, '_')} key={setType}>{options}</optgroup>
     );
   }
   return (
