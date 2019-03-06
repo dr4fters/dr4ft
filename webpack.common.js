@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
+    polyfill: '@babel/polyfill',
     app: "./public/src/init.js"
   },
   output: {
@@ -37,9 +38,12 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          "babel-loader"
-        ],
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
       },
       {
         test: /\.css$/,

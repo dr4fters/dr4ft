@@ -1,5 +1,6 @@
-import React, {Fragment} from "react";
+import React, {useState, Fragment, useEffect} from "react";
 import PropTypes from "prop-types";
+import axios from 'axios'
 
 import _ from "utils/utils";
 import App from "../app";
@@ -72,12 +73,28 @@ const CubeSealedOptions = () => (
   </div>
 );
 
-const CubeList = () => (
-  <div>
-    <div>one card per line</div>
-    <Textarea placeholder='cube list' link='list' />
+const CubeList = () => {
+  const [cubes, setCubes] = useState('')
+
+  const getCubes = async function() {
+    const {data: cubes} = await axios.get('/api/cubes')
+    setCubes(cubes)
+  }
+
+  useEffect(() => {
+    // !cubes && getCubes()
+  })
+
+  return <div id='cube-list'>
+    <div className='column'>
+      <div>one card per line</div>
+      <Textarea placeholder='cube list' link='list' />
+    </div>
+    <select>
+
+    </select>
   </div>
-);
+}
 
 const CubeOptions = () => (
   <div>
