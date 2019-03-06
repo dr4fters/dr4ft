@@ -92,11 +92,13 @@ const SuggestLands = () => (
 );
 
 const DownloadPanel = () => (
-  <fieldset className='download-controls fieldset'>
+  <fieldset className='fieldset'>
     <legend className='legend game-legend'>Download</legend>
-    <Download />
-    <Copy />
-    <Log />
+    <div className='column'>  
+      <Download />
+      <Copy />
+      <Log />
+    </div>
   </fieldset>
 );
 
