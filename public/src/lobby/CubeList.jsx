@@ -36,11 +36,11 @@ const CubeList = () => {
       />
     </div>
     {cubes && <div id='preset-cubes'>
-      <div style={{marginLeft: 4}}>Preset Cubes:</div>
-      <select 
-        onChange={handleChange}
-      >
-        {cubeOptions}
+      <div>Preset Cubes:</div>
+      <select onChange={handleChange}>
+        <optgroup label="Cube Tutor">
+          {cubeOptions}
+        </optgroup>
       </select>
     </div>}
   </div>

@@ -52,7 +52,6 @@
     "axios": "^0.18.0",
     "babel-loader": "^8.0.0",
     "body-parser": "^1.18.3",
-    "clean-webpack-plugin": "^2.0.0",
     "cors": "^2.8.5",
     "engine.io": "^3.3.2",
     "engine.io-client": "^3.3.2",
