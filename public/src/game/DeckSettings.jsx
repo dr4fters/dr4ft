@@ -33,15 +33,15 @@ const LandsPanel = () => (
 );
 
 const ManaSymbols = () => {
-  const manaSymbols = ["White", "Blue", "Black", "Red", "Green"];
-  const url = x => `https://www.wizards.com/Magic/redesign/${x}_Mana.png`;
+  const manaSymbols = ["W", "U", "B", "R", "G"];
+  const path = color => `../../media/${color}.svg`
 
   return (
     <tr>
       <td />
-      {manaSymbols.map((x, index) =>
+      {manaSymbols.map((color, index) =>
         <td key={index}>
-          <img src={url(x)} alt={x}/>
+          <img src={path(color)} alt={color}/>
         </td>)
       }
     </tr>

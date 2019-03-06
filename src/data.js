@@ -51,10 +51,12 @@ const getPlayableSets = () => {
       continue;
     }
 
-    if (!latestSet) {
-      latestSet = { code, type, name, releaseDate };
-    } else if (Number(releaseDate.replace(/-/g, "")) > Number(latestSet.releaseDate.replace(/-/g, ""))) {
-      latestSet = { code, type, name, releaseDate };
+    if (type === "core" || type === "expansion") {
+      if (!latestSet) {
+        latestSet = { code, type, name, releaseDate };
+      } else if (Number(releaseDate.replace(/-/g, "")) > Number(latestSet.releaseDate.replace(/-/g, ""))) {
+        latestSet = { code, type, name, releaseDate };
+      }
     }
 
     if (!playableSets[type]) {

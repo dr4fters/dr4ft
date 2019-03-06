@@ -1,15 +1,8 @@
 import React from "react";
 
 import App from "../app";
-import {Select, Checkbox} from "../utils";
+import { Select, Checkbox, toTitleCase } from "../utils";
 
-const toTitleCase = (phrase = "") => {
-  return phrase
-    .toLowerCase()
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
 
 const StartPanel = () => {
   const gameType = toTitleCase(App.state.game.type);

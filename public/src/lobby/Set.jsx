@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
+import { toTitleCase } from '../utils'
 
 const Set = ({ index, selectedSet, type }) => {
   const onSetChange = (e) => {
@@ -18,7 +19,7 @@ const Set = ({ index, selectedSet, type }) => {
       );
     });
     groups.push(
-      <optgroup label={setType} key={setType}>{options}</optgroup>
+      <optgroup label={toTitleCase(setType, '_')} key={setType}>{options}</optgroup>
     );
   }
   return (
