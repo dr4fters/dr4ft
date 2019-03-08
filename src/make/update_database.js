@@ -289,7 +289,7 @@ const updateDatabase = () => {
 
   // Add normal sets
   const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
-  const types = ["core", "expansion", "commander", "planechase", "starter", "un", "masters", "draft_innovation", "masterpiece"];
+  const types = ["core", "expansion", "commander", "planechase", "starter", "funny", "masters", "draft_innovation", "masterpiece"];
   if (fs.existsSync("data/sets")) {
     const files = fs.readdirSync("data/sets");
     files.forEach(file => {
