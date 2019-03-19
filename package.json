@@ -79,7 +79,7 @@
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.1",
     "css-loader": "^2.1.1",
-    "eslint": "^5.15.2",
+    "eslint": "^5.15.3",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^6.0.2",
     "nodemon": "^1.18.10",
