@@ -81,7 +81,7 @@
     "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.12.4",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.1",
     "nodemon": "^1.18.10",
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.3.0"
