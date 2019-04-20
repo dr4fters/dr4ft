@@ -184,6 +184,29 @@ function toPack(code) {
     pack.push(_.choose(1, guildGates));
     break;
   }
+  case "WAR": {
+    // https://magic.wizards.com/en/articles/archive/feature/closer-look-stained-glass-planeswalkers-2019-03-08
+    // Every booster must contain a planeswalker either as uncommon or rare
+    const isPlaneswalker = cardName => {
+      const card = getCards()[cardName];
+      return card.type === "Planeswalker";
+    };
+
+    hasPlaneswalker = pack.some(cardName => isPlaneswalker(cardName));
+
+    if (!hasPlaneswalker) {
+      var packIndex = _.rand(4);
+      var pool = uncommon;
+      // Choose to replace an uncommon(default) or rare slot
+      if (packIndex === 3) {
+        var isMythic = mythic.includes(pack[packIndex]);
+        pool = isMythic ? mythic : rare;
+      }
+      const planeswalkers = pool.filter(isPlaneswalker);
+      pack[packIndex] = _.choose(1, planeswalkers);
+    }
+    break;
+  }
   }
   var masterpiece = "";
   if (special) {
