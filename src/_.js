@@ -58,12 +58,5 @@ module.exports = {
   },
   rand(n) {
     return Math.floor(Math.random() * n);
-  },
-  chooseOne(arr) {
-    if(!arr || arr.length == 0) {
-      throw new Error("the array can't be null or empty");
-    }
-
-    return arr[Math.floor(Math.random() * arr.length)];
   }
 };
