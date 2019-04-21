@@ -191,21 +191,39 @@ function toPack(code) {
       const card = getCards()[cardName];
       return card.type === "Planeswalker";
     };
-
-    hasPlaneswalker = pack.some(cardName => isPlaneswalker(cardName));
-
-    if (!hasPlaneswalker) {
-      var packIndex = _.rand(4);
-      var pool = uncommon;
+    const getPoolFromPackIndex = packIndex => {
       // Choose to replace an uncommon(default) or rare slot
       if (packIndex === 3) {
         var isMythic = mythic.includes(pack[packIndex]);
-        pool = isMythic ? mythic : rare;
+        return isMythic ? mythic : rare;
+      } else {
+        return uncommon;
       }
-      const planeswalkers = pool.filter(isPlaneswalker);
-      pack[packIndex] = _.choose(1, planeswalkers);
     }
-    break;
+
+    planeswalkerCount = pack.filter(isPlaneswalker).length;
+
+    switch (planeswalkerCount) {
+      case 0: {
+        var packIndex = _.rand(4);
+        pool = getPoolFromPackIndex(packIndex)
+        const planeswalkers = pool.filter(isPlaneswalker);
+        pack[packIndex] = _.choose(1, planeswalkers);
+        break;
+      }
+      case 1: {
+        break;
+      }
+      default: {
+        var planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker))
+        planeswalkersToRemove.forEach(cardName => {
+          var packIndex = pack.indexOf(cardName);
+          pool = getPoolFromPackIndex(packIndex);
+          const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
+          pack[packIndex] = _.choose(1, nonPlaneswalkers);
+        })
+      }
+    }
   }
   }
   var masterpiece = "";
