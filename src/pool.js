@@ -196,32 +196,39 @@ function toPack(code) {
       return card.type === "Planeswalker";
     };
 
-    const packIndex = _.rand(4);
-    const isRareAMythic = mythic.includes(pack[packIndex]);
-    const rarePool = isRareAMythic ? mythic : rare;
-    const uncosWithoutPws = uncommon.filter(card => !isPlaneswalker(card));
-    const raresWithoutPws = rarePool.filter(card => !isPlaneswalker(card));
-    const raresWithPws = rarePool.filter(isPlaneswalker);
-    const uncosWithPws = uncommon.filter(isPlaneswalker);
+    const getPoolFromPackIndex = packIndex => {
+      // Choose to replace an uncommon(default) or rare slot
+      if (packIndex === 3) {
+        var isMythic = mythic.includes(pack[packIndex]);
+        return isMythic ? mythic : rare;
+      } else {
+        return uncommon;
+      }
+    };
 
-    // Checking which card will be a PW
-    // 0-2: should be an Uncommon
-    // 3: should be the mythic/rare
-    switch(packIndex) {
-    case 3: 
-      pack = [].concat(
-        _.choose(3, uncosWithoutPws),
-        _.choose(1, raresWithPws)
-      );
+    const planeswalkerCount = pack.filter(isPlaneswalker).length;
+
+    switch (planeswalkerCount) {
+    case 0: {
+      const packIndex = _.rand(4);
+      pool = getPoolFromPackIndex(packIndex);
+      const planeswalkers = pool.filter(isPlaneswalker);
+      pack[packIndex] = _.choose(1, planeswalkers);
       break;
-    
-    default:
-      // Set rare slot to Non-Pw
-      pack[3]  = raresWithoutPws[_.rand(raresWithoutPws.length)];
-      // Set one unco with Pws
-      pack.splice(0, 3, _.chooseOne(uncosWithPws), ..._.choose(2, uncosWithoutPws));
     }
-    break;
+    case 1: {
+      break;
+    }
+    default: {
+      const planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker));
+      planeswalkersToRemove.forEach(cardName => {
+        const packIndex = pack.indexOf(cardName);
+        pool = getPoolFromPackIndex(packIndex);
+        const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
+        pack[packIndex] = _.choose(1, nonPlaneswalkers);
+      });
+    }
+    }
   }
   }
   var masterpiece = "";
