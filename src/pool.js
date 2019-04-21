@@ -185,6 +185,10 @@ function toPack(code) {
     break;
   }
   case "WAR": {
+    //No Guildgates
+    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
+    common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
+
     // https://magic.wizards.com/en/articles/archive/feature/closer-look-stained-glass-planeswalkers-2019-03-08
     // Every booster must contain a planeswalker either as uncommon or rare
     const isPlaneswalker = cardName => {
@@ -192,18 +196,30 @@ function toPack(code) {
       return card.type === "Planeswalker";
     };
 
-    hasPlaneswalker = pack.some(cardName => isPlaneswalker(cardName));
+    const packIndex = _.rand(4);
+    const isRareAMythic = mythic.includes(pack[packIndex]);
+    const rarePool = isRareAMythic ? mythic : rare;
+    const uncosWithoutPws = uncommon.filter(card => !isPlaneswalker(card));
+    const raresWithoutPws = rarePool.filter(card => !isPlaneswalker(card));
+    const raresWithPws = rarePool.filter(isPlaneswalker);
+    const uncosWithPws = uncommon.filter(isPlaneswalker);
 
-    if (!hasPlaneswalker) {
-      var packIndex = _.rand(4);
-      var pool = uncommon;
-      // Choose to replace an uncommon(default) or rare slot
-      if (packIndex === 3) {
-        var isMythic = mythic.includes(pack[packIndex]);
-        pool = isMythic ? mythic : rare;
-      }
-      const planeswalkers = pool.filter(isPlaneswalker);
-      pack[packIndex] = _.choose(1, planeswalkers);
+    // Checking which card will be a PW
+    // 0-2: should be an Uncommon
+    // 3: should be the mythic/rare
+    switch(packIndex) {
+    case 3: 
+      pack = [].concat(
+        _.choose(3, uncosWithoutPws),
+        _.choose(1, raresWithPws)
+      );
+      break;
+    
+    default:
+      // Set rare slot to Non-Pw
+      pack[3]  = raresWithoutPws[_.rand(raresWithoutPws.length)];
+      // Set one unco with Pws
+      pack.splice(0, 3, _.chooseOne(uncosWithPws), ..._.choose(2, uncosWithoutPws));
     }
     break;
   }

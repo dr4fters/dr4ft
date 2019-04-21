@@ -50,3 +50,49 @@ describe("Acceptance tests for Pool class", () => {
     });
   });
 });
+
+describe("Set tests for Pool class", () => {
+  describe("can make a WAR Pool", () => {
+    it("should return a pack of 14 cards", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: ["WAR"]});
+      assert.equal(14, got[0].length);
+    });
+    it("should return a pack without guildgates", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: new Array(20).fill("WAR")});
+      assert.equal(0, got[0].flat().filter(({type, rarity}) => type === "Land" && rarity == "common").length);
+    });
+    it("should return a pack with at least one planeswalker", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: new Array(20).fill("WAR")});
+      got.forEach(pack => {
+        const numberOfPws = pack.filter(({type}) => type === "Planeswalker").length;
+        if (numberOfPws == 0) {
+          assert.fail("No Planeswalker were found in the pack");
+        }
+      });
+    });
+    it("should return a pack with at most one planeswalker", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: new Array(20).fill("WAR")});
+      got.forEach(pack => {
+        const numberOfPws = pack.filter(({type}) => type === "Planeswalker").length;
+        if (numberOfPws > 1) {
+          const isPlaneswalker = card => {
+            return card.type === "Planeswalker";
+          };
+          const isRareOrMythic = ({rarity, foil}) => !foil && ["mythic", "rare"].includes(rarity);
+          const isUnco = ({rarity, foil}) => !foil && rarity === "uncommon";
+
+          const isRareAPw = pack.filter(isRareOrMythic).filter(isPlaneswalker).length > 0;
+          const isUncoAPw = pack.filter(isUnco).filter(isPlaneswalker).length > 0;
+          if (isRareAPw && isUncoAPw) {
+            assert.fail(`Too many Pws were found in the pack : ${numberOfPws}`);
+          }
+
+          if (!isRareAPw) {
+            assert.fail(`Too many Pws in uncommons were found in the pack : ${numberOfPws}`);
+          }
+        }
+      });
+    });
+
+  });
+});
