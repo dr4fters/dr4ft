@@ -9,7 +9,7 @@ const versionURL = "https://mtgjson.com/json/version.json";
 const setsVersion = "data/version.json";
 
 const isVersionNewer = (remoteVer, currentVer) => (
-  Number(remoteVer.version.replace(/\./g, "")) > Number(currentVer.version.replace(/\./g, ""))
+  Number(remoteVer.date.replace(/-/g, "")) > Number(currentVer.date.replace(/-/g, ""))
 );
 
 const isVersionUpToDate = () => (
