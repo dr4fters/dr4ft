@@ -6,6 +6,17 @@ matrix:
     - name: Install Node.js app (newest Node.js)
       language: node_js
       node_js: node
+      env: newest_node
+      cache:
+        directories:
+          - node_modules
+      install:
+        - npm install
+      script: skip
+    - name: Install Node.js app (Node.js v11)
+      language: node_js
+      node_js:
+        - "11"
       cache:
         directories:
           - node_modules
@@ -49,6 +60,7 @@ matrix:
   allow_failures:
     - env: eslint
     - env: docker
+    - env: newest_node
   fast_finish: true    # mark build as failed/passed as soon as possible, don't wait for the allow_failures build to finish! See https://docs.travis-ci.com/user/customizing-the-build#fast-finishing
 
 #    - name: Build and run Docker image (with 'Dockerfile') on newest Docker
