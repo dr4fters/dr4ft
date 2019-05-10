@@ -3,7 +3,7 @@ env:    # key needs exist on top level for allow_failure on env to work, see htt
 
 matrix:
   include:
-      - name: Install Node.js app (newest Node.js)
+    - name: Install Node.js app (newest Node.js)
       language: node_js
       node_js: node
       env: newest_node
