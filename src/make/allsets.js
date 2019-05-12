@@ -1,6 +1,6 @@
 const fs = require("fs");
 const https = require("https");
-const unzip = require("unzip");
+const unzip = require("unzipper");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
 
