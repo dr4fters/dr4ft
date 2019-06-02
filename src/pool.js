@@ -184,6 +184,21 @@ function toPack(code) {
     pack.push(_.choose(1, guildGates));
     break;
   }
+  case "MH1": {
+    // Each pack has a snow basic land
+    // https://magic.wizards.com/en/articles/archive/card-preview/modern-horizons-tokens-and-art-series-2019-05-30
+    //
+    const snowLands = [
+      "snow-covered island",
+      "snow-covered forest",
+      "snow-covered mountain",
+      "snow-covered swamp",
+      "snow-covered plains"
+    ]
+    common = common.filter(cardName => !snowLands.includes(cardName));
+    pack = pack.concat(_.choose(1, snowLands));
+    break;
+  }
   case "WAR": {
     // https://magic.wizards.com/en/articles/archive/feature/closer-look-stained-glass-planeswalkers-2019-03-08
     // Every booster must contain a planeswalker either as uncommon or rare
