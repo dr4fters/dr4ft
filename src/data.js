@@ -50,11 +50,12 @@ const getPlayableSets = () => {
     if (["masterpiece", "starter", "planechase", "commander"].includes(type)) {
       continue;
     }
-
-    if (type === "core" || type === "expansion") {
+    
+    const isSpoiler =  new Date(releaseDate).getTime() > Date.now();
+    if (!isSpoiler && (type === "core" || type === "expansion")) {
       if (!latestSet) {
         latestSet = { code, type, name, releaseDate };
-      } else if (Number(releaseDate.replace(/-/g, "")) > Number(latestSet.releaseDate.replace(/-/g, ""))) {
+      } else if (new Date(releaseDate).getTime() > new Date(latestSet.releaseDate).getTime()) {
         latestSet = { code, type, name, releaseDate };
       }
     }
