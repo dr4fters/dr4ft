@@ -48,8 +48,13 @@ function doSet(rawSet, allCards = {}) {
 }
 
 function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side } = card;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side, isAlternative } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
+
+  if (isAlternative) {
+    logger.info(`${name} is an alternative. skip`);
+    return;
+  }
 
   // With MTGJsonv4, a new rarity exists
   if ("timeshifted" == rarity) {
