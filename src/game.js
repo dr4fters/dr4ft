@@ -43,7 +43,7 @@ module.exports = class Game extends Room {
     this.totalChaos = totalChaos;
     this.cube = cube;
     this.bots = 0;
-    this.sets = sets;
+    this.sets = sets || [];
     this.chaosPacksNumber = chaosPacksNumber;
 
     // Handle packsInfos to show various informations about the game
@@ -80,7 +80,7 @@ module.exports = class Game extends Room {
       id: gameID,
       players: [],
       round: 0,
-      rounds: cube ? cube.packs : 3,
+      rounds: cube ? cube.packs : this.sets.length,
       secret
     });
 
