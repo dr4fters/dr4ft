@@ -7,7 +7,7 @@ describe("Acceptance tests for Pool class", () => {
     it("should return a sealed cube pool with length equal to player length", () => {
       const cubeList = new Array(720).fill("island");
       const playersLength = 8;
-      const got = Pool.SealedCubePool({ cubeList, playersLength });
+      const got = Pool.SealedCube({ cubeList, playersLength });
       assert.equal(playersLength, got.length);
     });
 
@@ -15,11 +15,11 @@ describe("Acceptance tests for Pool class", () => {
       const cubeList = new Array(720).fill("island");
       const playersLength = 8;
       const packsNumber = 3;
-      const got = Pool.DraftCubePool({ cubeList, playersLength, packsNumber });
+      const got = Pool.DraftCube({ cubeList, playersLength, packsNumber });
       assert.equal(playersLength*packsNumber, got.length);
     });
   });
-  
+
   describe("can make a normal pool", () => {
     it("should return a sealed pool with length equal to player length", () => {
       const sets = new Array(6).fill("M19");
