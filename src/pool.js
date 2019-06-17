@@ -194,7 +194,7 @@ function toPack(code) {
       "snow-covered mountain",
       "snow-covered swamp",
       "snow-covered plains"
-    ]
+    ];
     common = common.filter(cardName => !snowLands.includes(cardName));
     pack = pack.concat(_.choose(1, snowLands));
     break;
@@ -214,31 +214,40 @@ function toPack(code) {
       } else {
         return uncommon;
       }
-    }
+    };
 
-    planeswalkerCount = pack.filter(isPlaneswalker).length;
+    const planeswalkerCount = pack.filter(isPlaneswalker).length;
 
     switch (planeswalkerCount) {
-      case 0: {
-        var packIndex = _.rand(4);
-        pool = getPoolFromPackIndex(packIndex)
-        const planeswalkers = pool.filter(isPlaneswalker);
-        pack[packIndex] = _.choose(1, planeswalkers);
-        break;
-      }
-      case 1: {
-        break;
-      }
-      default: {
-        var planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker))
-        planeswalkersToRemove.forEach(cardName => {
-          var packIndex = pack.indexOf(cardName);
-          pool = getPoolFromPackIndex(packIndex);
-          const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
-          pack[packIndex] = _.choose(1, nonPlaneswalkers);
-        })
-      }
+    case 0: {
+      var packIndex = _.rand(4);
+      pool = getPoolFromPackIndex(packIndex);
+      const planeswalkers = pool.filter(isPlaneswalker);
+      pack[packIndex] = _.choose(1, planeswalkers);
+      break;
     }
+    case 1: {
+      break;
+    }
+    default: {
+      var planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker));
+      planeswalkersToRemove.forEach(cardName => {
+        var packIndex = pack.indexOf(cardName);
+        pool = getPoolFromPackIndex(packIndex);
+        const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
+        pack[packIndex] = _.choose(1, nonPlaneswalkers);
+      });
+    }
+    }
+    break;
+  }
+  case "TSP": {
+    // Add a TSB card to replace common card
+    const TSB = getSets()["TSB"];
+    size = size - 1;
+    pack.push(..._.choose(1, TSB.rare));
+    console.log(`${pack[pack.length - 1]}`);
+    break;
   }
   }
   var masterpiece = "";
@@ -287,6 +296,12 @@ function toCards(pool, code, foilCard, masterpiece) {
 
     card.code = getMws()[code] || code;
     var set = sets[code];
+
+    // If the set doesn't exists for TimeSpiral
+    // Check in TimeSpiralTimeshifted
+    if (!set && code === "TSP") {
+      set = sets["TSB"];
+    }
 
     if (masterpiece == card.name.toString().toLowerCase()) {
       card.rarity = "special";

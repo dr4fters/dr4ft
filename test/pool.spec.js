@@ -19,7 +19,7 @@ describe("Acceptance tests for Pool class", () => {
       assert.equal(playersLength*packsNumber, got.length);
     });
   });
-  
+
   describe("can make a normal pool", () => {
     it("should return a sealed pool with length equal to player length", () => {
       const sets = new Array(6).fill("M19");
@@ -47,6 +47,13 @@ describe("Acceptance tests for Pool class", () => {
       const playersLength = 8;
       const got = Pool.SealedChaos({ modernOnly: true, totalChaos: true, playersLength });
       assert.equal(playersLength, got.length);
+    });
+  });
+
+  describe("can make a TimeSpiral pool", () => {
+    it("should return a timespiral pool", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
+      assert.equal(got[0].length, 14);
     });
   });
 });
