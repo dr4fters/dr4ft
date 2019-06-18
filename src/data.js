@@ -47,10 +47,10 @@ const getPlayableSets = () => {
     const { type, name, releaseDate, baseSetSize } = AllSets[code];
 
     //We do not want to play with these types of set (unplayable or lacking cards)
-    if (["masterpiece", "planechase", "commander"].includes(type) || baseSetSize === 0) {
+    if (["masterpiece", "planechase", "commander", "timeshifted"].includes(type) || baseSetSize === 0) {
       continue;
     }
-    
+
     const isSpoiler =  new Date(releaseDate).getTime() > Date.now();
     if (!isSpoiler && (type === "core" || type === "expansion")) {
       if (!latestSet) {
@@ -104,7 +104,7 @@ const getExpansionOrCoreModernSets = () => {
   const sets = [];
   for (const setCode in getSets()) {
     const set = getSets()[setCode];
-    if (["expansion", "core"].includes(set.type) 
+    if (["expansion", "core"].includes(set.type)
       && Date.parse("2003-07-26") <= Date.parse(set.releaseDate)) {
       set.code = setCode;
       sets.push(set);

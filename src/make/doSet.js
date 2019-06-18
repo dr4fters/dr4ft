@@ -22,7 +22,7 @@ function doSet(rawSet, allCards = {}) {
     mythic: [],
     special: [],
   };
-  
+
   var cards = {};
   for (const card of rawSet.cards) {
     doCard({card, cards, rawSetCards: rawSet.cards, code, set, baseSetSize});
@@ -53,11 +53,6 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
 
   if (isAlternative) {
     logger.info(`${name} is an alternative. skip`);
-    return;
-  }
-
-  // With MTGJsonv4, a new rarity exists
-  if ("timeshifted" == rarity) {
     return;
   }
 

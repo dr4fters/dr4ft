@@ -49,4 +49,11 @@ describe("Acceptance tests for Pool class", () => {
       assert.equal(playersLength, got.length);
     });
   });
+
+  describe("can make a TimeSpiral pool", () => {
+    it("should return a timespiral pool", () => {
+      const got = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
+      assert.equal(got[0].length, 14);
+    });
+  });
 });
