@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const PACKAGE = require("./package.json");
 
 module.exports = {
   entry: {
@@ -20,7 +21,11 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: "public", ignore: ["*.tpl", "src/**/*"] }
-    ])
+    ]),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(PACKAGE.version),
+      BUILD_DATE: JSON.stringify(new Date().toISOString().slice(0, 10))
+    })
   ],
   resolve: {
     extensions: [".js", ".jsx", ".css", ".less"],
