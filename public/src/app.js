@@ -56,6 +56,10 @@ let App = {
     log: {},
     cardSize: "normal",
     game: {},
+    mtgJsonVersion: {
+      version: "0.0.0",
+      date: "1970-01-01"
+    }
 
     get didGameStart() {
       // both round === 0 and round is undefined
