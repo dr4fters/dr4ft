@@ -246,7 +246,6 @@ function toPack(code) {
     const TSB = getSets()["TSB"];
     size = size - 1;
     pack.push(..._.choose(1, TSB.rare));
-    console.log(`${pack[pack.length - 1]}`);
     break;
   }
   }
