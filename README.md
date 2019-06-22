@@ -35,9 +35,6 @@ It supports all their features, and many more.
 
 #### Known pages running this code:
  - [dr4ft.info](https://www.dr4ft.info)
- - [dr4ft.com](http://www.dr4ft.com)
-
-
 
 <br>
 
