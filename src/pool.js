@@ -165,9 +165,11 @@ function toPack(code) {
     }
     break;
   }
-  case "M19": {
-    //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
-    // 5/12 of times -> dual-land
+  case "M19":
+  case "M20": {
+    // http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+    // https://magic.wizards.com/en/articles/archive/card-preview/fire-it-2019-06-21
+    // 5/12 of times -> dual-land or evolving wilds
     // 7/12 of times -> basic land
     const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
     common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
