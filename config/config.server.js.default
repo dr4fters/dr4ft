@@ -5,7 +5,7 @@ const execSync = require("child_process").execSync;
 
 var versionInfo = "noVersion";
 try {
-  versionInfo = execSync("git describe --always --long")
+  versionInfo = execSync("git describe --tags")
     .toString().trim();
 } catch(err) {
   console.log(err);
@@ -21,7 +21,7 @@ const VERSION =
   // version 2.0.0, at commit `123abc`. (In the `git-describe` output, there is
   // always a `g` before the commit hash, which stands for 'git', so we remove
   // that.)
-    ? `${versionInfoParts[0]}+${versionInfoParts[1]} (${versionInfoParts[2].slice(1)})`
+    ? versionInfoParts[2].slice(1)
 
     // If there is no tag, just display the commit hash.
     : versionInfo;
