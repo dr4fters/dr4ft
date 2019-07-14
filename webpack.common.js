@@ -23,7 +23,6 @@ module.exports = {
       { from: "public", ignore: ["*.tpl", "src/**/*"] }
     ]),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(PACKAGE.version),
       BUILD_DATE: JSON.stringify(new Date().toISOString().slice(0, 10))
     })
   ],
