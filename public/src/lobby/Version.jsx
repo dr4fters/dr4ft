@@ -12,7 +12,11 @@ const Version = ({version, MTGJSONVersion}) => {
     <p>Running Version: {" "}
       <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`}>
         {version}
-      </a> (build {BUILD_DATE}) - Using <a href="https://www.mtgjson.com">MTGJSON</a> card data version: v{MTGJSONVersion.version} ({MTGJSONVersion.date})
+      </a> (build {BUILD_DATE}) - Using <a href="https://www.mtgjson.com">MTGJSON</a> {" "}
+      card data version:{" "}
+      <a href={`https://mtgjson.com/changelog/#_${MTGJSONVersion.version.replace(/\./g, "-")}-${MTGJSONVersion.date}`}>
+        v{MTGJSONVersion.version}
+      </a> ({MTGJSONVersion.date})
     </p>
   );
 };
