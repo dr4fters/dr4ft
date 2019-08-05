@@ -5,6 +5,14 @@ import App from "../app";
 import {getZone} from "../cards";
 import {Spaced} from "../utils.jsx";
 
+const isURLScryfall = (url) => {
+  try {
+    return /scryfall\.com/.test(new URL(url).hostname);
+  }catch(err) {
+    return false;
+  }
+};
+
 class Cols extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +73,10 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
           onClick={App._emit("click", zoneName, card.name)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
-          <img src={`${card.url}&version=${App.state.cardSize}`} alt={card.name} />
+          <img src={isURLScryfall(card.url)
+            ? `${card.url}&version=${App.state.cardSize}`
+            : card.url}
+          alt={card.name} />
         </div>
       );
 
@@ -103,7 +114,9 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
       : <img className={className}
         id='img'
         onMouseEnter={e => onMouseEnter(card, e)}
-        src={`${card.url}&version=${App.state.cardSize}`}/>
+        src={isURLScryfall(card.url)
+          ? `${card.url}&version=${App.state.cardSize}`
+          : card.url}/>
     : <div />
 );
 
