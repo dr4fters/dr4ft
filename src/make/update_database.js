@@ -311,7 +311,7 @@ const updateDatabase = () => {
           prepareSet(json);
 
           logger.info(`Parsing ${json.code} started`);
-          allSets[json.code] = doSet(json, allCards);
+          allSets[json.code] = doSet(json, allCards)[0];
           logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
@@ -331,7 +331,7 @@ const updateDatabase = () => {
           if (json.code) {
             json.type = "custom";
             logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
-            allSets[json.code] = doSet(json, allCards);
+            allSets[json.code] = doSet(json, allCards)[0];
             logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {

@@ -44,7 +44,7 @@ function doSet(rawSet, allCards = {}) {
       delete set[rarity];
 
   set.size = !rawSet.booster ? 4 : rawSet.booster.filter(x => x === "common").length;
-  return set;
+  return [set, allCards];
 }
 
 function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {

@@ -34,14 +34,15 @@ setsRouter
         }
       }
 
-      const parsedSet = doSet(json, {}, newCards);
+      const [parsedSet, parsedCards] = doSet(json, {}, newCards);
       parsedSet.type = CUSTOM_TYPE; //Force set as custom
 
       logger.info(`adding new set with code "${json.code}" to database`);
       sets[json.code] = parsedSet;
       writeSets(sets);
       Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
-      writeCards(newCards);
+
+      writeCards(parsedCards);
 
       //Moving custom set to custom directory
       fs.writeFile(`data/custom/${json.code}.json`, JSON.stringify(json), (err) => {
