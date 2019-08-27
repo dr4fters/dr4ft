@@ -83,7 +83,7 @@
     "eslint-plugin-react": "^7.14.3",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^1.0.0",
     "webpack-cli": "^3.3.7"
   },
   "engines": {
