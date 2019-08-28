@@ -57,7 +57,7 @@
     "engine.io-client": "^3.3.2",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.5",
-    "filepond": "^4.5.0",
+    "filepond": "^4.5.1",
     "filepond-plugin-file-validate-size": "^2.2.0",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "helmet": "^3.20.0",
