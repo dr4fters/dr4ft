@@ -68,7 +68,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-filepond": "^7.0.1",
-    "unzipper": "^0.10.4",
+    "unzipper": "^0.10.5",
     "utils": "git://github.com/dr4fters/utils.git",
     "uuid": "^3.3.3",
     "vanilla-toast": "^0.5.0",
