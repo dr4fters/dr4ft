@@ -35,7 +35,8 @@ const CubeList = () => {
       <div>one card per line</div>
       <Textarea 
         placeholder='cube list' 
-        link='list' 
+        link='list'
+        style='width: 200px; height: 300px;'
       />
     </div>
     {cubes && <div id='preset-cubes'>
