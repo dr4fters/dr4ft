@@ -47,6 +47,7 @@ matrix:
       install:
         - npm install -g eslint
         - npm install --no-save eslint-plugin-react
+        - npm install --no-save eslint-plugin-import
       script:
         - npm test
 

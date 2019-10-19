@@ -6,7 +6,8 @@ module.exports = {
     },
     "extends": [
       "eslint:recommended",
-      "plugin:react/recommended"
+      "plugin:react/recommended",
+      "plugin:import/errors"
     ],
     "parserOptions": {
         "ecmaVersion": 9,
@@ -37,7 +38,9 @@ module.exports = {
         ],
         "no-unused-vars" : [
           "warn"
-        ]
+        ],
+        "import/namespace": 0,
+        "import/named": 0
     },
     "settings": {
         "react": {
