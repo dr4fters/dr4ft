@@ -31,7 +31,8 @@
     "start-dev": "npm run watch & nodemon scripts/run -e html,js --ignore built --ignore public",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
-    "pretest": "eslint --ignore-path .gitignore .",
+    "lint": "eslint --ignore-path .gitignore .",
+    "pretest": "npm run lint",
     "postinstall": "node scripts/postinstall && webpack --config webpack.prod.js"
   },
   "dependencies": {

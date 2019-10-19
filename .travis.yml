@@ -47,7 +47,7 @@ matrix:
       install:
         - npm install --ignore-scripts
       script:
-        - npm test
+        - npm run lint
 
   allow_failures:
     - env: docker
