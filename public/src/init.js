@@ -1,6 +1,6 @@
 import App from "./app";
 import "./cards";
-import router from "./router";
+import { default as router } from "./router";
 
 App.init(router);
 
