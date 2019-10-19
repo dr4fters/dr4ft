@@ -1,13 +1,12 @@
+/* eslint-disable */
 import React, { Suspense } from "react";
 import { render } from "react-dom";
 
-// eslint-disable The import/export plugin currently doesn't support async imports
-const Lobby = React.lazy(() => import("./lobby/Lobby"));
-const Game = React.lazy(() => import("./game/Game"));
-// eslint-enable
+const Lobby = React.lazy(() => require("./lobby/Lobby"));
+const Game = React.lazy(() => require("./game/Game"));
 let App;
 
-export default function(_App) {
+export default function router(_App) {
   App = _App;
   route();
   window.addEventListener("hashchange", route);
