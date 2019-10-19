@@ -26,7 +26,7 @@ const GameSettings = () => (
           <Checkbox side="left" text="Column view" link="cols" />
         </div>
         <div>
-          <Checkbox side="left" text="Hide selected picks" link="hidepicks" />
+          <Checkbox side="left" text="Hide your picks" link="hidepicks" />
         </div>
         <SortCards />
         <CardsImageQuality />

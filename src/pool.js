@@ -165,9 +165,11 @@ function toPack(code) {
     }
     break;
   }
-  case "M19": {
-    //http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
-    // 5/12 of times -> dual-land
+  case "M19":
+  case "M20": {
+    // http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
+    // https://magic.wizards.com/en/articles/archive/card-preview/fire-it-2019-06-21
+    // 5/12 of times -> dual-land or evolving wilds
     // 7/12 of times -> basic land
     const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
     common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
@@ -182,6 +184,70 @@ function toPack(code) {
     const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
     common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
     pack.push(_.choose(1, guildGates));
+    break;
+  }
+  case "MH1": {
+    // Each pack has a snow basic land
+    // https://magic.wizards.com/en/articles/archive/card-preview/modern-horizons-tokens-and-art-series-2019-05-30
+    //
+    const snowLands = [
+      "snow-covered island",
+      "snow-covered forest",
+      "snow-covered mountain",
+      "snow-covered swamp",
+      "snow-covered plains"
+    ];
+    common = common.filter(cardName => !snowLands.includes(cardName));
+    pack = pack.concat(_.choose(1, snowLands));
+    break;
+  }
+  case "WAR": {
+    // https://magic.wizards.com/en/articles/archive/feature/closer-look-stained-glass-planeswalkers-2019-03-08
+    // Every booster must contain a planeswalker either as uncommon or rare
+    const isPlaneswalker = cardName => {
+      const card = getCards()[cardName];
+      return card.type === "Planeswalker";
+    };
+    const getPoolFromPackIndex = packIndex => {
+      // Choose to replace an uncommon(default) or rare slot
+      if (packIndex === 3) {
+        var isMythic = mythic.includes(pack[packIndex]);
+        return isMythic ? mythic : rare;
+      } else {
+        return uncommon;
+      }
+    };
+
+    const planeswalkerCount = pack.filter(isPlaneswalker).length;
+
+    switch (planeswalkerCount) {
+    case 0: {
+      var packIndex = _.rand(4);
+      pool = getPoolFromPackIndex(packIndex);
+      const planeswalkers = pool.filter(isPlaneswalker);
+      pack[packIndex] = _.choose(1, planeswalkers);
+      break;
+    }
+    case 1: {
+      break;
+    }
+    default: {
+      var planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker));
+      planeswalkersToRemove.forEach(cardName => {
+        var packIndex = pack.indexOf(cardName);
+        pool = getPoolFromPackIndex(packIndex);
+        const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
+        pack[packIndex] = _.choose(1, nonPlaneswalkers);
+      });
+    }
+    }
+    break;
+  }
+  case "TSP": {
+    // Add a TSB card to replace common card
+    const TSB = getSets()["TSB"];
+    size = size - 1;
+    pack.push(..._.choose(1, TSB.rare));
     break;
   }
   }
@@ -231,6 +297,12 @@ function toCards(pool, code, foilCard, masterpiece) {
 
     card.code = getMws()[code] || code;
     var set = sets[code];
+
+    // If the set doesn't exists for TimeSpiral
+    // Check in TimeSpiralTimeshifted
+    if (!set && code === "TSP") {
+      set = sets["TSB"];
+    }
 
     if (masterpiece == card.name.toString().toLowerCase()) {
       card.rarity = "special";

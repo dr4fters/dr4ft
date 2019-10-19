@@ -1,4 +1,4 @@
-FROM node:11.11-alpine
+FROM node:12.12.0-alpine
 ENV NPM_CONFIG_LOGLEVEL warn
 
 # Install "git"

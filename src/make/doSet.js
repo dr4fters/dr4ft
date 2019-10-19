@@ -22,7 +22,7 @@ function doSet(rawSet, allCards = {}) {
     mythic: [],
     special: [],
   };
-  
+
   var cards = {};
   for (const card of rawSet.cards) {
     doCard({card, cards, rawSetCards: rawSet.cards, code, set, baseSetSize});
@@ -44,15 +44,15 @@ function doSet(rawSet, allCards = {}) {
       delete set[rarity];
 
   set.size = !rawSet.booster ? 4 : rawSet.booster.filter(x => x === "common").length;
-  return set;
+  return [set, allCards];
 }
 
 function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side } = card;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side, isAlternative } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
 
-  // With MTGJsonv4, a new rarity exists
-  if ("timeshifted" == rarity) {
+  if (isAlternative) {
+    logger.info(`${name} is an alternative. skip`);
     return;
   }
 
@@ -72,7 +72,7 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
     return;
   }
 
-  if (/split/i.test(layout))
+  if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
 
   if (name in cards) {

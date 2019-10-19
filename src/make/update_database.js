@@ -271,6 +271,9 @@ const postParseSets = (sets, cards) => {
   alias(FRF.special.fetch, "FRF", cards);
 
   sets.OGW.common.push("wastes");// wastes are twice as common
+
+  const { TSB } = sets;
+  TSB.type = "timeshifted";
 };
 
 const alias = (arr, code, cards) => {
@@ -288,7 +291,7 @@ const updateDatabase = () => {
   const allSets = {};
 
   // Add normal sets
-  const setsToIgnore = ["TSB", "ITP", "CP1", "CP2", "CP3"];
+  const setsToIgnore = ["ITP", "CP1", "CP2", "CP3"];
   const types = ["core", "expansion", "commander", "planechase", "starter", "funny", "masters", "draft_innovation", "masterpiece"];
   if (fs.existsSync("data/sets")) {
     const files = fs.readdirSync("data/sets");
@@ -308,7 +311,7 @@ const updateDatabase = () => {
           prepareSet(json);
 
           logger.info(`Parsing ${json.code} started`);
-          allSets[json.code] = doSet(json, allCards);
+          allSets[json.code] = doSet(json, allCards)[0];
           logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
@@ -328,7 +331,7 @@ const updateDatabase = () => {
           if (json.code) {
             json.type = "custom";
             logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
-            allSets[json.code] = doSet(json, allCards);
+            allSets[json.code] = doSet(json, allCards)[0];
             logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {
