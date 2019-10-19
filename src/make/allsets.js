@@ -3,7 +3,7 @@ const https = require("https");
 const unzip = require("unzipper");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
-const { refresh: refreshVersion } = require('../mtgjson');
+const { refresh: refreshVersion } = require("../mtgjson");
 
 const mtgJsonURL = "https://mtgjson.com/json/AllSetFiles.zip";
 const versionURL = "https://mtgjson.com/json/version.json";
@@ -28,7 +28,7 @@ const isVersionUpToDate = () => (
               return resolve(true);
             }
           }
-          
+
           const version = JSON.stringify(remoteVersion);
           logger.info(`Found a new version ${version}`);
           fs.writeFileSync(setsVersion, version);

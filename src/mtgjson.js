@@ -1,6 +1,6 @@
-const fs = require('fs');
-const VERSION_FILE = 'data/version.json';
-const logger = require('./logger');
+const fs = require("fs");
+const VERSION_FILE = "data/version.json";
+const logger = require("./logger");
 let version;
 
 const getVersion = () => {
@@ -8,7 +8,7 @@ const getVersion = () => {
     refresh();
   }
   return version || { version: "N/A", date: "N/A" };
-}
+};
 
 const refresh = () => {
   if (fs.existsSync(VERSION_FILE)) {
@@ -18,9 +18,9 @@ const refresh = () => {
       logger.error("could not parse mtgjson version file " + error);
     }
   }
-}
+};
 
 module.exports = {
   getVersion,
   refresh
-}
+};

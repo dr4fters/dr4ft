@@ -1,7 +1,7 @@
 const { EventEmitter } = require("events");
 const { STRINGS } = require("../config.server");
 const { getPlayableSets, getLatestReleasedSet } = require("./data");
-const { getVersion } = require('./mtgjson');
+const { getVersion } = require("./mtgjson");
 
 // All sockets currently connected to the server.
 let allSocks = [];
