@@ -47,6 +47,7 @@ matrix:
       install:
         - npm install --ignore-scripts
       script:
+        - npm run setup-env
         - npm run lint
 
   allow_failures:
