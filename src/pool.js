@@ -222,10 +222,10 @@ function toPack(code) {
 
     switch (planeswalkerCount) {
     case 0: {
-      var packIndex = _.rand(4);
-      pool = getPoolFromPackIndex(packIndex);
+      var randomPackIndex = _.rand(4);
+      pool = getPoolFromPackIndex(randomPackIndex);
       const planeswalkers = pool.filter(isPlaneswalker);
-      pack[packIndex] = _.choose(1, planeswalkers);
+      pack[randomPackIndex] = _.choose(1, planeswalkers);
       break;
     }
     case 1: {

@@ -31,8 +31,10 @@
     "start-dev": "npm run watch & nodemon scripts/run -e html,js --ignore built --ignore public",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
-    "pretest": "eslint --ignore-path .gitignore .",
-    "postinstall": "node scripts/postinstall && webpack --config webpack.prod.js"
+    "lint": "eslint --ignore-path .gitignore .",
+    "pretest": "npm run lint",
+    "setup-env": "node scripts/setup-test-env",
+    "postinstall": "node scripts/setup-test-env && node scripts/postinstall && webpack --config webpack.prod.js"
   },
   "dependencies": {
     "@babel/cli": "^7.6.4",
@@ -77,9 +79,11 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.16.0",
     "mocha": "^6.2.2",
     "nodemon": "^1.19.4",

@@ -157,11 +157,11 @@ let events = {
       const { setsDraft, setsSealed } = App.state;
       options.sets = gametype === "sealed" ? setsSealed : setsDraft;
       break;
-    } 
-    case "cube": 
+    }
+    case "cube":
       options.cube = cube();
       break;
-    case "chaos": 
+    case "chaos":
       options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
       break;
     }
@@ -291,7 +291,7 @@ let events = {
       for (let i = 0; i < landsToAdd; i++) {
         let color = colorsToAdd[j];
         let land = COLORS_TO_LANDS[color];
-        if (!Zones["main"].hasOwnProperty(land))
+        if (!Zones["main"][land])
           Zones["main"][land] = 0;
         Zones["main"][land]++;
 

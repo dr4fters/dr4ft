@@ -45,10 +45,10 @@ matrix:
       node_js: node
       env: eslint
       install:
-        - npm install -g eslint
-        - npm install -g eslint-plugin-react
+        - npm install --ignore-scripts
       script:
-        - npm test
+        - npm run setup-env
+        - npm run lint
 
   allow_failures:
     - env: docker
