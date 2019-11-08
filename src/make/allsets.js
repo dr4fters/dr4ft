@@ -5,7 +5,7 @@ const logger = require("../logger");
 const updateDatabase = require("./update_database");
 const { refresh: refreshVersion } = require("../mtgjson");
 
-const mtgJsonURL = "https://mtgjson.com/json/AllSetFiles.zip";
+const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://mtgjson.com/json/version.json";
 const setsVersion = "data/version.json";
 
