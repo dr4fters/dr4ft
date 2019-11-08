@@ -6,7 +6,7 @@ const updateDatabase = require("./update_database");
 const { refresh: refreshVersion } = require("../mtgjson");
 
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
-const versionURL = "https://mtgjson.com/json/version.json";
+const versionURL = "https://www.mtgjson.com/files/version.json.zip";
 const setsVersion = "data/version.json";
 
 const isVersionNewer = (remoteVer, currentVer) => (
