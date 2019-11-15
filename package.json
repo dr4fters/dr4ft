@@ -68,7 +68,7 @@
     "node-schedule": "^1.3.2",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
-    "react-dom": "^16.10.2",
+    "react-dom": "^16.12.0",
     "react-filepond": "^7.0.1",
     "unzipper": "^0.10.5",
     "utils": "git://github.com/dr4fters/utils.git",
