@@ -3,14 +3,15 @@ const https = require("https");
 const unzip = require("unzipper");
 const logger = require("../logger");
 const updateDatabase = require("./update_database");
+const semver = require("semver");
 const { refresh: refreshVersion } = require("../mtgjson");
 
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/files/version.json";
 const setsVersion = "data/version.json";
 
-const isVersionNewer = (remoteVer, currentVer) => (
-  Number(remoteVer.version.replace(/\./g, "")) > Number(currentVer.version.replace(/\./g, ""))
+const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
+  semver.gt(remoteVer, currentVer)
 );
 
 const isVersionUpToDate = () => (
@@ -25,15 +26,13 @@ const isVersionUpToDate = () => (
           if (fs.existsSync(setsVersion)) {
             const version = JSON.parse(fs.readFileSync(setsVersion, "UTF-8"));
             if (!isVersionNewer(remoteVersion, version)) {
-              return resolve(true);
+              return resolve([true, null]);
             }
           }
 
           const version = JSON.stringify(remoteVersion);
           logger.info(`Found a new version ${version}`);
-          fs.writeFileSync(setsVersion, version);
-          refreshVersion();
-          return resolve(false);
+          return resolve([false, version]);
         } catch(err) {
           logger.error(`Error while fetching version to ${versionURL}: ${err.stack}`);
           reject();
@@ -67,11 +66,14 @@ const fetchZip = () => (
 const download = async () => {
   try {
     logger.info("Checking if AllSets.json is up to date");
-    const isUpToDate = await isVersionUpToDate();
+    const [isUpToDate, version] = await isVersionUpToDate();
     if (!isUpToDate) {
       await fetchZip();
       logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
       updateDatabase();
+      logger.info("Update DB finished");
+      fs.writeFileSync(setsVersion, version);
+      refreshVersion();
     } else {
       logger.info("AllSets.json is up to date");
     }
