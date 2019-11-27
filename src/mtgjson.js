@@ -1,7 +1,7 @@
 const fs = require("fs");
 const VERSION_FILE = "data/version.json";
 const logger = require("./logger");
-const semver = require("./semver");
+const semver = require("semver");
 let version;
 
 const getVersion = () => {
