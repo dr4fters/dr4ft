@@ -72,7 +72,7 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
     return;
   }
 
-  if (/split|aftermath/i.test(layout))
+  if (/split|aftermath|adventure/i.test(layout))
     name = names.join(" // ");
 
   if (name in cards) {
