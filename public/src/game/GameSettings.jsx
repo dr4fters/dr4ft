@@ -54,14 +54,26 @@ const SortCards = () => (
   </div>
 );
 
+const sizeDisplay = {
+  "Small": "Low",
+  "Normal": "Medium",
+  "Large": "High",
+};
+
 const CardsImageQuality = () => (
   <div className="settings-cards-size">
     Card image quality:
     <div className='connected-container'>
-      {["Small", "Normal", "Large"].map((size, index) => <label key={index} className='radio-label connected-component'>
-        <input checked={size.toLowerCase() === App.state.cardSize} className='radio-input' name='card-size' onChange={e => App.save("cardSize", e.currentTarget.value)} type='radio' value={size.toLowerCase()} />
-        {size}
-      </label>)}
+      {Object.keys(sizeDisplay).map((size, index) => 
+        <label key={index} className='radio-label connected-component'>
+          <input checked={size.toLowerCase() === App.state.cardSize} 
+            className='radio-input' 
+            name='card-size' 
+            onChange={e => App.save("cardSize", e.currentTarget.value)} 
+            type='radio' 
+            value={size.toLowerCase()} />
+          {sizeDisplay[size]}
+        </label>)}
     </div>
   </div>
 );
