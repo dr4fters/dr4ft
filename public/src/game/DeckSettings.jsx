@@ -22,8 +22,8 @@ const LandsPanel = () => (
         <ManaSymbols />
       </thead>
       <tbody>
-        <LandsRow zoneName="Main" />
-        <LandsRow zoneName="Side" />
+        <LandsRow zoneName="Main" zoneNameDisplay="Main Deck" />
+        <LandsRow zoneName="Side" zoneNameDisplay="Sideboard"/>
       </tbody>
       <tfoot>
         <SuggestLands />
@@ -48,9 +48,9 @@ const ManaSymbols = () => {
   );
 };
 
-const LandsRow = ({zoneName}) => (
+const LandsRow = ({zoneName, zoneNameDisplay}) => (
   <tr>
-    <td>{zoneName}</td>
+    <td>{zoneNameDisplay}</td>
     {BASICS.map((cardName, index) =>
       <td key={index}>
         <input
@@ -64,7 +64,8 @@ const LandsRow = ({zoneName}) => (
 );
 
 LandsRow.propTypes = {
-  zoneName: PropTypes.string.isRequired
+  zoneName: PropTypes.string.isRequired,
+  zoneNameDisplay: PropTypes.string.isRequired
 };
 
 const SuggestLands = () => (
