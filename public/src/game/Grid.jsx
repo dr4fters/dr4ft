@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getZone} from "../cards";
+import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils";
 
 const Grid = ({zones}) => (
@@ -18,10 +18,11 @@ Grid.propTypes = {
 
 const zone = (zoneName, index) => {
   const zone = getZone(zoneName);
+  const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
 
-  const zoneTitle = zoneName + (zoneName === "pack" ? " " + App.state.round : "");
+  const zoneTitle = zoneDisplayName + (zoneName === "pack" ? " " + App.state.round : "");
   const zoneHelper = App.state.didGameStart
     ? zoneName === "pack"
       ? `Pick ${App.state.pickNumber} / ${cards[0].packSize}`
@@ -47,12 +48,12 @@ class Card extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
-  
+
   onMouseEnter() {
     if(this.props.card.isDoubleFaced) {
       this.setState({
         url: this.props.card.flippedCardURL,
-        flipped: this.props.card.layout === "flip" 
+        flipped: this.props.card.layout === "flip"
       });
     }
   }
@@ -69,12 +70,12 @@ class Card extends Component {
   render() {
     const {card, zoneName} = this.props;
     const isAutopickable = zoneName === "pack" && card.isAutopick;
-    
-    const className = `card 
+
+    const className = `card
     ${isAutopickable ? "autopick-card " : ""}
     ${card.foil ? "foil-card " : ""}
     ${this.state.flipped ? "flipped " : ""}`;
-    
+
     const title
     = isAutopickable
       ? "This card will be automatically picked if your time expires."
