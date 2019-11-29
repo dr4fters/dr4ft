@@ -39,24 +39,33 @@ let games = {};
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
     super({ isPrivate });
-    this.modernOnly = modernOnly;
-    this.totalChaos = totalChaos;
-    this.cube = cube;
-    this.bots = 0;
-    this.sets = sets || [];
-    this.chaosPacksNumber = chaosPacksNumber;
+    const gameID = _.id();
+    Object.assign(this, {
+      title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber,
+      delta: -1,
+      hostID: hostId,
+      id: gameID,
+      players: [],
+      round: 0,
+      bots: 0,
+      sets: sets || [],
+      secret: uuid.v4()
+    });
 
     // Handle packsInfos to show various informations about the game
     switch(type) {
     case "draft":
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
+      this.rounds = this.sets.length;
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
+      this.rounds = this.cube.packs;
       break;
     case "cube sealed":
       this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
+      this.rounds = this.cube.packs;
       break;
     case "chaos draft":
     case "chaos sealed": {
@@ -65,24 +74,12 @@ module.exports = class Game extends Room {
       chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
       chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
       this.packsInfo = `${chaosOptions.join(", ")}`;
+      this.rounds = this.chaosPacksNumber;
       break;
     }
     default:
       this.packsInfo = "";
     }
-
-    var gameID = _.id();
-    const secret = uuid.v4();
-    Object.assign(this, {
-      title, seats, type, isPrivate,
-      delta: -1,
-      hostID: hostId,
-      id: gameID,
-      players: [],
-      round: 0,
-      rounds: cube ? cube.packs : this.sets.length,
-      secret
-    });
 
     if (cube) {
       Object.assign(this, {

@@ -45,8 +45,8 @@ describe("Acceptance tests for Pool class", () => {
 
     it("should return a draft chaos pool with length equal to player length per playersPack", () => {
       const playersLength = 8;
-      const got = Pool.SealedChaos({ modernOnly: true, totalChaos: true, playersLength });
-      assert.equal(playersLength, got.length);
+      const got = Pool.DraftChaos({ modernOnly: true, totalChaos: true, playersLength });
+      assert.equal(playersLength * 3, got.length);
     });
   });
 
