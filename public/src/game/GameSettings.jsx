@@ -11,15 +11,15 @@ const GameSettings = () => (
         <div>
           <Checkbox side="left" text="Show chat" link="chat" />
         </div>
-        {!App.state.isSealed && App.state.didGameStart &&
-          <div>
-            <Checkbox side="left" text="Add picks to sideboard"
-              link="side"
-              onChange={(e) => {
-                App.save("side", e.target.checked);
-                App.emit("side");
-              }}/>
-          </div>}
+        {!App.state.isSealed &&
+        <div>
+          <Checkbox side="left" text="Add picks to sideboard"
+            link="side"
+            onChange={(e) => {
+              App.save("side", e.target.checked);
+              App.emit("side");
+            }}/>
+        </div>}
         {!App.state.isSealed && 
         <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
