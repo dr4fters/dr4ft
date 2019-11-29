@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {BASICS, Zones} from "../cards";
+import {BASICS, Zones, getZoneDisplayName} from "../cards";
 import {Select} from "../utils";
 
 const DeckSettings = () => (
@@ -22,8 +22,8 @@ const LandsPanel = () => (
         <ManaSymbols />
       </thead>
       <tbody>
-        <LandsRow zoneName="Main" />
-        <LandsRow zoneName="Side" />
+        <LandsRow zoneName="main"/>
+        <LandsRow zoneName="side"/>
       </tbody>
       <tfoot>
         <SuggestLands />
@@ -50,15 +50,15 @@ const ManaSymbols = () => {
 
 const LandsRow = ({zoneName}) => (
   <tr>
-    <td>{zoneName}</td>
+    <td>{getZoneDisplayName(zoneName)}</td>
     {BASICS.map((cardName, index) =>
       <td key={index}>
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName.toLowerCase(), cardName)}
+          onChange={App._emit("land", zoneName, cardName)}
           type='number'
-          value={Zones[zoneName.toLowerCase()][cardName] || 0}/>
+          value={Zones[zoneName][cardName] || 0}/>
       </td>)}
   </tr>
 );
@@ -94,7 +94,7 @@ const SuggestLands = () => (
 const DownloadPanel = () => (
   <fieldset className='fieldset'>
     <legend className='legend game-legend'>Download</legend>
-    <div className='column'>  
+    <div className='column'>
       <Download />
       <Copy />
       <Log />

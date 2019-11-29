@@ -483,3 +483,13 @@ export function getZone(zoneName) {
 
   return groups;
 }
+
+export function getZoneDisplayName(zoneName) {
+  switch (zoneName) {
+  case "pack": return "Pack";
+  case "main": return "Main Deck";
+  case "side": return "Sideboard";
+  case "junk": return "Junk";
+  default: return "UNKNOWN ZONENAME";
+  }
+}
