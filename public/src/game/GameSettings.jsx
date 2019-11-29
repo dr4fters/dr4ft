@@ -19,15 +19,17 @@ const GameSettings = () => (
               App.emit("side");
             }}/>
         </div>
+        {!App.state.isSealed && 
         <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
-        </div>
+        </div>}
         <div>
           <Checkbox side="left" text="Column view" link="cols" />
         </div>
+        {!App.state.isSealed && 
         <div>
           <Checkbox side="left" text="Hide your picks" link="hidepicks" />
-        </div>
+        </div>}
         <SortCards />
         <CardsImageQuality />
       </span>
