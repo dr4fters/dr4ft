@@ -15,7 +15,6 @@ const GameSettings = () => (
         <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
         </div>}
-        <div></div>
         {!App.state.isSealed &&
         <div>
           <Checkbox side="left" text="Add picks to sideboard"
