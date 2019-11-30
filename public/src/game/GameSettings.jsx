@@ -24,7 +24,7 @@ const GameSettings = () => (
           <Checkbox side="left" text="Beep on new packs" link="beep" />
         </div>}
         <div>
-          <Checkbox side="left" text="Column view" link="cols" />
+          <Checkbox side="left" text="Use column view" link="cols" />
         </div>
         {!App.state.isSealed && 
         <div>
