@@ -23,13 +23,13 @@ const GameSettings = () => (
         <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
         </div>}
-        <div>
-          <Checkbox side="left" text="Use column view" link="cols" />
-        </div>
         {!App.state.isSealed && 
         <div>
           <Checkbox side="left" text="Hide your picks" link="hidepicks" />
         </div>}
+        <div>
+          <Checkbox side="left" text="Use column view" link="cols" />
+        </div>
         <SortCards />
         <CardsImageQuality />
       </span>
