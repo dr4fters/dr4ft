@@ -43,15 +43,6 @@ function hash() {
 }
 
 let events = {
-  side() {
-    let dst = Zones[App.state.side ? "side" : "main"];
-
-    let srcName = App.state.side ? "main" : "side";
-    let src = Zones[srcName];
-
-    _.add(src, dst);
-    Zones[srcName] = {};
-  },
   add(cardName) {
     let zone = Zones[App.state.side ? "side" : "main"];
     zone[cardName] || (zone[cardName] = 0);
