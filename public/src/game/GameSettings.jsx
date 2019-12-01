@@ -11,7 +11,7 @@ const GameSettings = () => (
         <div>
           <Checkbox side="left" text="Show chat" link="chat" />
         </div>
-        {!App.state.isSealed && 
+        {!App.state.isSealed &&
         <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
         </div>}
@@ -21,10 +21,9 @@ const GameSettings = () => (
             link="side"
             onChange={(e) => {
               App.save("side", e.target.checked);
-              App.emit("side");
             }}/>
         </div>}
-        {!App.state.isSealed && 
+        {!App.state.isSealed &&
         <div>
           <Checkbox side="left" text="Hide your picks" link="hidepicks" />
         </div>}
@@ -67,13 +66,13 @@ const CardsImageQuality = () => (
   <div className="settings-cards-size">
     Card image quality:
     <div className='connected-container'>
-      {Object.keys(sizeDisplay).map((size, index) => 
+      {Object.keys(sizeDisplay).map((size, index) =>
         <label key={index} className='radio-label connected-component'>
-          <input checked={size.toLowerCase() === App.state.cardSize} 
-            className='radio-input' 
-            name='card-size' 
-            onChange={e => App.save("cardSize", e.currentTarget.value)} 
-            type='radio' 
+          <input checked={size.toLowerCase() === App.state.cardSize}
+            className='radio-input'
+            name='card-size'
+            onChange={e => App.save("cardSize", e.currentTarget.value)}
+            type='radio'
             value={size.toLowerCase()} />
           {sizeDisplay[size]}
         </label>)}
