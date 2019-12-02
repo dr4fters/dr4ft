@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getZone} from "../cards";
+import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils.jsx";
 
 const isURLScryfall = (url) => {
@@ -94,7 +94,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
     return (
       <div key={zoneName} className='zone'>
         <h1>
-          <Spaced elements={[zoneName, sum]}/>
+          <Spaced elements={[getZoneDisplayName(zoneName), sum]}/>
         </h1>
         {cols}
       </div>
