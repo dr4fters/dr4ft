@@ -102,8 +102,11 @@ let events = {
       pack[name]++;
     }
     App.update();
-    if (App.state.beep)
-      document.getElementById("beep").play();
+    if (App.state.beep &&
+        App.state.notificationGranted &&
+        document.hidden) {
+      new Notification("A new pack is available");
+    }
   },
   log(draftLog) {
     App.state.log = draftLog;

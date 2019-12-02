@@ -44,8 +44,9 @@ let App = {
     useTimer: true,
     timerLength: "Moderate", // Fast Moderate or Slow
 
-    beep: false,
-    chat: true,
+    beep: true,
+    notificationGranted: false,
+    chat: false,
     cols: false,
     hidepicks: false,
     deckSize: 40,
@@ -80,6 +81,11 @@ let App = {
     App.restore();
     App.connect();
     router(App);
+    if (!App.state.notificationGranted && "Notification" in window) {
+      Notification.requestPermission().then(function(result) {
+        App.save("notificationGranted", result === "granted");
+      });
+    }
   },
   register(component) {
     App.connect();

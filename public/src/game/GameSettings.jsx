@@ -11,9 +11,9 @@ const GameSettings = () => (
         <div>
           <Checkbox side="left" text="Show chat" link="chat" />
         </div>
-        {!App.state.isSealed &&
+        {!App.state.isSealed && App.state.notificationGranted &&
         <div>
-          <Checkbox side="left" text="Beep on new packs" link="beep" />
+          <Checkbox side="left" text="Notify new pack if tab is inactive" link="beep" />
         </div>}
         {!App.state.isSealed &&
         <div>
