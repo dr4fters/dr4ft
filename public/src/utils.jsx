@@ -66,6 +66,7 @@ Select.propTypes = {
 
 export const Textarea = ({link, ...rest}) => (
   <textarea
+    style={ {"overflow-y": "scroll", "height": "150px"}}
     onChange=
       { (e) => { App.save("list", e.currentTarget.value); } }
     value={App.state[link]}
