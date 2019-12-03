@@ -114,7 +114,7 @@ const PlayerEntry = ({player, index}) => {
 
   if (isHost) {
     //Move Player
-    if(!didGameStart)
+    if(!didGameStart && length > 1)
       columns.push(
         <td key={7}>
           <button onClick={()=> App.send("swap", [index, index - 1])}>
