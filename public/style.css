@@ -342,6 +342,17 @@ button:disabled:active {
   padding: 1px;
 }
 
+.card-col {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.image-inner {
+  width: inherit;
+}
+
 .card:hover:before,
 .autopick-card:before {
   content: '';
