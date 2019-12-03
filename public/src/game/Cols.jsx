@@ -38,6 +38,10 @@ class Cols extends Component {
       className += " split-card";
     }
 
+    if (card.foil) {
+      className += " foil-card ";
+    }
+
     this.setState({ card, className });
   }
   onMouseLeave() {
@@ -61,6 +65,12 @@ Cols.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
+const getCardSrc = ({url}) => (
+  isURLScryfall(url) 
+    ? `${url}&version=${App.state.cardSize}` 
+    : url
+);
+
 const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   const renderZone = (zoneName) => {
     const zone = getZone(zoneName);
@@ -69,14 +79,15 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 
     for (let key in zone) {
       let items = zone[key].map((card, index) =>
-        <div key={index}
+        <div
+          className={`${card.foil ? "foil-card": ""} card-col`}
+          key={index}
           onClick={App._emit("click", zoneName, card.name)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
-          <img src={isURLScryfall(card.url)
-            ? `${card.url}&version=${App.state.cardSize}`
-            : card.url}
-          alt={card.name} />
+          <img 
+            src={getCardSrc(card)}
+            alt={card.name} />
         </div>
       );
 
@@ -111,12 +122,15 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
         <img className="card" src={card.url} onMouseEnter={e => onMouseEnter(card, e)} />
         <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={e => onMouseEnter(card, e)} />
       </div>
-      : <img className={className}
-        id='img'
-        onMouseEnter={e => onMouseEnter(card, e)}
-        src={isURLScryfall(card.url)
-          ? `${card.url}&version=${App.state.cardSize}`
-          : card.url}/>
+      : 
+      <div id='img' className = {className}>
+        <img 
+          className = "image-inner" 
+          onMouseEnter = {e => onMouseEnter(card, e)}
+          src = {isURLScryfall(card.url)
+            ? `${card.url}&version=${App.state.cardSize}`
+            : card.url} />
+      </div>
     : <div />
 );
 
