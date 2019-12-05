@@ -261,6 +261,7 @@ module.exports = class Game extends Room {
   }
 
   exit(sock) {
+    super.exit(sock);
     if (this.didGameStart)
       return;
 
