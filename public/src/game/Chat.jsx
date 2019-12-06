@@ -46,21 +46,21 @@ export default class Chat extends Component {
 
 const Messages = () => {
   const groupBy = (xs, key) => (
-    xs.reduce(function(rv, x) { 
+    xs.reduce(function(rv, x) {
       const v = key(x);
-      (rv[v] = rv[v] || []).push(x); 
-      return rv; 
+      (rv[v] = rv[v] || []).push(x);
+      return rv;
     }, {})
   );
 
   const groupedDates = groupBy(App.state.messages, ({time}) => new Date(time).toDateString());
-    
+
   return Object.keys(groupedDates).length
     ? Object.entries(groupedDates)
       .map(([date, msgs], index) => (
         <Fragment key={date + index}>
-          <MessagesHeader date />
-          {msgs.map((msg, index) => 
+          <MessagesHeader date={date} />
+          {msgs.map((msg, index) =>
             <Message key={index} {...msg} />
           )}
         </Fragment>
@@ -72,7 +72,7 @@ const Entry = () => {
   const onKeyDown = (e) => {
     if (e.key !== "Enter")
       return;
-    
+
     let el = e.target;
     let text = el.value.trim();
     el.value = "";
