@@ -40,10 +40,11 @@ export default class Game extends Component {
   }
 
   render() {
-    const { gametype, gamesubtype } = App.state
+    const { gametype, gamesubtype } = App.state;
     const moveSettings = App.state.isGameFinished && ["regular sealed", "cube draft", "cube sealed"].includes(`${gamesubtype} ${gametype}`);
     return (
       <div className='container'>
+        <audio id='beep' src='/media/beep.wav'/>
         <div className='game'>
           <div className='game-controls'>
             <div className='game-status'>
@@ -69,6 +70,6 @@ const CardsZone = () => {
     : <div key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
   const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
-  const showPool = !App.state.hidepicks || App.state.isGameFinished
+  const showPool = !App.state.hidepicks || App.state.isGameFinished;
   return showPool ? [pack, pool] : [pack];
 };

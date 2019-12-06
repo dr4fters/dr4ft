@@ -72,6 +72,10 @@ let App = {
     get isGameFinished() {
       return App.state.round === -1;
     },
+
+    get notificationBlocked() {
+      return ["denied", "notsupported"].includes(App.state.notificationResult);
+    }
   },
   init(router) {
     App.on("set", App.set);
@@ -81,11 +85,6 @@ let App = {
     App.restore();
     App.connect();
     router(App);
-    if (!App.state.notificationGranted && "Notification" in window) {
-      Notification.requestPermission().then(function(result) {
-        App.save("notificationGranted", result === "granted");
-      });
-    }
   },
   register(component) {
     App.connect();

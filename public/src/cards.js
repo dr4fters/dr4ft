@@ -102,10 +102,15 @@ let events = {
       pack[name]++;
     }
     App.update();
-    if (App.state.beep &&
-        App.state.notificationGranted &&
-        document.hidden) {
-      new Notification("A new pack is available");
+    if (App.state.beep) {
+      if (App.state.notify && document.hidden) {
+        new Notification("Pack awaiting", {
+          icon: "/4.png",
+          body: "A new pack is available!"
+        });
+      } else {
+        document.getElementById("beep").play();
+      }
     }
   },
   log(draftLog) {
@@ -298,6 +303,19 @@ let events = {
   resetLands() {
     _resetLands();
     App.update();
+  },
+  notification(e) {
+    if (!e.target.checked) {
+      App.save("notify", false);
+    } else if ("Notification" in window) {
+      Notification.requestPermission().then((result) => {
+        App.save("notificationResult", result);
+        App.save("notify", result === "granted");
+      });
+    } else {
+      App.save("notificationResult", "notsupported");
+      App.save("notify", false);
+    }
   },
 };
 
