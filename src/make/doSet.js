@@ -48,7 +48,8 @@ function doSet(rawSet, allCards = {}) {
 }
 
 function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side, isAlternative } = card;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, 
+    manaCost, url, scryfallId, side, isAlternative, power, toughness, loyalty } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
 
   if (isAlternative) {
@@ -128,7 +129,10 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
     isDoubleFaced: isDoubleFaced,
     flippedCardURL: flippedCardURL,
     names: names,
-    supertypes: supertypes || []
+    supertypes: supertypes || [],
+    power,
+    toughness,
+    loyalty
   };
 
   // Avoid promo cards in sets

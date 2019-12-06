@@ -17,11 +17,7 @@ const GameSettings = () => (
         </div>}
         {!App.state.isSealed &&
         <div>
-          <Checkbox side="left" text="Add picks to sideboard"
-            link="side"
-            onChange={(e) => {
-              App.save("side", e.target.checked);
-            }}/>
+          <Checkbox side="left" text="Add picks to sideboard" link="side" />
         </div>}
         {!App.state.isSealed &&
         <div>
@@ -57,9 +53,9 @@ const SortCards = () => (
 );
 
 const sizeDisplay = {
-  "Small": "Low",
-  "Normal": "Medium",
-  "Large": "High",
+  "small": "Low",
+  "normal": "Medium",
+  "large": "High",
 };
 
 const CardsImageQuality = () => (

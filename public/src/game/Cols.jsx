@@ -53,9 +53,7 @@ class Cols extends Component {
     return (
       <div>
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
-        <ImageHelper onMouseEnter={this.onMouseEnter}
-          className={this.state.className}
-          card={this.state.card} />
+        <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
       </div>
     );
   }
@@ -119,8 +117,8 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
   card
     ? card.isDoubleFaced
       ? <div className={className} id="doubleimg">
-        <img className="card" src={card.url} onMouseEnter={e => onMouseEnter(card, e)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={e => onMouseEnter(card, e)} />
+        <img className="card" src={card.url} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
       </div>
       : 
       <div id='img' className = {className}>

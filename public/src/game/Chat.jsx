@@ -59,7 +59,7 @@ const Messages = () => {
     ? Object.entries(groupedDates)
       .map(([date, msgs], index) => (
         <Fragment key={date + index}>
-          <MessagesHeader date={date} />
+          <MessagesHeader date />
           {msgs.map((msg, index) => 
             <Message key={index} {...msg} />
           )}
