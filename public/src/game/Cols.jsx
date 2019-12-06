@@ -85,9 +85,12 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
           onClick={App._emit("click", zoneName, card.name)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
-          <img 
-            src={getCardSrc(card)}
-            alt={card.name} />
+          
+          {App.state.cardSize === "text"
+            ? <div>Name: {card.name} CMC: {card.cmc}</div>
+            : <img 
+              src={getCardSrc(card)}
+              alt={card.name} />}
         </div>
       );
 

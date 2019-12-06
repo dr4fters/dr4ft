@@ -86,7 +86,7 @@ class Card extends Component {
         onClick={App._emit("click", zoneName, card.name)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <img src={`${this.state.url}&version=${App.state.cardSize}`} alt={card.name}/>
+        <CardImage url={this.state.url} {...card}/>
       </span>
     );
   }
@@ -95,4 +95,36 @@ Card.propTypes = {
   card: PropTypes.object.isRequired,
   zoneName: PropTypes.string.isRequired
 };
+
+const CardImage = ({ url, name, cmc = "", type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
+  App.state.cardSize === "text" 
+    ? <div>
+      <p>Name: {name}</p>
+      <p>CMC: {cmc} Type: {type}</p>
+      <p>Rarity: {rarity}</p>
+      <p>Power: {power} Toughness: {toughness}</p>
+      <p>Text: {text}</p>
+      <p>Loyalty: {loyalty}</p>
+    </div>
+    : <img title={name} 
+      src={`${url}&version=${App.state.cardSize}`} 
+      alt={`Name: ${name} CMC: ${cmc} 
+      Type: ${type} Rarity: ${rarity} 
+      Power: ${power} Toughness: ${toughness} 
+      Text: ${text} Loyalty: ${loyalty}`} 
+    />
+);
+
+CardImage.propTypes = {
+  url: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired, 
+  cmc: PropTypes.number, 
+  type: PropTypes.string, 
+  rarity: PropTypes.string, 
+  power:  PropTypes.string, 
+  toughness:  PropTypes.string, 
+  text:  PropTypes.string, 
+  loyalty:  PropTypes.string
+};
+
 export default Grid;

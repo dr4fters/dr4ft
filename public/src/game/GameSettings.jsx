@@ -57,9 +57,10 @@ const SortCards = () => (
 );
 
 const sizeDisplay = {
-  "Small": "Low",
-  "Normal": "Medium",
-  "Large": "High",
+  "text": "Text",
+  "small": "Low",
+  "normal": "Medium",
+  "large": "High",
 };
 
 const CardsImageQuality = () => (
