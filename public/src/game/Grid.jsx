@@ -96,34 +96,32 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ url, name, cmc = "", type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
-  App.state.cardSize === "text" 
-    ? <div>
-      <p>Name: {name}</p>
-      <p>CMC: {cmc} Type: {type}</p>
-      <p>Rarity: {rarity}</p>
-      <p>Power: {power} Toughness: {toughness}</p>
-      <p>Text: {text}</p>
-      <p>Loyalty: {loyalty}</p>
+const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
+  App.state.cardSize === "text"
+    ? <div style={{display: "block"}}>
+      <p>{name} {manaCost}</p>
+      <p>{type} | {rarity}</p>
+      {text && <p>{text}</p>}
+      {power && toughness && <p>{power}/{toughness}</p>}
+      {loyalty && <p>{loyalty}</p>}
     </div>
-    : <img title={name} 
-      src={`${url}&version=${App.state.cardSize}`} 
-      alt={`Name: ${name} CMC: ${cmc} 
-      Type: ${type} Rarity: ${rarity} 
-      Power: ${power} Toughness: ${toughness} 
-      Text: ${text} Loyalty: ${loyalty}`} 
+    : <img title={name}
+      src={`${url}&version=${App.state.cardSize}`}
+      alt={`${name} ${manaCost}
+      ${type} | ${rarity} ${text}
+      ${power} ${toughness} ${loyalty}`}
     />
 );
 
 CardImage.propTypes = {
   url: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired, 
-  cmc: PropTypes.number, 
-  type: PropTypes.string, 
-  rarity: PropTypes.string, 
-  power:  PropTypes.string, 
-  toughness:  PropTypes.string, 
-  text:  PropTypes.string, 
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  manaCost: PropTypes.string.isRequired,
+  rarity: PropTypes.string,
+  power:  PropTypes.string,
+  toughness:  PropTypes.string,
+  text:  PropTypes.string,
   loyalty:  PropTypes.string
 };
 
