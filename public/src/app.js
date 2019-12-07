@@ -44,8 +44,9 @@ let App = {
     useTimer: true,
     timerLength: "Moderate", // Fast Moderate or Slow
 
-    beep: false,
-    chat: true,
+    beep: true,
+    notificationGranted: false,
+    chat: false,
     cols: false,
     hidepicks: false,
     deckSize: 40,
@@ -71,6 +72,10 @@ let App = {
     get isGameFinished() {
       return App.state.round === -1;
     },
+
+    get notificationBlocked() {
+      return ["denied", "notsupported"].includes(App.state.notificationResult);
+    }
   },
   init(router) {
     App.on("set", App.set);
