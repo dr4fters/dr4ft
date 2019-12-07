@@ -40,8 +40,6 @@ export default class Game extends Component {
   }
 
   render() {
-    const { gametype, gamesubtype } = App.state;
-    const moveSettings = App.state.isGameFinished && ["regular sealed", "cube draft", "cube sealed"].includes(`${gamesubtype} ${gametype}`);
     return (
       <div className='container'>
         <audio id='beep' src='/media/beep.wav'/>
@@ -50,10 +48,9 @@ export default class Game extends Component {
             <div className='game-status'>
               <PlayersPanel/>
               <StartPanel/>
-              {moveSettings && <GameSettings />}
             </div>
-            <DeckSettings />
-            {!moveSettings && <GameSettings/>}
+            <DeckSettings/>
+            <GameSettings/>
           </div>
           <CardsZone />
         </div>
