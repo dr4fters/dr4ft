@@ -8,24 +8,23 @@ const GameSettings = () => (
     <fieldset className='fieldset'>
       <legend className='legend game-legend'>Settings</legend>
       <span>
-        <div>
-          <Checkbox side="left" text="Show chat" link="chat" />
-        </div>
+        <Checkbox side="left" text="Show chat" link="chat" />
         {!App.state.isSealed &&
-        <div>
           <Checkbox side="left" text="Beep on new packs" link="beep" />
-        </div>}
+        }
         {!App.state.isSealed &&
-        <div>
-          <Checkbox side="left" text="Add picks to sideboard" link="side" />
-        </div>}
+          <Checkbox side="left"
+            text={App.state.notificationBlocked ? "Browser notifications blocked" : "Use desktop notifications"}
+            link="notify"
+            disabled={!App.state.beep || App.state.notificationBlocked}
+            onChange={App._emit("notification")} />
+        }
         {!App.state.isSealed &&
-        <div>
+          <Checkbox side="left" text="Add picks to sideboard" link="side" />}
+        {!App.state.isSealed &&
           <Checkbox side="left" text="Hide your picks" link="hidepicks" />
-        </div>}
-        <div>
-          <Checkbox side="left" text="Use column view" link="cols" />
-        </div>
+        }
+        <Checkbox side="left" text="Use column view" link="cols" />
         <SortCards />
         <CardsImageQuality />
       </span>
