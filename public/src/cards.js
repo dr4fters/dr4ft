@@ -1,5 +1,6 @@
 import _ from "utils/utils";
 import App from "./app";
+import {vanillaToast} from "vanilla-toast";
 
 let Cards = {
   Plains: 401994,
@@ -303,6 +304,24 @@ let events = {
   resetLands() {
     _resetLands();
     App.update();
+  },
+  chat(messages) {
+    App.set({
+      messages
+    });
+  },
+  hear(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
+    if (!App.state.chat) {
+      vanillaToast.info(`${message.name}: ${message.text}`);
+    }
+  },
+  command(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
   },
   notification(e) {
     if (!e.target.checked) {

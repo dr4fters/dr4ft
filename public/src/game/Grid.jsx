@@ -91,6 +91,7 @@ class Card extends Component {
     );
   }
 }
+
 Card.propTypes = {
   card: PropTypes.object.isRequired,
   zoneName: PropTypes.string.isRequired

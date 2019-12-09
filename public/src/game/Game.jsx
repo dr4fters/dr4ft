@@ -52,9 +52,9 @@ export default class Game extends Component {
             <DeckSettings/>
             <GameSettings/>
           </div>
-          <CardsZone />
+          <CardsZone/>
         </div>
-        <Chat />
+        {App.state.chat && <Chat/>}
       </div>
     );
   }

@@ -34,7 +34,7 @@ const LandsPanel = () => (
 
 const ManaSymbols = () => {
   const manaSymbols = ["W", "U", "B", "R", "G"];
-  const path = color => `../../media/${color}.svg`
+  const path = color => `../../media/${color}.svg`;
 
   return (
     <tr>
