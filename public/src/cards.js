@@ -462,12 +462,12 @@ function Key(groups, sort) {
 
   case "color":
     keys =
-        ["colorless", "white", "blue", "black", "red", "green", "multicolor"]
+        ["Colorless", "White", "Blue", "Black", "Red", "Green", "Multicolor"]
           .filter(x => keys.indexOf(x) > -1);
     break;
   case "rarity":
     keys =
-        ["mythic", "rare", "uncommon", "common", "basic", "special"]
+        ["Mythic", "Rare", "Uncommon", "Common", "Basic", "Special"]
           .filter(x => keys.indexOf(x) > -1);
     break;
   case "type":

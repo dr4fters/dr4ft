@@ -114,14 +114,14 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
 
   cards[name] = {
     scryfallId,
-    color,
+    color: capitalize(color),
     name,
     type: types[types.length - 1],
     cmc: convertedManaCost || 0,
     manaCost: manaCost || "",
     sets: {
       [code]: {
-        rarity,
+        rarity: capitalize(rarity),
         url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`
       }
     },
@@ -140,6 +140,10 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
   if (!baseSetSize || baseSetSize >= parseInt(number)) {
     set[rarity].push(name.toLowerCase());
   }
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 module.exports = doSet;
