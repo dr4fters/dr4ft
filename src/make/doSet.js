@@ -48,7 +48,8 @@ function doSet(rawSet, allCards = {}) {
 }
 
 function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
-  var { name, number, layout, names, convertedManaCost, colors, types, supertypes, manaCost, url, scryfallId, side, isAlternative } = card;
+  var { name, number, layout, names, convertedManaCost, colors, types, supertypes,
+    manaCost, url, scryfallId, side, isAlternative, power, toughness, loyalty, text } = card;
   var rarity = card.rarity.split(" ")[0].toLowerCase();
 
   if (isAlternative) {
@@ -113,14 +114,14 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
 
   cards[name] = {
     scryfallId,
-    color,
+    color: capitalize(color),
     name,
     type: types[types.length - 1],
     cmc: convertedManaCost || 0,
     manaCost: manaCost || "",
     sets: {
       [code]: {
-        rarity,
+        rarity: capitalize(rarity),
         url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`
       }
     },
@@ -128,13 +129,21 @@ function doCard({card, cards, rawSetCards, code, set, baseSetSize}) {
     isDoubleFaced: isDoubleFaced,
     flippedCardURL: flippedCardURL,
     names: names,
-    supertypes: supertypes || []
+    supertypes: supertypes || [],
+    power,
+    toughness,
+    loyalty,
+    text
   };
 
   // Avoid promo cards in sets
   if (!baseSetSize || baseSetSize >= parseInt(number)) {
     set[rarity].push(name.toLowerCase());
   }
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 module.exports = doSet;

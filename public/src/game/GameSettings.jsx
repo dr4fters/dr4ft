@@ -52,6 +52,7 @@ const SortCards = () => (
 );
 
 const sizeDisplay = {
+  "text": "Text-Only",
   "small": "Low",
   "normal": "Medium",
   "large": "High",
