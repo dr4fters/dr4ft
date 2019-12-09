@@ -96,7 +96,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
       cols.push(
         <div key={key} className='col'>
           <div>
-            {`${key} - ${items.length} cards`}
+            <strong>{`${key} - ${items.length} cards`}</strong>
           </div>
           {items}
         </div>
