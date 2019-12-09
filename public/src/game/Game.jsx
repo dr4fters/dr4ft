@@ -52,9 +52,9 @@ export default class Game extends Component {
             <DeckSettings/>
             <GameSettings/>
           </div>
-          <CardsZone />
+          <CardsZone/>
         </div>
-        <Chat />
+        {App.state.chat && <Chat/>}
       </div>
     );
   }
@@ -67,6 +67,6 @@ const CardsZone = () => {
     : <div key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
   const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
-  const showPool = !App.state.hidepicks || App.state.isGameFinished
+  const showPool = !App.state.hidepicks || App.state.isGameFinished;
   return showPool ? [pack, pool] : [pack];
 };

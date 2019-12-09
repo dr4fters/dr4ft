@@ -1,9 +1,9 @@
-let {EventEmitter} = require("events");
+const {EventEmitter} = require("events");
 
-module.exports = class extends EventEmitter {
+module.exports = class Room extends EventEmitter {
   constructor({isPrivate}) {
     super();
-    this.messages = Array(50);
+    this.messages = [];
     this.socks = [];
     this.isPrivate = isPrivate;
     this.timeCreated = new Date;
@@ -22,8 +22,7 @@ module.exports = class extends EventEmitter {
   }
   exit(sock) {
     sock.removeAllListeners("say");
-    var index = this.socks.indexOf(sock);
-    this.socks.splice(index, 1);
+    this.socks = this.socks.filter(s => s !== sock);
   }
   say(text, sock) {
     var msg = { text,
@@ -31,7 +30,6 @@ module.exports = class extends EventEmitter {
       name: sock.name
     };
 
-    this.messages.shift();
     this.messages.push(msg);
     for (sock of this.socks)
       sock.send("hear", msg);

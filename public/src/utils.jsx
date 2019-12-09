@@ -8,19 +8,17 @@ import App from "./app";
  * through a "link" prop to connect to the app state
  */
 
-export const Checkbox = ({link, text, side, onChange}) => (
+export const Checkbox = ({link, text, side, onChange, ...rest}) => (
   <div>
-    {side == "right"
-      ? text
-      : ""}
+    {side == "right" ? text : ""}
     <input
+      {...rest}
       type="checkbox"
       onChange={onChange || function (e) {
         App.save(link, e.currentTarget.checked);
       }}
-      checked={App.state[link]}/> {side == "left"
-      ? text
-      : ""}
+      checked={App.state[link]}/>
+    {side == "left" ? text : ""}
   </div>
 );
 
@@ -42,10 +40,10 @@ export const Spaced = ({elements}) => (
 );
 
 export const Select = ({
-  link, 
-  opts, 
-  onChange = (e) => { App.save(link, e.currentTarget.value); }, 
-  value = App.state[link], 
+  link,
+  opts,
+  onChange = (e) => { App.save(link, e.currentTarget.value); },
+  value = App.state[link],
   ...rest}) => (
   <select
     onChange={onChange}

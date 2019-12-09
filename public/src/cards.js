@@ -1,5 +1,6 @@
 import _ from "utils/utils";
 import App from "./app";
+import {vanillaToast} from "vanilla-toast";
 
 let Cards = {
   Plains: 401994,
@@ -102,8 +103,16 @@ let events = {
       pack[name]++;
     }
     App.update();
-    if (App.state.beep)
-      document.getElementById("beep").play();
+    if (App.state.beep) {
+      if (App.state.notify && document.hidden) {
+        new Notification("Pack awaiting", {
+          icon: "/4.png",
+          body: "A new pack is available!"
+        });
+      } else {
+        document.getElementById("beep").play();
+      }
+    }
   },
   log(draftLog) {
     App.state.log = draftLog;
@@ -295,6 +304,37 @@ let events = {
   resetLands() {
     _resetLands();
     App.update();
+  },
+  chat(messages) {
+    App.set({
+      messages
+    });
+  },
+  hear(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
+    if (!App.state.chat) {
+      vanillaToast.info(`${message.name}: ${message.text}`);
+    }
+  },
+  command(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
+  },
+  notification(e) {
+    if (!e.target.checked) {
+      App.save("notify", false);
+    } else if ("Notification" in window) {
+      Notification.requestPermission().then((result) => {
+        App.save("notificationResult", result);
+        App.save("notify", result === "granted");
+      });
+    } else {
+      App.save("notificationResult", "notsupported");
+      App.save("notify", false);
+    }
   },
 };
 
