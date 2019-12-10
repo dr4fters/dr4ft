@@ -5,6 +5,7 @@ const { getSets, getCards, writeSets, writeCards, getPlayableSets, getLatestRele
 const doSet = require("../make/doSet");
 const Sock = require("../sock");
 const logger = require("../logger");
+const parser = require("../make/xml/parser");
 
 if (!fs.existsSync("data/custom")) {
   fs.mkdirSync("data/custom");
@@ -16,6 +17,10 @@ setsRouter
   .post("/upload", (req, res) => {
     let file = req.files.filepond;
     const content = file.data.toString();
+
+    if (/xml$/.test(file.name)) {
+      parser.parse(content);
+    }
 
     try {
       const json = JSON.parse(content);

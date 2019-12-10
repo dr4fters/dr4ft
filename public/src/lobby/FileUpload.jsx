@@ -16,11 +16,11 @@ const FileUpload = () => {
   const [files, setFiles] = useState([]);
   return (
     <fieldset className='fieldset'>
-      <legend className='legend'>Upload Custom Set</legend>
+      <legend className='legend'>Upload Custom Set (Json/XML)</legend>
       <FilePond
         allowRevert={false}
         maxFileSize={"3MB"}
-        acceptedFileTypes={["application/json"]}
+        acceptedFileTypes={["application/json", "text/xml"]}
         allowMultiple={true}
         files={files}
         server="/api/sets/upload"
