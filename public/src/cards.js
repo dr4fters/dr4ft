@@ -106,7 +106,7 @@ let events = {
     if (App.state.beep) {
       if (App.state.notify && document.hidden) {
         new Notification("Pack awaiting", {
-          icon: "/4.png",
+          icon: "/4-hq.png",
           body: "A new pack is available!"
         });
       } else {
