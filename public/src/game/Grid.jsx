@@ -108,7 +108,7 @@ const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", to
     </div>
     : <img title={name}
       src={`${url}&version=${App.state.cardSize}`}
-      alt={`$<strong>{name}</strong> ${manaCost}
+      alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
     />
