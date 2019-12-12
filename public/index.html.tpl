@@ -12,7 +12,7 @@
       <div class="outer">
           <div class="middle">
             <div class="inner">
-              <p><img class="loading_img" src="4.png"><b>Loading website...</b><br><br>
+              <p><img class="loading_img" src="4-hq.png"><b>Loading website...</b><br><br>
               The functionality on this site requires <kbd>JavaScript</kbd> to load and work properly.<br>
               Make sure to have it enabled in your browser, and allow it to run on this page!</p>
             </div>
