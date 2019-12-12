@@ -15,7 +15,7 @@ describe("Acceptance tests for Game class", () => {
     });
   });
   describe("can make a draft with 4 sets", () => {
-    it("should return a a game with 4 round", async () => {
+    it("should return a game with 4 round", async () => {
       const gameParams = {
         hostId: "1", title: "test game", seats: 8, type: "draft", sets: ["GRN", "GRN", "GRN", "GRN"],
         cube: null, isPrivate: true, modernOnly: false, totalChaos: false
