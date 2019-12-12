@@ -88,7 +88,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
             ? <div><strong>{card.name}</strong> {card.manaCost}</div>
             : <img
               src={getCardSrc(card)}
-              alt=<strong>{card.name}</strong> { + " " + card.manaCost} />}
+              alt={card.name + " " + card.manaCost} />}
         </div>
       );
 
