@@ -100,7 +100,7 @@ Card.propTypes = {
 const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
-      <p>{name} {manaCost}</p>
+      <p><strong>{name}</strong> {manaCost}</p>
       <p>{type} | {rarity}</p>
       {text && <p>{text}</p>}
       {power && toughness && <p>{power}/{toughness}</p>}
