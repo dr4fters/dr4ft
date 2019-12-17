@@ -70,7 +70,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-filepond": "^7.0.1",
-    "semver": "^6.3.0",
+    "semver": "^7.1.0",
     "unzipper": "^0.10.5",
     "utils": "git://github.com/dr4fters/utils.git",
     "uuid": "^3.3.3",
