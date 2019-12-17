@@ -1,80 +1,75 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
+import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
 
-import {vanillaToast} from "vanilla-toast";
 import "vanilla-toast/vanilla-toast.css";
 
-export default class Chat extends Component{
+export default class Chat extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      messages: []
-    };
+    this.messagesEnd = React.createRef();
   }
+
+  scrollToBottom = () => {
+    this.messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+  }
+
   componentDidMount() {
-    App.on("hear", this.hear.bind(this));
-    App.on("chat", messages => this.setState({ messages }));
+    this.scrollToBottom();
   }
-  componentWillUnmount() {
-    App.off("hear", this.hear.bind(this));
-    App.off("chat", messages => this.setState({ messages }));
-  }
-  render() {
-    // must be mounted to receive messages
-    return (
-      <div className={`chat-container ${App.state.chat ? "" : "chat-container-hidden"}`}>
-        <div className='chat' onClick={this.onClickChat}>
-          <div className='messages' ref={(ref) => this.messageElement = ref}>
-            {this.state.messages.map(this.Message)}
-          </div>
-          {this.Entry()}
-        </div>
-      </div>
-    );
+
+  componentDidUpdate() {
+    this.scrollToBottom();
   }
 
   onClickChat() {
     document.getElementById("chat-input").focus();
   }
 
-  hear(msg) {
-    //Notify when hidden chat is closed
-    if(!App.state.chat) {
-      vanillaToast.info(`${msg.name}: ${msg.text}`);
-    }
-    this.state.messages.push(msg);
-    this.forceUpdate(this.scrollChat);
-  }
-  scrollChat() {
-    let el = this.messageElement;
-    el.scrollTop = el.scrollHeight;
-  }
-  Message(msg) {
-    if (!msg)
-      return;
-
-    let {time, name, text} = msg;
-    let date = new Date(time);
-    let hours   = _.pad(2, "0", date.getHours());
-    let minutes = _.pad(2, "0", date.getMinutes());
-    time = `${hours}:${minutes}`;
-
+  render() {
+    // must be mounted to receive messages
     return (
-      <div key={_.uid()}>
-        <time>{time}</time>
-        {" "}
-        <span className='name'>{name}</span>
-        {" "}
-        {text}
+      <div className={"chat-container"}>
+        <div className='chat' onClick={this.onClickChat}>
+          <div className='messages' >
+            <Messages />
+            <div style={{ float:"left", clear: "both" }} ref={this.messagesEnd} />
+          </div>
+          <Entry />
+        </div>
       </div>
     );
   }
-  Entry() {
-    return <input id='chat-input' autoFocus className='chat-input' type='text' onKeyDown={this.key.bind(this)} placeholder='/nick name' />;
-  }
-  key(e) {
+}
+
+const Messages = () => {
+  const groupBy = (xs, key) => (
+    xs.reduce(function(rv, x) {
+      const v = key(x);
+      (rv[v] = rv[v] || []).push(x);
+      return rv;
+    }, {})
+  );
+
+  const groupedDates = groupBy(App.state.messages, ({time}) => new Date(time).toDateString());
+
+  return Object.keys(groupedDates).length
+    ? Object.entries(groupedDates)
+      .map(([date, msgs], index) => (
+        <Fragment key={date + index}>
+          <MessagesHeader date={date} />
+          {msgs.map((msg, index) =>
+            <Message key={index} {...msg} />
+          )}
+        </Fragment>
+      ))
+    : <MessagesHeader date={new Date().toDateString()} />;
+};
+
+const Entry = () => {
+  const onKeyDown = (e) => {
     if (e.key !== "Enter")
       return;
 
@@ -86,11 +81,12 @@ export default class Chat extends Component{
       return;
 
     if (text[0] === "/")
-      this.command(text.slice(1));
+      command(text.slice(1));
     else
       App.send("say", text);
-  }
-  command(raw) {
+  };
+
+  const command = (raw) => {
     let [, command, arg] = raw.match(/(\w*)\s*(.*)/);
     arg = arg.trim();
     let text, name;
@@ -112,10 +108,43 @@ export default class Chat extends Component{
     default:
       text = `unsupported command: ${command}`;
     }
-    this.state.messages.push({ text,
+
+    App.emit("command", { text,
       time: Date.now(),
       name: ""
     });
-    this.forceUpdate(this.scrollChat);
-  }
-}
+  };
+
+  return <input id='chat-input' autoFocus className='chat-input' type='text' onKeyDown={onKeyDown} placeholder='/nick name' />;
+};
+
+const MessagesHeader = ({date}) => (
+  <div style={{textAlign: "center"}}>{date}</div>
+);
+
+MessagesHeader.propTypes = {
+  date: PropTypes.string.isRequired
+};
+
+const Message = ({time, name, text}) => {
+  const date = new Date(time);
+  const hours   = _.pad(2, "0", date.getHours());
+  const minutes = _.pad(2, "0", date.getMinutes());
+  const timestamp = `${hours}:${minutes}`;
+
+  return (
+    <div>
+      <time>{timestamp}</time>
+      {" "}
+      <span className='name'>{name}</span>
+      {" "}
+      {text}
+    </div>
+  );
+};
+
+Message.propTypes = {
+  time: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+};

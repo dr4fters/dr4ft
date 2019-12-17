@@ -61,6 +61,7 @@ let App = {
       version: "0.0.0",
       date: "1970-01-01"
     },
+    messages: [],
 
     get didGameStart() {
       // both round === 0 and round is undefined

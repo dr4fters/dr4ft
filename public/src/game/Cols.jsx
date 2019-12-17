@@ -53,9 +53,7 @@ class Cols extends Component {
     return (
       <div>
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
-        <ImageHelper onMouseEnter={this.onMouseEnter}
-          className={this.state.className}
-          card={this.state.card} />
+        <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
       </div>
     );
   }
@@ -66,8 +64,8 @@ Cols.propTypes = {
 };
 
 const getCardSrc = ({url}) => (
-  isURLScryfall(url) 
-    ? `${url}&version=${App.state.cardSize}` 
+  isURLScryfall(url)
+    ? `${url}&version=${App.state.cardSize}`
     : url
 );
 
@@ -85,9 +83,12 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
           onClick={App._emit("click", zoneName, card.name)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
-          <img 
-            src={getCardSrc(card)}
-            alt={card.name} />
+
+          {App.state.cardSize === "text"
+            ? <div>{card.name} {card.manaCost}</div>
+            : <img
+              src={getCardSrc(card)}
+              alt={card.name + " " + card.manaCost} />}
         </div>
       );
 
@@ -95,7 +96,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
       cols.push(
         <div key={key} className='col'>
           <div>
-            {`${key} - ${items.length} cards`}
+            <strong>{`${key} - ${items.length} cards`}</strong>
           </div>
           {items}
         </div>
@@ -119,13 +120,13 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
   card
     ? card.isDoubleFaced
       ? <div className={className} id="doubleimg">
-        <img className="card" src={card.url} onMouseEnter={e => onMouseEnter(card, e)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={e => onMouseEnter(card, e)} />
+        <img className="card" src={card.url} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
       </div>
-      : 
+      :
       <div id='img' className = {className}>
-        <img 
-          className = "image-inner" 
+        <img
+          className = "image-inner"
           onMouseEnter = {e => onMouseEnter(card, e)}
           src = {isURLScryfall(card.url)
             ? `${card.url}&version=${App.state.cardSize}`

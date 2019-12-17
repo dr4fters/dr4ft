@@ -1,5 +1,6 @@
 import _ from "utils/utils";
 import App from "./app";
+import {vanillaToast} from "vanilla-toast";
 
 let Cards = {
   Plains: 401994,
@@ -105,7 +106,7 @@ let events = {
     if (App.state.beep) {
       if (App.state.notify && document.hidden) {
         new Notification("Pack awaiting", {
-          icon: "/4.png",
+          icon: "/4-hq.png",
           body: "A new pack is available!"
         });
       } else {
@@ -304,6 +305,24 @@ let events = {
     _resetLands();
     App.update();
   },
+  chat(messages) {
+    App.set({
+      messages
+    });
+  },
+  hear(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
+    if (!App.state.chat) {
+      vanillaToast.info(`${message.name}: ${message.text}`);
+    }
+  },
+  command(message) {
+    App.set({
+      messages: [...App.state.messages, message]
+    });
+  },
   notification(e) {
     if (!e.target.checked) {
       App.save("notify", false);
@@ -443,12 +462,12 @@ function Key(groups, sort) {
 
   case "color":
     keys =
-        ["colorless", "white", "blue", "black", "red", "green", "multicolor"]
+        ["Colorless", "White", "Blue", "Black", "Red", "Green", "Multicolor"]
           .filter(x => keys.indexOf(x) > -1);
     break;
   case "rarity":
     keys =
-        ["mythic", "rare", "uncommon", "common", "basic", "special"]
+        ["Mythic", "Rare", "Uncommon", "Common", "Basic", "Special"]
           .filter(x => keys.indexOf(x) > -1);
     break;
   case "type":

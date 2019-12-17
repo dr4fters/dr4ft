@@ -335,7 +335,7 @@ button:disabled:active {
 /** Card styles **/
 
 .card {
-  display: inline-block;
+  display: inline-flex;
   position: relative;
   margin: 0;
   cursor: pointer;
