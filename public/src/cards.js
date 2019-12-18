@@ -24,8 +24,8 @@ for (let name in Cards)
     name,
     cmc: 0,
     code: "BFZ",
-    color: "colorless",
-    rarity: "basic",
+    color: "Colorless",
+    rarity: "Basic",
     type: "Land",
     url: "https://api.scryfall.com/cards/multiverse/" + `${Cards[name]}` + "?format=image"
   };
@@ -106,7 +106,7 @@ let events = {
     if (App.state.beep) {
       if (App.state.notify && document.hidden) {
         new Notification("Pack awaiting", {
-          icon: "/4.png",
+          icon: "/4-hq.png",
           body: "A new pack is available!"
         });
       } else {
