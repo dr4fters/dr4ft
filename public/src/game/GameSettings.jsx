@@ -10,11 +10,11 @@ const GameSettings = () => (
       <span>
         <Checkbox side="left" text="Show chat" link="chat" />
         {!App.state.isSealed &&
-          <Checkbox side="left" text="Beep on new packs" link="beep" />
+          <Checkbox side="left" text="Enable notifications on new packs" link="beep" />
         }
         {!App.state.isSealed &&
           <Checkbox side="left"
-            text={App.state.notificationBlocked ? "Browser notifications blocked" : "Use desktop notifications"}
+            text={App.state.notificationBlocked ? "Web notifications blocked in browser" : "Use desktop notifications over beep"}
             link="notify"
             disabled={!App.state.beep || App.state.notificationBlocked}
             onChange={App._emit("notification")} />
