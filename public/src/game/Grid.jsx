@@ -86,7 +86,7 @@ class Card extends Component {
         onClick={App._emit("click", zoneName, card.name)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <CardImage url={this.state.url} {...card}/>
+        <CardImage imgUrl={this.state.url} {...card}/>
       </span>
     );
   }
@@ -97,7 +97,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
+const CardImage = ({ imgUrl, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p>{name} {manaCost}</p>
@@ -107,7 +107,7 @@ const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", to
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      src={`${url}&version=${App.state.cardSize}`}
+      src={`${imgUrl}&version=${App.state.cardSize}`}
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
@@ -115,7 +115,7 @@ const CardImage = ({ url, name, manaCost, type = "", rarity = "", power = "", to
 );
 
 CardImage.propTypes = {
-  url: PropTypes.string.isRequired,
+  imgUrl: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   manaCost: PropTypes.string.isRequired,

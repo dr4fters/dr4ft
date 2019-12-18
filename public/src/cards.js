@@ -24,8 +24,8 @@ for (let name in Cards)
     name,
     cmc: 0,
     code: "BFZ",
-    color: "colorless",
-    rarity: "basic",
+    color: "Colorless",
+    rarity: "Basic",
     type: "Land",
     url: "https://api.scryfall.com/cards/multiverse/" + `${Cards[name]}` + "?format=image"
   };
