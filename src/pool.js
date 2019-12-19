@@ -181,7 +181,7 @@ function toPack(code) {
   case "GRN":
   case "RNA": {
     // No basics. Always 1 common slots are occupied by guildgates
-    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "common");
+    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "Common");
     common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
     pack.push(_.choose(1, guildGates));
     break;
@@ -305,7 +305,7 @@ function toCards(pool, code, foilCard, masterpiece) {
     }
 
     if (masterpiece == card.name.toString().toLowerCase()) {
-      card.rarity = "special";
+      card.rarity = "Special";
       card.foil = true;
       if (code == "BFZ" || code == "OGW") {
         card.code = "EXP";
