@@ -58,12 +58,12 @@ describe("Acceptance tests for Pool class", () => {
     });
   });
 
-  describe("can make all playable sets one set", () => {
-    it("should return a a normal booster", () => {
+  describe("can make all playable sets", () => {
+    it("should return a normal booster", () => {
       const playableSets = getPlayableSets();
       Object.values(playableSets).forEach((sets) => {
-        sets.forEach(({code}) => {
-          if (code === "random") {
+        sets.forEach(({code, releaseDate}) => {
+          if (code === "random" || Date.parse(releaseDate) > new Date()) {
             return;
           }
           const [got] = Pool.DraftNormal({playersLength: 1, sets: [code]});
