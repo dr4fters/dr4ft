@@ -30,11 +30,12 @@ function parse(content) {
   }
 
   const jsonSets = sets.set.reduce((acc, s) => {
-    acc[s.name] = {
-      code: s.name,
-      name: s.longname,
-      type: s.settype,
-      releaseDate: s.releasedate,
+    const { name: code, longname: name = "", settype: type = "", releasedate: releaseDate = "" } = s;
+    acc[code] = {
+      code,
+      name,
+      type,
+      releaseDate,
       cards: [],
       baseSetSize: 0
     };
@@ -42,42 +43,56 @@ function parse(content) {
   }, {});
 
   cards.card.forEach(c => {
-    const { text: setCode, num, picurl, rarity } = c.set;
-    if ([setCode, num, picurl, rarity].includes(undefined)) {
-      throw new Error("<set> property of <card> must contain text, num, picurl and rarity");
-    }
+    const { text: setCode, num = 0, picurl = "", picURL = "", rarity = "common" } = c.set;
     if (jsonSets[setCode]) {
-      const { cmc, colors, layout, loyalty, manacost, pt, side, type } = c.prop;
-      if ([cmc, colors, layout, loyalty, manacost, pt, side, type].includes(undefined)) {
-        throw new Error("<prop> property of <card> must contain cmc, colors, layout, loyalty, manacost, pt, side and type");
-      }
+      const {
+        cmc = 0,
+        color = [],
+        colors = [],
+        layout = "normal",
+        loyalty = "",
+        manacost = 0,
+        pt = "",
+        side = "a",
+        type = "" } = root.version == 3 ? c : c.prop;
       const [power, toughness] = pt.split("/");
+      const fixedColors = getTrueColors(root.version, color, colors);
+      const fixedType = getTrueType(type);
       const set = jsonSets[setCode];
       set.cards.push({
         name: c.name,
         manaCost: manacost,
-        cmc: cmc,
-        loyalty: parseInt(loyalty),
+        cmc,
+        loyalty,
         text: c.text,
-        type: type.toLowerCase(),
-        types: [type.toLowerCase()],
+        type: fixedType,
+        types: [fixedType],
         rarity,
         power: parseInt(power) || "",
         toughness: parseInt(toughness) || "",
-        url: picurl,
+        url: picurl || picURL,
         layout,
         number: parseInt(num),
         supertypes : [],
         side,
         isAlternative: false,
-        colors: colors.split("")
+        colors: fixedColors
       });
       set.baseSetSize = set.baseSetSize + 1;
     }
   });
-
   return jsonSets;
 }
+
+const getTrueType = (type) => (
+  type.split("-")[0].trim()
+);
+
+const getTrueColors = (version, colorv3, colorsv4) => (
+  version == "3"
+    ? Array.isArray(colorv3) ? colorv3 : [colorv3]
+    : Array.isArray(colorsv4) ? colorsv4 : [colorsv4]
+);
 
 module.exports = {
   parse
