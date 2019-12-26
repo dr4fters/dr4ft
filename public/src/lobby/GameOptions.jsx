@@ -31,10 +31,10 @@ const Regular = ({ sets, type }) => (
   <Fragment >
     <div>
       Number of packs:{" "}
-      <Select 
+      <Select
         value={sets.length}
-        onChange={App._emit("changeSetsNumber", type)} 
-        opts={_.seq(12, 3)} />
+        onChange={App._emit("changeSetsNumber", type)}
+        opts={_.seq(12, 1)} />
     </div>
     <div className="wrapper">
       <Sets sets={sets} type={type} />
@@ -88,7 +88,7 @@ const Chaos = ({ packsNumber }) => (
       Number of packs:{" "}
       <Select
         onChange={(e) => { App.save(packsNumber, parseInt(e.currentTarget.value));}}
-        link={packsNumber} 
+        link={packsNumber}
         opts={_.seq(12, 3)} />
     </div>
     <div>
