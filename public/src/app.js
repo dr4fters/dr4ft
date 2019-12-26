@@ -45,6 +45,7 @@ let App = {
     timerLength: "Moderate", // Fast Moderate or Slow
 
     beep: true,
+    notify: false,
     notificationGranted: false,
     chat: false,
     cols: false,
