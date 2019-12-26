@@ -74,4 +74,16 @@ describe("Acceptance tests for Pool class", () => {
       });
     });
   });
+  describe("EMN boosters do not have cards in multiple", () => {
+    it("1000 EMN boosters don't have cards in multiple unless double faced card", () => {
+      new Array(1000).fill().forEach(() => {
+        const [got] = Pool.DraftNormal({playersLength: 1, sets: ["EMN"]});
+        got.forEach(card => {
+          const isMultiple = got.filter(c => c.name === card.name && !c.foil).length > 1;
+          const isSpecial = card.rarity === "special" || card.isDoubleFaced || card.foil;
+          assert.ok(!isMultiple || isSpecial, `${card.name} is in multiple and was not special`);
+        });
+      });
+    });
+  });
 });
