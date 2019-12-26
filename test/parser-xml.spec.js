@@ -97,7 +97,7 @@ describe("Unit tests for XML Cockatrice Parser", () => {
       <cards>
       <card>
        <name>Aven Harrier</name>
-       <set picURL="/Aven Harrier.full.jpg" rarity="common">DMS</set>
+       <set rarity="common" picURL="/Aven Harrier.full.jpg" rarity="common">DMS</set>
        <color>W</color>
        <manacost>1W</manacost>
        <cmc>2</cmc>
