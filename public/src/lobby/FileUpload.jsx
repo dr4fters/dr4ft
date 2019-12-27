@@ -30,7 +30,7 @@ const FileUpload = () => {
         acceptedFileTypes={["application/json", "text/xml"]}
         allowMultiple={true}
         files={files}
-        labelIdle={`Drag & Drop your files here, or Browse<br/>
+        labelIdle={`Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
         JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`}
         labelFileProcessingError={errorMsg}
         onupdatefiles={fileItems => {
