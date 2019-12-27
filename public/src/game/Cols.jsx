@@ -85,7 +85,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
           onMouseLeave={onMouseLeave} >
 
           {App.state.cardSize === "text"
-            ? <div>{card.name} {card.manaCost}</div>
+            ? <div><strong>{card.name}</strong> {card.manaCost}</div>
             : <img
               src={getCardSrc(card)}
               alt={card.name + " " + card.manaCost} />}
