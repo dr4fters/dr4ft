@@ -17,7 +17,7 @@ const FileUpload = () => {
   const [errorMsg, setErrorMsg] = useState("");
   return (
     <fieldset className='fieldset'>
-      <legend className='legend'>Upload Custom Set (Json/XML)</legend>
+      <legend className='legend'>Upload Custom Set</legend>
       <FilePond
         server={{
           process: {
@@ -30,6 +30,8 @@ const FileUpload = () => {
         acceptedFileTypes={["application/json", "text/xml"]}
         allowMultiple={true}
         files={files}
+        labelIdle={`Drag & Drop your files here, or Browse<br/>
+        JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`}
         labelFileProcessingError={errorMsg}
         onupdatefiles={fileItems => {
           // Set currently active file objects to this.state
