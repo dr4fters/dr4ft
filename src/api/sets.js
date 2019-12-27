@@ -25,7 +25,7 @@ setsRouter
         });
       } catch(err) {
         logger.error(`Could not parse XML file: ${err}`);
-        res.status(400).json(`the xml submitted is not valid: ${err}`);
+        res.status(400).json(`the xml submitted is not valid: ${err.message}`);
         return;
       }
     } else if( /\.json/.test(file.name)) {
@@ -34,7 +34,7 @@ setsRouter
         integrateJson(json, res);
       } catch (err) {
         logger.error(`Could not parse JSON file because ${err}`);
-        res.status(400).json(`the json submitted is not valid: ${err}`);
+        res.status(400).json(`the json submitted is not valid: ${err.message}`);
       }
     }
     res.json({ "message": "file integrated successfully" });
