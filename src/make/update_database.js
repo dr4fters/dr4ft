@@ -12,6 +12,7 @@ const prepareSet = (raw) => {
     G: "green"
   };
 
+  //TODO: should that be done by the card parser?
   if (["BFZ", "OGW"].includes(raw.code)) {
     for (card of raw.cards) {
       if (card.text && card.text.startsWith("Devoid"))
@@ -343,6 +344,9 @@ const updateDatabase = () => {
 
   postParseSets(allSets, allCards);
   logger.info("Parsing AllSets.json finished");
+  //TODO: instead of writeCards and Sets, there should be a DatabaseRepository (or service?)
+  // that has "save". I don't know if that's interesting to have the separation of cards
+  // and sets
   writeCards(allCards);
   writeSets(allSets);
   logger.info("Writing sets.json and cards.json finished");
