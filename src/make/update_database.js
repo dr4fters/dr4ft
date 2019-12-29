@@ -1,6 +1,6 @@
 const fs = require("fs");
 const logger = require("../logger");
-const { writeCards, writeSets } = require("../data");
+const { saveSetsAndCards, mergeCardsTogether } = require("../data");
 const doSet = require("./doSet");
 
 const prepareSet = (raw) => {
@@ -288,7 +288,7 @@ const alias = (arr, code, cards) => {
 };
 
 const updateDatabase = () => {
-  const allCards = {};
+  var allCards = {};
   const allSets = {};
 
   // Add normal sets
@@ -312,7 +312,9 @@ const updateDatabase = () => {
           prepareSet(json);
 
           logger.info(`Parsing ${json.code} started`);
-          allSets[json.code] = doSet(json, allCards)[0];
+          const [set, cards] = doSet(json);
+          allSets[json.code] = set;
+          allCards = mergeCardsTogether(allCards, cards);
           logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
@@ -344,11 +346,7 @@ const updateDatabase = () => {
 
   postParseSets(allSets, allCards);
   logger.info("Parsing AllSets.json finished");
-  //TODO: instead of writeCards and Sets, there should be a DatabaseRepository (or service?)
-  // that has "save". I don't know if that's interesting to have the separation of cards
-  // and sets
-  writeCards(allCards);
-  writeSets(allSets);
+  saveSetsAndCards(allSets, allCards);
   logger.info("Writing sets.json and cards.json finished");
 };
 

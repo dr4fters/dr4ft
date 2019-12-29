@@ -1,4 +1,5 @@
 const fs = require("fs");
+const Sock = require("./sock");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 
 var cards, sets, mws;
@@ -23,6 +24,41 @@ const getMws = () => {
     mws = readFile("data/mws.json");
   }
   return mws;
+};
+
+const mergeCards = (acc, card) => {
+  const lc = card.name.toLowerCase();
+
+  const mergedCard =
+    (lc in acc) ?
+      {
+        ...acc[lc],
+        sets: {
+          ...acc[lc].sets,
+          [card.setCode]: card.sets[card.setCode] //TODO: try to simplify
+        }
+      } : { ...card };
+  acc[lc] = mergedCard;
+  return acc;
+};
+
+const mergeCardsTogether = (oldCards, newCards) => ({
+  ...oldCards,
+  ...Object.values(newCards).reduce(mergeCards, {...oldCards})
+});
+
+//TODO: someone should handle this? Maybe a service?
+const saveSetAndCards = ({set: newSet, cards: newCards}) => {
+  saveSetsAndCards({
+    ...sets,
+    [newSet.code]: newSet
+  }, mergeCardsTogether(cards, newCards));
+};
+
+const saveSetsAndCards = (allSets, allCards) => {
+  writeSets(allSets);
+  writeCards(allCards);
+  Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 };
 
 const writeCards = (newCards) => {
@@ -129,11 +165,13 @@ module.exports = {
   getCards,
   getSets,
   getMws,
-  writeCards,
-  writeSets,
   getPlayableSets,
   getRandomSet,
   getLatestReleasedSet,
   getExpansionOrCoreModernSets,
-  getExansionOrCoreSets
+  getExansionOrCoreSets,
+  writeCards,
+  saveSetAndCards,
+  saveSetsAndCards,
+  mergeCardsTogether
 };

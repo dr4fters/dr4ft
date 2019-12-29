@@ -10,7 +10,7 @@ const COLORS = {
 };
 
 // TODO: this set should return a set or cards?
-function doSet(rawSet, allCards = {}) {
+function doSet(rawSet) {
   const { baseSetSize, code } = rawSet;
   var set = {
     name: rawSet.name,
@@ -30,7 +30,7 @@ function doSet(rawSet, allCards = {}) {
     const [parsedCard, error] = doCard({card, cards, rawSetCards: rawSet.cards, code});
 
     if (error) {
-      logger.debug(error);
+      logger.info(error);
       continue;
     }
     cards[parsedCard.name.toLowerCase()] = parsedCard;
@@ -41,25 +41,13 @@ function doSet(rawSet, allCards = {}) {
     }
   }
 
-  //because of split cards, do this only after processing the entire set
-  // Pull this out -> have some component that merges the cards together
-  for (var cardName in cards) {
-    const card = cards[cardName];
-    var lc = cardName.toLowerCase();
-
-    if (lc in allCards)
-      allCards[lc].sets[code] = card.sets[code];
-    else
-      allCards[lc] = card;
-  }
-
   //TODO: understand why we delete these?
   for (var rarity of ["mythic", "special"])
     if (!set[rarity].length)
       delete set[rarity];
 
   set.size = !rawSet.booster ? 4 : rawSet.booster.filter(x => x === "common").length;
-  return [set, allCards];
+  return [set, cards];
 }
 
 function doCard({card, cards /* this should go out*/, rawSetCards /* this should go out*/, code /* this should go out*/ }) {
@@ -132,6 +120,7 @@ function doCard({card, cards /* this should go out*/, rawSetCards /* this should
     scryfallId,
     color: capitalize(color),
     name,
+    setCode: code,
     number: parseInt(number),
     type: types[types.length - 1],
     cmc: convertedManaCost || 0,

@@ -1,9 +1,8 @@
 const fs = require("fs");
 const express = require("express");
 const setsRouter = express.Router();
-const { getSets, getCards, writeSets, writeCards, getPlayableSets, getLatestReleasedSet } = require("../data");
+const { getSets, saveSetAndCards } = require("../data");
 const doSet = require("../make/doSet");
-const Sock = require("../sock");
 const logger = require("../logger");
 
 if (!fs.existsSync("data/custom")) {
@@ -19,7 +18,6 @@ setsRouter
 
     try {
       const json = JSON.parse(content);
-      const newCards = getCards();
       const sets = getSets();
 
       // Avoid overwriting existing sets
@@ -34,16 +32,14 @@ setsRouter
         }
       }
 
-      const [parsedSet, parsedCards] = doSet(json, {}, newCards);
-      parsedSet.type = CUSTOM_TYPE; //Force set as custom
+      json.type = CUSTOM_TYPE; //Force set as custom
 
+      //TODO: that should be done done by a service -> parse and save (and write file)
+      const [parsedSet, parsedCards] = doSet(json);
+      saveSetAndCards(parsedSet, parsedCards);
       logger.info(`adding new set with code "${json.code}" to database`);
-      sets[json.code] = parsedSet;
-      writeSets(sets);
-      Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 
-      writeCards(parsedCards);
-
+      //TODO: That should be done by something else. Move out of controller
       //Moving custom set to custom directory
       fs.writeFile(`data/custom/${json.code}.json`, JSON.stringify(json), (err) => {
         if (err) {
