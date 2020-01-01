@@ -4,26 +4,6 @@ const { saveSetsAndCards, mergeCardsTogether } = require("../data");
 const doSet = require("./doSet");
 
 const prepareSet = (raw) => {
-  const COLORS = {
-    W: "white",
-    U: "blue",
-    B: "black",
-    R: "red",
-    G: "green"
-  };
-
-  //TODO: should that be done by the card parser?
-  if (["BFZ", "OGW"].includes(raw.code)) {
-    for (card of raw.cards) {
-      if (card.text && card.text.startsWith("Devoid"))
-        card.colors = card.manaCost
-          .replace(/[\d{}]/g, "")
-          .replace(/(.)\1+/g, "$1")
-          .split("")
-          .map(c => COLORS[c]);
-    }
-  }
-
   var card;
 
   switch (raw.code) {
