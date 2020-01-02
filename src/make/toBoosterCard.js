@@ -1,12 +1,14 @@
 const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
   var {
     name,
+    frameEffects,
     number,
     layout,
     names,
     convertedManaCost,
     types,
-    supertypes,
+    supertypes = [],
+    subtypes = [],
     manaCost,
     url,
     scryfallId,
@@ -59,11 +61,13 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     layout,
     isDoubleFaced,
     flippedCardURL,
-    supertypes: supertypes || [],
+    supertypes,
+    subtypes,
     power,
     toughness,
     loyalty,
-    text
+    text,
+    frameEffects
   };
 
   return acc;
@@ -106,8 +110,8 @@ function isFlippedCard({ side, number }) {
   return side && side !== "a" && !/a/.test(number);
 }
 
-function getColor({ colorIdentity, frameEffects }) {
-  if (frameEffects && frameEffects.includes("devoid")) {
+function getColor({ colorIdentity, frameEffects = [] }) {
+  if (frameEffects.includes("devoid")) {
     return "colorless";
   }
 
