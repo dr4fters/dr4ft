@@ -31,7 +31,7 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
   }
 
   if (supertypes.includes("Basic")) {
-    rarity = "basic";
+    rarity = "Basic";
   }
 
   if (/split|aftermath|adventure/i.test(layout))
@@ -54,7 +54,7 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     rarity,
     sets: {
       [setCode]: {
-        rarity,
+        rarity: capitalize(rarity),
         url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`,
       }
     },
@@ -116,9 +116,9 @@ function getColor({ colorIdentity, frameEffects = [] }) {
   }
 
   switch (colorIdentity.length) {
-  case "0":
+  case 0:
     return "colorless";
-  case "1":
+  case 1:
     return COLORS[colorIdentity[0]];
   default:
     return "multicolor";

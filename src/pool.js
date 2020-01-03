@@ -37,7 +37,7 @@ function pickFoil(set) {
 
 function toPack(code) {
   var set = getSets()[code];
-  var { basic, common, uncommon, rare, mythic, special, size } = set;
+  var { common, uncommon, rare, mythic, size } = set;
 
   if (mythic && !_.rand(8))
     rare = mythic;
@@ -47,247 +47,23 @@ function toPack(code) {
   }
 
   //make small sets draftable.
-  if (size < 10 && code != "SOI" && code != "EMN")
+  if (size < 10)
     size = 10;
 
   var pack = [].concat(
+    _.choose(size - 4, common),
     _.choose(3, uncommon),
     _.choose(1, rare)
   );
 
-  if (code == "SOI")
-    //http://markrosewater.tumblr.com/post/141794840953/if-the-as-fan-of-double-face-cards-is-1125-that
-    if (_.rand(8) == 0) {
-      size = size - 1;
-      if (_.rand(15) < 3)
-        pack.push(_.choose(1, special.mythic));
-      else
-        pack.push(_.choose(1, special.rare));
-    }
-  if (code == "EMN")
-    if (_.rand(8) == 0) {
-      size = size - 1;
-      if (_.rand(5) < 1)
-        pack.push(_.choose(1, special.mythic));
-      else
-        pack.push(_.choose(1, special.rare));
-    }
-  let foilCard = false;
-  let specialrnd;
-  switch (code) {
-  case "EMN":
-    if (_.rand(2) < 1)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-
-  case "SOI":
-    if (_.rand(106) < 38)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DGM":
-    special = _.rand(20)
-      ? special.gate
-      : special.shock;
-    break;
-  case "EMA":
-  case "MMA":
-  case "MM2":
-  case "MM3":
-  case "IMA":
-  case "UMA":
-    special = selectRarity(set);
-    foilCard = true;
-    break;
-  case "VMA":
-    //http://www.wizards.com/magic/magazine/article.aspx?x=mtg/daily/arcana/1491
-    if (_.rand(53))
-      special = selectRarity(set);
-    break;
-  case "FRF":
-    special = _.rand(20)
-      ? special.common
-      : special.fetch;
-    break;
-  case "ISD":
-    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-    //121 card sheet, 1 mythic, 12 rare (13), 42 uncommon (55), 66 common
-    specialrnd = _.rand(121);
-    if (specialrnd == 0)
-      special = special.mythic;
-    else if (specialrnd < 13)
-      special = special.rare;
-    else if (specialrnd < 55)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DKA":
-    //http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/327956-innistrad-block-transforming-card-pack-odds?comment=4
-    //80 card sheet, 2 mythic, 6 rare (8), 24 uncommon (32), 48 common
-    specialrnd = _.rand(80);
-    if (specialrnd <= 1)
-      special = special.mythic;
-    else if (specialrnd < 8)
-      special = special.rare;
-    else if (specialrnd < 32)
-      special = special.uncommon;
-    else
-      special = special.common;
-    break;
-  case "DOM": {
-    // http://markrosewater.tumblr.com/post/172581930278/do-the-legendaries-that-appear-in-the-legendary
-    // Every booster must contain a legendary creature either as uncommon or rare
-    let hasLegendaryCreature = false;
-    const isLegendaryCreature = cardName => {
-      const card = getCards()[cardName];
-      return card.supertypes.includes("Legendary") && card.type === "Creature";
-    };
-
-    pack.some(cardName => {
-      return hasLegendaryCreature = isLegendaryCreature(cardName);
-    });
-
-    if (!hasLegendaryCreature) {
-      var packIndex = 0;
-      var pool = uncommon;
-      // Choose to replace an uncommon(default) or rare slot
-      if (_.rand(4) === 0) {
-        packIndex = 3;
-        var isMythic = mythic.includes(pack[packIndex]);
-        pool = isMythic ? mythic : rare;
-      }
-      const legendaryCreatures = pool.filter(isLegendaryCreature);
-      pack[packIndex] = _.choose(1, legendaryCreatures);
-    }
-    break;
-  }
-  case "M19":
-  case "M20": {
-    // http://wizardsmagic.tumblr.com/post/175584204911/core-set-2019-packs-basic-lands-and-upcoming
-    // https://magic.wizards.com/en/articles/archive/card-preview/fire-it-2019-06-21
-    // 5/12 of times -> dual-land or evolving wilds
-    // 7/12 of times -> basic land
-    const dualLands = common.filter(cardName => getCards()[cardName].type === "Land");
-    common = common.filter(cardName => !dualLands.includes(cardName)); //delete dualLands from possible choice as common slot
-    const isDualLand = _.rand(12) < 6;
-    const land = _.choose(1, isDualLand ? dualLands : basic);
-    pack.push(...land);
-    break;
-  }
-  case "GRN":
-  case "RNA": {
-    // No basics. Always 1 common slots are occupied by guildgates
-    const guildGates = common.filter(cardName => getCards()[cardName].type === "Land" && getCards()[cardName].sets[code].rarity == "Common");
-    common = common.filter(cardName => !guildGates.includes(cardName)); //delete guildGates from possible choice as common slot
-    pack.push(_.choose(1, guildGates));
-    break;
-  }
-  case "MH1": {
-    // Each pack has a snow basic land
-    // https://magic.wizards.com/en/articles/archive/card-preview/modern-horizons-tokens-and-art-series-2019-05-30
-    //
-    const snowLands = [
-      "snow-covered island",
-      "snow-covered forest",
-      "snow-covered mountain",
-      "snow-covered swamp",
-      "snow-covered plains"
-    ];
-    common = common.filter(cardName => !snowLands.includes(cardName));
-    pack = pack.concat(_.choose(1, snowLands));
-    break;
-  }
-  case "WAR": {
-    // https://magic.wizards.com/en/articles/archive/feature/closer-look-stained-glass-planeswalkers-2019-03-08
-    // Every booster must contain a planeswalker either as uncommon or rare
-    const isPlaneswalker = cardName => {
-      const card = getCards()[cardName];
-      return card.type === "Planeswalker";
-    };
-    const getPoolFromPackIndex = packIndex => {
-      // Choose to replace an uncommon(default) or rare slot
-      if (packIndex === 3) {
-        var isMythic = mythic.includes(pack[packIndex]);
-        return isMythic ? mythic : rare;
-      } else {
-        return uncommon;
-      }
-    };
-
-    const planeswalkerCount = pack.filter(isPlaneswalker).length;
-
-    switch (planeswalkerCount) {
-    case 0: {
-      var randomPackIndex = _.rand(4);
-      pool = getPoolFromPackIndex(randomPackIndex);
-      const planeswalkers = pool.filter(isPlaneswalker);
-      pack[randomPackIndex] = _.choose(1, planeswalkers);
-      break;
-    }
-    case 1: {
-      break;
-    }
-    default: {
-      var planeswalkersToRemove = _.choose(planeswalkerCount - 1, pack.filter(isPlaneswalker));
-      planeswalkersToRemove.forEach(cardName => {
-        var packIndex = pack.indexOf(cardName);
-        pool = getPoolFromPackIndex(packIndex);
-        const nonPlaneswalkers = pool.filter(cardName => !isPlaneswalker(cardName));
-        pack[packIndex] = _.choose(1, nonPlaneswalkers);
-      });
-    }
-    }
-    break;
-  }
-  case "TSP": {
-    // Add a TSB card to replace common card
-    const TSB = getSets()["TSB"];
-    size = size - 1;
-    pack.push(..._.choose(1, TSB.rare));
-    break;
-  }
-  }
-  var masterpiece = "";
-  if (special) {
-    if (special.masterpieces) {
-      if (_.rand(144) == 0) {
-        size = size - 1;
-        specialpick = _.choose(1, special.masterpieces);
-        specialpick = specialpick[0];
-        pack.push(specialpick);
-        masterpiece = specialpick;
-      }
-      special = 0;
-    }
-    else {
-      var specialpick = _.choose(1, special);
-      specialpick = specialpick[0];
-      pack.push(specialpick);
-      if (foilCard) {
-        foilCard = specialpick;
-      }
-    }
-  }
-  if (_.rand(7) < 1 && !(foilCard) && !(masterpiece)) {
-    // http://www.mtgsalvation.com/forums/magic-fundamentals/magic-general/768235-what-are-current-pack-odds-including-foils
-    size = size - 1;
-    foilCard = _.choose(1, pickFoil(set));
-    pack.push(foilCard[0]);
-  }
-  pack = _.choose(size, common).concat(pack);
-
-  return toCards(pack, code, foilCard, masterpiece);
+  return toCards(pack, code);
 }
 
-function toCards(pool, code, foilCard, masterpiece) {
+function toCards(pool, code) {
   var isCube = !code;
   var packSize = pool.length;
   return pool.map(cardName => {
-    var card = Object.assign({}, getCards()[cardName]);
+    var card = {  ...getCards()[cardName.toLowerCase()] };
     card.packSize = packSize;
     var { sets } = card;
 
@@ -304,23 +80,6 @@ function toCards(pool, code, foilCard, masterpiece) {
       set = sets["TSB"];
     }
 
-    if (masterpiece == card.name.toString().toLowerCase()) {
-      card.rarity = "Special";
-      card.foil = true;
-      if (code == "BFZ" || code == "OGW") {
-        card.code = "EXP";
-      } else if (code == "KLD" || code == "AER") {
-        card.code = "MPS";
-      } else if (code == "AKH" || code == "HOU") {
-        card.code = "MPS_AKH";
-      }
-      set = sets[card.code];
-      masterpiece = "";
-    }
-    if (foilCard == card.name.toString().toLowerCase()) {
-      card.foil = true;
-      foilCard = "";
-    }
     delete card.sets;
     return Object.assign(card, set);
   });

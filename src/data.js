@@ -1,5 +1,4 @@
 const fs = require("fs");
-const Sock = require("./sock");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 
 var cards, sets, mws;
@@ -58,7 +57,8 @@ const saveSetAndCards = ({set: newSet, cards: newCards}) => {
 const saveSetsAndCards = (allSets, allCards) => {
   writeSets(allSets);
   writeCards(allCards);
-  Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
+  // Do not put here -> circular reference >_<
+  // Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 };
 
 const writeCards = (newCards) => {
