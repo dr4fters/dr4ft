@@ -4,6 +4,7 @@ const {
   getCardByName
 } = require("./data");
 const _ = require("./_");
+const logger = require("./logger");
 const boosterRules = require("../data/booster_generation.json");
 
 const makeBoosterFromRules = (setCode) => {
@@ -24,6 +25,7 @@ const makeBoosterFromRules = (setCode) => {
       .flatMap(chooseCards(sheets))
       .map(toCard);
   } catch (error) {
+    logger.error(`could not produce a booster. Falling back to default booster. ${error}`);
     return getDefaultBooster(set);
   }
 };
@@ -75,10 +77,9 @@ const getBoosterSheets = (boosters) => {
 
 const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
   const sheet = sheets[sheetCode];
-  const sheetCards = Object.values(sheet.cards);
-  const totalWeight = sheetCards.reduce((acc, val) => acc + val, 0);
+  const totalWeight = Object.values(sheet.cards).reduce((acc, val) => acc + val, 0);
   const cards = Array(numberOfCardsToPick).fill().map(() =>
-    getRandomCard(sheetCards, totalWeight)
+    getRandomCard(Object.entries(sheet.cards), totalWeight)
   );
   return cards;
 };
