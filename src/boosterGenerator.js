@@ -58,7 +58,7 @@ const getDefaultBooster = (set) => {
     _.choose(1, rare)
   );
 
-  return cardNames.map(getCardByName);
+  return cardNames.map(getCardByUuid);
 };
 
 const getBoosterSheets = (boosters) => {

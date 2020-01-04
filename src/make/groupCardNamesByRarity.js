@@ -12,7 +12,7 @@ const rarityPlucker = ({rarity}) => rarity;
 const numberPlucker = ({number}) => number;
 
 const groupCardNamesByRarity = (baseSetSize = 0, cards = []) =>
-  groupCardByProperty(baseSetSize, cards, rarityPlucker);
+  groupCardByProperty(baseSetSize, cards, rarityPlucker, "uuid");
 
 const groupCardUuidByNumber = (baseSetSize = 0, cards = []) =>
   groupCardByProperty(baseSetSize, cards, numberPlucker, "uuid");
