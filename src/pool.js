@@ -8,9 +8,7 @@ function toPack(code) {
 }
 
 function toCards(pool, code) {
-  var packSize = pool.length; //TODO: add it to an event sent separatly to player
   return pool.map(card => {
-    card.packSize = packSize;
     var { sets } = card;
 
     if (!code)

@@ -63,6 +63,8 @@ let App = {
       date: "1970-01-01"
     },
     messages: [],
+    pickNumber: 0,
+    packSize: 15,
 
     get didGameStart() {
       // both round === 0 and round is undefined

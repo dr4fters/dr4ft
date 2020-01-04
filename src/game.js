@@ -393,7 +393,9 @@ module.exports = class Game extends Room {
     for (let p of players)
       if (!p.isBot) {
         p.pickNumber = 0;
-        p.getPack(this.pool.shift());
+        const pack = this.pool.shift();
+        p.getPack(pack);
+        p.send("packSize", pack.length);
       }
 
     //let the bots play
@@ -587,7 +589,7 @@ module.exports = class Game extends Room {
     packsInfos: ${this.packsInfo}
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
-    ${this.cube ? 
+    ${this.cube ?
     `cubePoolSize: ${this.cube.cubePoolSize}
     packsNumber: ${this.cube.packs}
     playerPackSize: ${this.cube.cards}

@@ -92,6 +92,9 @@ let events = {
   pickNumber(pick) {
     App.save("pickNumber", pick);
   },
+  packSize(packSize) {
+    App.set("packSize", packSize);
+  },
   pack(cards) {
     rawPack = cards;
     let pack = Zones.pack = {};

@@ -25,7 +25,8 @@ module.exports = class extends EventEmitter {
         pack: []
       },
       draftStats: [],
-      pickNumber: 0
+      pickNumber: 0,
+      packSize: 15,
     });
     this.attach(sock);
   }
