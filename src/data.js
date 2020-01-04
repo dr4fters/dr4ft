@@ -32,25 +32,8 @@ const getMws = () => {
   return mws;
 };
 
-const mergeCards = (acc, card) => {
-  const lc = card.name.toLowerCase();
-
-  const mergedCard =
-    (lc in acc) ?
-      {
-        ...acc[lc],
-        sets: {
-          ...acc[lc].sets,
-          [card.setCode]: card.sets[card.setCode] //TODO: try to simplify
-        }
-      } : { ...card };
-  acc[lc] = mergedCard;
-  return acc;
-};
-
 const mergeCardsTogether = (oldCards, newCards) => ({
   ...oldCards,
-  // ...Object.values(newCards).reduce(mergeCards, {...oldCards})
   ...newCards
 });
 
