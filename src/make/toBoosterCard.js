@@ -13,7 +13,6 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     url,
     scryfallId,
     rarity,
-    isAlternative,
     power,
     toughness,
     loyalty,
@@ -21,17 +20,8 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     uuid
   } = mtgjsonCard;
 
-  if (isAlternative) {
-    return acc;
-  }
-
-  // Keep only the non-flipped cards
-  if (isFlippedCard(mtgjsonCard)) {
-    return acc;
-  }
-
   if (supertypes.includes("Basic")) {
-    rarity = "Basic";
+    rarity = "basic";
   }
 
   if (/split|aftermath|adventure/i.test(layout))
@@ -48,7 +38,7 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     scryfallId,
     cmc: convertedManaCost || 0,
     color: capitalize(color),
-    number: parseInt(number),
+    number,
     type: types[types.length - 1],
     manaCost: manaCost || "",
     rarity,
@@ -104,10 +94,6 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   return {
     isDoubleFaced, flippedCardURL
   };
-}
-
-function isFlippedCard({ side, number }) {
-  return side && side !== "a" && !/a/.test(number);
 }
 
 function getColor({ colorIdentity, frameEffects = [] }) {
