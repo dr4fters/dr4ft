@@ -1,11 +1,9 @@
 const toBoosterCard = require("./toBoosterCard");
-const { groupCardUuidByNumber, groupCardNamesByRarity} = require("./groupCardNamesByRarity");
+const { keyCardsUuidByNumber, groupCardsUuidByRarity, keyCardsByUuid} = require("./keyCards");
 
 // TODO: this set should return a set or cards?
 function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mtgJsonCards}) {
-  const cards = mtgJsonCards.reduce(toBoosterCard(code), {});
-  const cardNamesByRarity = groupCardNamesByRarity(baseSetSize, Object.values(cards));
-  const cardsByNumber = groupCardUuidByNumber(baseSetSize, Object.values(cards));
+  const cards = mtgJsonCards.map(toBoosterCard(code));
   const size = !boosterV3 ? 4 : boosterV3.filter(x => x === "common").length;
 
   return [{
@@ -14,9 +12,11 @@ function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mt
     releaseDate,
     baseSetSize,
     size,
-    cardsByNumber,
-    ...cardNamesByRarity
-  }, cards];
+    cardsByNumber: keyCardsUuidByNumber(cards),
+    ...groupCardsUuidByRarity(baseSetSize, cards)
+  }, {
+    ...keyCardsByUuid(cards)
+  }];
 }
 
 module.exports = doSet;

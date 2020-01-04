@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const groupCardNamesByRarity = require("./groupCardNamesByRarity");
+const groupCardNamesByRarity = require("./keyCards");
 
 describe("Acceptance tests for groupCardNamesByRarity function", () => {
   it("does not add card that are with a baseSetSize bigger", () => {

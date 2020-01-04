@@ -1,11 +1,13 @@
 const { capitalize } = require("../_");
 
-const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
+const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   var {
     name,
     frameEffects,
     number,
     layout,
+    colors,
+    colorIdentity,
     names,
     convertedManaCost,
     types,
@@ -30,26 +32,23 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     name = names.join(" // ");
 
   const {isDoubleFaced, flippedCardURL} = getDoubleFacedProps(mtgjsonCard, rawCards);
-  const color = getColor(mtgjsonCard);
+  const color = capitalize(getColor(mtgjsonCard));
 
-  acc[uuid] = {
+  return {
     uuid,
     name,
     names,
+    color,
+    colors,
+    colorIdentity,
     setCode,
     scryfallId,
     cmc: convertedManaCost || 0,
-    color: capitalize(color),
     number,
     type: types[types.length - 1],
     manaCost: manaCost || "",
-    rarity,
-    sets: {
-      [setCode]: {
-        rarity: capitalize(rarity),
-        url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`,
-      }
-    },
+    rarity: capitalize(rarity),
+    url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`,
     layout,
     isDoubleFaced,
     flippedCardURL,
@@ -61,8 +60,6 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
     text,
     frameEffects
   };
-
-  return acc;
 };
 
 const COLORS = {

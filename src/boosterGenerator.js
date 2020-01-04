@@ -1,8 +1,4 @@
-const {
-  getCardByUuid,
-  getSet,
-  getCardByName
-} = require("./data");
+const { getCardByUuid, getSet } = require("./data");
 const _ = require("./_");
 const logger = require("./logger");
 const boosterRules = require("../data/booster_generation.json");
@@ -32,19 +28,19 @@ const makeBoosterFromRules = (setCode) => {
 
 const getDefaultBooster = (set) => {
   let {
-    basic,
-    common,
-    uncommon,
-    rare,
-    mythic,
+    Basic,
+    Common,
+    Uncommon,
+    Rare,
+    Mythic,
     size
   } = set;
 
-  if (mythic && !_.rand(8))
-    rare = mythic;
+  if (Mythic && !_.rand(8))
+    Rare = Mythic;
 
-  if (!rare.length) {
-    rare = uncommon; //In some sets rare didn't exist. So we replace them with uncommons
+  if (!Rare.length) {
+    Rare = Uncommon; //In some sets rare didn't exist. So we replace them with uncommons
   }
 
   //make small sets draftable.
@@ -52,10 +48,10 @@ const getDefaultBooster = (set) => {
     size = 10;
 
   const cardNames = [].concat(
-    _.choose(1, basic),
-    _.choose(size, common),
-    _.choose(3, uncommon),
-    _.choose(1, rare)
+    _.choose(1, Basic),
+    _.choose(size, Common),
+    _.choose(3, Uncommon),
+    _.choose(1, Rare)
   );
 
   return cardNames.map(getCardByUuid);

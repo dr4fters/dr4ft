@@ -1,6 +1,6 @@
 const fs = require("fs");
 const logger = require("../logger");
-const { saveSetsAndCards, mergeCardsTogether } = require("../data");
+const { saveSetsAndCards } = require("../data");
 const doSet = require("./doSet");
 
 const updateDatabase = () => {
@@ -27,7 +27,7 @@ const updateDatabase = () => {
           logger.info(`Found set to integrate ${json.code} with path ${path}`);
           const [set, cards] = doSet(json);
           allSets[json.code] = set;
-          allCards = mergeCardsTogether(allCards, cards);
+          allCards = { ...allCards, ...cards };
           logger.info(`Parsing ${json.code} finished`);
         }
       } catch (err) {
@@ -47,7 +47,9 @@ const updateDatabase = () => {
           if (json.code) {
             json.type = "custom";
             logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
-            allSets[json.code] = doSet(json, allCards)[0];
+            const [set, cards] = doSet(json);
+            allSets[json.code] = set;
+            allCards = { ...allCards, ...cards };
             logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {

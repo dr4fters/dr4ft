@@ -1,6 +1,6 @@
 var assert = require("assert");
 var _ = require("./_");
-var { getCards, getSets } = require("./data");
+var { getSets, getCardByName } = require("./data");
 var BASICS = [
   "Forest",
   "Island",
@@ -29,7 +29,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
 
   var bad = [];
   for (var cardName of list)
-    if (!(cardName in getCards()))
+    if (!getCardByName(cardName))
       bad.push(cardName);
 
   if (bad.length) {

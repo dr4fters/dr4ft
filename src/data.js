@@ -1,7 +1,8 @@
 const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
+const {  keyCardsByName } = require("./make/keyCards");
 
-var cards, sets, mws;
+var cards, cardsByName, sets, mws;
 let playableSets, latestSet;
 
 const getSets = () => {
@@ -57,11 +58,16 @@ const getCardByUuid = (uuid) => {
 };
 
 const getCardByName = (cardName) => {
-  return Object.values(getCards()).filter(({name}) => name == cardName)[0];
+  if (!cardsByName) {
+    cardsByName = readFile("data/cards_by_name.json");
+  }
+  return cardsByName[cardName];
 };
 
 const writeCards = (newCards) => {
   fs.writeFileSync("data/cards.json", JSON.stringify(newCards, undefined, 4));
+  cardsByName = keyCardsByName(Object.values(newCards));
+  fs.writeFileSync("data/cards_by_name.json", JSON.stringify(cardsByName, undefined, 4));
   cards = newCards;
 };
 
