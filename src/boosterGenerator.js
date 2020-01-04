@@ -11,7 +11,7 @@ const makeBoosterFromRules = (setCode) => {
   const setRules = boosterRules.filter(({code}) => setCode.toLowerCase() === code);
 
   if (setRules.length === 0){
-    var { common, uncommon, rare, mythic, size } = set;
+    var { basic, common, uncommon, rare, mythic, size } = set;
 
     if (mythic && !_.rand(8))
       rare = mythic;
@@ -25,7 +25,8 @@ const makeBoosterFromRules = (setCode) => {
       size = 10;
 
     const cardNames = [].concat(
-      _.choose(size - 4, common),
+      _.choose(1, basic),
+      _.choose(size, common),
       _.choose(3, uncommon),
       _.choose(1, rare)
     );
