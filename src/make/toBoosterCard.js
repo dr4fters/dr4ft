@@ -1,3 +1,5 @@
+const { capitalize } = require("../_");
+
 const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
   var {
     name,
@@ -63,12 +65,6 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
   return acc;
 };
 
-//TODO: find an helper component to put that or make an enum for rarities, types etc.
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-//TODO: unify with update_database
 const COLORS = {
   W: "white",
   U: "blue",

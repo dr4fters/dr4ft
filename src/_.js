@@ -11,6 +11,9 @@ module.exports = {
       }
     });
   },
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  },
   at(arr, index) {
     var {length} = arr;
     index = (index % length + length) % length;//please kill me it hurts to live
@@ -27,7 +30,7 @@ module.exports = {
   },
   choose(n, arr) {
     switch(true) {
-    // if we want no elements, we return an empty array  
+    // if we want no elements, we return an empty array
     case n === 0: return [];
     // if we want more elements than the array length
     // we return a copy plus random elements from the array
