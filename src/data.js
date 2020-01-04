@@ -11,6 +11,13 @@ const getSets = () => {
   return sets;
 };
 
+const getSet = (setCode) => {
+  if (!sets) {
+    sets = readFile("data/sets.json");
+  }
+  return sets[setCode];
+};
+
 const getCards = () => {
   if (!cards) {
     cards = readFile("data/cards.json");
@@ -43,7 +50,8 @@ const mergeCards = (acc, card) => {
 
 const mergeCardsTogether = (oldCards, newCards) => ({
   ...oldCards,
-  ...Object.values(newCards).reduce(mergeCards, {...oldCards})
+  // ...Object.values(newCards).reduce(mergeCards, {...oldCards})
+  ...newCards
 });
 
 //TODO: someone should handle this? Maybe a service?
@@ -61,13 +69,21 @@ const saveSetsAndCards = (allSets, allCards) => {
   // Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 };
 
+const getCardByUuid = (uuid) => {
+  return getCards()[uuid];
+};
+
+const getCardByName = (cardName) => {
+  return Object.values(getCards()).filter(({name}) => name == cardName)[0];
+};
+
 const writeCards = (newCards) => {
-  fs.writeFileSync("data/cards.json", JSON.stringify(newCards));
+  fs.writeFileSync("data/cards.json", JSON.stringify(newCards, undefined, 4));
   cards = newCards;
 };
 
 const writeSets = (newSets) => {
-  fs.writeFileSync("data/sets.json", JSON.stringify(newSets));
+  fs.writeFileSync("data/sets.json", JSON.stringify(newSets, undefined, 4));
   sets = newSets;
   playableSets = null;
 };
@@ -164,6 +180,7 @@ const getExansionOrCoreSets = () => {
 module.exports = {
   getCards,
   getSets,
+  getSet,
   getMws,
   getPlayableSets,
   getRandomSet,
@@ -173,5 +190,7 @@ module.exports = {
   writeCards,
   saveSetAndCards,
   saveSetsAndCards,
-  mergeCardsTogether
+  mergeCardsTogether,
+  getCardByUuid,
+  getCardByName
 };

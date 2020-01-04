@@ -1,77 +1,22 @@
-var _ = require("./_");
-var { getCards, getSets, getMws, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
-
-function selectRarity(set) {
-  // average pack contains:
-  // 14 cards
-  // 10 commons
-  // 3 uncommons
-  // 7/8 rare
-  // 1/8 mythic
-  // * 8 -> 112/80/24/7/1
-
-  let n = _.rand(112);
-  if (n < 1)
-    return set.mythic;
-  if (n < 8)
-    return set.rare;
-  if (n < 32)
-    return set.uncommon;
-  return set.common;
-}
-
-function pickFoil(set) {
-  var rngFoil = _.rand(6);
-  if (rngFoil < 1)
-    if (set.mythic)
-      if (_.rand(set.mythic.length + (set.rare.length * 2)) < set.mythic.length)
-        return set.mythic;
-      else
-        return set.rare;
-    else
-      return set.rare;
-  if (rngFoil < 3)
-    return set.uncommon;
-  return set.common;
-}
+const _ = require("./_");
+const boosterGenerator = require("./boosterGenerator");
+const { getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
 function toPack(code) {
-  var set = getSets()[code];
-  var { common, uncommon, rare, mythic, size } = set;
-
-  if (mythic && !_.rand(8))
-    rare = mythic;
-
-  if (!rare.length) {
-    rare = uncommon; //In some sets rare didn't exist. So we replace them with uncommons
-  }
-
-  //make small sets draftable.
-  if (size < 10)
-    size = 10;
-
-  var pack = [].concat(
-    _.choose(size - 4, common),
-    _.choose(3, uncommon),
-    _.choose(1, rare)
-  );
-
+  const pack = boosterGenerator(code);
   return toCards(pack, code);
 }
 
 function toCards(pool, code) {
-  var isCube = !code;
-  var packSize = pool.length;
-  return pool.map(cardName => {
-    var card = {  ...getCards()[cardName.toLowerCase()] };
+  var packSize = pool.length; //TODO: add it to an event sent separatly to player
+  return pool.map(card => {
     card.packSize = packSize;
     var { sets } = card;
 
-    if (isCube)
+    if (!code)
       [code] = Object.keys(sets)
         .filter(set => !["EXP", "MPS", "MPS_AKH"].includes(set)); // #121: Filter Invocations art
 
-    card.code = getMws()[code] || code;
     var set = sets[code];
 
     // If the set doesn't exists for TimeSpiral
@@ -80,8 +25,10 @@ function toCards(pool, code) {
       set = sets["TSB"];
     }
 
-    delete card.sets;
-    return Object.assign(card, set);
+    return {
+      ...card,
+      ...set
+    };
   });
 }
 

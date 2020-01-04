@@ -40,7 +40,7 @@ const toBoosterCard = (setCode) => (acc, mtgjsonCard, index, rawCards) => {
   const {isDoubleFaced, flippedCardURL} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = getColor(mtgjsonCard);
 
-  acc[name] = {
+  acc[uuid] = {
     uuid,
     name,
     names,

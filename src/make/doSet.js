@@ -1,5 +1,5 @@
 const toBoosterCard = require("./toBoosterCard");
-const groupCardNamesByRarity = require("./groupCardNamesByRarity");
+const { groupCardUuidByNumber, groupCardNamesByRarity} = require("./groupCardNamesByRarity");
 
 // TODO: this set should return a set or cards?
 function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mtgJsonCards}) {
@@ -14,6 +14,9 @@ function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mt
     releaseDate,
     baseSetSize,
     size,
+    cardsByNumber: {
+      ...groupCardUuidByNumber(baseSetSize, Object.values(cards))
+    },
     ...cardNamesByRarity
   }, cards];
 }
