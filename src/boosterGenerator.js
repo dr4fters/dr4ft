@@ -98,7 +98,7 @@ const getRandomCard = (cardsWithWeight, totalWeight) => {
 const toCard = (cardCode) => {
   const [setCode, cardNumber] = cardCode.split(":");
   const { cardsByNumber } = getSet(setCode.toUpperCase());
-  const [uuid] = cardsByNumber[cardNumber];
+  const uuid = cardsByNumber[cardNumber];
   return getCardByUuid(uuid);
 };
 
