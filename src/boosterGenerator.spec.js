@@ -7,4 +7,8 @@ describe("Acceptance tests for boosterGenerator function", () => {
     const got = boosterGenerator("MH1");
     assert.ok(got.length > 10); // TODO make a real test
   });
+  it("should create a RNA booster", () => {
+    const got = boosterGenerator("RNA");
+    assert.ok(got.length > 10); // TODO make a real test
+  });
 });

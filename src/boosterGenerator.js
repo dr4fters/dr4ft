@@ -1,7 +1,7 @@
 const { getCardByUuid, getSet } = require("./data");
 const _ = require("./_");
 const logger = require("./logger");
-const boosterRules = require("../data/booster_generation.json");
+const boosterRules = require("../data/boosterRules.json");
 
 const makeBoosterFromRules = (setCode) => {
   const set = getSet(setCode);
@@ -9,19 +9,19 @@ const makeBoosterFromRules = (setCode) => {
     throw new Error(`${setCode} does not exist`);
   }
 
-  const setRules = boosterRules.filter(({ code }) => setCode.toLowerCase() === code);
-  if (setRules.length === 0) {
+  const setRules = boosterRules[setCode];
+  if (!setRules) {
     return getDefaultBooster(set);
   }
 
   try {
-    const { boosters, sheets } = setRules[0];
-    const boosterSheets = getBoosterSheets(boosters);
+    const { boosters, totalWeight, sheets } = setRules;
+    const boosterSheets = getBoosterSheets(boosters, totalWeight);
     return Object.entries(boosterSheets)
       .flatMap(chooseCards(sheets))
-      .map(toCard);
+      .map(getCardByUuid);
   } catch (error) {
-    logger.error(`could not produce a booster. Falling back to default booster. ${error}`);
+    logger.error(`could not produce a booster of ${setCode}. Falling back to default booster. ${error.stack}`);
     return getDefaultBooster(set);
   }
 };
@@ -48,17 +48,19 @@ const getDefaultBooster = (set) => {
     size = 10;
 
   const cardNames = [].concat(
-    _.choose(1, Basic),
     _.choose(size, Common),
     _.choose(3, Uncommon),
     _.choose(1, Rare)
   );
 
+  if (Basic) {
+    cardNames.push(_.choose(1, Basic)[0]);
+  }
+
   return cardNames.map(getCardByUuid);
 };
 
-const getBoosterSheets = (boosters) => {
-  const totalWeight = boosters.reduce((acc, { weight }) => acc + weight, 0);
+const getBoosterSheets = (boosters, totalWeight) => {
   var boosterPick = _.rand(totalWeight) + 1;
   var boosterSheets;
   boosters.some(b => {
@@ -72,12 +74,42 @@ const getBoosterSheets = (boosters) => {
 };
 
 const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
-  const sheet = sheets[sheetCode];
-  const totalWeight = Object.values(sheet.cards).reduce((acc, val) => acc + val, 0);
-  const cards = Array(numberOfCardsToPick).fill().map(() =>
-    getRandomCard(Object.entries(sheet.cards), totalWeight)
-  );
-  return cards;
+  const {totalWeight, cardsByColor, cards, balance_colors} = sheets[sheetCode];
+  var ret = new Set();
+  if (balance_colors) {
+    ["G", "U", "W", "B", "R"].forEach((color) => {
+      ret.add( _.choose(1, cardsByColor[color])[0] );
+    });
+
+    const n = Object.keys(cards).length;
+    const nums = {
+      "W": cardsByColor["W"].length * numberOfCardsToPick - n,
+      "B": cardsByColor["B"].length * numberOfCardsToPick - n,
+      "U": cardsByColor["U"].length * numberOfCardsToPick - n,
+      "R": cardsByColor["R"].length * numberOfCardsToPick - n,
+      "G": cardsByColor["G"].length * numberOfCardsToPick - n,
+      "c": cardsByColor["c"].length * numberOfCardsToPick,
+    };
+    const den = (numberOfCardsToPick - 5 ) * n;
+
+    while (ret.size < numberOfCardsToPick) {
+      var rand = _.rand(den) + 1;
+      Object.keys(nums).some((color) => {
+        if (rand <= nums[color]) {
+          ret.add( _.choose(1, cardsByColor[color])[0] );
+          return true;
+        }
+      });
+    }
+
+    return [...ret];
+  } else {
+    while (ret.size < numberOfCardsToPick) {
+      ret.add(getRandomCard(Object.entries(cards), totalWeight));
+    }
+
+    return [...ret];
+  }
 };
 
 const getRandomCard = (cardsWithWeight, totalWeight) => {
@@ -93,13 +125,6 @@ const getRandomCard = (cardsWithWeight, totalWeight) => {
   });
 
   return card;
-};
-
-const toCard = (cardCode) => {
-  const [setCode, cardNumber] = cardCode.split(":");
-  const { cardsByNumber } = getSet(setCode.toUpperCase());
-  const uuid = cardsByNumber[cardNumber];
-  return getCardByUuid(uuid);
 };
 
 module.exports = makeBoosterFromRules;
