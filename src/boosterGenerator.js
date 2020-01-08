@@ -74,7 +74,8 @@ const getBoosterSheets = (boosters, totalWeight) => {
 
 const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
   const {totalWeight, cardsByColor, cards, balance_colors} = sheets[sheetCode];
-  var ret = new Set();
+  const ret = new Set();
+
   if (balance_colors) {
     ["G", "U", "W", "B", "R"].forEach((color) => {
       ret.add( _.choose(1, cardsByColor[color])[0] );

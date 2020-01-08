@@ -1,4 +1,4 @@
-const { capitalize } = require("../_");
+const { upperFirst } = require("lodash");
 
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   var {
@@ -32,7 +32,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     name = names.join(" // ");
 
   const {isDoubleFaced, flippedCardURL} = getDoubleFacedProps(mtgjsonCard, rawCards);
-  const color = capitalize(getColor(mtgjsonCard));
+  const color = upperFirst(getColor(mtgjsonCard));
 
   return {
     uuid,
@@ -47,7 +47,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     number,
     type: types[types.length - 1],
     manaCost: manaCost || "",
-    rarity: capitalize(rarity),
+    rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`,
     layout,
     isDoubleFaced,

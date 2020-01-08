@@ -11,9 +11,6 @@ module.exports = {
       }
     });
   },
-  capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  },
   at(arr, index) {
     var {length} = arr;
     index = (index % length + length) % length;//please kill me it hurts to live
