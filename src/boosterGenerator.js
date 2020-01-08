@@ -18,8 +18,7 @@ const makeBoosterFromRules = (setCode) => {
     const { boosters, totalWeight, sheets } = setRules;
     const boosterSheets = getBoosterSheets(boosters, totalWeight);
     return Object.entries(boosterSheets)
-      .flatMap(chooseCards(sheets))
-      .map(getCardByUuid);
+      .flatMap(chooseCards(sheets));
   } catch (error) {
     logger.error(`could not produce a booster of ${setCode}. Falling back to default booster. ${error.stack}`);
     return getDefaultBooster(set);
@@ -103,14 +102,16 @@ const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
       });
     }
 
-    return [...ret];
   } else {
     while (ret.size < numberOfCardsToPick) {
       ret.add(getRandomCard(Object.entries(cards), totalWeight));
     }
-
-    return [...ret];
   }
+
+  return [...ret].map((uuid) => ({
+    ...getCardByUuid(uuid),
+    foil: /foil/.test(sheetCode)
+  }));
 };
 
 const getRandomCard = (cardsWithWeight, totalWeight) => {
