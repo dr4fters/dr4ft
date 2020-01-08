@@ -99,6 +99,7 @@ const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
           ret.add( _.choose(1, cardsByColor[color])[0] );
           return true;
         }
+        rand -= nums[color];
       });
     }
 
