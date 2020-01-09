@@ -11,4 +11,15 @@ describe("Acceptance tests for boosterGenerator function", () => {
     const got = boosterGenerator("RNA");
     assert.ok(got.length > 10); // TODO make a real test
   });
+  it("should create tons of EMN booster", () => {
+    Array(1000).fill().forEach(() => {
+      const got = boosterGenerator("EMN");
+      got.forEach((card) => {
+        if (!card.name) {
+          console.log();
+        }
+      })
+      assert.ok(got.length > 10); // TODO make a real test
+    })
+  });
 });

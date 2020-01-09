@@ -1,7 +1,9 @@
-const { getCardByUuid, getSet } = require("./data");
+const {getCardByUuid, getSet} = require("./data");
 const _ = require("./_");
 const logger = require("./logger");
 const boosterRules = require("../data/boosterRules.json");
+const weighted = require("weighted");
+const {sample, sampleSize} = require("lodash");
 
 const makeBoosterFromRules = (setCode) => {
   const set = getSet(setCode);
@@ -16,7 +18,10 @@ const makeBoosterFromRules = (setCode) => {
 
   try {
     const { boosters, totalWeight, sheets } = setRules;
-    const boosterSheets = getBoosterSheets(boosters, totalWeight);
+    const boosterSheets = weighted(
+      boosters.map(({sheets}) => sheets),
+      boosters.map(({weight}) => weight),
+      {total: totalWeight});
     return Object.entries(boosterSheets)
       .flatMap(chooseCards(sheets));
   } catch (error) {
@@ -26,14 +31,7 @@ const makeBoosterFromRules = (setCode) => {
 };
 
 const getDefaultBooster = (set) => {
-  let {
-    Basic,
-    Common,
-    Uncommon,
-    Rare,
-    Mythic,
-    size
-  } = set;
+  let { Basic, Common, Uncommon, Rare, Mythic, size } = set;
 
   if (Mythic && !_.rand(8))
     Rare = Mythic;
@@ -47,87 +45,67 @@ const getDefaultBooster = (set) => {
     size = 10;
 
   const cardNames = [].concat(
-    _.choose(size, Common),
-    _.choose(3, Uncommon),
-    _.choose(1, Rare)
+    sampleSize(Common, size),
+    sampleSize(Uncommon, 3),
+    sampleSize(Rare, 1)
   );
 
   if (Basic) {
-    cardNames.push(_.choose(1, Basic)[0]);
+    cardNames.push(sample(Basic));
   }
 
   return cardNames.map(getCardByUuid);
 };
 
-const getBoosterSheets = (boosters, totalWeight) => {
-  var boosterPick = _.rand(totalWeight) + 1;
-  var boosterSheets;
-  boosters.some(b => {
-    if (boosterPick <= b.weight) {
-      boosterSheets = b.sheets;
-      return true;
-    }
-    boosterPick -= b.weight;
-  });
-  return boosterSheets;
+const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
+  const sheet = sheets[sheetCode];
+
+  const randomCards = sheet.balance_colors
+    ? getRandomCardsWithColorBalance(sheet, numberOfCardsToPick)
+    : getRandomCards(sheet, numberOfCardsToPick);
+
+  return randomCards.map(toCard(sheetCode));
 };
 
-const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
-  const {totalWeight, cardsByColor, cards, balance_colors} = sheets[sheetCode];
+function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPick) {
   const ret = new Set();
 
-  if (balance_colors) {
-    ["G", "U", "W", "B", "R"].forEach((color) => {
-      ret.add( _.choose(1, cardsByColor[color])[0] );
-    });
-
-    const n = Object.keys(cards).length;
-    const nums = {
-      "W": cardsByColor["W"].length * numberOfCardsToPick - n,
-      "B": cardsByColor["B"].length * numberOfCardsToPick - n,
-      "U": cardsByColor["U"].length * numberOfCardsToPick - n,
-      "R": cardsByColor["R"].length * numberOfCardsToPick - n,
-      "G": cardsByColor["G"].length * numberOfCardsToPick - n,
-      "c": cardsByColor["c"].length * numberOfCardsToPick,
-    };
-    const den = (numberOfCardsToPick - 5 ) * n;
-
-    while (ret.size < numberOfCardsToPick) {
-      var rand = _.rand(den) + 1;
-      Object.keys(nums).some((color) => {
-        if (rand <= nums[color]) {
-          ret.add( _.choose(1, cardsByColor[color])[0] );
-          return true;
-        }
-        rand -= nums[color];
-      });
-    }
-
-  } else {
-    while (ret.size < numberOfCardsToPick) {
-      ret.add(getRandomCard(Object.entries(cards), totalWeight));
-    }
-  }
-
-  return [...ret].map((uuid) => ({
-    ...getCardByUuid(uuid),
-    foil: /foil/.test(sheetCode)
-  }));
-};
-
-const getRandomCard = (cardsWithWeight, totalWeight) => {
-  var cardPick = _.rand(totalWeight) + 1;
-  var card;
-
-  cardsWithWeight.some(([cardCode, weight]) => {
-    if (cardPick <= weight) {
-      card = cardCode;
-      return true;
-    }
-    cardPick -= weight;
+  // Pick one card of each color
+  ["G", "U", "W", "B", "R"].forEach((color) => {
+    ret.add(sample(cardsByColor[color]));
   });
 
-  return card;
-};
+  const n = Object.keys(cards).length;
+  const nums = {
+    "W": cardsByColor["W"].length * numberOfCardsToPick - n,
+    "B": cardsByColor["B"].length * numberOfCardsToPick - n,
+    "U": cardsByColor["U"].length * numberOfCardsToPick - n,
+    "R": cardsByColor["R"].length * numberOfCardsToPick - n,
+    "G": cardsByColor["G"].length * numberOfCardsToPick - n,
+    "c": cardsByColor["c"].length * numberOfCardsToPick,
+  };
+  const total = (numberOfCardsToPick - 5) * n;
+  while (ret.size < numberOfCardsToPick) {
+    const randomColor = weighted.select(nums, { total });
+    ret.add(sample(cardsByColor[randomColor]));
+  }
+  return [...ret];
+}
+
+function getRandomCards({cards, totalWeight: total}, numberOfCardsToPick) {
+  const ret = new Set();
+
+  // Fast way to avoid duplicate
+  while (ret.size < numberOfCardsToPick) {
+    ret.add(weighted.select(cards, { total }));
+  }
+
+  return [...ret];
+}
+
+const toCard = (sheetCode) => (uuid) => ({
+  ...getCardByUuid(uuid),
+  foil: /foil/.test(sheetCode)
+});
 
 module.exports = makeBoosterFromRules;
