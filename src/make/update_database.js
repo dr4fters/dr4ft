@@ -2,7 +2,7 @@ const fs = require("fs");
 const logger = require("../logger");
 const { saveSetsAndCards, getSet, getCardByUuid } = require("../data");
 const doSet = require("./doSet");
-const boosterRules = require("../../data/booster_generation.json");
+const boosterRules = require("../../booster_generation.json");
 
 const updateDatabase = () => {
   var allCards = {};
@@ -110,7 +110,7 @@ const updateDatabase = () => {
 const getUuid = (cardCode) => {
   const [setCode, cardNumber] = cardCode.split(":");
   const { cardsByNumber } = getSet(setCode.toUpperCase());
-  return cardsByNumber[cardNumber] || cardsByNumber[parseInt(cardNumber)];
+  return cardsByNumber[cardNumber] || cardsByNumber[parseInt(cardNumber)] || cardsByNumber[cardNumber.toLowerCase()];
 };
 
 const getCard = (cardCode) => {
