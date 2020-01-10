@@ -33,6 +33,7 @@
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
     "lint": "eslint --ignore-path .gitignore .",
     "pretest": "npm run lint",
+    "test": "mocha --reporter spec --exit",
     "setup-env": "node scripts/setup-test-env",
     "postinstall": "node scripts/setup-test-env && node scripts/postinstall && webpack --config webpack.prod.js"
   },

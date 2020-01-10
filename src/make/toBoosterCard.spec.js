@@ -1,5 +1,4 @@
 /* eslint-env node, mocha */
-const assert = require("assert");
 const toBoosterCard = require("./toBoosterCard");
 const fs = require("fs");
 
@@ -15,22 +14,6 @@ describe("Acceptance tests for toBoosterCard function", () => {
           const path = `data/sets/${file}`;
           const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
           json.cards.reduce(toBoosterCard, {});
-        });
-      }
-    });
-    it("parse cards with double faced card", () => {
-      if (fs.existsSync("data/sets")) {
-        const files = fs.readdirSync("data/sets");
-        files.forEach(file => {
-          if (!/.json/g.test(file)) {
-            return;
-          }
-          const path = `data/sets/${file}`;
-          const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-          json.cards.forEach((card) => {
-            const isDoubleFaced = /^double-faced$|^transform$|^flip$|^meld$/i.test(card.layout);
-            //TODO: make a test
-          });
         });
       }
     });

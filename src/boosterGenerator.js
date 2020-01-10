@@ -35,7 +35,7 @@ const getDefaultBooster = (set) => {
   if (Mythic && !random(7))
     Rare = Mythic;
 
-  if (!Rare.length) {
+  if (!Rare) {
     Rare = Uncommon; //In some sets rare didn't exist. So we replace them with uncommons
   }
 

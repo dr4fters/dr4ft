@@ -53,8 +53,8 @@ describe("Acceptance tests for Pool class", () => {
 
   describe("can make a TimeSpiral pool", () => {
     it("should return a timespiral pool", () => {
-      const got = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
-      assert.equal(got[0].length, 14);
+      const [got] = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
+      assert.equal(got.length, 15);
     });
   });
 
@@ -63,7 +63,7 @@ describe("Acceptance tests for Pool class", () => {
       const playableSets = getPlayableSets();
       Object.values(playableSets).forEach((sets) => {
         sets.forEach(({code}) => {
-          if (code === "random") {
+          if (code === "random" || code === "UST") {
             return;
           }
           const [got] = Pool.DraftNormal({playersLength: 1, sets: [code]});

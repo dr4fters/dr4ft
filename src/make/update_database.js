@@ -81,7 +81,7 @@ const updateDatabase = () => {
             acc[uuid] = weigth;
             return acc;
           },{}),
-          cardsByColor: Object.entries(cards).reduce((acc, [cardCode, weigth]) => {
+          cardsByColor: Object.entries(cards).reduce((acc, [cardCode]) => {
             try {
               const {uuid, colorIdentity, type} = getCard(cardCode);
               if (type === "Land" || colorIdentity.length == 0) {

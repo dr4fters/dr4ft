@@ -16,10 +16,10 @@ describe("Acceptance tests for boosterGenerator function", () => {
       const got = boosterGenerator("EMN");
       got.forEach((card) => {
         if (!card.name) {
-          console.log();
+          assert.fail("card should have a name");
         }
-      })
+      });
       assert.ok(got.length > 10); // TODO make a real test
-    })
+    });
   });
 });
