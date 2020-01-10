@@ -1,7 +1,7 @@
-var assert = require("assert");
-var _ = require("./_");
-var { getSets, getCardByName } = require("./data");
-var BASICS = [
+const assert = require("assert");
+const {countBy} = require("lodash");
+const { getSets, getCardByName } = require("./data");
+const BASICS = [
   "Forest",
   "Island",
   "Mountain",
@@ -44,20 +44,20 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
 
 module.exports = {
   deck(deck, pool) {
-    pool = _.count(pool, "name");
+    const poolByName = countBy(pool, ({name}) => name);
 
-    for (var zoneName in deck) {
-      var zone = deck[zoneName];
+    for (const zoneName in deck) {
+      const zone = deck[zoneName];
       for (var cardName in zone) {
         if (typeof zone[cardName] !== "number")
-          return;
+          return false;
         if (BASICS.indexOf(cardName) > -1)
           continue;
-        if (!(cardName in pool))
-          return;
-        pool[cardName] -= zone[cardName];
-        if (pool[cardName] < 0)
-          return;
+        if (!(cardName in poolByName))
+          return false;
+        poolByName[cardName] -= zone[cardName];
+        if (poolByName[cardName] < 0)
+          return false;
       }
     }
 

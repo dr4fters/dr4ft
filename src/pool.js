@@ -1,4 +1,4 @@
-const _ = require("./_");
+const {sample, shuffle, random} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
@@ -13,7 +13,7 @@ const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
 
 //TODO: filter cards that are from set EXP etc.
 const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
-  let list = _.shuffle(cubeList); // copy the list to work on it
+  let list = shuffle(cubeList); // copy the list to work on it
 
   return new Array(playersLength * packsNumber).fill()
     .map(() => {
@@ -43,9 +43,7 @@ function getRandomPack(setList) {
   return boosterGenerator(code);
 }
 
-const chooseRandomSet = (setList) => (
-  _.choose(1, setList)[0]
-);
+const chooseRandomSet = sample;
 
 // Create a complete random pack
 function getTotalChaosPack(setList) {
@@ -54,19 +52,19 @@ function getTotalChaosPack(setList) {
 
   // Check if set has at least rares
   if (randomSet.Rare && randomSet.Rare.length > 0) {
-    const isMythic = randomSet.mythic && !_.rand(8);
-    chaosPool.push(_.choose(1, isMythic ? randomSet.Mythic : randomSet.Rare));
+    const isMythic = randomSet.mythic && random(7);
+    chaosPool.push(sample(isMythic ? randomSet.Mythic : randomSet.Rare));
   } else {
     //If no rare exists for the set, we pick an uncommon
-    chaosPool.push(_.choose(1, randomSet.Uncommon));
+    chaosPool.push(sample(randomSet.Uncommon));
   }
 
   for (let k = 0; k < 3; k++) {
-    chaosPool.push(_.choose(1, chooseRandomSet(setList).Uncommon));
+    chaosPool.push(sample(chooseRandomSet(setList).Uncommon));
   }
 
   for (let k = 0; k < 11; k++) {
-    chaosPool.push(_.choose(1, chooseRandomSet(setList).Common));
+    chaosPool.push(sample(chooseRandomSet(setList).Common));
   }
 
   return chaosPool.map(getCardByUuid);

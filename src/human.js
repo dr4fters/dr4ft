@@ -1,7 +1,7 @@
-var {EventEmitter} = require("events");
-var _ = require("./_");
-var util = require("./util");
-var hash = require("./hash");
+const {EventEmitter} = require("events");
+const util = require("./util");
+const hash = require("./hash");
+const {random} = require("lodash");
 
 module.exports = class extends EventEmitter {
   constructor(sock) {
@@ -156,7 +156,7 @@ module.exports = class extends EventEmitter {
   pickOnTimeout() {
     let index = this.autopick_index;
     if (index === -1)
-      index = _.rand(this.packs[0].length);
+      index = random(this.packs[0].length - 1);
     this.pick(index);
   }
   kick() {

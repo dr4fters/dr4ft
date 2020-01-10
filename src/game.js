@@ -1,13 +1,14 @@
 const crypto = require("crypto");
-let _ = require("./_");
-let Bot = require("./bot");
-let Human = require("./human");
-let Pool = require("./pool");
-let Room = require("./room");
+const Bot = require("./bot");
+const Human = require("./human");
+const Pool = require("./pool");
+const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const uuid = require("uuid");
-let Sock = require("./sock");
+const Sock = require("./sock");
+const {shuffle, uniqueId} = require("lodash");
+const {at} = require("./_");
 
 let SECOND = 1000;
 let MINUTE = 1000 * 60;
@@ -39,7 +40,7 @@ let games = {};
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
     super({ isPrivate });
-    const gameID = _.id();
+    const gameID = uniqueId();
     Object.assign(this, {
       title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber,
       delta: -1,
@@ -366,7 +367,7 @@ module.exports = class Game extends Room {
     }
 
     var index = this.players.indexOf(p) + this.delta;
-    var p2 = _.at(this.players, index);
+    var p2 = at(this.players, index);
     p2.getPack(pack);
     if (!p2.isBot)
       this.meta();
@@ -404,7 +405,7 @@ module.exports = class Game extends Room {
     var count = players.length;
     while (--count) {
       index -= this.delta;
-      let p = _.at(players, index);
+      let p = at(players, index);
       if (p.isBot)
         p.getPack(this.pool.shift());
     }
@@ -534,7 +535,7 @@ module.exports = class Game extends Room {
     }
 
     if (shufflePlayers)
-      _.shuffle(players);
+      shuffle(players);
 
     players.forEach((p, i) => {
       p.on("pass", this.pass.bind(this, p));

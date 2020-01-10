@@ -1,5 +1,5 @@
-var _ = require("./_");
-var {EventEmitter} = require("events");
+const {sample, pull} = require("lodash");
+const {EventEmitter} = require("events");
 
 module.exports = class extends EventEmitter {
   constructor() {
@@ -37,9 +37,9 @@ module.exports = class extends EventEmitter {
     });
     //if 50% of cards doesn't have a score, we're going to pick randomly
     if (scoredcards / cardcount < .5) {
-      var randpick = _.rand(cardcount);
-      this.picks.push(pack[randpick].name);
-      pack.splice(randpick, 1);
+      const randomPick = sample(pack);
+      this.picks.push(randomPick.name);
+      pull(pack, randomPick);
     }
     else {
       this.picks.push(pack[index].name);

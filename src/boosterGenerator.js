@@ -1,9 +1,8 @@
 const {getCardByUuid, getSet} = require("./data");
-const _ = require("./_");
 const logger = require("./logger");
 const boosterRules = require("../data/boosterRules.json");
 const weighted = require("weighted");
-const {sample, sampleSize} = require("lodash");
+const {sample, sampleSize, random, concat} = require("lodash");
 
 const makeBoosterFromRules = (setCode) => {
   const set = getSet(setCode);
@@ -33,7 +32,7 @@ const makeBoosterFromRules = (setCode) => {
 const getDefaultBooster = (set) => {
   let { Basic, Common, Uncommon, Rare, Mythic, size } = set;
 
-  if (Mythic && !_.rand(8))
+  if (Mythic && !random(7))
     Rare = Mythic;
 
   if (!Rare.length) {
@@ -44,7 +43,7 @@ const getDefaultBooster = (set) => {
   if (size < 10)
     size = 10;
 
-  const cardNames = [].concat(
+  const cardNames = concat(
     sampleSize(Common, size),
     sampleSize(Uncommon, 3),
     sampleSize(Rare, 1)

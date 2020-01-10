@@ -39,7 +39,7 @@ export let Zones = {
 };
 
 function hash() {
-  let { main, side } = Zones;
+  const { main, side } = Zones;
   App.send("hash", { main, side });
 }
 
