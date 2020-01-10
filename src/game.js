@@ -8,7 +8,6 @@ const logger = require("./logger");
 const uuid = require("uuid");
 const Sock = require("./sock");
 const {shuffle, uniqueId} = require("lodash");
-const {at} = require("./_");
 
 let SECOND = 1000;
 let MINUTE = 1000 * 60;
@@ -367,7 +366,7 @@ module.exports = class Game extends Room {
     }
 
     var index = this.players.indexOf(p) + this.delta;
-    var p2 = at(this.players, index);
+    var p2 = this.at(this.players, index);
     p2.getPack(pack);
     if (!p2.isBot)
       this.meta();
@@ -405,7 +404,7 @@ module.exports = class Game extends Room {
     var count = players.length;
     while (--count) {
       index -= this.delta;
-      let p = at(players, index);
+      let p = this.at(players, index);
       if (p.isBot)
         p.getPack(this.pool.shift());
     }
@@ -596,5 +595,11 @@ module.exports = class Game extends Room {
     playerPackSize: ${this.cube.cards}
     cube: ${this.cube.list}`
     : ""}`;
+  }
+
+  at(arr, index) {
+    let {length} = arr;
+    index = (index % length + length) % length;
+    return arr[index];
   }
 };
