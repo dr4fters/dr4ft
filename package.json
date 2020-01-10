@@ -33,6 +33,7 @@
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
     "lint": "eslint --ignore-path .gitignore .",
     "pretest": "npm run lint",
+    "test": "mocha --reporter spec --exit",
     "setup-env": "node scripts/setup-test-env",
     "postinstall": "node scripts/setup-test-env && node scripts/postinstall && webpack --config webpack.prod.js"
   },
@@ -59,6 +60,7 @@
     "engine.io-client": "^3.4.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
+    "fast-xml-parser": "^3.15.1",
     "filepond": "^4.9.3",
     "filepond-plugin-file-validate-size": "^2.2.0",
     "filepond-plugin-file-validate-type": "^1.2.4",
