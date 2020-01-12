@@ -2,7 +2,7 @@ const fs = require("fs");
 const logger = require("../backend/logger");
 const { saveSetsAndCards, getSet, getCardByUuid } = require("../backend/data");
 const doSet = require("../backend/import/doSet");
-const boosterRules = require("../../booster_generation.json");
+const boosterRules = require("../booster_generation.json");
 
 const updateDatabase = () => {
   var allCards = {};

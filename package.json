@@ -28,14 +28,16 @@
   },
   "scripts": {
     "start": "node scripts/run",
-    "start-dev": "npm run watch & nodemon ./app.js -e html,js --ignore built --ignore frontend",
+    "start-dev": "npm run watch& nodemon ./app.js -e html,js --ignore built --ignore frontend",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --config webpack.dev.js --watch -d --display-error-details",
     "lint": "eslint --ignore-path .gitignore .",
     "pretest": "npm run lint",
     "test": "mocha --reporter spec --exit \"./{,!(node_modules)/**/}*.spec.js\"",
     "setup-env": "node scripts/setup-test-env",
-    "postinstall": "node scripts/setup-test-env && node scripts/allsets && webpack --config webpack.prod.js"
+    "postinstall": "npm run setup-env && npm run download_allsets && webpack --config webpack.prod.js",
+    "update_database": "node scripts/update_database",
+    "download_allsets": "node scripts/download_allsets"
   },
   "dependencies": {
     "@babel/cli": "^7.7.7",
