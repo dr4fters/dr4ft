@@ -1,39 +1,19 @@
-const {EventEmitter} = require("events");
+const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
 const {random} = require("lodash");
 
-module.exports = class extends EventEmitter {
+module.exports = class extends Player {
   constructor(sock) {
-    super();
-    Object.assign(this, {
+    super({
       isBot: false,
-      isConnected: false,
-      id: sock.id,
-      ip: sock.ip,
+      isConnected: true,
       name: sock.name,
-      time: 0,
-      packs: [],
-      autopick_index: -1,
-      pool: [],
-      cap: {
-        packs: {}
-      },
-      picks: [],
-      draftLog: {
-        round : {},
-        pack: []
-      },
-      draftStats: [],
-      pickNumber: 0,
-      packSize: 15,
+      id: sock.id
     });
     this.attach(sock);
   }
-  get isActive() {
-    // Note that a player can be transmuted into a bot when they are kicked.
-    return this.isConnected && !this.isBot;
-  }
+
   attach(sock) {
     if (this.sock && this.sock !== sock)
       this.sock.ws.close();
@@ -160,7 +140,7 @@ module.exports = class extends EventEmitter {
     this.pick(index);
   }
   kick() {
-    this.send = ()=>{};
+    this.send = () => {};
     while(this.packs.length)
       this.pickOnTimeout();
     this.sendPack = this.pickOnTimeout;

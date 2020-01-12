@@ -34,9 +34,6 @@ class Sock extends EventEmitter {
     var { id = "", name = STRINGS.BRANDING.DEFAULT_USERNAME } = ws.request._query;
     this.id = id.slice(0, 25);
     this.name = name.slice(0, 15);
-    //var ip = ws.request.connection.remoteAddress
-    var ip = ws.request.headers["x-forwarded-for"];
-    this.ip = ip;
 
     for (var key in mixins)
       this[key] = mixins[key].bind(this);

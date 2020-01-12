@@ -1,6 +1,6 @@
-var crypto = require("crypto");
+const crypto = require("crypto");
 
-var opts = {
+const opts = {
   cock: {
     algo: "sha1",
     separator: ";",
@@ -27,7 +27,7 @@ var opts = {
 };
 
 function hash(deck, opts) {
-  var items = [];
+  let items = [];
   for (var zoneName in deck) {
     var prefix = zoneName === "side"
       ? opts.prefix
@@ -42,8 +42,8 @@ function hash(deck, opts) {
     }
   }
 
-  var data = items.sort().join(opts.separator);
-  var digest = crypto
+  const data = items.sort().join(opts.separator);
+  const digest = crypto
     .createHash(opts.algo)
     .update(data)
     .digest("hex");

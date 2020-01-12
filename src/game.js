@@ -160,29 +160,29 @@ module.exports = class Game extends Room {
   }
 
   static broadcastRoomInfo() {
-    let roomInfo = [];
-    for (let id of Object.keys(games)) {
-      let game = games[id];
-      if (game.isPrivate || game.didGameStart || !game.isActive)
-        continue;
+    const roomInfo =
+      Object.values(games).reduce((acc, game) => {
+        if (game.isPrivate || game.didGameStart || !game.isActive)
+          return acc;
 
-      let usedSeats = game.players.length;
-      let totalSeats = game.seats;
-      if (usedSeats === totalSeats)
-        continue;
+        const usedSeats = game.players.length;
+        const totalSeats = game.seats;
+        if (usedSeats === totalSeats)
+          return acc;
 
-      roomInfo.push({
-        id: game.id,
-        title: game.title,
-        usedSeats,
-        totalSeats,
-        name: game.name,
-        packsInfo: game.packsInfo,
-        type: game.type,
-        timeCreated: game.timeCreated,
-      });
-    }
-    Sock.broadcast("set", { roomInfo: roomInfo });
+        acc.push({
+          id: game.id,
+          title: game.title,
+          usedSeats,
+          totalSeats,
+          name: game.name,
+          packsInfo: game.packsInfo,
+          type: game.type,
+          timeCreated: game.timeCreated,
+        });
+        return acc;
+      }, []);
+    Sock.broadcast("set", { roomInfo });
   }
 
   name(name, sock) {
@@ -192,6 +192,7 @@ module.exports = class Game extends Room {
   }
 
   join(sock) {
+    // Reattach sock to player based on his id
     this.players.some((player) => {
       if (player.id === sock.id) {
         player.attach(sock);
@@ -342,7 +343,6 @@ module.exports = class Game extends Room {
       "cap": this.players.map((player, seat) => ({
         "id": player.id,
         "name": player.name,
-        "ip": player.ip,
         "seat": seat,
         "picks": player.cap.packs,
         "cubeHash": cubeHash
@@ -443,26 +443,17 @@ module.exports = class Game extends Room {
   getDecks({ seat, id }) {
     if (typeof seat == "number") {
       const player = this.players[seat];
-      return this._getPlayerDeck(player, seat);
+      return player.getPlayerDeck();
     }
 
     if (typeof id == "string") {
       const player = this.players.find(p => p.id == id);
-      const seat = this.players.findIndex(p => p.id == id);
-      return this._getPlayerDeck(player, seat);
+      return player.getPlayerDeck();
     }
 
-    return this.players.map(this._getPlayerDeck);
+    return this.players.map((player) => player.getPlayerDeck());
   }
 
-  _getPlayerDeck(player, seat) {
-    return {
-      seatNumber: seat,
-      playerName: player.name,
-      id: player.id,
-      pool: player.pool.map(card => card.name)
-    };
-  }
 
   createPool() {
     switch (this.type) {
@@ -531,14 +522,15 @@ module.exports = class Game extends Room {
 
   handleDraft({ addBots, useTimer, timerLength, shufflePlayers }) {
     const {players} = this;
-    this.players.forEach((p) => {
+
+    players.forEach((p) => {
       p.useTimer = useTimer;
       p.timerLength = timerLength;
     });
 
     if (addBots) {
       while (players.length < this.seats) {
-        players.push(new Bot);
+        players.push(new Bot());
         this.bots++;
       }
     }
@@ -547,6 +539,7 @@ module.exports = class Game extends Room {
       shuffle(players);
 
     players.forEach((p, i) => {
+      p.self = i;
       p.on("pass", this.pass.bind(this, p));
       p.send("set", { self: i });
     });
@@ -571,7 +564,7 @@ module.exports = class Game extends Room {
     } catch(err) {
       logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
-        if(!player.isBot) {
+        if (!player.isBot) {
           player.exit();
           player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: <a href='https://github.com/dr4fters/dr4ft/issues'>https://github.com/dr4fters/dr4ft/issues</a>");
         }

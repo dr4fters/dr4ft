@@ -1,25 +1,16 @@
 const {sample, pull} = require("lodash");
-const {EventEmitter} = require("events");
+const Player = require("./player");
 
-module.exports = class extends EventEmitter {
+module.exports = class extends Player {
   constructor() {
-    super();
-    Object.assign(this, {
+    super({
       isBot: true,
       isConnected: true,
       name: "bot",
-      packs: [],
-      pool: [],
-      time: 0,
-      cap: {
-        packs: {}
-      },
-      picks: []
+      id: ""
     });
   }
-  get isActive() {
-    return false;
-  }
+
   getPack(pack) {
     let score = 99;
     let index = 0;
@@ -46,6 +37,4 @@ module.exports = class extends EventEmitter {
     }
     this.emit("pass", pack);
   }
-  send(){}
-  err(){}
 };
