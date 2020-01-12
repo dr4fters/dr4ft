@@ -1,12 +1,12 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const groupCardNamesByRarity = require("./keyCards");
+const {groupCardsUuidByRarity} = require("./keyCards");
 
 describe("Acceptance tests for groupCardNamesByRarity function", () => {
   it("does not add card that are with a baseSetSize bigger", () => {
 
-    const got = groupCardNamesByRarity(1, [{
-      name: "test",
+    const got = groupCardsUuidByRarity(1, [{
+      uuid: "test",
       number: 2,
       rarity: "test"
     }]);
@@ -14,12 +14,12 @@ describe("Acceptance tests for groupCardNamesByRarity function", () => {
     assert.deepEqual(got, {});
   });
   it("does add card that have with a number equal or less than baseSetSize", () => {
-    const got = groupCardNamesByRarity(2, [{
-      name: "test",
+    const got = groupCardsUuidByRarity(2, [{
+      uuid: "test",
       number: 2,
       rarity: "test"
     },{
-      name: "test2",
+      uuid: "test2",
       number: 1,
       rarity: "test"
     }]);
@@ -29,12 +29,12 @@ describe("Acceptance tests for groupCardNamesByRarity function", () => {
     });
   });
   it("does add cards according to their rarity", () => {
-    const got = groupCardNamesByRarity(2, [{
-      name: "test",
+    const got = groupCardsUuidByRarity(2, [{
+      uuid: "test",
       number: 2,
       rarity: "rarity1"
     },{
-      name: "test2",
+      uuid: "test2",
       number: 1,
       rarity: "rarity2"
     }]);
