@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const logger = require("./backend/logger");
 const router = require("./backend/router");
 const apiRouter = require("./backend/api/");
-const allSets = require("./backend/import/allsets");
+const allSets = require("./scripts/allsets");
 const config = require("./config.server");
 const app = express();
 

@@ -1,7 +1,7 @@
 const fs = require("fs");
-const logger = require("../logger");
-const { saveSetsAndCards, getSet, getCardByUuid } = require("../data");
-const doSet = require("./doSet");
+const logger = require("../backend/logger");
+const { saveSetsAndCards, getSet, getCardByUuid } = require("../backend/data");
+const doSet = require("../backend/import/doSet");
 const boosterRules = require("../../booster_generation.json");
 
 const updateDatabase = () => {
