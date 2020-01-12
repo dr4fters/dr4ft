@@ -16,6 +16,6 @@ describe("Acceptance tests for toBoosterCard function", () => {
           json.cards.reduce(toBoosterCard, {});
         });
       }
-    });
+    }).timeout(10000);
   });
 });
