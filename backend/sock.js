@@ -1,5 +1,5 @@
 const { EventEmitter } = require("events");
-const { STRINGS } = require("../config.server");
+const { app: { DEFAULT_USERNAME } } = require("../config");
 const { getPlayableSets, getLatestReleasedSet } = require("./data");
 const { getVersion } = require("./mtgjson");
 
@@ -31,7 +31,7 @@ class Sock extends EventEmitter {
   constructor(ws) {
     super();
     this.ws = ws;
-    var { id = "", name = STRINGS.BRANDING.DEFAULT_USERNAME } = ws.request._query;
+    var { id = "", name = DEFAULT_USERNAME } = ws.request._query;
     this.id = id.slice(0, 25);
     this.name = name.slice(0, 15);
 

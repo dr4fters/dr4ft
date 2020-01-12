@@ -5,6 +5,8 @@ const envVarsSchema = joi.object({
     .default(1337),
   HOST: joi.string()
     .default("localhost"),
+  DEFAULT_USERNAME: joi.string()
+    .default("dr4fter")
 }).unknown()
   .required();
 
@@ -12,5 +14,4 @@ const { error, value: envVars } = envVarsSchema.validate(process.env);
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
-
 module.exports = envVars;

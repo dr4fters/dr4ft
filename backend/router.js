@@ -1,4 +1,4 @@
-const {VERSION} = require("../config.server");
+const {version: {VERSION}} = require("../config");
 const Game = require("./game");
 const Rooms = require("./rooms");
 const Sock = require("./sock");

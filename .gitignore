@@ -4,7 +4,6 @@ node_modules
 .vscode
 
 data
-frontend/src/config.js
 frontend/index.html
 
 config.client.js

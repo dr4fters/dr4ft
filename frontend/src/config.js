@@ -9,7 +9,7 @@ export const STRINGS = {
   },
 
   PAGE_SECTIONS: {
-    MOTD: null, // message of the day; can be a React element
+    MOTD: null, // TODO: handle overwrite of this message of the day; can be a React element
 
     FOOTER:
       <div>
@@ -18,7 +18,7 @@ export const STRINGS = {
         the <code >draft</code> project by aeosynth.
         Contributions welcome! &nbsp;
         <a href='https://github.com/dr4fters/dr4ft'>
-          <img src='https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' alt='GitHub' title='GitHub Repository' align='top' height='18' /> 
+          <img src='https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' alt='GitHub' title='GitHub Repository' align='top' height='18' />
         dr4fters/dr4ft</a>
       </div>
   }

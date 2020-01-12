@@ -27,12 +27,5 @@ const VERSION =
     : versionInfo;
 
 module.exports = {
-  PORT: process.env.PORT || 1337,
   VERSION,
-  STRINGS: {
-    BRANDING: {
-      DEFAULT_USERNAME: "dr4fter",
-    }
-  },
-  LOGDIR: process.env.LOGDIR || "./data/log/"
 };
