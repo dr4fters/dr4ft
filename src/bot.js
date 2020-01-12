@@ -21,17 +21,17 @@ module.exports = class extends EventEmitter {
     return false;
   }
   getPack(pack) {
-    var score = 99;
-    var index = 0;
-    var cardcount = 0;
-    var scoredcards = 0;
+    let score = 99;
+    let index = 0;
+    let cardcount = 0;
+    let scoredcards = 0;
     pack.forEach((card, i) => {
       if (card.score) {
         if (card.score < score) {
           score = card.score;
           index = i;
         }
-        scoredcards = scoredcards + 1;
+        scoredcards += 1;
       }
       cardcount = i;
     });
@@ -40,8 +40,7 @@ module.exports = class extends EventEmitter {
       const randomPick = sample(pack);
       this.picks.push(randomPick.name);
       pull(pack, randomPick);
-    }
-    else {
+    } else {
       this.picks.push(pack[index].name);
       pack.splice(index, 1);
     }

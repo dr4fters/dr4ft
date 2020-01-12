@@ -121,26 +121,26 @@ let events = {
     App.state.log = draftLog;
   },
   getLog() {
-    let { id, log, players, self, sets, gamesubtype, filename } = App.state;
-    let isCube = /cube/.test(gamesubtype);
-    let date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
+    const { id, log, players, self, sets, gamesubtype, filename } = App.state;
+    const isCube = /cube/.test(gamesubtype);
+    const date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
     let data = [
       `Event #: ${id}`,
       `Time: ${date}`,
       "Players:"
     ];
 
-    players.forEach((x, i) =>
-      data.push(i === self ? `--> ${x.name}` : `    ${x.name}`)
+    players.forEach((player, i) =>
+      data.push(i === self ? `--> ${player.name}` : `    ${player.name}`)
     );
 
-    for (var round in log) {
+    Object.values(log).forEach((round, index) => {
       data.push("", `------ ${isCube ? "Cube" : sets.shift()} ------`);
-      log[round].forEach(function (pick, i) {
-        data.push("", `Pack ${round} pick ${i + 1}:`);
+      round.forEach(function (pick, i) {
+        data.push("", `Pack ${index} pick ${i + 1}:`);
         data = data.concat(pick);
       });
-    }
+    });
 
     _.download(data.join("\n"), `${filename}-draftlog.txt`);
   },

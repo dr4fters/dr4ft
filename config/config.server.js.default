@@ -3,7 +3,7 @@
 
 const execSync = require("child_process").execSync;
 
-var versionInfo = "noVersion";
+let versionInfo = "noVersion";
 try {
   versionInfo = execSync("git describe --tags")
     .toString().trim();
@@ -11,7 +11,7 @@ try {
   console.log(err);
 }
 
-let versionInfoParts = versionInfo.split("-");
+const versionInfoParts = versionInfo.split("-");
 
 const VERSION =
   versionInfoParts.length === 3

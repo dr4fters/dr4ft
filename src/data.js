@@ -2,7 +2,7 @@ const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 const {  keyCardsByName } = require("./make/keyCards");
 
-var cards, cardsByName, sets, mws;
+let cards, cardsByName, sets, mws;
 let playableSets, latestSet;
 
 const getSets = () => {
