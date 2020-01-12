@@ -58,18 +58,30 @@ describe("Acceptance tests for Pool class", () => {
     });
   });
 
-  describe("can make all playable sets one set", () => {
-    it("should return a a normal booster", () => {
+  describe("can make all playable sets", () => {
+    it("should return a normal booster", () => {
       const playableSets = getPlayableSets();
       Object.values(playableSets).forEach((sets) => {
-        sets.forEach(({code}) => {
-          if (code === "random" || code === "UST") {
+        sets.forEach(({code, releaseDate}) => {
+          if (code === "random" || Date.parse(releaseDate) > new Date() || code === "UST") {
             return;
           }
           const [got] = Pool.DraftNormal({playersLength: 1, sets: [code]});
           got.forEach(card => {
             assert.ok(card.name, `${code} has an error: ${card}`);
           });
+        });
+      });
+    });
+  });
+  describe("EMN boosters do not have cards in multiple", () => {
+    it("1000 EMN boosters don't have cards in multiple unless double faced card", () => {
+      new Array(1000).fill().forEach(() => {
+        const [got] = Pool.DraftNormal({playersLength: 1, sets: ["EMN"]});
+        got.forEach(card => {
+          const isMultiple = got.filter(c => c.name === card.name && !c.foil).length > 1;
+          const isSpecial = card.rarity === "special" || card.isDoubleFaced || card.foil;
+          assert.ok(!isMultiple || isSpecial, `${card.name} is in multiple and was not special`);
         });
       });
     });

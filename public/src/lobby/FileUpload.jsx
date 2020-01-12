@@ -14,16 +14,25 @@ registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
   return (
     <fieldset className='fieldset'>
       <legend className='legend'>Upload Custom Set</legend>
       <FilePond
+        server={{
+          process: {
+            url: "/api/sets/upload",
+            onerror: setErrorMsg
+          }
+        }}
         allowRevert={false}
         maxFileSize={"3MB"}
-        acceptedFileTypes={["application/json"]}
+        acceptedFileTypes={["application/json", "text/xml"]}
         allowMultiple={true}
         files={files}
-        server="/api/sets/upload"
+        labelIdle={`Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
+        JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`}
+        labelFileProcessingError={errorMsg}
         onupdatefiles={fileItems => {
           // Set currently active file objects to this.state
           setFiles(fileItems.map(fileItem => fileItem.file));

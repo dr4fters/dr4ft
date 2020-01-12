@@ -92,8 +92,7 @@ const getPlayableSets = () => {
       continue;
     }
 
-    const isSpoiler =  new Date(releaseDate).getTime() > Date.now();
-    if (!isSpoiler && (type === "core" || type === "expansion")) {
+    if (isReleasedExpansionOrCoreSet(type, releaseDate)) {
       if (!latestSet) {
         latestSet = { code, type, name, releaseDate };
       } else if (new Date(releaseDate).getTime() > new Date(latestSet.releaseDate).getTime()) {
@@ -145,7 +144,7 @@ const getExpansionOrCoreModernSets = () => {
   const sets = [];
   for (const setCode in getSets()) {
     const set = getSets()[setCode];
-    if (["expansion", "core"].includes(set.type)
+    if (isReleasedExpansionOrCoreSet(set.type, set.releaseDate)
       && Date.parse("2003-07-26") <= Date.parse(set.releaseDate)) {
       set.code = setCode;
       sets.push(set);
@@ -158,13 +157,18 @@ const getExansionOrCoreSets = () => {
   const sets = [];
   for (const setCode in getSets()) {
     const set = getSets()[setCode];
-    if (["expansion", "core"].includes(set.type)) {
+    if (isReleasedExpansionOrCoreSet(set.type, set.releaseDate)) {
       set.code = setCode;
       sets.push(set);
     }
   }
   return sets;
 };
+
+const isReleasedExpansionOrCoreSet = (type, releaseDate) => (
+  ["expansion", "core"].includes(type) &&
+  Date.parse(releaseDate) <= new Date()
+);
 
 module.exports = {
   getCards,

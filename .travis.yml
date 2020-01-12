@@ -50,6 +50,14 @@ matrix:
         - npm run setup-env
         - npm run lint
 
+    - name: TEST
+      language: node_js
+      node_js: node
+      install:
+        - npm install
+      script:
+        - npm test
+
   allow_failures:
     - env: docker
     - env: eslint
