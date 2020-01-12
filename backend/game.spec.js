@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const Game = require("../src/game");
+const Game = require("./game");
 
 describe("Acceptance tests for Game class", () => {
   describe("can make a game", () => {

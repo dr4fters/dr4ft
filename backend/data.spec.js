@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const data = require("../src/data");
+const data = require("./data");
 
 describe("Acceptance tests for Data functions", () => {
   describe("can find certain starter sets", () => {

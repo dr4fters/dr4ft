@@ -4,8 +4,8 @@ node_modules
 .vscode
 
 data
-public/src/config.js
-public/index.html
+frontend/src/config.js
+frontend/index.html
 
 config.client.js
 config.server.js

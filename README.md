@@ -1,5 +1,5 @@
 <p align="center">
-  dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/public/4.png" alt="4" height="14">ft
+  dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/frontend/4.png" alt="4" height="14">ft
 </p>
 
 <p align='center'>

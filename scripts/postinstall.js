@@ -1,3 +1,3 @@
 // Download Allsets.json
-const allSets = require("../src/make/allsets");
+const allSets = require("../backend/import/allsets");
 allSets.download();

@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const Pool = require("../src/pool");
-const { getPlayableSets } = require("../src/data");
+const Pool = require("./pool");
+const { getPlayableSets } = require("./data");
 
 describe("Acceptance tests for Pool class", () => {
   describe("can make a cube pool", () => {

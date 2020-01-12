@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const parser = require("../src/make/xml/parser");
+const parser = require("./parser");
 
 describe("Unit tests for XML Cockatrice Parser", () => {
   describe("throw an error when xml structure not supported", () => {

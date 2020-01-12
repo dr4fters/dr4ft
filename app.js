@@ -6,10 +6,10 @@ const helmet = require("helmet");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const logger = require("./src/logger");
-const router = require("./src/router");
-const apiRouter = require("./src/api/");
-const allSets = require("./src/make/allsets");
+const logger = require("./backend/logger");
+const router = require("./backend/router");
+const apiRouter = require("./backend/api/");
+const allSets = require("./backend/import/allsets");
 const config = require("./config.server");
 const app = express();
 

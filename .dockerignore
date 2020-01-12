@@ -2,4 +2,4 @@ data/*
 !data/mws.json
 !data/scores.json
 node_modules
-public/lib
+frontend/lib

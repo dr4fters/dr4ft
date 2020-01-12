@@ -6,7 +6,7 @@ const logger = require("../logger");
 cubesRouter
   .get("/", (req, res) => {
 
-    fs.readdir("src/cubes", function(err, fileNames) {
+    fs.readdir("backend/cubes", function(err, fileNames) {
       if (err) {
         logger.error(err);
         res.status(500).end();
@@ -14,7 +14,7 @@ cubesRouter
         let cubes = {};
         fileNames.forEach(name => {
           if (name.includes(".txt")) {
-            const cube = fs.readFileSync(`src/cubes/${name}`);
+            const cube = fs.readFileSync(`backend/cubes/${name}`);
             const key = name.slice(0, name.length-4);
             cubes[key] = cube.toString();
           }

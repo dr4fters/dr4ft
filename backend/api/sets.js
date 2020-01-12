@@ -2,9 +2,9 @@ const fs = require("fs");
 const express = require("express");
 const setsRouter = express.Router();
 const { getSets, saveSetAndCards } = require("../data");
-const doSet = require("../make/doSet");
+const doSet = require("../import/doSet");
 const logger = require("../logger");
-const parser = require("../make/xml/parser");
+const parser = require("../import/xml/parser");
 
 if (!fs.existsSync("data/custom")) {
   fs.mkdirSync("data/custom");

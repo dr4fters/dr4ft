@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const {  keyCardsByName } = require("./make/keyCards");
+const {  keyCardsByName } = require("./import/keyCards");
 
 let cards, cardsByName, sets;
 let playableSets, latestSet;
