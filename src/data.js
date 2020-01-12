@@ -2,7 +2,7 @@ const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 const {  keyCardsByName } = require("./make/keyCards");
 
-let cards, cardsByName, sets, mws;
+let cards, cardsByName, sets;
 let playableSets, latestSet;
 
 const getSets = () => {
@@ -24,13 +24,6 @@ const getCards = () => {
     cards = readFile("data/cards.json");
   }
   return cards;
-};
-
-const getMws = () => {
-  if (!mws) {
-    mws = readFile("data/mws.json");
-  }
-  return mws;
 };
 
 const mergeCardsTogether = (oldCards, newCards) => ({
@@ -174,13 +167,11 @@ module.exports = {
   getCards,
   getSets,
   getSet,
-  getMws,
   getPlayableSets,
   getRandomSet,
   getLatestReleasedSet,
   getExpansionOrCoreModernSets,
   getExansionOrCoreSets,
-  writeCards,
   saveSetAndCards,
   saveSetsAndCards,
   mergeCardsTogether,
