@@ -14,14 +14,28 @@
 
 # dr4ft [![Chat](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft)
 
-*dr4ft* is a <kbd>NodeJS</kbd> application.<br>
-*dr4ft* is written in [ES6] and transpiled with [Babel], and uses [React] on the client-side.
+*dr4ft* is a <kbd>NodeJS</kbd> based web-application that simulates draft and sealed format between players and/or bots.
+Most of MTG sets are playable thanks to MTGJson support. We follow as much as possible the rules that determine how a real booster is created.
 
-Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
+The application provides the following features:
 
+* Draft and sealed format
+* Regular, Cube and chaos game types
+* 1 to 100 players
+* 1 to 12 packs per player
+* Nearly all playable sets ever printed
+* In-game chat
+* Pick Timer
+* Autopick
+* Grid and column view
+* Card sorting by rarity, type, color or Manacost
+* Bots
+* Notifications when a pack is available
 
+## Technologies
 
-<br>
+*dr4ft* is written in [ES6] and transpiled with [Webpack] and [Babel], and uses [React] on the client-side.
+The application uses [SocketIO] and the Websocket technology between client and server.
 
 # Project History
 
@@ -61,9 +75,19 @@ You can also create a Docker image and run the app in a container:
 `docker run -dp 1337:1337 dr4ft-app`<br>
 4) Visit [http://localhost:1337](http://localhost:1337)
 
+## Usage
 
+TODO: add scripts explanation
+npm run ...
+download_allsets -> download AllPrintings.json from MTGJson
+update_database -> parse and integrate MTGJson sets previously downloaded
+download_booster_rules -> download and parse booster generation rules
 
-<br>
+## Contributing
+Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
 
 <p align='center'>
   <sub><i>The project is unaffiliated with Wizards of the Coast, and is licensed under the MIT license.</i></sub>
@@ -75,3 +99,5 @@ You can also create a Docker image and run the app in a container:
   [ES6]: https://github.com/lukehoban/es6features
   [Babel]: https://github.com/babel/babel
   [React]: https://github.com/facebook/react
+  [Webpack]: https://webpack.js.org/
+  [SocketIO]: https://socket.io
