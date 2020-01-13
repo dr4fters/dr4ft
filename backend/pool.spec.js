@@ -1,6 +1,8 @@
 /* eslint-env node, mocha */
+
 const assert = require("assert");
 const Pool = require("./pool");
+const {range} = require("lodash");
 const { getPlayableSets } = require("./data");
 
 describe("Acceptance tests for Pool class", () => {
@@ -76,7 +78,7 @@ describe("Acceptance tests for Pool class", () => {
   });
   describe("EMN boosters do not have cards in multiple", () => {
     it("1000 EMN boosters don't have cards in multiple unless double faced card", () => {
-      new Array(1000).fill().forEach(() => {
+      range(1000).forEach(() => {
         const [got] = Pool.DraftNormal({playersLength: 1, sets: ["EMN"]});
         got.forEach(card => {
           const isMultiple = got.filter(c => c.name === card.name && !c.foil).length > 1;

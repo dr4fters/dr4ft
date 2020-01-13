@@ -53,11 +53,11 @@ class Player extends EventEmitter {
     return this.isConnected && !this.isBot;
   }
 
-  err(message) {
+  err() {
     // Implemented on human
   }
 
-  send(type, data) {
+  send() {
     // Implemented on human
   }
 
@@ -69,7 +69,7 @@ class Player extends EventEmitter {
     // Implemented on human
   }
 
-  getPack(pack) {
+  getPack() {
     // Implemented on human
   }
 }

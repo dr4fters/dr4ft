@@ -18,7 +18,7 @@ const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
 const isVersionUpToDate = () => (
   new Promise((resolve, reject) => {
     https.get(versionURL, res => {
-      var json = "";
+      let json = "";
       res.on("data", chunk => { json += chunk; });
       res.on("end", function () {
         try {

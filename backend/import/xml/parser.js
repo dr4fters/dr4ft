@@ -57,7 +57,7 @@ function parse(content) {
         manacost = 0,
         pt = "",
         side = "a",
-        type = "" } = root.version == 3 ? c : c.prop;
+        type = "" } = root.version === "3" ? c : c.prop;
       const [power, toughness] = pt.split("/");
       const fixedColors = getTrueColors(root.version, color, colors);
       const fixedType = getTrueType(type);
@@ -92,7 +92,7 @@ const getTrueType = (type) => (
 );
 
 const getTrueColors = (version, colorv3, colorsv4) => (
-  version == "3"
+  version === "3"
     ? Array.isArray(colorv3) ? colorv3 : [colorv3]
     : Array.isArray(colorsv4) ? colorsv4 : [colorsv4]
 );

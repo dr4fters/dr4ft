@@ -1,41 +1,41 @@
-import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import React, {useState, useEffect} from "react";
+import axios from "axios";
 
 import { Textarea } from "../utils";
-import App from '../app';
+import App from "../app";
 
 const CubeList = () => {
-  const [cubes, setCubes] = useState('')
-  const [selectedCube, selectCube] = useState('none')
-  let cubeOptions = []
+  const [cubes, setCubes] = useState("");
+  const [selectedCube, selectCube] = useState("none");
+  let cubeOptions = [];
 
   const getCubes = async function() {
-    const {data: cubes} = await axios.get('/api/cubes')
-    setCubes(cubes)
-  }
+    const {data: cubes} = await axios.get("/api/cubes");
+    setCubes(cubes);
+  };
 
-  useEffect(() => {!cubes && getCubes()})
-  
+  useEffect(() => {!cubes && getCubes();});
+
   Object.keys(cubes).forEach(key => {
-    const option = <option value={key} key={key}>{key}</option>
-    cubeOptions.push(option)
-  })
+    const option = <option value={key} key={key}>{key}</option>;
+    cubeOptions.push(option);
+  });
 
   const handleChange = (e) => {
-    e.preventDefault()
-    selectCube(e.target.value)
-    App.state['list'] = 
-    e.target.value === 'none'
-      ? ''
-      : cubes[e.target.value]
-  }
+    e.preventDefault();
+    selectCube(e.target.value);
+    App.state["list"] =
+    e.target.value === "none"
+      ? ""
+      : cubes[e.target.value];
+  };
 
   return <div id='cube-list'>
     <div className='column'>
       <div>one card per line</div>
-      <Textarea 
-        placeholder='cube list' 
-        link='list' 
+      <Textarea
+        placeholder='cube list'
+        link='list'
       />
     </div>
     {cubes && <div id='preset-cubes'>
@@ -47,7 +47,7 @@ const CubeList = () => {
         </optgroup>
       </select>
     </div>}
-  </div>
-}
+  </div>;
+};
 
-export default CubeList
+export default CubeList;

@@ -75,7 +75,7 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   var flippedCardURL = "";
   if (isDoubleFaced) {
     rawCards.some(x => {
-      if (x.name == names[1]) {
+      if (x.name === names[1]) {
         flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image`;
         if (/^double-faced$|^transform$/.test(layout)) {
           flippedCardURL += "&face=back";

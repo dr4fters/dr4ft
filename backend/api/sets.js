@@ -44,7 +44,7 @@ function integrateJson(json) {
 
   if ((json.code in sets)) {
   // Unless it's a custom set. In this case, we allow overriding
-    if (sets[json.code].type != CUSTOM_TYPE) {
+    if (sets[json.code].type !== CUSTOM_TYPE) {
       throw new Error(`Set existing already. Not saving again set with code "${json.code}" to database`);
     } else {
       logger.info(`Custom set ${json.code} already existing. Overriding with new file...`);
@@ -53,8 +53,8 @@ function integrateJson(json) {
 
   //TODO: that should be done done by a service -> parse and save (and write file)
   json.type = CUSTOM_TYPE; //Force set as custom
-  const [parsedSet, parsedCards] = doSet(json);
-  saveSetAndCards(parsedSet, parsedCards);
+  const [set, cards] = doSet(json);
+  saveSetAndCards({ set, cards });
   logger.info(`adding new set with code "${json.code}" to database`);
 
   //TODO: That should be done by something else. Move out of controller

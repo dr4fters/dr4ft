@@ -1,6 +1,6 @@
 const fs = require("fs");
 const axios = require("axios");
-const logger = require("../backend/logger"); 
+const logger = require("../backend/logger");
 const {getCardByUuid, getSet} = require("../backend/data");
 
 const URL = "https://raw.githubusercontent.com/taw/magic-sealed-data/master/sealed_basic_data.json";
@@ -26,7 +26,7 @@ async function fetch() {
           cardsByColor: Object.entries(cards).reduce((acc, [cardCode]) => {
             try {
               const {uuid, colorIdentity, type} = getCard(cardCode);
-              if (type === "Land" || colorIdentity.length == 0) {
+              if (type === "Land" || colorIdentity.length === 0) {
                 (acc["c"] = acc["c"] || []).push(uuid);
               } else {
                 colorIdentity.forEach((color) => {

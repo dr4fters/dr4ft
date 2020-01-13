@@ -1,4 +1,4 @@
-const {sample, shuffle, random} = require("lodash");
+const {sample, shuffle, random, range} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
@@ -15,7 +15,7 @@ const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
 const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
   let list = shuffle(cubeList); // copy the list to work on it
 
-  return new Array(playersLength * packsNumber).fill()
+  return range(playersLength * packsNumber)
     .map(() => {
       return list.splice(0, playerPackSize).map(getCardByName);
     });
@@ -73,13 +73,13 @@ function getTotalChaosPack(setList) {
 const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) => {
   const setList = modernOnly ? getModernList() : getSetsList();
 
-  return new Array(playersLength * packsNumber).fill()
+  return range(playersLength * packsNumber)
     .map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
 };
 
 const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
   const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
-  return new Array(playersLength).fill()
+  return range(playersLength)
     .map(() => pool.splice(0, packsNumber).flat());
 };
 

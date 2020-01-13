@@ -28,15 +28,15 @@ const opts = {
 
 function hash(deck, opts) {
   let items = [];
-  for (var zoneName in deck) {
-    var prefix = zoneName === "side"
+  for (let zoneName in deck) {
+    const prefix = zoneName === "side"
       ? opts.prefix
       : "";
 
-    var cards = deck[zoneName];
-    for (var cardName in cards) {
-      var count = cards[cardName];
-      var item = prefix + opts.name(cardName);
+    const cards = deck[zoneName];
+    for (let cardName in cards) {
+      let count = cards[cardName];
+      const item = prefix + opts.name(cardName);
       while (count--)
         items.push(item);
     }

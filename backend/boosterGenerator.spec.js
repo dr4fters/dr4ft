@@ -1,6 +1,7 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
 const boosterGenerator = require("./boosterGenerator");
+const {range} = require("lodash");
 
 describe("Acceptance tests for boosterGenerator function", () => {
   it("should create a MH1 booster", () => {
@@ -12,7 +13,7 @@ describe("Acceptance tests for boosterGenerator function", () => {
     assert.ok(got.length > 10); // TODO make a real test
   });
   it("should create tons of EMN booster", () => {
-    Array(1000).fill().forEach(() => {
+    range(1000).forEach(() => {
       const got = boosterGenerator("EMN");
       got.forEach((card) => {
         if (!card.name) {

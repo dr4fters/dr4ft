@@ -10,7 +10,7 @@ import App from "./app";
 
 export const Checkbox = ({link, text, side, onChange, ...rest}) => (
   <div>
-    {side == "right" ? text : ""}
+    {side === "right" ? text : ""}
     <input
       {...rest}
       type="checkbox"
@@ -18,7 +18,7 @@ export const Checkbox = ({link, text, side, onChange, ...rest}) => (
         App.save(link, e.currentTarget.checked);
       }}
       checked={App.state[link]}/>
-    {side == "left" ? text : ""}
+    {side === "left" ? text : ""}
   </div>
 );
 
@@ -75,6 +75,7 @@ Textarea.propTypes = {
   link: PropTypes.string
 };
 
+//TODO: check if lodash can do it
 export const toTitleCase = (string="", separator=" ") =>
   string.split(separator)
-    .reduce((result, word) => `${result} ${word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()}`, "")
+    .reduce((result, word) => `${result} ${word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()}`, "");

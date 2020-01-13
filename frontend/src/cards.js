@@ -220,7 +220,7 @@ let events = {
     // Algorithm: count the number of mana symbols appearing in the costs of
     // the cards in the pool, then assign lands roughly commensurately.
     let colors = ["W", "U", "B", "R", "G"];
-    let colorRegex = /\{[^}]+\}/g;
+    let colorRegex = /{[^}]+}/g;
     let manaSymbols = {};
     colors.forEach(x => manaSymbols[x] = 0);
 

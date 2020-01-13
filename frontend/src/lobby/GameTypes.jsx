@@ -11,10 +11,10 @@ const GameTypes = () => {
       <p>Game type:{" "}
         <span className='connected-container'>
           {types.map((type, key) =>
-            <GameType name={"type"} 
-              type={type} 
-              key={key} 
-              isChecked={App.state.gametype == type} 
+            <GameType name={"type"}
+              type={type}
+              key={key}
+              isChecked={App.state.gametype === type}
               onChange={() => App.save("gametype", type)}/>
           )}
         </span>
@@ -22,10 +22,10 @@ const GameTypes = () => {
       <p>Game mode:{" "}
         <span className='connected-container'>
           {subtypes.map((type, key) =>
-            <GameType name={"subtype"} 
-              type={type} 
-              key={key} 
-              isChecked={App.state.gamesubtype == type} 
+            <GameType name={"subtype"}
+              type={type}
+              key={key}
+              isChecked={App.state.gamesubtype === type}
               onChange={() => App.save("gamesubtype", type)}/>
           )}
         </span>

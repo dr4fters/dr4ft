@@ -6,14 +6,14 @@ import App from "../app";
 import { Checkbox, Select } from "../utils";
 
 import Set from "./Set";
-import CubeList from './CubeList'
+import CubeList from "./CubeList";
 
 const GameOptions = () => {
   const { setsDraft, setsSealed, gametype, gamesubtype } = App.state;
 
   switch (`${gamesubtype} ${gametype}`) {
   case "regular draft":
-    return <Regular sets={setsDraft} type={"setsDraft"} />;
+    return <Regular sets={setsDraft} type={"<setsDraft"} />;
   case "regular sealed":
     return <Regular sets={setsSealed} type={"setsSealed"} />;
   case "cube draft":

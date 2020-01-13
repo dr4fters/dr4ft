@@ -381,7 +381,7 @@ module.exports = class Game extends Room {
 
   startRound() {
     const { players } = this;
-    if (this.round != 0) {
+    if (this.round !== 0) {
       players.forEach((p) => {
         p.cap.packs[this.round] = p.picks;
         p.picks = [];
@@ -422,11 +422,6 @@ module.exports = class Game extends Room {
     this.meta({ round: this.round });
   }
 
-  hash(h, deck) {
-    h.hash = this.hash(deck);
-    this.meta();
-  }
-
   getStatus() {
     const { players, didGameStart, round } = this;
     return {
@@ -447,7 +442,7 @@ module.exports = class Game extends Room {
     }
 
     if (typeof id == "string") {
-      const player = this.players.find(p => p.id == id);
+      const player = this.players.find(p => p.id === id);
       return player.getPlayerDeck();
     }
 
