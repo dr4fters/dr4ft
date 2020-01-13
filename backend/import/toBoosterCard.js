@@ -1,7 +1,7 @@
 const { upperFirst } = require("lodash");
 
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
-  var {
+  let {
     name,
     frameEffects,
     number,
@@ -72,7 +72,7 @@ const COLORS = {
 
 function getDoubleFacedProps({layout, names}, rawCards) {
   const isDoubleFaced = /^double-faced$|^transform$|^flip$|^meld$/i.test(layout);
-  var flippedCardURL = "";
+  let flippedCardURL = "";
   if (isDoubleFaced) {
     rawCards.some(x => {
       if (x.name === names[1]) {

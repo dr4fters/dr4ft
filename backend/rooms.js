@@ -1,6 +1,6 @@
 const Room = require("./room");
 
-var rooms = {
+const rooms = {
   lobby: new Room({isPrivate: true})
 };
 

@@ -11,11 +11,11 @@ function broadcastNumUsers() {
 }
 
 function message(msg) {
-  var [type, data] = JSON.parse(msg);
+  const [type, data] = JSON.parse(msg);
   this.emit(type, data, this);
 }
 
-var mixins = {
+const mixins = {
   err(msg) {
     this.send("error", msg);
   },
@@ -31,11 +31,11 @@ class Sock extends EventEmitter {
   constructor(ws) {
     super();
     this.ws = ws;
-    var { id = "", name = DEFAULT_USERNAME } = ws.request._query;
+    const {id = "", name = DEFAULT_USERNAME} = ws.request._query;
     this.id = id.slice(0, 25);
     this.name = name.slice(0, 15);
 
-    for (var key in mixins)
+    for (let key in mixins)
       this[key] = mixins[key].bind(this);
 
     this.send("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet(), mtgJsonVersion: getVersion() });
@@ -58,12 +58,12 @@ class Sock extends EventEmitter {
   mixin(h) {
     h.sock = this;
     this.h = h;
-    for (var key in mixins)
+    for (const key in mixins) {
       h[key] = this[key];
+    }
   }
   static broadcast(...args) {
-    for (let sock of allSocks)
-      sock.send(...args);
+    allSocks.forEach((sock) => sock.send(...args));
   }
 }
 module.exports = Sock;

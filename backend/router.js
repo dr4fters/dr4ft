@@ -13,12 +13,12 @@ function create(opts) {
   }
 
   opts.hostId = this.id;
-  var g = new Game(opts);
+  const g = new Game(opts);
   this.send("route", "g/" + g.id);
 }
 
 function join(roomID) {
-  var room = Rooms.get(roomID);
+  const room = Rooms.get(roomID);
   if (!room)
     return this.err(`No game found with id ${roomID}`);
   this.exit();
@@ -26,7 +26,7 @@ function join(roomID) {
 }
 
 module.exports = function (ws) {
-  var sock = new Sock(ws);
+  const sock = new Sock(ws);
   sock.on("join", join);
   sock.on("create", create);
 

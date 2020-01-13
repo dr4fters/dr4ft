@@ -10,7 +10,7 @@ const BASICS = [
 ];
 
 function controlCubeSettingsAndTransformList(cube, seats, type) {
-  var { list, cards, packs, cubePoolSize } = cube;
+  let {list, cards, packs, cubePoolSize} = cube;
 
   assert(typeof list === "string", "cube.list must be a string");
   assert(typeof cards === "number", "cube.cards must be a number");
@@ -21,19 +21,19 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
 
   list = list.split("\n");
 
-  var min = type === "cube draft"
+  const min = type === "cube draft"
     ? seats * cards * packs
     : seats * cubePoolSize;
   assert(min <= list.length && list.length <= 1e5,
     `this cube needs between ${min} and 100,000 cards; it has ${list.length}`);
 
-  var bad = [];
-  for (var cardName of list)
+  const bad = [];
+  for (let cardName of list)
     if (!getCardByName(cardName))
       bad.push(cardName);
 
   if (bad.length) {
-    var msg = `invalid cards: ${bad.splice(-10).join("; ")}`;
+    let msg = `invalid cards: ${bad.splice(-10).join("; ")}`;
     if (bad.length)
       msg += `; and ${bad.length} more`;
     throw Error(msg);
@@ -48,7 +48,7 @@ module.exports = {
 
     for (const zoneName in deck) {
       const zone = deck[zoneName];
-      for (var cardName in zone) {
+      for (let cardName in zone) {
         if (typeof zone[cardName] !== "number")
           return false;
         if (BASICS.indexOf(cardName) > -1)

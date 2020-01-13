@@ -1,4 +1,4 @@
-/* eslint-env node, mocha */
+const {describe, it} = require("mocha");
 const assert = require("assert");
 const boosterGenerator = require("./boosterGenerator");
 const {range} = require("lodash");

@@ -25,13 +25,13 @@ module.exports = class Room extends EventEmitter {
     this.socks = this.socks.filter(s => s !== sock);
   }
   say(text, sock) {
-    var msg = { text,
+    const msg = {
+      text,
       time: Date.now(),
       name: sock.name
     };
 
     this.messages.push(msg);
-    for (sock of this.socks)
-      sock.send("hear", msg);
+    this.socks.forEach((sock) => sock.send("hear", msg));
   }
 };

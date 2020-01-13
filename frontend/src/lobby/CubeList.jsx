@@ -6,7 +6,7 @@ import App from "../app";
 
 const CubeList = () => {
   const [cubes, setCubes] = useState("");
-  const [selectedCube, selectCube] = useState("none");
+  const [, selectCube] = useState("none");
   let cubeOptions = [];
 
   const getCubes = async function() {

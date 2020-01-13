@@ -4,7 +4,7 @@ const { saveSetsAndCards } = require("../backend/data");
 const doSet = require("../backend/import/doSet");
 
 const updateDatabase = () => {
-  var allCards = {};
+  let allCards = {};
   const allSets = {};
 
   // Add normal sets
