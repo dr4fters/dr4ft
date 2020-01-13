@@ -3,6 +3,7 @@ const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
 const updateDatabase = require("./update_database");
+const downloadBoosterRules = require("./download_booster_rules");
 const logger = require("../backend/logger");
 const { refresh: refreshVersion } = require("../backend/mtgjson");
 
@@ -74,6 +75,7 @@ const download = async () => {
       logger.info("Update DB finished");
       fs.writeFileSync(setsVersion, version);
       refreshVersion();
+      await downloadBoosterRules();
     } else {
       logger.info("AllSets.json is up to date");
     }
