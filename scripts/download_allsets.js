@@ -52,7 +52,7 @@ const fetchZip = () => (
         .on("entry", (entry) => {
 
           if (!fs.existsSync("data/sets")) {
-            fs.mkdirSync("data/sets");
+            fs.mkdirSync("data/sets", { recursive: true });
           }
           const file = fs.createWriteStream(`data/sets/${entry.path}`);
           entry.pipe(file)
