@@ -1,4 +1,4 @@
-const {sample, shuffle, random, range} = require("lodash");
+const {sample, shuffle, random, range, times, constant} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
@@ -27,13 +27,13 @@ const replaceRNGSet = (sets) => (
 );
 
 const SealedNormal = ({ playersLength, sets }) => (
-  new Array(playersLength).fill(replaceRNGSet(sets))
+  times(playersLength , constant(replaceRNGSet(sets)))
     .map(sets => sets.flatMap(boosterGenerator))
 );
 
 const DraftNormal = ({ playersLength, sets }) => (
   replaceRNGSet(sets)
-    .flatMap(set => new Array(playersLength).fill(set))
+    .flatMap(set => times(playersLength, constant(set)))
     .map(boosterGenerator)
 );
 
