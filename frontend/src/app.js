@@ -2,7 +2,7 @@ import _ from "utils/utils";
 import EventEmitter from "events";
 import {STRINGS} from "./config";
 import eio from "engine.io-client";
-import {repeat} from "lodash";
+import {times} from "lodash";
 
 function message(msg) {
   let args = JSON.parse(msg);
@@ -150,10 +150,10 @@ let App = {
     Object.assign(App.state, state);
     // Set default sets
     if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
-      App.state.setsSealed = repeat(App.state.latestSet.code, 6);
+      App.state.setsSealed = times(6, App.state.latestSet.code);
     }
     if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
-      App.state.setsDraft = repeat(App.state.latestSet.code, 3);
+      App.state.setsDraft = times(3, App.state.latestSet.code);
     }
     App.update();
   },
