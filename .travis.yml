@@ -50,7 +50,7 @@ matrix:
         - npm run setup-env
         - npm run lint
 
-    - name: TEST
+    - name: Tests
       language: node_js
       node_js: node
       install:
