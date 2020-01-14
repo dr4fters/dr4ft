@@ -82,11 +82,20 @@ You can also create a Docker image and run the app in a container:
 
 ## Usage
 
-TODO: add scripts explanation
-npm run ...
-download_allsets -> download AllPrintings.json from MTGJson
-update_database -> parse and integrate MTGJson sets previously downloaded
-download_booster_rules -> download and parse booster generation rules
+### Start server
+
+`npm start`
+
+This command start the server
+
+`npm run download_allsets`
+This command downloads all sets from MTGJson and integrates them.
+
+`npm run update_database`
+This command downloads integrates all files previously downloaded from MTGJson.
+
+`npm run download_booster_rules`
+ download and parse booster generation rules from [magic-sealed-data](https://github.com/taw/magic-sealed-data)
 
 ## Contributing
 Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
