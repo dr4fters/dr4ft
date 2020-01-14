@@ -23,10 +23,15 @@ The application provides the following features:
 * Regular, Cube and chaos game types
 * 1 to 100 players
 * 1 to 12 packs per player
-* Nearly all playable sets ever printed
+* All playable sets ever printed
+* Import your custom set and play it
 * In-game chat
 * Pick Timer
 * Autopick
+* Suggest lands
+* Kick players
+* Connection indicators
+* Pick confirmation
 * Grid and column view
 * Card sorting by rarity, type, color or Manacost
 * Bots
