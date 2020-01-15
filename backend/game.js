@@ -1,46 +1,15 @@
 const crypto = require("crypto");
+const {shuffle, uniqueId} = require("lodash");
+const uuid = require("uuid");
+const fs = require("fs");
+const jsonfile = require("jsonfile");
 const Bot = require("./bot");
 const Human = require("./human");
 const Pool = require("./pool");
 const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
-const uuid = require("uuid");
 const Sock = require("./sock");
-const {shuffle, uniqueId} = require("lodash");
-const fs = require("fs");
-const jsonfile = require("jsonfile");
-
-const SECOND = 1000;
-const MINUTE = 1000 * 60;
-const HOUR = 1000 * 60 * 60;
-
-const games = {};
-
-(function playerTimer() {
-  Object.values(games)
-    .forEach(({round, players}) => {
-      if (round < 1) {
-        return;
-      }
-      players.forEach((player) => {
-        if (player.time && !--player.time)
-          player.pickOnTimeout();
-      });
-    });
-  setTimeout(playerTimer, SECOND);
-})();
-
-(function gameTimer() {
-  const now = Date.now();
-  Object.values(games)
-    .forEach(({expires, kill}) => {
-      if (expires < now)
-        kill("game over");
-    });
-
-  setTimeout(gameTimer, MINUTE);
-})();
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
@@ -96,14 +65,13 @@ module.exports = class Game extends Room {
     }
 
     this.renew();
-    games[gameID] = this;
-
     Rooms.add(gameID, this);
     this.once("kill", () => Rooms.delete(gameID));
     Game.broadcastGameInfo();
   }
 
   renew() {
+    const HOUR = 1000 * 60 * 60;
     this.expires = Date.now() + HOUR;
   }
 
@@ -126,28 +94,23 @@ module.exports = class Game extends Room {
   // The number of total games. This includes ones that have been long since
   // abandoned but not yet garbage-collected by the `renew` mechanism.
   static numGames() {
-    return Object.keys(games).length;
+    return Rooms.getAll().length;
   }
 
   // The number of games which have a player still in them.
   static numActiveGames() {
-    let count = 0;
-    for (let id of Object.keys(games)) {
-      if (games[id].isActive)
-        count++;
-    }
-    return count;
+    return Rooms.getAll()
+      .filter(({isActive}) => isActive)
+      .length;
   }
 
   // The number of players in active games.
   static totalNumPlayers() {
-    let count = 0;
-    for (let id of Object.keys(games)) {
-      if (games[id].isActive) {
-        count += games[id].players.filter(x => x.isConnected && !x.isBot).length;
-      }
-    }
-    return count;
+    return Rooms.getAll()
+      .filter(({isActive}) => isActive)
+      .reduce((count, {players}) => {
+        return count + players.filter(x => x.isConnected && !x.isBot).length;
+      }, 0);
   }
 
   static broadcastGameInfo() {
@@ -161,27 +124,26 @@ module.exports = class Game extends Room {
 
   static broadcastRoomInfo() {
     const roomInfo =
-      Object.values(games).reduce((acc, game) => {
-        if (game.isPrivate || game.didGameStart || !game.isActive)
-          return acc;
+      Rooms.getAll()
+        .filter(({isPrivate, didGameStart, isActive}) => !isPrivate && didGameStart && isActive)
+        .reduce((acc, game) => {
+          const usedSeats = game.players.length;
+          const totalSeats = game.seats;
+          if (usedSeats === totalSeats)
+            return acc;
 
-        const usedSeats = game.players.length;
-        const totalSeats = game.seats;
-        if (usedSeats === totalSeats)
+          acc.push({
+            id: game.id,
+            title: game.title,
+            usedSeats,
+            totalSeats,
+            name: game.name,
+            packsInfo: game.packsInfo,
+            type: game.type,
+            timeCreated: game.timeCreated,
+          });
           return acc;
-
-        acc.push({
-          id: game.id,
-          title: game.title,
-          usedSeats,
-          totalSeats,
-          name: game.name,
-          packsInfo: game.packsInfo,
-          type: game.type,
-          timeCreated: game.timeCreated,
-        });
-        return acc;
-      }, []);
+        }, []);
     Sock.broadcast("set", { roomInfo });
   }
 
@@ -300,7 +262,7 @@ module.exports = class Game extends Room {
       this.players.forEach(p => p.err(msg));
     }
 
-    delete games[this.id];
+    Rooms.delete(this.id);
     Game.broadcastGameInfo();
 
     this.emit("kill");
@@ -564,7 +526,7 @@ module.exports = class Game extends Room {
           player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: <a href='https://github.com/dr4fters/dr4ft/issues'>https://github.com/dr4fters/dr4ft/issues</a>");
         }
       });
-      delete games[this.id];
+      Rooms.delete(this.id);
       Game.broadcastGameInfo();
       this.emit("kill");
     }

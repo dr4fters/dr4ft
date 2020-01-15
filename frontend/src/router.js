@@ -29,7 +29,6 @@ function route() {
     App.once("gameInfos", App.updateGameInfos);
     break;
   case "":
-    App.send("join", "lobby");
     component = (
       <Suspense fallback={<div>Loading...</div>}>
         <Lobby />
