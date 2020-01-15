@@ -468,7 +468,6 @@ module.exports = class Game extends Room {
   }
 
   handleSealed() {
-    this.createPool();
     this.round = -1;
     this.players.forEach((p) => {
       p.pool = this.pool.shift();
@@ -477,13 +476,8 @@ module.exports = class Game extends Room {
     });
   }
 
-  handleDraft({ addBots, useTimer, timerLength, shufflePlayers }) {
-    const {players} = this;
-
-    players.forEach((p) => {
-      p.useTimer = useTimer;
-      p.timerLength = timerLength;
-    });
+  handleDraft() {
+    const {players, addBots, useTimer, timerLength, shufflePlayers} = this;
 
     if (addBots) {
       while (players.length < this.seats) {
@@ -492,16 +486,18 @@ module.exports = class Game extends Room {
       }
     }
 
-    if (shufflePlayers)
+    if (shufflePlayers) {
       shuffle(players);
+    }
 
-    players.forEach((p, i) => {
-      p.self = i;
+    players.forEach((p, self) => {
+      p.useTimer = useTimer;
+      p.timerLength = timerLength;
+      p.self = self;
       p.on("pass", this.pass.bind(this, p));
-      p.send("set", { self: i });
+      p.send("set", { self });
     });
 
-    this.createPool();
     this.startRound();
   }
 
@@ -509,11 +505,12 @@ module.exports = class Game extends Room {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
+      this.createPool();
 
       if (/sealed/.test(this.type)) {
         this.handleSealed();
       } else {
-        this.handleDraft({ addBots, useTimer, timerLength, shufflePlayers });
+        this.handleDraft();
       }
 
       logger.info(`Game ${this.id} started.\n${this.toString()}`);
