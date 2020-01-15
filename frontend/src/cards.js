@@ -1,7 +1,7 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
-import {times} from "lodash";
+import {times, constant} from "lodash";
 
 let Cards = {
   Plains: 401994,
@@ -180,7 +180,7 @@ let events = {
     if (sets.length < packsNumber) {
       const toAdd = packsNumber - sets.length;
       const lastSet = sets.slice(-1)[0];
-      sets.push(...times(toAdd, lastSet));
+      sets.push(...times(toAdd, constant(lastSet)));
     } else if (sets.length > packsNumber) {
       sets.splice(packsNumber);
     }
