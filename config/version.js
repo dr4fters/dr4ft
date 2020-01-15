@@ -26,6 +26,4 @@ const VERSION =
     // If there is no tag, just display the commit hash.
     : versionInfo;
 
-module.exports = {
-  VERSION,
-};
+module.exports = VERSION;

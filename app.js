@@ -10,7 +10,7 @@ const logger = require("./backend/logger");
 const router = require("./backend/router");
 const apiRouter = require("./backend/api/");
 const allSets = require("./scripts/download_allsets");
-const {app: config, version: {VERSION}} = require("./config");
+const {app: config, version} = require("./config");
 const app = express();
 
 
@@ -38,5 +38,5 @@ const io = eio(server);
 io.on("connection", router);
 
 server.listen(config.PORT);
-logger.info(`Started up on port ${config.PORT} with version ${VERSION}`);
+logger.info(`Started up on port ${config.PORT} with version ${version}`);
 

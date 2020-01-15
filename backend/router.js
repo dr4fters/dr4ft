@@ -1,4 +1,4 @@
-const {version: {VERSION}} = require("../config");
+const {version} = require("../config");
 const Game = require("./game");
 const Rooms = require("./rooms");
 const Sock = require("./sock");
@@ -31,5 +31,5 @@ module.exports = function (ws) {
   sock.on("create", create);
 
   Game.broadcastGameInfo();
-  sock.send("set", { serverVersion: VERSION });
+  sock.send("set", { serverVersion: version });
 };
