@@ -13,7 +13,7 @@ const GameOptions = () => {
 
   switch (`${gamesubtype} ${gametype}`) {
   case "regular draft":
-    return <Regular sets={setsDraft} type={"<setsDraft"} />;
+    return <Regular sets={setsDraft} type={"setsDraft"} />;
   case "regular sealed":
     return <Regular sets={setsSealed} type={"setsSealed"} />;
   case "cube draft":
@@ -68,16 +68,16 @@ const CubeSealed = () => (
 
 const CubeSealedOptions = () => (
   <div>
-    <Select link="cubePoolSize" opts={_.seq(120, 15)} />
+    <Select link="cubePoolSize" opts={_.seq(30, 5)} />
     {" "}cards per player
   </div>
 );
 
 const CubeOptions = () => (
   <div>
-    <Select link="cards" opts={_.seq(15, 8)} />
+    <Select link="cards" opts={_.seq(30, 5)} />
     {" "}cards
-    <Select link="packs" opts={_.seq(12, 3)} />
+    <Select link="packs" opts={_.seq(12, 1)} />
     {" "}packs
   </div>
 );

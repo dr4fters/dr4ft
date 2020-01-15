@@ -12,6 +12,7 @@ describe("Acceptance tests for Pool class", () => {
       const playersLength = 8;
       const got = Pool.SealedCube({ cubeList, playersLength });
       assert.equal(playersLength, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
 
     it("should return a draft cube pool with length equal to player length per playersPack", () => {
@@ -20,6 +21,7 @@ describe("Acceptance tests for Pool class", () => {
       const packsNumber = 3;
       const got = Pool.DraftCube({ cubeList, playersLength, packsNumber });
       assert.equal(playersLength*packsNumber, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
   });
 
@@ -29,6 +31,7 @@ describe("Acceptance tests for Pool class", () => {
       const playersLength = 8;
       const got = Pool.SealedNormal({ sets, playersLength });
       assert.equal(playersLength, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
 
     it("should return a draft pool with length equal to player length per playersPack", () => {
@@ -36,6 +39,7 @@ describe("Acceptance tests for Pool class", () => {
       const playersLength = 8;
       const got = Pool.DraftNormal({ sets, playersLength });
       assert.equal(playersLength * 3, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
   });
 
@@ -44,12 +48,14 @@ describe("Acceptance tests for Pool class", () => {
       const playersLength = 8;
       const got = Pool.SealedChaos({ modernOnly: true, totalChaos: true, playersLength });
       assert.equal(playersLength, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
 
     it("should return a draft chaos pool with length equal to player length per playersPack", () => {
       const playersLength = 8;
       const got = Pool.DraftChaos({ modernOnly: true, totalChaos: true, playersLength });
       assert.equal(playersLength * 3, got.length);
+      got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
     });
   });
 
@@ -57,6 +63,7 @@ describe("Acceptance tests for Pool class", () => {
     it("should return a timespiral pool", () => {
       const [got] = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
       assert.equal(got.length, 15);
+      got.forEach(card => assert(card.name != undefined));
     });
   });
 
@@ -70,7 +77,7 @@ describe("Acceptance tests for Pool class", () => {
           }
           const [got] = Pool.DraftNormal({playersLength: 1, sets: [code]});
           got.forEach(card => {
-            assert.ok(card.name, `${code} has an error: ${card}`);
+            assert(card.name != undefined, `${code} has an error: ${card}`);
           });
         });
       });
@@ -83,7 +90,7 @@ describe("Acceptance tests for Pool class", () => {
         got.forEach(card => {
           const isMultiple = got.filter(c => c.name === card.name && !c.foil).length > 1;
           const isSpecial = card.rarity === "special" || card.isDoubleFaced || card.foil;
-          assert.ok(!isMultiple || isSpecial, `${card.name} is in multiple and was not special`);
+          assert(!isMultiple || isSpecial, `${card.name} is in multiple and was not special`);
         });
       });
     });

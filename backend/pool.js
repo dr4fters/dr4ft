@@ -1,4 +1,4 @@
-const {sample, shuffle, random, range, times, constant} = require("lodash");
+const {sample, shuffle, random, range, times, constant, pull} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 
@@ -43,7 +43,12 @@ function getRandomPack(setList) {
   return boosterGenerator(code);
 }
 
-const chooseRandomSet = sample;
+const chooseRandomSet = (setList) => {
+  const set = sample(setList);
+  if (!set.Uncommon || !set.Common)
+    return chooseRandomSet(pull(setList, set));
+  return set;
+};
 
 // Create a complete random pack
 function getTotalChaosPack(setList) {

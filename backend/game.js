@@ -477,18 +477,7 @@ module.exports = class Game extends Room {
   }
 
   handleDraft() {
-    const {players, addBots, useTimer, timerLength, shufflePlayers} = this;
-
-    if (addBots) {
-      while (players.length < this.seats) {
-        players.push(new Bot());
-        this.bots++;
-      }
-    }
-
-    if (shufflePlayers) {
-      shuffle(players);
-    }
+    const {players, useTimer, timerLength} = this;
 
     players.forEach((p, self) => {
       p.useTimer = useTimer;
@@ -505,6 +494,18 @@ module.exports = class Game extends Room {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
+
+      if (addBots) {
+        while (this.players.length < this.seats) {
+          this.players.push(new Bot());
+          this.bots++;
+        }
+      }
+
+      if (shufflePlayers) {
+        shuffle(this.players);
+      }
+
       this.createPool();
 
       if (/sealed/.test(this.type)) {

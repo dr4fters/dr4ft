@@ -27,7 +27,7 @@ const CreatePanel = () => {
       <div>
         Number of players:{" "}
         <select value={seats} onChange={(e) => {App.save("seats", e.currentTarget.value);}}>
-          {_.seq(100, 2).map((x, i) =>
+          {_.seq(100, 1).map((x, i) =>
             <option key={i}>{x}</option>)}
         </select>
       </div>

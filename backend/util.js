@@ -1,6 +1,6 @@
 const assert = require("assert");
 const {countBy} = require("lodash");
-const { getSets, getCardByName } = require("./data");
+const { getSet, getCardByName } = require("./data");
 const BASICS = [
   "Forest",
   "Island",
@@ -17,7 +17,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
   assert(typeof cubePoolSize === "number", "cube.cubePoolSize must be a number");
   assert(5 <= cards && cards <= 30, "cube.cards range must be between 5 and 30");
   assert(typeof packs === "number", "cube.packs must be a number");
-  assert(3 <= packs && packs <= 12, "cube.packs range must be between 3 and 12");
+  assert(1 <= packs && packs <= 12, "cube.packs range must be between 1 and 12");
 
   list = list.split("\n");
 
@@ -43,6 +43,8 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
 }
 
 module.exports = {
+  // Control if deck is legit
+  // => all the deck's cards appear in players pool
   deck(deck, pool) {
     const poolByName = countBy(pool, ({name}) => name);
 
@@ -68,15 +70,15 @@ module.exports = {
       "type can be draft, sealed, chaos draft, chaos sealed, cube draft or cube sealed");
     assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
     assert(typeof seats === "number", "seats must be a number");
-    assert(2 <= seats && seats <= 100, "seats' number must be between 2 and 100");
+    assert(seats >= 1 && seats <= 100, "seats' number must be between 1 and 100");
 
     switch (type) {
     case "draft":
     case "sealed":
       assert(Array.isArray(sets), "sets must be an array");
-      assert(sets.length > 1, "sets length must be at least 1");
+      assert(sets.length >= 1, "sets length must be at least 1");
       sets.forEach(set =>
-        assert(getSets()[set] !== undefined || set === "RNG", `set ${set} is invalid or does not exist`));
+        assert(set === "RNG" || getSet(set) !== undefined, `set ${set} is invalid or does not exist`));
       break;
     case "cube draft":
     case "cube sealed":
