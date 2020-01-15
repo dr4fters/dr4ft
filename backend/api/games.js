@@ -72,11 +72,20 @@ gamesRouter
       "bots": req.game.bots
     });
   })
-
+  /**
+   * sends an object according to the endpoint api/games/:gameId/status.
+   * It shows if the game started, the current pack and players' infos.
+   */
   .get("/:gameId/status", checkGameId, (req, res) => {
     res.send(req.game.getStatus());
   })
 
+  /**
+   * can accept a `seat`(from 0 to X) or an `id` (playerId) to get informations,
+   * according to the endoint api/games/:gameId/decks.
+   * If no `seat` and `id` are requested,
+   * then it returns an array of the decks of all players.
+   */
   // secret=[string]&seat=[int]&id[string]
   .get("/:gameId/deck", checkGameId, checkGameSecret, (req, res) => {
     res.send(req.game.getDecks(req.query));
