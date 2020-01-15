@@ -148,7 +148,6 @@ let App = {
   },
   set(state) {
     Object.assign(App.state, state);
-    console.log(App.state, state)
     // Set default sets
     if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
       App.state.setsSealed = times(6, constant(App.state.latestSet.code));
@@ -156,8 +155,6 @@ let App = {
     if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
       App.state.setsDraft = times(3, constant(App.state.latestSet.code));
     }
-    console.log(App.state.setsDraft, App.state.setsSealed)
-
     App.update();
   },
   update() {
