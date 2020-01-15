@@ -97,7 +97,18 @@ This command downloads integrates all files previously downloaded from MTGJson.
 `npm run download_booster_rules`
  download and parse booster generation rules from [magic-sealed-data](https://github.com/taw/magic-sealed-data)
 
-## Contributing
+### Contributors
+
+THANK YOU!
+
+### Contribute!
+
+Be a part of this project! You can run the test using the following.
+
+1. Install dependencies from package.json by running `npm install`
+2. Run the test via `npm test`
+3. Make some fun new modules!
+
 Found **bugs** or have **feature requests**? Feel free to [open an issue](https://github.com/dr4fters/dr4ft/issues/new)!
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
