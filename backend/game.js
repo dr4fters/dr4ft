@@ -155,7 +155,7 @@ module.exports = class Game extends Room {
 
   join(sock) {
     // Reattach sock to player based on his id
-    this.players.some((player) => {
+    const reattachPlayer = this.players.some((player) => {
       if (player.id === sock.id) {
         player.attach(sock);
         this.greet(player);
@@ -164,6 +164,10 @@ module.exports = class Game extends Room {
         return true;
       }
     });
+
+    if (reattachPlayer) {
+      return;
+    }
 
     if (this.didGameStart) {
       return sock.err("game already started");
