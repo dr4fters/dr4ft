@@ -68,7 +68,7 @@ const CubeSealed = () => (
 
 const CubeSealedOptions = () => (
   <div>
-    <Select link="cubePoolSize" opts={_.seq(30, 5)} />
+    <Select link="cubePoolSize" opts={_.seq(120, 15)} />
     {" "}cards per player
   </div>
 );
