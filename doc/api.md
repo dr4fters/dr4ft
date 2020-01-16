@@ -164,10 +164,10 @@ Type: **JSON**
 
 | Attribute  | Type   | Example | Info        |
 |:----------:|:------:|:-------:|:-----------:|
-| seatNumber | int    | 0       | seat number |
+| seatNumber | int    | 0       | number of seat |
 | playerName | string | dr4fter | "bot" or "player name" |
-| playerId   | string | 1       | player Id |
-| pool       | array  | 1       | array of `<cards>` |
+| playerId   | string | 1       | Id of player |
+| pool       | array  | ["Cancel","Grizzly Bears"]     | array of `<cards>` |
 
 Each card has several attributes and the array is classified by pick order.
 
