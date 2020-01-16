@@ -63,7 +63,7 @@ If type is `cube draft` or `cube sealed`, the variable `cube` must have 3 attrib
 |:------------:|:-------:|:-------:|:-----------:|
 | didGameStart | boolean | true    | true if the game started |
 | currentPack  | int     | 1       | pack number (0 when not started) |
-| players      | Array   | []      | list of players in the game |
+| players      | array   | ["dr4fter","dr4fter2"] | list of players in the game |
 
 Each player has several attributes.
 
