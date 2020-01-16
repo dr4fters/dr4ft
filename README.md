@@ -36,6 +36,7 @@ The application provides the following features:
 * Card sorting by rarity, type, color or Manacost
 * Bots
 * Notifications when a pack is available
+* API to create and manage a game remotely. [More docs here]((https://github.com/dr4fters/dr4ft/bloc/master/doc/api.md)
 
 ## Technologies
 
