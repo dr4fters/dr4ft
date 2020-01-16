@@ -18,4 +18,14 @@ describe("Acceptance tests for toBoosterCard function", () => {
       }
     }).timeout(10000);
   });
+
+  describe("can parse special cards", () => {
+    it("parse a devoid card as color is colorless", () => {});
+    it("parse a DFC card as doubleFaced and with a flippedCardURL", () => {});
+    it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
+    it("parse a split|aftermath|adventure card with double name", () => {});
+    it("parse a split card with correct mana cost", () => {});
+    it("parse a multicolor card as multicolor", () => {});
+    it("parse a no color card as colorless", () => {});
+  });
 });
