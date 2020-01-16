@@ -162,9 +162,9 @@ If no `seat`/`id` has been provided, returns an array with all players of the ga
 
 Type: **JSON**
 
-| Attribute  | Type   | Example |             |
+| Attribute  | Type   | Example | Info        |
 |:----------:|:------:|:-------:|:-----------:|
-| seatNumber | int    | 0       | seat number|
+| seatNumber | int    | 0       | seat number |
 | playerName | string | dr4fter | "bot" or "player name" |
 | playerId   | string | 1       | player Id |
 | pool       | array  | 1       | array of `<cards>` |
