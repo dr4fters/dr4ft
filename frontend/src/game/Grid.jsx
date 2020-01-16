@@ -34,7 +34,7 @@ const zone = (zoneName, index) => {
       <h1>
         <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
-      {cards.map((card, i) => <Card key={i+zoneName} card={card} zoneName={zoneName} />)}
+      {cards.map((card, i) => <Card key={i+zoneName+card.name} card={card} zoneName={zoneName} />)}
     </div>
   );
 };
