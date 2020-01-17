@@ -62,7 +62,76 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [parsedCard] = [devoidCard].map(toBoosterCard("setCode"));
       assert(parsedCard.color === "Colorless", "devoid cards must have color equal to colorless");
     });
-    it("parse a DFC card as doubleFaced and with a flippedCardURL", () => {});
+    it("parse a DFC card as doubleFaced and with a flippedCardURL", () => {
+      const gisela = {
+        "colorIdentity": ["W"],
+        "colors": ["W"],
+        "convertedManaCost": 4.0,
+        "layout": "meld",
+        "manaCost": "{2}{W}{W}",
+        "mcmId": 290930,
+        "mcmMetaId": 222995,
+        "mtgoId": 61100,
+        "multiverseId": 414319,
+        "name": "Gisela, the Broken Blade",
+        "names": ["Bruna, the Fading Light", "Brisela, Voice of Nightmares", "Gisela, the Broken Blade"],
+        "number": "28a",
+        "otherFaceIds": ["7fb7e1e7-17d0-50ba-80a0-9a225321d64d", "e81b3362-515c-5d2f-b842-7fa301518d84"],
+        "power": "4",
+        "rarity": "mythic",
+        "scryfallId": "c75c035a-7da9-4b36-982d-fca8220b1797",
+        "scryfallIllustrationId": "db5289ab-8aa4-412d-afd4-f7b7fef475fb",
+        "scryfallOracleId": "f3e23d5e-bd88-4e7c-a3fb-db2a8cb05b22",
+        "side": "b",
+        "subtypes": ["Angel", "Horror"],
+        "supertypes": ["Legendary"],
+        "tcgplayerProductId": 119687,
+        "text": "Flying, first strike, lifelink\nAt the beginning of your end step, if you both own and control Gisela, the Broken Blade and a creature named Bruna, the Fading Light, exile them, then meld them into Brisela, Voice of Nightmares.",
+        "toughness": "3",
+        "type": "Legendary Creature — Angel Horror",
+        "types": ["Creature"],
+        "uuid": "4b560297-2f1e-5f65-b118-289c21bdf887"
+      };
+      const brisela = {
+        "artist": "Clint Cearley",
+        "borderColor": "black",
+        "colorIdentity": ["W"],
+        "colors": [],
+        "convertedManaCost": 11.0,
+        "frameVersion": "2015",
+        "hasFoil": true,
+        "hasNonFoil": true,
+        "isMtgo": true,
+        "isPaper": true,
+        "layout": "meld",
+        "mcmId": 290929,
+        "mcmMetaId": 222994,
+        "multiverseId": 414305,
+        "name": "Brisela, Voice of Nightmares",
+        "names": ["Bruna, the Fading Light", "Brisela, Voice of Nightmares", "Gisela, the Broken Blade"],
+        "number": "15b",
+        "originalText": "When you cast Bruna, the Fading Light, you may return target Angel or Human creature card from your graveyard to the battlefield.\nFlying, vigilance\n(Melds with Gisela, the Broken Blade.)",
+        "originalType": "Legendary Creature — Angel Horror",
+        "otherFaceIds": ["e81b3362-515c-5d2f-b842-7fa301518d84", "4b560297-2f1e-5f65-b118-289c21bdf887"],
+        "power": "9",
+        "rarity": "mythic",
+        "scryfallId": "5a7a212e-e0b6-4f12-a95c-173cae023f93",
+        "side": "c",
+        "subtypes": ["Eldrazi", "Angel"],
+        "supertypes": ["Legendary"],
+        "tcgplayerProductId": 119686,
+        "text": "Flying, first strike, vigilance, lifelink\nYour opponents can't cast spells with converted mana cost 3 or less.",
+        "toughness": "10",
+        "type": "Legendary Creature — Eldrazi Angel",
+        "types": ["Creature"],
+        "uuid": "7fb7e1e7-17d0-50ba-80a0-9a225321d64d"
+      };
+
+      const [parsedCard] = [gisela, brisela].map(toBoosterCard("setCode"));
+      assert(parsedCard.isDoubleFaced, "gisela should be double faced");
+      assert(parsedCard.flippedCardURL != "", "gisela should have a flipped card URL");
+    });
+
     it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
     it("parse a split|aftermath|adventure card with double name", () => {});
     it("parse a split card with correct mana cost", () => {
