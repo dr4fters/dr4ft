@@ -24,7 +24,44 @@ describe("Acceptance tests for toBoosterCard function", () => {
   });
 
   describe("can parse special cards", () => {
-    it("parse a devoid card as color is colorless", () => {});
+    it("parse a devoid card as color is colorless", () => {
+      const devoidCard = {
+        "colorIdentity": ["U"],
+        "colors": [],
+        "convertedManaCost": 4.0,
+        "frameEffect": "devoid",
+        "frameEffects": ["devoid"],
+        "frameVersion": "2015",
+        "hasFoil": true,
+        "hasNonFoil": true,
+        "isMtgo": true,
+        "isPaper": true,
+        "layout": "normal",
+        "manaCost": "{3}{U}",
+        "mcmId": 284821,
+        "mcmMetaId": 220757,
+        "mtgoFoilId": 58356,
+        "mtgoId": 58355,
+        "multiverseId": 401803,
+        "name": "Adverse Conditions",
+        "names": [],
+        "number": "54",
+        "printings": ["BFZ"],
+        "rarity": "uncommon",
+        "scryfallId": "03d86e0b-294f-41b8-a5cd-d3144a019334",
+        "scryfallIllustrationId": "6aa5f6c0-31f2-4cc2-aab6-34546581526d",
+        "scryfallOracleId": "7a5a81f7-1597-4972-8565-fd2a5667df99",
+        "subtypes": [],
+        "supertypes": [],
+        "tcgplayerProductId": 105564,
+        "text": "Devoid (This card has no color.)\nTap up to two target creatures. Those creatures don't untap during their controller's next untap step. Create a 1/1 colorless Eldrazi Scion creature token. It has \"Sacrifice this creature: Add {C}.\"",
+        "type": "Instant",
+        "types": ["Instant"],
+        "uuid": "3ac54c2b-cd67-5fcd-b9f5-0e6cfb54e17c"
+      };
+      const [parsedCard] = [devoidCard].map(toBoosterCard("setCode"));
+      assert(parsedCard.color === "Colorless", "devoid cards must have color equal to colorless");
+    });
     it("parse a DFC card as doubleFaced and with a flippedCardURL", () => {});
     it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
     it("parse a split|aftermath|adventure card with double name", () => {});
