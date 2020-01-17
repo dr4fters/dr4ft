@@ -62,6 +62,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [parsedCard] = [devoidCard].map(toBoosterCard("setCode"));
       assert(parsedCard.color === "Colorless", "devoid cards must have color equal to colorless");
     });
+
     it("parse a DFC card as doubleFaced and with a flippedCardURL", () => {
       const gisela = {
         "colorIdentity": ["W"],
@@ -129,11 +130,51 @@ describe("Acceptance tests for toBoosterCard function", () => {
 
       const [parsedCard] = [gisela, brisela].map(toBoosterCard("setCode"));
       assert(parsedCard.isDoubleFaced, "gisela should be double faced");
-      assert(parsedCard.flippedCardURL != "", "gisela should have a flipped card URL");
+      assert(parsedCard.flippedCardURL != "", "gisela should have a flipped card");
     });
 
+    it("parse a flip card as doubleFaced and with a flippedCardURL", () => {
+      const akki = {
+        "colorIdentity": ["R"],
+        "colors": ["R"],
+        "convertedManaCost": 4.0,
+        "layout": "flip",
+        "mtgoFoilId": 21238,
+        "mtgoId": 21237,
+        "multiverseId": 78694,
+        "name": "Tok-Tok, Volcano Born",
+        "names": ["Akki Lavarunner", "Tok-Tok, Volcano Born"],
+        "number": "153",
+        "originalText": "Protection from red\nIf a red source would deal damage to a player, it deals that much damage plus 1 to that player instead.",
+        "originalType": "Legendary Creature Goblin Shaman",
+        "otherFaceIds": ["4d4a2729-ac3d-57ba-b73a-8f85a90810df"],
+        "power": "2",
+        "rarity": "rare",
+        "rulings": [],
+        "scryfallId": "6ee6cd34-c117-4d7e-97d1-8f8464bfaac8",
+        "scryfallIllustrationId": "54705304-6aeb-4722-9a17-9006db12b939",
+        "scryfallOracleId": "47795817-73e5-4af6-bd1e-d69b193e8e9e",
+        "side": "b",
+        "subtypes": ["Goblin", "Shaman"],
+        "supertypes": ["Legendary"],
+        "tcgplayerProductId": 11938,
+        "text": "Protection from red\nIf a red source would deal damage to a player, it deals that much damage plus 1 to that player instead.",
+        "toughness": "2",
+        "type": "Legendary Creature — Goblin Shaman",
+        "types": ["Creature"],
+        "uuid": "631c1845-cc99-5014-a96b-fda6356302ae"
+      };
+
+      const [parsedCard] = [akki].map(toBoosterCard("setCode"));
+      assert(parsedCard.isDoubleFaced, "Flip card shoul be doubleFaced");
+    });
     it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
-    it("parse a split|aftermath|adventure card with double name", () => {});
+
+    it("parse a split|aftermath|adventure card with double name", () => {
+
+
+    });
+
     it("parse a split card with correct mana cost", () => {
       const down = {
         "colorIdentity": ["B", "G"],
@@ -195,7 +236,9 @@ describe("Acceptance tests for toBoosterCard function", () => {
       assert(downParsed.cmc == 7, "split card CMC must equal to both side CMC");
       assert(dirtyParsed.cmc == 7, "split card CMC must equal to both side CMC");
     });
+
     it("parse a multicolor card as multicolor", () => {});
+
     it("parse a no color card as colorless", () => {});
   });
 });
