@@ -166,12 +166,41 @@ describe("Acceptance tests for toBoosterCard function", () => {
       };
 
       const [parsedCard] = [akki].map(toBoosterCard("setCode"));
-      assert(parsedCard.isDoubleFaced, "Flip card shoul be doubleFaced");
+      assert(parsedCard.isDoubleFaced, "Flip card should be doubleFaced");
     });
     it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
 
     it("parse a split|aftermath|adventure card with double name", () => {
-
+      const transformCard = {
+        "colorIdentity": ["R", "W"],
+        "colorIndicator": ["R"],
+        "colors": ["R"],
+        "convertedManaCost": 5.0,
+        "edhrecRank": 2260,
+        "faceConvertedManaCost": 0,
+        "frameEffect": "sunmoondfc",
+        "frameEffects": ["sunmoondfc"],
+        "layout": "transform",
+        "multiverseId": 409742,
+        "name": "Avacyn, the Purifier",
+        "names": ["Archangel Avacyn", "Avacyn, the Purifier"],
+        "number": "5",
+        "originalText": "Flying\nWhen this creature transforms into Avacyn, the Purifier, it deals 3 damage to each other creature and each opponent.",
+        "originalType": "Legendary Creature — Angel",
+        "otherFaceIds": ["48d97849-95e7-5c18-ac24-2e6a7ad10fc3"],
+        "power": "6",
+        "rarity": "mythic",
+        "side": "b",
+        "subtypes": ["Angel"],
+        "supertypes": ["Legendary"],
+        "text": "Flying\nWhen this creature transforms into Avacyn, the Purifier, it deals 3 damage to each other creature and each opponent.",
+        "toughness": "5",
+        "type": "Legendary Creature — Angel",
+        "types": ["Creature"],
+        "uuid": "dac5ebae-13c3-5242-a3fe-5080dc9fe391"
+      };
+      const [parsedCard] = [transformCard].map(toBoosterCard("setCode"));
+      assert(parsedCard.isDoubleFaced, "Transform card should be doubleFaced");
 
     });
 
