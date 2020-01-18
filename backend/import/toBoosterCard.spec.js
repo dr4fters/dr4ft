@@ -237,7 +237,30 @@ describe("Acceptance tests for toBoosterCard function", () => {
       assert(dirtyParsed.cmc == 7, "split card CMC must equal to both side CMC");
     });
 
-    it("parse a multicolor card as multicolor", () => {});
+    it("parse a multicolor card as multicolor", () => {
+      const multicolorCard = {
+        "colorIdentity": ["B", "R"],
+        "colors": ["R"],
+        "convertedManaCost": 5.0,
+        "layout": "normal",
+        "manaCost": "{4}{R}",
+        "multiverseId": 442138,
+        "name": "Skeletonize",
+        "names": [],
+        "number": "149",
+        "rarity": "common",
+        "scryfallId": "b47ce40e-23e3-47e7-a900-c77c12f122a5",
+        "subtypes": [],
+        "supertypes": [],
+        "text": "Skeletonize deals 3 damage to target creature. When a creature dealt damage this way dies this turn, create a 1/1 black Skeleton creature token with \"{B}: Regenerate this creature.\"",
+        "type": "Instant",
+        "types": ["Instant"],
+        "uuid": "cd36cdce-c9e7-59f8-a439-e3d3f5dca13d",
+      };
+
+      const [parsedCard] = [multicolorCard].map(toBoosterCard("setCode"));
+      assert(parsedCard.color === "Multicolor", "multicolored card should have color Multicolor");
+    });
 
     it("parse a no color card as colorless", () => {});
   });
