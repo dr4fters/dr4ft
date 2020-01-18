@@ -262,6 +262,24 @@ describe("Acceptance tests for toBoosterCard function", () => {
       assert(parsedCard.color === "Multicolor", "multicolored card should have color Multicolor");
     });
 
-    it("parse a no color card as colorless", () => {});
+    it("parse a no color card as colorless", () => {
+      const artifact = {
+        "colorIdentity": [],
+        "colors": [],
+        "convertedManaCost": 4.0,
+        "manaCost": "{4}",
+        "name": "Aligned Hedron Network",
+        "number": "222",
+        "rarity": "rare",
+        "subtypes": [],
+        "supertypes": [],
+        "text": "When Aligned Hedron Network enters the battlefield, exile all creatures with power 5 or greater until Aligned Hedron Network leaves the battlefield. (Those creatures return under their owners' control.)",
+        "type": "Artifact",
+        "types": ["Artifact"],
+        "uuid": "11a24350-bfdc-5d8c-addb-571c2aace8dc"
+      };
+      const [parsedCard] = [artifact].map(toBoosterCard("setCode"));
+      assert(parsedCard.color === "Colorless", "colorless card should have color Colorless");
+    });
   });
 });
