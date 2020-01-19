@@ -168,9 +168,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [parsedCard] = [akki].map(toBoosterCard("setCode"));
       assert(parsedCard.isDoubleFaced, "Flip card should be doubleFaced");
     });
-    it("parse a transform card as doubleFaced and with a flippedCardURL", () => {});
-
-    it("parse a split|aftermath|adventure card with double name", () => {
+    it("parse a transform card as doubleFaced and with a flippedCardURL", () => {
       const transformCard = {
         "colorIdentity": ["R", "W"],
         "colorIndicator": ["R"],
@@ -201,7 +199,45 @@ describe("Acceptance tests for toBoosterCard function", () => {
       };
       const [parsedCard] = [transformCard].map(toBoosterCard("setCode"));
       assert(parsedCard.isDoubleFaced, "Transform card should be doubleFaced");
+    });
 
+    it("parse a split|aftermath|adventure card with double name", () => {
+      const adventureCard = {
+        "colorIdentity": ["U"],
+        "colors": ["U"],
+        "convertedManaCost": 3.0,
+        "edhrecRank": 9073,
+        "faceConvertedManaCost": 3.0,
+        "flavorText": "A true puppet master has no need for strings.",
+        "foreignData": [],
+        "frameEffect": "showcase",
+        "frameEffects": ["showcase"],
+        "frameVersion": "2015",
+        "hasFoil": true,
+        "hasNonFoil": true,
+        "isMtgo": true,
+        "isPaper": true,
+        "isPromo": true,
+        "isStarter": true,
+        "layout": "adventure",
+        "manaCost": "{2}{U}",
+        "name": "Bring to Life",
+        "names": ["Animating Faerie", "Bring to Life"],
+        "number": "280",
+        "otherFaceIds": ["282a6d14-05e0-55fd-bb84-f8a4212cac36", "f4db9eb8-3d82-5f79-98c5-c3945cbb22ca", "88715bd2-8b80-5278-938d-814c153ec768"],
+        "printings": ["ELD"],
+        "rarity": "uncommon",
+        "side": "b",
+        "subtypes": ["Adventure"],
+        "supertypes": [],
+        "tcgplayerProductId": 198560,
+        "text": "Target noncreature artifact you control becomes a 0/0 artifact creature. Put four +1/+1 counters on it.",
+        "type": "Sorcery — Adventure",
+        "types": ["Sorcery"],
+        "uuid": "9f08d4be-a5c4-5015-b369-1c82e182e2df",
+      };
+      const [parsedCard] = [adventureCard].map(toBoosterCard("setCode"));
+      assert(parsedCard.name === "Animating Faerie // Bring to Life", "Adventure card should be have names linked with //");
     });
 
     it("parse a split card with correct mana cost", () => {
