@@ -90,7 +90,7 @@
     "eslint-plugin-react": "^7.18.0",
     "mocha": "^7.0.0",
     "nodemon": "^2.0.2",
-    "style-loader": "^1.1.2",
+    "style-loader": "^1.1.3",
     "webpack-cli": "^3.3.10"
   },
   "engines": {
