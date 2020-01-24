@@ -1,7 +1,6 @@
 const crypto = require("crypto");
 const {shuffle, uniqueId} = require("lodash");
 const uuid = require("uuid");
-const fs = require("fs");
 const jsonfile = require("jsonfile");
 const Bot = require("./bot");
 const Human = require("./human");
@@ -10,6 +9,7 @@ const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
+const {saveDraftStats} = require("./data");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
@@ -285,8 +285,7 @@ module.exports = class Game extends Room {
       }
     });
 
-    const file = `./data/draftStats/${this.id}.json`;
-    fs.writeFileSync(file, JSON.stringify(draftStats, undefined, 2));
+    saveDraftStats(this.id, draftStats);
   }
 
   end() {

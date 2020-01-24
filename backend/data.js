@@ -163,6 +163,15 @@ const isReleasedExpansionOrCoreSet = (type, releaseDate) => (
   Date.parse(releaseDate) <= new Date()
 );
 
+function saveDraftStats(id, stats) {
+  if (!fs.existsSync("data/draftStats")) {
+    fs.mkdirSync("data/draftStats");
+  }
+  
+  const file = `data/draftStats/${id}.json`;
+  fs.writeFileSync(file, JSON.stringify(stats, undefined, 4));
+}
+
 module.exports = {
   getCards,
   getSets,
@@ -174,6 +183,7 @@ module.exports = {
   getExansionOrCoreSets,
   saveSetAndCards,
   saveSetsAndCards,
+  saveDraftStats,
   mergeCardsTogether,
   getCardByUuid,
   getCardByName
