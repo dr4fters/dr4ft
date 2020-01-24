@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const {shuffle, uniqueId} = require("lodash");
+const {shuffle} = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
 const Bot = require("./bot");
@@ -14,7 +14,7 @@ const {saveDraftStats} = require("./data");
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
     super({ isPrivate });
-    const gameID = uniqueId();
+    const gameID = uuid.v1();
     Object.assign(this, {
       title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber,
       delta: -1,
