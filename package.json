@@ -61,7 +61,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
     "fast-xml-parser": "^3.15.1",
-    "filepond": "^4.9.5",
+    "filepond": "^4.10.0",
     "filepond-plugin-file-validate-size": "^2.2.0",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "helmet": "^3.21.2",
