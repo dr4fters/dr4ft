@@ -2,6 +2,7 @@
 const assert = require("assert");
 const Game = require("./game");
 const Sock = require("./sock");
+const Rooms = require("./rooms");
 
 describe("Acceptance tests for Game class", () => {
   describe("can make a game", () => {
@@ -42,6 +43,7 @@ describe("Acceptance tests for Game class", () => {
       const sock = new Sock(ws);
       game.join(sock);
       const [got] = Game.getRoomInfo();
+      Rooms.delete(game.id);
       assert.equal(game.id, got.id);
     });
     it("should not return a roomInfo about a game started", () => {
@@ -53,6 +55,7 @@ describe("Acceptance tests for Game class", () => {
       const game = new Game(gameParams);
       game.round = -1;
       const got = Game.getRoomInfo();
+      Rooms.delete(game.id);
       assert.equal(0, got.length);
     });
     it("should not return a roomInfo about a game inactive", () => {
@@ -64,6 +67,7 @@ describe("Acceptance tests for Game class", () => {
       const game = new Game(gameParams);
       game.round = -1;
       const got = Game.getRoomInfo();
+      Rooms.delete(game.id);
       assert.equal(0, got.length);
     });
   });
