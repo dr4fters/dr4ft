@@ -65,7 +65,7 @@ const writeCards = (newCards) => {
 
 const writeCubeCards = (allSets, allCards) => {
   const cubableCards = Object.values(allCards).filter(({setCode}) =>
-    allSets[setCode].type === "masterpiece"
+    allSets[setCode].type !== "masterpiece"
   );
   cubableCardsByName = keyCardsByName(cubableCards);
   fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
