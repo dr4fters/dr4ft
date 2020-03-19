@@ -2,7 +2,7 @@ const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 const {  keyCardsByName } = require("./import/keyCards");
 
-let cards, cardsByName, sets;
+let cards, cubableCardsByName, sets;
 let playableSets, latestSet;
 
 const getSets = () => {
@@ -42,6 +42,7 @@ const saveSetAndCards = ({set: newSet, cards: newCards}) => {
 const saveSetsAndCards = (allSets, allCards) => {
   writeSets(allSets);
   writeCards(allCards);
+  writeCubeCards(allSets, allCards);
   // Do not put here -> circular reference >_<
   // Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 };
@@ -50,18 +51,24 @@ const getCardByUuid = (uuid) => {
   return getCards()[uuid];
 };
 
-const getCardByName = (cardName) => {
-  if (!cardsByName) {
-    cardsByName = readFile("data/cards_by_name.json");
+const getCubableCardByName = (cardName) => {
+  if (!cubableCardsByName) {
+    cubableCardsByName = readFile("data/cubable_cards_by_name.json");
   }
-  return cardsByName[cardName];
+  return cubableCardsByName[cardName];
 };
 
 const writeCards = (newCards) => {
   fs.writeFileSync("data/cards.json", JSON.stringify(newCards, undefined, 4));
-  cardsByName = keyCardsByName(Object.values(newCards));
-  fs.writeFileSync("data/cards_by_name.json", JSON.stringify(cardsByName, undefined, 4));
   cards = newCards;
+};
+
+const writeCubeCards = (allSets, allCards) => {
+  const cubableCards = Object.values(allCards).filter(({setCode}) =>
+    allSets[setCode].type === "masterpiece"
+  );
+  cubableCardsByName = keyCardsByName(cubableCards);
+  fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
 };
 
 const writeSets = (newSets) => {
@@ -167,7 +174,7 @@ function saveDraftStats(id, stats) {
   if (!fs.existsSync("data/draftStats")) {
     fs.mkdirSync("data/draftStats");
   }
-  
+
   const file = `data/draftStats/${id}.json`;
   fs.writeFileSync(file, JSON.stringify(stats, undefined, 4));
 }
@@ -186,5 +193,5 @@ module.exports = {
   saveDraftStats,
   mergeCardsTogether,
   getCardByUuid,
-  getCardByName
+  getCardByName: getCubableCardByName
 };
