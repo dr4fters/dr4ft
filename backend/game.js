@@ -123,28 +123,30 @@ module.exports = class Game extends Room {
   }
 
   static broadcastRoomInfo() {
-    const roomInfo =
-      Rooms.getAll()
-        .filter(({isPrivate, didGameStart, isActive}) => !isPrivate && didGameStart && isActive)
-        .reduce((acc, game) => {
-          const usedSeats = game.players.length;
-          const totalSeats = game.seats;
-          if (usedSeats === totalSeats)
-            return acc;
+    Sock.broadcast("set", { roomInfo: Game.getRoomInfo() });
+  }
 
-          acc.push({
-            id: game.id,
-            title: game.title,
-            usedSeats,
-            totalSeats,
-            name: game.name,
-            packsInfo: game.packsInfo,
-            type: game.type,
-            timeCreated: game.timeCreated,
-          });
+  static getRoomInfo() {
+    return Rooms.getAll()
+      .filter(({isPrivate, didGameStart, isActive}) => !isPrivate && !didGameStart && isActive)
+      .reduce((acc, game) => {
+        const usedSeats = game.players.length;
+        const totalSeats = game.seats;
+        if (usedSeats === totalSeats)
           return acc;
-        }, []);
-    Sock.broadcast("set", { roomInfo });
+
+        acc.push({
+          id: game.id,
+          title: game.title,
+          usedSeats,
+          totalSeats,
+          name: game.name,
+          packsInfo: game.packsInfo,
+          type: game.type,
+          timeCreated: game.timeCreated,
+        });
+        return acc;
+      }, []);
   }
 
   name(name, sock) {
