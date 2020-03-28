@@ -30,7 +30,6 @@ setsRouter
     } else if( /\.json/.test(file.name)) {
       try {
         const json = JSON.parse(content);
-        //TODO: add UUID to cards
         integrateJson(json, res);
       } catch (err) {
         logger.error(`Could not parse JSON file because ${err} - ${err.stack}`);
@@ -41,6 +40,9 @@ setsRouter
   });
 
 function integrateJson(json) {
+  if(!json.code) {
+    throw new Error("Custom set should have a code");
+  }
   const sets = getSets();
 
   if ((json.code in sets)) {
