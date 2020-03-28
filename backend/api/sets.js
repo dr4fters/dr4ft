@@ -23,16 +23,17 @@ setsRouter
           integrateJson(json, res);
         });
       } catch(err) {
-        logger.error(`Could not parse XML file: ${err}`);
+        logger.error(`Could not parse XML file: ${err} - ${err.stack}`);
         res.status(400).json(`the xml submitted is not valid: ${err.message}`);
         return;
       }
     } else if( /\.json/.test(file.name)) {
       try {
         const json = JSON.parse(content);
+        //TODO: add UUID to cards
         integrateJson(json, res);
       } catch (err) {
-        logger.error(`Could not parse JSON file because ${err}`);
+        logger.error(`Could not parse JSON file because ${err} - ${err.stack}`);
         res.status(400).json(`the json submitted is not valid: ${err.message}`);
       }
     }

@@ -36,7 +36,7 @@ const saveSetAndCards = ({set: newSet, cards: newCards}) => {
   saveSetsAndCards({
     ...sets,
     [newSet.code]: newSet
-  }, mergeCardsTogether(cards, newCards));
+  }, mergeCardsTogether(getCards(), newCards));
 };
 
 const saveSetsAndCards = (allSets, allCards) => {
