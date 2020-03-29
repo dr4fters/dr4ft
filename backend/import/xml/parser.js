@@ -25,6 +25,9 @@ function parse(content) {
 
     sets.set.forEach((set) => {
       const { name: code, longname: name = "", settype: type = "", releasedate: releaseDate = "" } = set;
+      if (!code) {
+        throw new Error("<sets> property <set> must contain an attribute name");
+      }
       jsonSets[code] = {
         code,
         name,
@@ -49,6 +52,9 @@ function parse(content) {
     const { text: setCode, num = 0, picurl = "", picURL = "", rarity } = c.set;
     if (!/common|basic|uncommon|rare|mythic/i.test(rarity)) {
       throw new Error("<card> property <set> must contain an attribute rarity with one of common, basic, uncommon, rare or mythic");
+    }
+    if (!setCode) {
+      throw new Error("<card> property <set> must contain a value");
     }
     if (!jsonSets[setCode]) {
       jsonSets[setCode] = {
