@@ -7,6 +7,7 @@ function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mt
   const size = !boosterV3 ? 4 : boosterV3.filter(x => x === "common").length;
 
   return [{
+    code,
     name,
     type,
     releaseDate,

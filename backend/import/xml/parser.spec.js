@@ -139,6 +139,54 @@ describe("Unit tests for XML Cockatrice Parser", () => {
         }
       });
     });
+    it("sets information can be found in cards.sets node", () => {
+      const result = parser.parse(`<?xml version="1.0" encoding="UTF-8"?>
+      <cockatrice_carddatabase version="3">
+      <cards>
+      <card>
+       <name>Aven Harrier</name>
+       <set rarity="common" picURL="/Aven Harrier.full.jpg" rarity="common">DMS</set>
+       <color>W</color>
+       <manacost>1W</manacost>
+       <cmc>2</cmc>
+       <type>Creature - Bird Archer </type>
+       <pt>1/2</pt>
+       <tablerow>2</tablerow>
+       <text>Flying
+      Prowess (Whenever you cast a noncreature spell this creature gets +1/+1 until end of turn.)</text>
+      </card>
+  </cards>
+</cockatrice_carddatabase>`);
+      assert.deepEqual(result, {
+        DMS: {
+          baseSetSize: 1,
+          cards: [{
+            cmc: 2,
+            colors: ["W"],
+            isAlternative: false,
+            layout: "normal",
+            loyalty: "",
+            manaCost: "1W",
+            name: "Aven Harrier",
+            number: 0,
+            power: 1,
+            rarity: "common",
+            side: "a",
+            supertypes: [],
+            text: `Flying
+      Prowess (Whenever you cast a noncreature spell this creature gets +1/+1 until end of turn.)`,
+            toughness: 2,
+            type: "Creature",
+            types: ["Creature"],
+            url: "/Aven Harrier.full.jpg"
+          }],
+          code: "DMS",
+          name: "DMS",
+          releaseDate: "",
+          type: ""
+        }
+      });
+    });
   });
 });
 
