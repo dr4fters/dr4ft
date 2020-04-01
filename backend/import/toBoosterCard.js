@@ -1,4 +1,5 @@
 const { upperFirst } = require("lodash");
+const uuid_v1 = require("uuid").v1;
 
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   let {
@@ -21,7 +22,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     toughness,
     loyalty,
     text,
-    uuid
+    uuid = `dr4ft-${uuid_v1()}`
   } = mtgjsonCard;
 
   if (supertypes.includes("Basic")) {
@@ -89,16 +90,18 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   };
 }
 
-function getColor({ colorIdentity, frameEffects = [] }) {
+function getColor({ colorIdentity, colors, frameEffects = [] }) {
   if (frameEffects.includes("devoid")) {
     return "colorless";
   }
 
-  switch (colorIdentity.length) {
+  const c = colorIdentity || colors;
+
+  switch (c.length) {
   case 0:
     return "colorless";
   case 1:
-    return COLORS[colorIdentity[0]];
+    return COLORS[c[0]];
   default:
     return "multicolor";
   }

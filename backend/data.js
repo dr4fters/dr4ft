@@ -36,7 +36,7 @@ const saveSetAndCards = ({set: newSet, cards: newCards}) => {
   saveSetsAndCards({
     ...sets,
     [newSet.code]: newSet
-  }, mergeCardsTogether(cards, newCards));
+  }, mergeCardsTogether(getCards(), newCards));
 };
 
 const saveSetsAndCards = (allSets, allCards) => {
@@ -64,9 +64,10 @@ const writeCards = (newCards) => {
 };
 
 const writeCubeCards = (allSets, allCards) => {
+
   const cubableCards = Object.values(allCards)
     .filter(({setCode}) =>
-      allSets[setCode].type !== "masterpiece"
+      !["masterpiece", "box"].includes(allSets[setCode].type)
     )
     // allow cards with 2 names to be retrieved by only one part
     .flatMap((card) => {
@@ -76,7 +77,6 @@ const writeCubeCards = (allSets, allCards) => {
         ...card,
         name
       })));
-    });
   cubableCardsByName = keyCardsByName(cubableCards);
   fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
 };

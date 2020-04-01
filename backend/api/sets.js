@@ -23,7 +23,7 @@ setsRouter
           integrateJson(json, res);
         });
       } catch(err) {
-        logger.error(`Could not parse XML file: ${err}`);
+        logger.error(`Could not parse XML file: ${err} - ${err.stack}`);
         res.status(400).json(`the xml submitted is not valid: ${err.message}`);
         return;
       }
@@ -32,7 +32,7 @@ setsRouter
         const json = JSON.parse(content);
         integrateJson(json, res);
       } catch (err) {
-        logger.error(`Could not parse JSON file because ${err}`);
+        logger.error(`Could not parse JSON file because ${err} - ${err.stack}`);
         res.status(400).json(`the json submitted is not valid: ${err.message}`);
       }
     }
@@ -40,6 +40,9 @@ setsRouter
   });
 
 function integrateJson(json) {
+  if(!json.code) {
+    throw new Error("Custom set should have a code");
+  }
   const sets = getSets();
 
   if ((json.code in sets)) {
