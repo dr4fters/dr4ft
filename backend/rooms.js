@@ -4,9 +4,9 @@ const rooms = {};
 schedule.scheduleJob("0 * * * * *", () => {
   const now = Date.now();
   Object.values(rooms)
-    .forEach(({expires, kill}) => {
-      if (expires < now) {
-        kill("game over");
+    .forEach((game) => {
+      if (game.expires < now) {
+        game.kill("game over");
       }
     });
 });

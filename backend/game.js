@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const {shuffle} = require("lodash");
+const {shuffle, truncate} = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
 const Bot = require("./bot");
@@ -556,7 +556,7 @@ module.exports = class Game extends Room {
     `cubePoolSize: ${this.cube.cubePoolSize}
     packsNumber: ${this.cube.packs}
     playerPackSize: ${this.cube.cards}
-    cube: ${this.cube.list}`
+    cube: ${truncate(this.cube.list.substring, 30)}`
     : ""}`;
   }
 
