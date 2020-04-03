@@ -62,6 +62,9 @@ function integrateJson(json) {
 
   //TODO: That should be done by something else. Move out of controller
   //Moving custom set to custom directory
+  if (!fs.existsSync("data/custom")) {
+    fs.mkdirSync("data/custom");
+  }
   fs.writeFile(`data/custom/${json.code}.json`, JSON.stringify(json, undefined, 4), (err) => {
     if (err) {
       logger.error(`Could not save file ${json.code}.json. ${err}`);
