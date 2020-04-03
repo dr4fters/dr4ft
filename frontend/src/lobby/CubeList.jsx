@@ -45,22 +45,6 @@ const CubeList = () => {
           {cubeOptions}
         </optgroup>
       </select>
-      <div>Fetch Cube from <a href="https://cubecobra.com">Draft Cobra</a>:</div>
-      <input
-        // style={{ width: "150px" }}
-        type='text'
-        value={App.state.cubeId || ""}
-        onChange={(e) => {
-          const cubeId = e.currentTarget.value;
-          App.save("cubeId", cubeId);
-        }}
-      />
-      <button onClick={async () => {
-        const {data: list} = await axios.get(`https://cubecobra.com/cube/api/cubelist/${App.state.cubeId}`);
-        App.set({ list });
-      }}>
-        Fetch cube list
-      </button>
     </div>}
   </div>;
 };
