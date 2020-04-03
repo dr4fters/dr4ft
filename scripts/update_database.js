@@ -9,7 +9,6 @@ const updateDatabase = () => {
 
   // Add normal sets
   const setsToIgnore = ["ITP", "CP1", "CP2", "CP3"];
-  const types = ["box","core", "expansion", "commander", "planechase", "starter", "funny", "masters", "draft_innovation", "masterpiece"];
   if (fs.existsSync("data/sets")) {
     const files = fs.readdirSync("data/sets");
     files.forEach(file => {
@@ -23,12 +22,14 @@ const updateDatabase = () => {
       const path = `data/sets/${file}`;
       try {
         const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
-        if (json.code && types.includes(json.type)) {
+        if (json.code) {
           logger.info(`Found set to integrate ${json.code} with path ${path}`);
           const [set, cards] = doSet(json);
           allSets[json.code] = set;
           allCards = { ...allCards, ...cards };
           logger.info(`Parsing ${json.code} finished`);
+        } else {
+          logger.warn(`Set ${json.name} with path ${path} will NOT BE INTEGRATED`);
         }
       } catch (err) {
         logger.error(`Error while integrating the file ${path}: ${err.stack}`);
