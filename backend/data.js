@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const {  keyCardsByName } = require("./import/keyCards");
+const {  keyCardsByName, groupCardsByName } = require("./import/keyCards");
 
 let cards, cubableCardsByName, sets;
 let playableSets, latestSet;
@@ -63,13 +63,33 @@ const writeCards = (newCards) => {
   cards = newCards;
 };
 
-const writeCubeCards = (allSets, allCards) => {
+const sortByPriority = allSets => (card1, card2) => {
+  const set1 = allSets[card1.setCode];
+  const set2 = allSets[card2.setCode];
 
-  const cubableCards = Object.values(allCards)
-    .filter(({setCode}) =>
-      !["masterpiece", "box"].includes(allSets[setCode].type)
-    )
-    // allow cards with 2 names to be retrieved by only one part
+  if (isReleasedExpansionOrCoreSet(set1.type, set1.releaseDate)) {
+    if(isReleasedExpansionOrCoreSet(set2.type, set2.releaseDate)) {
+      return new Date(set2.releaseDate).getMilliseconds() - new Date(set1.releaseDate).getMilliseconds();
+    } else {
+      return -1;
+    }
+  } else if(isReleasedExpansionOrCoreSet(set2.type, set2.releaseDate)) {
+    return 1;
+  }
+
+  return 0;
+};
+
+const writeCubeCards = (allSets, allCards) => {
+  const groupedCards = groupCardsByName(Object.values(allCards));
+  const groupedCardsArray = Object.values(groupedCards);
+  const mySort = sortByPriority(allSets);
+  groupedCardsArray.forEach((cards) => {
+    cards.sort(mySort);
+  });
+
+  const cubableCards = groupedCardsArray
+    .map((cards) => cards[0]) // take the first card of each group
     .flatMap((card) => {
       const names = card.name.split(" // ");
       const arr = (names.length > 1) ? [card] : [];
