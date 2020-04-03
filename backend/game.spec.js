@@ -1,8 +1,10 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
+const axios = require("axios").default;
 const Game = require("./game");
 const Sock = require("./sock");
 const Rooms = require("./rooms");
+
 
 describe("Acceptance tests for Game class", () => {
   describe("can make a game", () => {
@@ -13,6 +15,7 @@ describe("Acceptance tests for Game class", () => {
       };
 
       const got = new Game(gameParams);
+      const value = await axios.get("https://cubecobra.com/cube/api/cubelist/dekkaru");
       assert.equal(got.type, "draft");
     });
   });

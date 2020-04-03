@@ -159,7 +159,11 @@ module.exports = class Game extends Room {
     // Reattach sock to player based on his id
     const reattachPlayer = this.players.some((player) => {
       if (player.id === sock.id) {
+        player.err("only one window active");
         player.attach(sock);
+        if (!this.didGameStart) {
+          this.players.push(player);
+        }
         this.greet(player);
         this.meta();
         super.join(sock);

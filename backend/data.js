@@ -64,9 +64,20 @@ const writeCards = (newCards) => {
 };
 
 const writeCubeCards = (allSets, allCards) => {
-  const cubableCards = Object.values(allCards).filter(({setCode}) =>
-    !["masterpiece", "box"].includes(allSets[setCode].type)
-  );
+
+  const cubableCards = Object.values(allCards)
+    .filter(({setCode}) =>
+      !["masterpiece", "box"].includes(allSets[setCode].type)
+    )
+    // allow cards with 2 names to be retrieved by only one part
+    .flatMap((card) => {
+      const names = card.name.split(" // ");
+      const arr = (names.length > 1) ? [card] : [];
+      return arr.concat(names.map((name) => ({
+        ...card,
+        name
+      })));
+    });
   cubableCardsByName = keyCardsByName(cubableCards);
   fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
 };
