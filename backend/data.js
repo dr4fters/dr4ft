@@ -77,6 +77,7 @@ const writeCubeCards = (allSets, allCards) => {
         ...card,
         name
       })));
+    });
   cubableCardsByName = keyCardsByName(cubableCards);
   fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
 };
