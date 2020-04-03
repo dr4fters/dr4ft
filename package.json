@@ -63,7 +63,7 @@
     "filepond-plugin-file-validate-size": "^2.2.1",
     "filepond-plugin-file-validate-type": "^1.2.5",
     "helmet": "^3.22.0",
-    "html-webpack-plugin": "4.0.3",
+    "html-webpack-plugin": "4.0.4",
     "jsonfile": "^6.0.1",
     "lodash": "^4.17.15",
     "node-schedule": "^1.3.2",
