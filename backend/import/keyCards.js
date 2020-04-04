@@ -7,7 +7,7 @@ const keyBy = (getGroup, getValue, cards = []) => (
 
 const groupCardsBy = (getGroup, getValue, baseSetSize = 0, cards = []) => (
   cards.reduce((acc, card) => {
-    if (baseSetSize >= card.number) {
+    if (baseSetSize >= parseInt(card.number)) {
       const group = getGroup(card);
       (acc[group] = acc[group] || []).push(getValue(card));
     }
