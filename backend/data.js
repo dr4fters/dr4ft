@@ -119,7 +119,7 @@ const getPlayableSets = () => {
     const { type, name, releaseDate } = AllSets[code];
 
     //We do not want to play with these types of set
-    if (["masterpiece", "planechase", "commander", "timeshifted"].includes(type)) {
+    if (!["core", "draft_innovation", "expansion", "funny", "starter", "masters", "custom"].includes(type)) {
       continue;
     }
 
