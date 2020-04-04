@@ -5,6 +5,7 @@ import _ from "utils/utils";
 import App from "../app";
 import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils";
+import {isURLScryfall} from "./Cols";
 
 const Grid = ({zones}) => (
   <div>
@@ -107,7 +108,7 @@ const CardImage = ({ imgUrl, name, manaCost, type = "", rarity = "", power = "",
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      src={`${imgUrl}&version=${App.state.cardSize}`}
+      src={isURLScryfall(imgUrl) ? `${imgUrl}&version=${App.state.cardSize}` : imgUrl}
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
