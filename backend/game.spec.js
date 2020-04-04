@@ -15,7 +15,6 @@ describe("Acceptance tests for Game class", () => {
       };
 
       const got = new Game(gameParams);
-      const value = await axios.get("https://cubecobra.com/cube/api/cubelist/dekkaru");
       assert.equal(got.type, "draft");
     });
   });

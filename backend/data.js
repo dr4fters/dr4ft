@@ -116,10 +116,10 @@ const getPlayableSets = () => {
 
   const AllSets = getSets();
   for (let code in AllSets) {
-    const { type, name, releaseDate, baseSetSize } = AllSets[code];
+    const { type, name, releaseDate } = AllSets[code];
 
-    //We do not want to play with these types of set (unplayable or lacking cards)
-    if (["masterpiece", "planechase", "commander", "timeshifted"].includes(type) || baseSetSize === 0) {
+    //We do not want to play with these types of set
+    if (!["core", "draft_innovation", "expansion", "funny", "starter", "masters", "custom"].includes(type)) {
       continue;
     }
 

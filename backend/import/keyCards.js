@@ -5,12 +5,10 @@ const keyBy = (getGroup, getValue, cards = []) => (
   }, {})
 );
 
-const groupCardsBy = (getGroup, getValue, baseSetSize = 0, cards = []) => (
+const groupCardsBy = (getGroup, getValue, cards = []) => (
   cards.reduce((acc, card) => {
-    if (baseSetSize >= parseInt(card.number)) {
-      const group = getGroup(card);
-      (acc[group] = acc[group] || []).push(getValue(card));
-    }
+    const group = getGroup(card);
+    (acc[group] = acc[group] || []).push(getValue(card));
     return acc;
   }, {})
 );
@@ -20,11 +18,11 @@ const numberPlucker = ({number}) => number;
 const uuidPlucker = ({uuid}) => uuid;
 const namePlucker = ({name}) => name.toLowerCase();
 
-const groupCardsUuidByRarity = (baseSetSize = 0, cards = []) =>
-  groupCardsBy(rarityPlucker, uuidPlucker, baseSetSize, cards);
+const groupCardsUuidByRarity = (cards = []) =>
+  groupCardsBy(rarityPlucker, uuidPlucker,cards);
 
 const groupCardsByName = (cards = []) =>
-  groupCardsBy(namePlucker, card => card, 10000, cards);
+  groupCardsBy(namePlucker, card => card, cards);
 
 const keyCardsUuidByNumber = (cards = []) =>
   keyBy(numberPlucker, uuidPlucker, cards);
