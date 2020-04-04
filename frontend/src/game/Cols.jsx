@@ -5,7 +5,7 @@ import App from "../app";
 import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils.jsx";
 
-const isURLScryfall = (url) => {
+export const isURLScryfall = (url) => {
   try {
     return /scryfall\.com/.test(new URL(url).hostname);
   }catch(err) {
