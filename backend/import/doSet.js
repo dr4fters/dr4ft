@@ -1,7 +1,6 @@
 const toBoosterCard = require("./toBoosterCard");
 const { keyCardsUuidByNumber, groupCardsUuidByRarity, keyCardsByUuid} = require("./keyCards");
 
-// TODO: this set should return a set or cards?
 function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mtgJsonCards}) {
   const cards = mtgJsonCards
     .filter((card) => !card.isAlternative)
@@ -16,7 +15,7 @@ function doSet({code, baseSetSize, name, type, releaseDate, boosterV3, cards: mt
     baseSetSize,
     size,
     cardsByNumber: keyCardsUuidByNumber(cards),
-    ...groupCardsUuidByRarity(baseSetSize, cards)
+    ...groupCardsUuidByRarity(cards)
   }, {
     ...keyCardsByUuid(cards)
   }];
