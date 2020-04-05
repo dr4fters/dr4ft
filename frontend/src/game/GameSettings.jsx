@@ -27,6 +27,7 @@ const GameSettings = () => (
         <Checkbox side="left" text="Use column view" link="cols" />
         <SortCards />
         <CardsImageQuality />
+        <CardsImageLanguage />
       </span>
     </fieldset>
   </div>
@@ -72,6 +73,35 @@ const CardsImageQuality = () => (
             value={size.toLowerCase()} />
           {sizeDisplay[size]}
         </label>)}
+    </div>
+  </div>
+);
+
+const imgLanguageDisplay = {
+  "en": "English",
+  "fr": "French",
+  "es": "Spanish",
+  "de": "German",
+  "it": "Italian",
+  "pt": "Portuguese",
+  "ja": "Japanese",
+  "ko": "Korean",
+  "ru": "Russian",
+  "zhs": "Simplified Chinese",
+  "zht": "Traditional Chinese"
+};
+
+const CardsImageLanguage = () => (
+  <div className="settings-cards-language">
+    Card image language:
+    <div className='connected-container'>
+      <select
+        value={App.state.cardLang}
+        onChange={e => App.save("cardLang", e.currentTarget.value)}>
+        {Object.entries(imgLanguageDisplay).map(([value, label]) =>
+          <option key={value} value={value}>{label}</option>
+        )}
+      </select>
     </div>
   </div>
 );

@@ -5,14 +5,6 @@ import App from "../app";
 import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils.jsx";
 
-export const isURLScryfall = (url) => {
-  try {
-    return /scryfall\.com/.test(new URL(url).hostname);
-  }catch(err) {
-    return false;
-  }
-};
-
 class Cols extends Component {
   constructor(props) {
     super(props);
@@ -63,9 +55,16 @@ Cols.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
-const getCardSrc = ({url}) => (
-  isURLScryfall(url)
-    ? `${url}&version=${App.state.cardSize}`
+
+export const setFallbackSrc = ({setCode, number}) => ev => {
+  if (setCode && number) {
+    ev.target.src = `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}?format=image&version=${App.state.cardSize}`;
+  }
+};
+
+export const getCardSrc = ({scryfallId = "", url, setCode, number}) => (
+  scryfallId != ""
+    ? `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}/${App.state.cardLang}?format=image&version=${App.state.cardSize}`
     : url
 );
 
@@ -88,6 +87,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
             ? <div><strong>{card.name}</strong> {card.manaCost}</div>
             : <img
               src={getCardSrc(card)}
+              onError= {setFallbackSrc(card)}
               alt={card.name + " " + card.manaCost} />}
         </div>
       );
@@ -128,9 +128,8 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
         <img
           className = "image-inner"
           onMouseEnter = {e => onMouseEnter(card, e)}
-          src = {isURLScryfall(card.url)
-            ? `${card.url}&version=${App.state.cardSize}`
-            : card.url} />
+          onError= {setFallbackSrc(card)}
+          src = {getCardSrc(card)} />
       </div>
     : <div />
 );

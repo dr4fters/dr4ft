@@ -5,7 +5,7 @@ import _ from "utils/utils";
 import App from "../app";
 import {getZone, getZoneDisplayName} from "../cards";
 import {Spaced} from "../utils";
-import {isURLScryfall} from "./Cols";
+import {getCardSrc, setFallbackSrc} from "./Cols";
 
 const Grid = ({zones}) => (
   <div>
@@ -98,7 +98,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ imgUrl, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
+const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p><strong>{name}</strong> {manaCost}</p>
@@ -108,7 +108,8 @@ const CardImage = ({ imgUrl, name, manaCost, type = "", rarity = "", power = "",
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      src={isURLScryfall(imgUrl) ? `${imgUrl}&version=${App.state.cardSize}` : imgUrl}
+      onError= {setFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
+      src={getCardSrc({url: imgUrl, scryfallId, setCode, number})}
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
@@ -124,7 +125,10 @@ CardImage.propTypes = {
   power:  PropTypes.string,
   toughness:  PropTypes.string,
   text:  PropTypes.string,
-  loyalty:  PropTypes.string
+  loyalty:  PropTypes.string,
+  setCode: PropTypes.string,
+  number: PropTypes.string,
+  scryfallId: PropTypes.string,
 };
 
 export default Grid;
