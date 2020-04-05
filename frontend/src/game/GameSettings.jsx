@@ -13,11 +13,13 @@ const GameSettings = () => (
           <Checkbox side="left" text="Enable notifications on new packs" link="beep" />
         }
         {!App.state.isSealed &&
-          <Checkbox side="left"
-            text={App.state.notificationBlocked ? "Web notifications blocked in browser" : "Use desktop notifications over beep"}
-            link="notify"
-            disabled={!App.state.beep || App.state.notificationBlocked}
-            onChange={App._emit("notification")} />
+          <div style={{paddingLeft: "10px"}} >
+            <Checkbox side="left"
+              text={App.state.notificationBlocked ? "Web notifications blocked in browser" : "Use desktop notifications over beep"}
+              link="notify"
+              disabled={!App.state.beep || App.state.notificationBlocked}
+              onChange={App._emit("notification")} />
+          </div>
         }
         {!App.state.isSealed &&
           <Checkbox side="left" text="Add picks to sideboard" link="side" />}
