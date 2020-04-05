@@ -108,13 +108,18 @@ let events = {
     }
     App.update();
     if (App.state.beep) {
-      if (App.state.notify && document.hidden) {
-        new Notification("Pack awaiting", {
-          icon: "/4-hq.png",
-          body: "A new pack is available!"
-        });
+      if (App.state.notify) {
+        if (document.hidden) {
+          new Notification("Pack awaiting", {
+            icon: "/4-hq.png",
+            body: "A new pack is available!"
+          });
+        }
       } else {
-        document.getElementById("beep").play();
+        const beep = document.getElementById("beep");
+        if(beep) {
+          beep.play();
+        }
       }
     }
   },
