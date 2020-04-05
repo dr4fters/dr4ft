@@ -560,7 +560,7 @@ module.exports = class Game extends Room {
     `cubePoolSize: ${this.cube.cubePoolSize}
     packsNumber: ${this.cube.packs}
     playerPackSize: ${this.cube.cards}
-    cube: ${truncate(this.cube.list.substring, 30)}`
+    cube: ${truncate(this.cube.list, 30)}`
     : ""}`;
   }
 
