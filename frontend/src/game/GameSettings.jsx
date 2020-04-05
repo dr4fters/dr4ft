@@ -3,6 +3,7 @@ import React from "react";
 import App from "../app";
 import {Checkbox} from "../utils";
 
+
 const GameSettings = () => (
   <div className='game-settings'>
     <fieldset className='fieldset'>
