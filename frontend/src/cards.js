@@ -28,7 +28,7 @@ for (let name in Cards)
     color: "Colorless",
     rarity: "Basic",
     type: "Land",
-    url: "https://api.scryfall.com/cards/multiverse/" + `${Cards[name]}` + "?format=image"
+    url: `https://api.scryfall.com/cards/named?exact=${name.toLowerCase()}&format=image&version=${App.state.cardSize}`
   };
 
 let rawPack, clicked;

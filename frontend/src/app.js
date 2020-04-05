@@ -58,6 +58,7 @@ let App = {
     sort: "rarity",
     log: {},
     cardSize: "normal",
+    cardLang: "en",
     game: {},
     mtgJsonVersion: {
       version: "0.0.0",
