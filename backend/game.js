@@ -375,7 +375,7 @@ module.exports = class Game extends Room {
         p.pickNumber = 0;
         const pack = this.pool.shift();
         p.getPack(pack);
-        p.send("packSize", pack.length);
+        p.send("set", { packSize: pack.length });
       }
     });
 
