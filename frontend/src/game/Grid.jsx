@@ -36,6 +36,9 @@ const zone = (zoneName, index) => {
         <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
       {cards.map((card, i) => <Card key={i+zoneName+card.name} card={card} zoneName={zoneName} />)}
+      {cards.length === 0 && zoneName === "pack" &&
+        <h2 className='waiting'>Waiting for a player to pick a card.</h2>
+      }
     </div>
   );
 };
