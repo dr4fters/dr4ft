@@ -512,7 +512,7 @@ module.exports = class Game extends Room {
       }
 
       if (shufflePlayers) {
-        shuffle(this.players);
+        this.players = shuffle(this.players);
       }
 
       this.createPool();
