@@ -302,7 +302,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
       assert(dirtyParsed.cmc == 7, "split card CMC must equal to both side CMC");
     });
 
-    it("parse a multicolor card as multicolor", () => {
+    it("parse a card with multiple color identities as mono color", () => {
       const multicolorCard = {
         "colorIdentity": ["B", "R"],
         "colors": ["R"],
@@ -324,7 +324,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
       };
 
       const [parsedCard] = [multicolorCard].map(toBoosterCard("setCode"));
-      assert(parsedCard.color === "Multicolor", "multicolored card should have color Multicolor");
+      assert(parsedCard.color === "Red", "multicolored card should have color red");
     });
 
     it("parse a no color card as colorless", () => {
