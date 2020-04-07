@@ -81,16 +81,16 @@ const CardsImageQuality = () => (
 
 const imgLanguageDisplay = {
   "en": "English",
-  "fr": "French",
-  "es": "Spanish",
-  "de": "German",
-  "it": "Italian",
-  "pt": "Portuguese",
-  "ja": "Japanese",
-  "ko": "Korean",
-  "ru": "Russian",
-  "zhs": "Simplified Chinese",
-  "zht": "Traditional Chinese"
+  "fr": "French (Français)",
+  "es": "Spanish (Español)",
+  "de": "German (Deutsch)",
+  "it": "Italian (Italiano)",
+  "pt": "Portuguese (Português)",
+  "ja": "Japanese (日本語)",
+  "ko": "Korean (한국어)",
+  "ru": "Russian (Русский)",
+  "zhs": "Simplified Chinese (简体中文)",
+  "zht": "Traditional Chinese (繁體中文)"
 };
 
 const CardsImageLanguage = () => (
