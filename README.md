@@ -58,8 +58,6 @@ It supports all their features, and many more.
 
 <br>
 
-Joel's Fork!
-
 # Installation
 
 ### Native
