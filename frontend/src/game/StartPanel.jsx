@@ -42,11 +42,11 @@ const Options = () => {
   const timers = ["Fast", "Moderate", "Slow", "Leisurely"];
   return (
     <span>
-      <Checkbox side="left" link="addBots" text=" Bots"/>
+      <Checkbox side="left" link="addBots" text="Fill empty seats with Bots"/>
       <div>
-        <Checkbox side="left" link="useTimer" text=" Timer: "/>
+        <Checkbox side="left" link="useTimer" text="Timer: "/>
         <Select link="timerLength" opts={timers} disabled={!useTimer}/>
-        <Checkbox side="left" link="shufflePlayers" text=" Random seating"/>
+        <Checkbox side="left" link="shufflePlayers" text="Random seating"/>
       </div>
     </span>
   );

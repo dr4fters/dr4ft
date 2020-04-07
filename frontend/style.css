@@ -156,11 +156,6 @@ button:disabled:active {
   border: solid #d0d0d0 1px;
 }
 
-.radio-input {
-  margin-left: 2px;
-  margin-right: 5px;
-}
-
 .radio-label:hover {
   border-color: #909090;
 }
@@ -171,6 +166,11 @@ button:disabled:active {
 
 .number {
   width: 50px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  margin-right: 5px;
+  margin-left: 2px;
 }
 
 /** Container of inputs that share a border. **/
