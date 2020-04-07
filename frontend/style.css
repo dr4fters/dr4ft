@@ -49,6 +49,10 @@ h1 {
   text-transform: uppercase;
 }
 
+h2 {
+  font-family: 'Montserrat', 'Arial', sans-serif;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -330,6 +334,10 @@ input[type="checkbox"], input[type="radio"] {
 
 .col div:last-child img {
   margin-bottom: 0;
+}
+
+.waiting {
+  font-style: italic;
 }
 
 /** Card styles **/
