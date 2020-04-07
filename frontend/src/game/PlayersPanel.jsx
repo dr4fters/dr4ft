@@ -114,7 +114,7 @@ const PlayerEntry = ({player, index}) => {
   const columns = [
     <td key={0}>{index + 1}</td>,
     <td key={1}>{connectionStatusIndicator}</td>,
-    <td key={2}>{index === self ? <SelfName name={name} /> : name}</td>,
+    <td key={2}>{index === self ? <SelfName name={App.state.name} /> : name}</td>,
     <td key={3} className={columnVisibility("packs")} >{packs}</td>,
     <td key={4} id={className==="self" ? "self-time":""} className={columnVisibility("timer")}>{time}</td>,
     <td key={5} className={columnVisibility("trice")}>{hash && hash.cock}</td>,
@@ -168,6 +168,8 @@ const SelfName = ({ name }) => (
     value={name}
     onChange={(e) => {
       App.save("name", e.currentTarget.value);
+    }}
+    onBlur={(e) => {
       App.send("name", e.currentTarget.value);
     }}
   />
