@@ -90,18 +90,16 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   };
 }
 
-function getColor({ colorIdentity, colors, frameEffects = [] }) {
+function getColor({ colors, frameEffects = [] }) {
   if (frameEffects.includes("devoid")) {
     return "colorless";
   }
 
-  const c = colorIdentity || colors;
-
-  switch (c.length) {
+  switch (colors.length) {
   case 0:
     return "colorless";
   case 1:
-    return COLORS[c[0]];
+    return COLORS[colors[0]];
   default:
     return "multicolor";
   }
