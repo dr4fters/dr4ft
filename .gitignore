@@ -2,10 +2,10 @@
 .DS_Store
 node_modules
 .vscode
+.idea
 
 data
-public/src/config.js
-public/index.html
+frontend/index.html
 
 config.client.js
 config.server.js

@@ -1,13 +1,13 @@
 const path = require("path");
 const webpack = require("webpack");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const PACKAGE = require("./package.json");
 
 module.exports = {
   entry: {
     polyfill: "@babel/polyfill",
-    app: "./public/src/init.js"
+    app: "./frontend/src/init.js"
   },
   output: {
     path: path.join(__dirname, "./built"),
@@ -15,13 +15,17 @@ module.exports = {
     publicPath: "/"
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
-      template: "./public/index.html.tpl"
+      template: "./frontend/index.html.tpl",
+      cache: false
     }),
     new CopyWebpackPlugin([
-      { from: "public", ignore: ["*.tpl", "src/**/*"] }
-    ]),
+      { from: "frontend", ignore: ["*.tpl", "src/**/*"] }
+    ], {
+      copyUnmodified: true
+    }),
     new webpack.DefinePlugin({
       BUILD_DATE: JSON.stringify(new Date().toISOString().slice(0, 10))
     })

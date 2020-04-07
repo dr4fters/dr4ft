@@ -45,8 +45,15 @@ matrix:
       node_js: node
       env: eslint
       install:
-        - npm install -g eslint
-        - npm install -g eslint-plugin-react
+        - npm install --ignore-scripts
+      script:
+        - npm run lint
+
+    - name: Run tests
+      language: node_js
+      node_js: node
+      install:
+        - npm install
       script:
         - npm test
 

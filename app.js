@@ -6,11 +6,11 @@ const helmet = require("helmet");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const logger = require("./src/logger");
-const router = require("./src/router");
-const apiRouter = require("./src/api/");
-const allSets = require("./src/make/allsets");
-const config = require("./config.server");
+const logger = require("./backend/logger");
+const router = require("./backend/router");
+const apiRouter = require("./backend/api/");
+const allSets = require("./scripts/download_allsets");
+const {app: config, version} = require("./config");
 const app = express();
 
 
@@ -38,5 +38,5 @@ const io = eio(server);
 io.on("connection", router);
 
 server.listen(config.PORT);
-logger.info(`Started up on port ${config.PORT} with version ${config.VERSION}`);
+logger.info(`Started up on port ${config.PORT} with version ${version}`);
 
