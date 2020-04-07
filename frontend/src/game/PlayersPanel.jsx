@@ -5,7 +5,7 @@ import App from "../app";
 
 const PlayersPanel = () => (
   <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Players</legend>
+    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.seats})</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
       <u>Time Left</u>
@@ -28,10 +28,10 @@ const PlayerTableHeader = () => (
     <th key="1">#</th>
     <th key="2"/>
     <th key="3">Drafter</th>
-    <th className={App.state.isSealed ? "hidden": ""} key="4">Packs</th>
-    <th className={App.state.isSealed ? "hidden": ""} key="5">Timer</th>
-    <th key="6">Trice</th>
-    <th key="7">MWS</th>
+    <th key="4" className={columnVisibility("packs")}>Packs</th>
+    <th key="5" className={columnVisibility("timer")}>Timer</th>
+    <th key="6" className={columnVisibility("trice")}>Trice</th>
+    <th key="7" className={columnVisibility("mws")}>MWS</th>
   </tr>
 );
 
@@ -68,15 +68,30 @@ const fixPackTimeToScreen = () => {
     const selfTimeRect = selfTimeFixed.getBoundingClientRect();
     selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0);
     selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`;
-    selfTimeFixed.style.top 
+    selfTimeFixed.style.top
     = zoneRect.top > 0
         ? `${zoneRect.top + 5}px`
         : "5px";
   }
 };
 
+const columnVisibility = (columnName) => {
+  switch(columnName) {
+  case "packs":
+    return App.state.isGameFinished || !App.state.didGameStart || App.state.isSealed ? "hidden" : "";
+  case "timer":
+    return App.state.isGameFinished || !App.state.didGameStart || App.state.isSealed ? "hidden" : "";
+  case "trice":
+    return !App.state.isGameFinished ? "hidden" : "";
+  case "mws":
+    return !App.state.isGameFinished ? "hidden" : "";
+  default:
+    return "";
+  }
+};
+
 const PlayerEntry = ({player, index}) => {
-  const {players, self, didGameStart, isHost, isSealed} = App.state;
+  const {players, self, didGameStart, isHost} = App.state;
   const {isBot, name, packs, time, hash} = player;
   const {length} = players;
 
@@ -100,10 +115,10 @@ const PlayerEntry = ({player, index}) => {
     <td key={0}>{index + 1}</td>,
     <td key={1}>{connectionStatusIndicator}</td>,
     <td key={2}>{index === self ? <SelfName name={name} /> : name}</td>,
-    <td key={3} className={isSealed ? "hidden": ""} >{packs}</td>,
-    <td id={className==="self" ? "self-time":""} className={isSealed ? "hidden": ""} key={4}>{time}</td>,
-    <td key={5}>{hash && hash.cock}</td>,
-    <td key={6}>{hash && hash.mws}</td>
+    <td key={3} className={columnVisibility("packs")} >{packs}</td>,
+    <td key={4} id={className==="self" ? "self-time":""} className={columnVisibility("timer")}>{time}</td>,
+    <td key={5} className={columnVisibility("trice")}>{hash && hash.cock}</td>,
+    <td key={6} className={columnVisibility("mws")}>{hash && hash.mws}</td>
   ];
 
   const selfTimeFixed = document.getElementById("self-time-fixed-time");
