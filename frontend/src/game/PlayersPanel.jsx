@@ -5,7 +5,7 @@ import App from "../app";
 
 const PlayersPanel = () => (
   <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Players</legend>
+    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.seats})</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
       <u>Time Left</u>
@@ -68,7 +68,7 @@ const fixPackTimeToScreen = () => {
     const selfTimeRect = selfTimeFixed.getBoundingClientRect();
     selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0);
     selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`;
-    selfTimeFixed.style.top 
+    selfTimeFixed.style.top
     = zoneRect.top > 0
         ? `${zoneRect.top + 5}px`
         : "5px";
