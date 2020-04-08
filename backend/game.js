@@ -24,7 +24,8 @@ module.exports = class Game extends Room {
       round: 0,
       bots: 0,
       sets: sets || [],
-      secret: uuid.v4()
+      secret: uuid.v4(),
+      logger: logger.child({ id: gameID })
     });
 
     // Handle packsInfos to show various informations about the game
@@ -159,6 +160,7 @@ module.exports = class Game extends Room {
     // Reattach sock to player based on his id
     const reattachPlayer = this.players.some((player) => {
       if (player.id === sock.id) {
+        this.logger.debug(`${sock.name} re-joined the game`);
         player.err("only one window active");
         player.attach(sock);
         if (!this.didGameStart) {
@@ -180,6 +182,7 @@ module.exports = class Game extends Room {
     }
 
     super.join(sock);
+    this.logger.debug(`${sock.name} joined the game`);
 
     const h = new Human(sock);
     if (h.id === this.hostID) {
@@ -213,6 +216,7 @@ module.exports = class Game extends Room {
     if (!h || h.isBot)
       return;
 
+    this.logger.debug(`${h.name} is being kicked from the game`);
     if (this.didGameStart)
       h.kick();
     else
@@ -274,6 +278,7 @@ module.exports = class Game extends Room {
 
     Rooms.delete(this.id);
     Game.broadcastGameInfo();
+    this.logger.debug("is being shut down");
 
     this.emit("kill");
   }
@@ -295,6 +300,7 @@ module.exports = class Game extends Room {
   }
 
   end() {
+    this.logger.debug("game ended");
     this.players.forEach((p) => {
       if (!p.isBot) {
         p.send("log", p.draftLog.round);
@@ -366,6 +372,8 @@ module.exports = class Game extends Room {
     if (this.round++ === this.rounds) {
       return this.end();
     }
+
+    this.logger.debug("new round started");
 
     this.packCount = players.length;
     this.delta *= -1;
@@ -523,10 +531,10 @@ module.exports = class Game extends Room {
         this.handleDraft();
       }
 
-      logger.info(`Game ${this.id} started.\n${this.toString()}`);
+      this.logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
     } catch(err) {
-      logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
+      this.logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
         if (!player.isBot) {
           player.exit();
