@@ -67,6 +67,7 @@ let App = {
     messages: [],
     pickNumber: 0,
     packSize: 15,
+    gameSeats: 8, // seats of the game being played
 
     get didGameStart() {
       // both round === 0 and round is undefined
