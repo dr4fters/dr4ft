@@ -5,7 +5,7 @@ import App from "../app";
 
 const PlayersPanel = () => (
   <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.seats})</legend>
+    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.gameSeats})</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
       <u>Time Left</u>

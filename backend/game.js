@@ -267,6 +267,7 @@ module.exports = class Game extends Room {
       isBot: p.isBot,
       isConnected: p.isConnected,
     }));
+    state.gameSeats = this.seats;
     this.players.forEach((p) => p.send("set", state));
     Game.broadcastGameInfo();
   }
