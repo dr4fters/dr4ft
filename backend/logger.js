@@ -6,7 +6,7 @@ const logger = createLogger({
   level: config.level,
   format: combine(
     timestamp({ format: "YYYY-MM-DD HH:mm:ss,SSSZZ" }),
-    printf(info => `${info.timestamp} [${info.level.toUpperCase()}] ${info.message}`),
+    printf(info => `${info.timestamp} [${info.level.toUpperCase()}] [${info.id || "GLOBAL"}] ${info.message}`),
   ),
 });
 
