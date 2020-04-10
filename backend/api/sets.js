@@ -39,6 +39,56 @@ setsRouter
     res.json({ "message": "file integrated successfully" });
   });
 
+/**
+ * Utility to delete unwanted attributes before saving the set
+ * @param {JSON} json
+ */
+const sanitize = (json) => {
+  json.type = CUSTOM_TYPE; //Force set as custom
+  json.cards = json.cards.map(({ //take only values that we need
+    name,
+    frameEffects,
+    number,
+    layout,
+    colors,
+    colorIdentity,
+    names,
+    convertedManaCost,
+    types,
+    supertypes = [],
+    subtypes = [],
+    manaCost,
+    url,
+    scryfallId,
+    rarity,
+    power,
+    toughness,
+    loyalty,
+    text
+  }
+  ) => ({
+    name,
+    frameEffects,
+    number,
+    layout,
+    colors,
+    colorIdentity,
+    names,
+    convertedManaCost,
+    types,
+    supertypes,
+    subtypes,
+    manaCost,
+    url,
+    scryfallId,
+    rarity,
+    power,
+    toughness,
+    loyalty,
+    text
+  }));
+} ;
+
 function integrateJson(json) {
   if(!json.code) {
     throw new Error("Custom set should have a code");
@@ -55,7 +105,7 @@ function integrateJson(json) {
   }
 
   //TODO: that should be done done by a service -> parse and save (and write file)
-  json.type = CUSTOM_TYPE; //Force set as custom
+  sanitize(json);
   const [set, cards] = doSet(json);
   saveSetAndCards({ set, cards });
   logger.info(`adding new set with code "${json.code}" to database`);
