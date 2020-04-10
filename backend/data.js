@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const {  keyCardsByName, groupCardsByName } = require("./import/keyCards");
+const {  keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
 
 const DATA_DIR = "data";
 const DRAFT_STATS_DIR = "draftStats";
@@ -73,7 +73,7 @@ const getCubableCardByName = (cardName) => {
   if (!cubableCardsByName) {
     cubableCardsByName = readFile(`${DATA_DIR}/${CUBABLE_CARDS_PATH}`);
   }
-  return cubableCardsByName[cardName];
+  return getCardByUuid(cubableCardsByName[cardName]);
 };
 
 const writeCards = (newCards) => {
@@ -115,7 +115,7 @@ const writeCubeCards = (allSets, allCards) => {
         name
       })));
     });
-  cubableCardsByName = keyCardsByName(cubableCards);
+  cubableCardsByName = keyCardsUuidByName(cubableCards);
   fs.writeFileSync(`${DATA_DIR}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCardsByName, undefined, 4));
 };
 
