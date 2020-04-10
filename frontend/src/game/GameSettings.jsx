@@ -29,7 +29,7 @@ const GameSettings = () => (
         <Checkbox side="left" text="Use column view" link="cols" />
         <SortCards />
         <CardsImageQuality />
-        <CardsImageLanguage />
+        {App.state.cardSize != "text" && <CardsImageLanguage />}
       </span>
     </fieldset>
   </div>
