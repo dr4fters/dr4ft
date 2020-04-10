@@ -31,9 +31,10 @@
     "lint": "eslint --ignore-path .gitignore .",
     "pretest": "npm run lint",
     "test": "mocha --reporter spec --exit \"./{,!(node_modules)/**/}*.spec.js\"",
-    "postinstall": " npm run download_allsets && webpack --config webpack.prod.js",
-    "update_database": "node scripts/update_database",
-    "download_allsets": "node scripts/download_allsets"
+    "postinstall": " npm run download_allsets && npm run download_booster_rules && webpack --config webpack.prod.js",
+    "update_database": "node scripts/update_database ",
+    "download_allsets": "node scripts/download_allsets",
+    "download_booster_rules": "node scripts/download_booster_rules"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
