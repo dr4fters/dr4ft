@@ -27,8 +27,8 @@ const groupCardsByName = (cards = []) =>
 const keyCardsUuidByNumber = (cards = []) =>
   keyBy(numberPlucker, uuidPlucker, cards);
 
-const keyCardsByName = (cards = []) =>
-  keyBy(namePlucker, card => card, cards);
+const keyCardsUuidByName = (cards = []) =>
+  keyBy(namePlucker, uuidPlucker, cards);
 
 const keyCardsByUuid = (cards = []) =>
   keyBy(uuidPlucker, card => card, cards);
@@ -37,6 +37,6 @@ module.exports = {
   groupCardsUuidByRarity,
   groupCardsByName,
   keyCardsUuidByNumber,
-  keyCardsByName,
+  keyCardsUuidByName,
   keyCardsByUuid
 };

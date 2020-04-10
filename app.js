@@ -12,6 +12,7 @@ const apiRouter = require("./backend/api/");
 const allSets = require("./scripts/download_allsets");
 const {app: config, version} = require("./config");
 const app = express();
+require("./backend/data-watch");
 
 
 //Middlewares
