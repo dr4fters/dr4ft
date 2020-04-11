@@ -1,5 +1,6 @@
 const {sample, pull} = require("lodash");
 const Player = require("./player");
+const analyzePack = require("./analytics");
 
 module.exports = class extends Player {
   constructor() {
@@ -12,6 +13,8 @@ module.exports = class extends Player {
   }
 
   getPack(pack) {
+    console.log(analyzePack(pack));
+
     const randomPick = sample(pack);
     this.picks.push(randomPick.name);
     pull(pack, randomPick);

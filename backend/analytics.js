@@ -22,12 +22,13 @@ const CardColorNames = {
  * @returns {Array} ... Returns an array of the color pip bias.
  */
 function eatColorPips(manaCost) {
-  var colorBias = [0, 0, 0, 0, 0];
+  var colorBias = [0, 0, 0, 0, 0, 0]; // The last value refers to the total number of color pips.
 
-  const toBeRemoved = ["{", "}", "X", "/"]
+  // Symbols to be removed from card mana costs.
+  const toBeRemoved = ["{", "}", "X", "/"];
 
   for (var item in toBeRemoved) {
-    anaCost = manaCost.split(toBeRemoved[item]).join("");
+    manaCost = manaCost.split(toBeRemoved[item]).join("");
   }
 
   for (var number = 0; number <= 9; number++) {
@@ -36,6 +37,7 @@ function eatColorPips(manaCost) {
 
   for (var char = 0; char < manaCost.length; char++) {
     colorBias[CardColors[manaCost.charAt(char)]]++;
+    colorBias[colorBias.length - 1]++; // Increment the total number of color pips.
   }
 
   return colorBias;
@@ -51,10 +53,12 @@ function generatePackStats(packs) {
   var colorBias = [0, 0, 0, 0, 0, 0];
   var colorPipBias = [0, 0, 0, 0, 0];
   var typeBias = {};
+  var rarityBias = {};
 
   var cmcBias = 0;
   var totalCount = packs.length;
   var nonLandCount = 0;
+  var colorPips = 0;
 
   for (var pack in packs) {
     // packObj used to make my life easier regarding referencing.
@@ -62,6 +66,7 @@ function generatePackStats(packs) {
 
     var manaCost = packObj.manaCost;
     var type = packObj.type;
+    var rarity = packObj.rarity;
     var color = packObj.color;
     var CMC = packObj.cmc;
 
@@ -74,19 +79,22 @@ function generatePackStats(packs) {
       }
 
       if (color != "Colorless") {
-        newColorBias = eatColorPips(manaCost);
+        var newColorBias = eatColorPips(manaCost);
 
         for (var val = 0; val < colorPipBias.length; val++) {
           colorPipBias[val] += newColorBias[val];
         }
+
+        colorPips += newColorBias[newColorBias.length - 1];
       }  
     }
 
     typeBias[type] = (typeBias[type] || 0) + 1; // Increase the number for whatever type it is or initialize the value.
+    rarityBias[rarity] = (rarityBias[rarity] || 0) + 1; 
   }
 
   for (var val = 0; val < colorPipBias.length; val++) {
-    colorPipBias[val] /= nonLandCount;
+    colorPipBias[val] /= colorPips;
   }
 
   for (var val = 0; val < colorBias.length; val++) {
@@ -99,7 +107,11 @@ function generatePackStats(packs) {
     typeBias[type] /= totalCount;
   }
 
-  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "cmcBias": cmcBias}
+  for (var rarity in rarityBias) {
+    rarityBias[rarity] /= totalCount;
+  }
+
+  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "rarityBias": rarityBias, "cmcBias": cmcBias}
 
   return packStats;  
 }
