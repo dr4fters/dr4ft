@@ -6,27 +6,27 @@ const {range} = require("lodash");
 
 // List of potentially problematic cards to test over for pack analysis.
 const TestCard = {
-  uuid: '576e9e04-acd7-5d24-bc19-1dd765e9d1b8',
+  uuid: "576e9e04-acd7-5d24-bc19-1dd765e9d1b8",
   name: "Purphoros's Intervention",
   names: [],
-  color: 'Red',
-  colors: [ 'R' ],
-  colorIdentity: [ 'R' ],
-  setCode: 'THB',
-  scryfallId: 'ecc911ee-0e12-4b10-add7-9a9d63c29443',
+  color: "Red",
+  colors: [ "R" ],
+  colorIdentity: [ "R" ],
+  setCode: "THB",
+  scryfallId: "ecc911ee-0e12-4b10-add7-9a9d63c29443",
   cmc: 1,
-  number: '151',
-  type: 'Sorcery',
-  manaCost: '{X}{R}',
-  rarity: 'Rare',
-  url: 'https://api.scryfall.com/cards/ecc911ee-0e12-4b10-add7-9a9d63c29443?format=image',
-  layout: 'normal',
+  number: "151",
+  type: "Sorcery",
+  manaCost: "{X}{R}",
+  rarity: "Rare",
+  url: "https://api.scryfall.com/cards/ecc911ee-0e12-4b10-add7-9a9d63c29443?format=image",
+  layout: "normal",
   isDoubleFaced: false,
-  flippedCardURL: '',
+  flippedCardURL: "",
   supertypes: [],
   subtypes: [],
-  text: 'Choose one —\n' +
-    '• Create an X/1 red Elemental creature token with trample and haste. Sacrifice it at the beginning of the next end step.\n' +
+  text: "Choose one —\n" +
+    "• Create an X/1 red Elemental creature token with trample and haste. Sacrifice it at the beginning of the next end step.\n" +
     "• Purphoros's Intervention deals twice X damage to target creature or planeswalker.",
   foil: true
 };
@@ -41,41 +41,66 @@ function withinRange(val, expected, tolerance) {
   return (val <= tolerance + expected && val >= tolerance - expected);
 }
 
-var monoGreenTest = () => {
-  var arr = [];
+/**
+ * @desc Compares an arr/obj and returns if they're the same.
+ * @param {arr/obj} val0 ... val0 to compare.
+ * @param {arr/obj} val1 ... val1 to compare.
+ * @returns {boolean} ... Are the values the same?
+ */
+function compareArray(val0, val1) {
+  for (var val in val0) {
+    if (val0[val] != val1[val]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+var monoGreenTest = [];
   
-  range(15).forEach(() => {
-    arr.append(TestCard);
-  });
-};
+for (var val = 0; val < 15; val++) {
+  monoGreenTest.push(TestCard);
+}
 
 describe("Acceptance tests for card analytics generation", () => {
-  it("Should return the bias of a single card.", () => {
+  it("Should return the known bias of a single card", () => {
     var stats = cardStats(monoGreenTest);
+    var statsLength = 0;
 
-    assert(stats.colorBias == [0, 0, 0, 1, 0]);
-    assert(stats.colorPipBias == [0, 0, 0, 0, 1]);
-    assert(cmcBias == 2);
+    for (var output in stats) {
+      if (stats[output] != undefined) {
+        statsLength++;
+      }
+    }
+
+    assert(statsLength == 5);
+    assert(compareArray(stats.colorBias, [0, 0, 0, 1, 0, 0, 0]));
+    assert(compareArray(stats.colorPipBias, [0, 0, 0, 1, 0]));
+    assert(stats.cmcBias == 1);
   });
 
   it("Should return statistics near 100% +/- 2", () => {
-    range(100).forEach(() => {
+    range(20).forEach(() => {
       var randomBooster = boosterGenerator("MH1");
       var stats = cardStats(randomBooster);
       
       var colorBias = stats.colorBias;
-      var colorPipBias = statis.colorPipBias;
+      var colorPipBias = stats.colorPipBias;
 
       var colorBiasPercentage = 0;
       var colorPipBiasPercentage = 0;
 
-      for (var val in colorBias) {
-        colorBiasPercentage += colorBias[val];
-        colorPipBiasPercentage += colorBIas[val];
+      for (var colorBiasVal in colorBias) {
+        colorBiasPercentage += colorBias[colorBiasVal];
       }
 
-      assert(withinRange(colorBiasPercentage, 1, 2));
-      assert(withinRange(colorPipBiasPercentage, 1, 2));
+      for (var colorPipVal in colorPipBias) {
+        colorPipBiasPercentage += colorPipBias[colorPipVal];
+      }
+
+      assert(withinRange(colorBiasPercentage, 1, .02));
+      assert(withinRange(colorPipBiasPercentage, 1, .02));
     });
   });
 });

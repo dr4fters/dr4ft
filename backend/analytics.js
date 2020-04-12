@@ -14,6 +14,7 @@ const CardColorNames = {
   "Red": 3, 
   "Green": 4,
   "Colorless": 5,
+  "Multicolor": 6
 };
 
 /** 
@@ -50,7 +51,7 @@ function eatColorPips(manaCost) {
  */
 function generatePackStats(packs) {
   // colorBias, an array from [0, 1] reference enum CardColors, each pack is weighted by color.
-  var colorBias = [0, 0, 0, 0, 0, 0];
+  var colorBias = [0, 0, 0, 0, 0, 0, 0];
   var colorPipBias = [0, 0, 0, 0, 0];
   var typeBias = {};
   var rarityBias = {};
@@ -72,6 +73,7 @@ function generatePackStats(packs) {
 
     if (type != "Land") {
       nonLandCount++;
+
       colorBias[CardColorNames[color]]++;
 
       if (CMC > 0) {
@@ -93,25 +95,27 @@ function generatePackStats(packs) {
     rarityBias[rarity] = (rarityBias[rarity] || 0) + 1; 
   }
 
-  for (var val = 0; val < colorPipBias.length; val++) {
-    colorPipBias[val] /= colorPips;
+  for (var pipVal = 0; pipVal < colorPipBias.length; pipVal++) {
+    colorPipBias[pipVal] /= colorPips;
   }
 
-  for (var val = 0; val < colorBias.length; val++) {
-    colorBias[val] /= nonLandCount;
+  for (var biasVal = 0; biasVal < colorBias.length; biasVal++) {
+    colorBias[biasVal] /= nonLandCount;
   }
 
   cmcBias /= nonLandCount;
 
-  for (var type in typeBias) {
-    typeBias[type] /= totalCount;
+  for (var types in typeBias) {
+    typeBias[types] /= totalCount;
   }
 
-  for (var rarity in rarityBias) {
-    rarityBias[rarity] /= totalCount;
+  for (var rarities in rarityBias) {
+    rarityBias[rarities] /= totalCount;
   }
 
-  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "rarityBias": rarityBias, "cmcBias": cmcBias}
+  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "rarityBias": rarityBias, "cmcBias": cmcBias};
+
+  
 
   return packStats;  
 }
