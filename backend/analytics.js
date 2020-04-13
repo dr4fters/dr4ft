@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 
-const rankingsPath = path.join(__dirname, "../data/picks/results.txt");
+// const rankingsPath = path.join(__dirname, "../data/picks/results.txt");
 
 const CardColors = {
   "W": 0,
@@ -23,46 +23,46 @@ const CardColorNames = {
   "Multicolor": 6
 };
 
-/**
- * @desc ... Searches our rankings file for a card and returns what rank it is.
- * @param {Object} card ... The card object.
- * @returns {Int} ... Returns the card rank, -1 if not found.
- */
-async function pullCardRank(card) {
-  const fileStream = fs.createReadStream(rankingsPath);
+// /**
+//  * @desc ... Searches our rankings file for a card and returns what rank it is.
+//  * @param {Object} card ... The card object.
+//  * @returns {Int} ... Returns the card rank, -1 if not found.
+//  */
+// async function pullCardRank(card) {
+//   const fileStream = fs.createReadStream(rankingsPath);
 
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  });
+//   const rl = readline.createInterface({
+//     input: fileStream,
+//     crlfDelay: Infinity
+//   });
 
-  var rank = 0;
+//   var rank = 0;
 
-  console.log(card.name);
+//   console.log(card.name);
 
-  for await (var line of rl) {
-    var card_line;
-    card_line = line.split(" ");
-    card_line.shift();
-    card_line = card_line.join(" ");
+//   for await (var line of rl) {
+//     var card_line;
+//     card_line = line.split(" ");
+//     card_line.shift();
+//     card_line = card_line.join(" ");
     
-    if (card.name == card_line) {
-      return rank;
-    }
+//     if (card.name == card_line) {
+//       return rank;
+//     }
 
-    rank++
-  }
+//     rank++
+//   }
 
-  return -1;
-}
+//   return -1;
+// }
 
 
-async function getCardRank(card) {
-  promise = pullCardRank(card);
-  result = await promise;
+// async function getCardRank(card) {
+//   promise = pullCardRank(card);
+//   result = await promise;
 
-  return result;
-}
+//   return result;
+// }
 
 /** 
  * @desc eatColorPips ... Separates out the colored pips {4}{W} --> W for bias analysis.
@@ -107,7 +107,7 @@ function generatePackStats(packs) {
   var totalCount = packs.length;
   var nonLandCount = 0;
   var colorPips = 0;
-  var bestPick;
+  // var bestPick;
 
   for (var pack in packs) {
     // packObj used to make my life easier regarding referencing.
@@ -118,9 +118,9 @@ function generatePackStats(packs) {
     var rarity = packObj.rarity;
     var color = packObj.color;
     var CMC = packObj.cmc;
-    var rank = getCardRank(packObj);
+    // var rank = getCardRank(packObj);
 
-    console.log(rank);
+    // console.log(rank);
     
 
     if (type != "Land") {

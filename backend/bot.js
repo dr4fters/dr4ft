@@ -13,8 +13,6 @@ module.exports = class extends Player {
   }
 
   getPack(pack) {
-    var packStats = PackStats(pack);
-
     const randomPick = sample(pack);
     this.picks.push(randomPick.name);
     pull(pack, randomPick);
