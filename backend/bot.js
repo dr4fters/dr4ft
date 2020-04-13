@@ -1,6 +1,6 @@
 const {sample, pull} = require("lodash");
 const Player = require("./player");
-const PackStats = require("./analytics")
+const PackStats = require("./analytics");
 
 module.exports = class extends Player {
   constructor() {

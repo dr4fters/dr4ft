@@ -166,7 +166,7 @@ function generatePackStats(packs) {
     rarityBias[rarities] /= totalCount;
   }
 
-  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "rarityBias": rarityBias, "cmcBias": cmcBias}
+  var packStats = {"colorBias": colorBias, "colorPipBias": colorPipBias, "typeBias": typeBias, "rarityBias": rarityBias, "cmcBias": cmcBias};
   return packStats;  
 }
 
