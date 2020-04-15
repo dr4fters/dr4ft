@@ -9,7 +9,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     layout,
     colors,
     colorIdentity,
-    names,
+    names = [],
     convertedManaCost,
     types,
     supertypes = [],
@@ -32,7 +32,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   if (/split|aftermath|adventure/i.test(layout))
     name = names.join(" // ");
 
-  const {isDoubleFaced, flippedCardURL} = getDoubleFacedProps(mtgjsonCard, rawCards);
+  const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = upperFirst(getColor(mtgjsonCard));
 
   return {
@@ -53,6 +53,8 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     layout,
     isDoubleFaced,
     flippedCardURL,
+    flippedIsBack,
+    flippedNumber,
     supertypes,
     subtypes,
     power,
@@ -74,19 +76,23 @@ const COLORS = {
 function getDoubleFacedProps({layout, names}, rawCards) {
   const isDoubleFaced = /^double-faced$|^transform$|^flip$|^meld$/i.test(layout);
   let flippedCardURL = "";
+  let flippedIsBack = false;
+  let flippedNumber = "";
   if (isDoubleFaced) {
     rawCards.some(x => {
       if (x.name === names[1]) {
         flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image`;
         if (/^double-faced$|^transform$/.test(layout)) {
           flippedCardURL += "&face=back";
+          flippedIsBack = true;
+          flippedNumber = x.number;
         }
         return true;
       }
     });
   }
   return {
-    isDoubleFaced, flippedCardURL
+    isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber
   };
 }
 
