@@ -198,24 +198,7 @@ let App = {
       filename,
       game: {type, sets, packsInfo}
     });
-  },
-
-  // setFallbackSrc ({setCode, number}) {
-  //   return  ev => {
-  //     const url = `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}?format=image&version=${App.state.cardSize}`;
-  //     if (setCode && number && url !== ev.target.src) {
-  //       ev.target.src = `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}?format=image&version=${App.state.cardSize}`;
-  //     }
-  //   };
-  // },
-
-  // getCardSrc({scryfallId = "", url, setCode, number, isBack}) {
-  //   return     scryfallId != ""
-  //     ? `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}/${App.state.cardLang}?format=image&version=${App.state.cardSize}${
-  //       isBack ? "&face=back" : ""
-  //     }`
-  //     : url;
-  // }
+  }
 };
 
 export default App;
