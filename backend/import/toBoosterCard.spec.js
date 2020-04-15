@@ -131,6 +131,8 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [parsedCard] = [gisela, brisela].map(toBoosterCard("setCode"));
       assert(parsedCard.isDoubleFaced, "gisela should be double faced");
       assert(parsedCard.flippedCardURL != "", "gisela should have a flipped card");
+      assert(parsedCard.flippedCardNumber != "", "gisela should have a flipped card");
+      assert(parsedCard.flippedScryfallId != "", "gisela should have a flipped card");
     });
 
     it("parse a flip card as doubleFaced and with a flippedCardURL", () => {

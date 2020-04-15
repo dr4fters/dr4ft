@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getZone, getZoneDisplayName} from "../cards";
+import {getZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
 import {Spaced} from "../utils";
-import {getCardSrc, setFallbackSrc} from "./Cols";
 
 const Grid = ({zones}) => (
   <div>
@@ -35,7 +34,9 @@ const zone = (zoneName, index) => {
       <h1>
         <Spaced elements={[zoneTitle, zoneHelper]}/>
       </h1>
-      {cards.map((card, i) => <Card key={i+zoneName+card.name} card={card} zoneName={zoneName} />)}
+      {cards.map((card, i) =>
+        <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+      )}
       {cards.length === 0 && zoneName === "pack" &&
         <h2 className='waiting'>Waiting for the next pack...</h2>
       }
@@ -46,7 +47,7 @@ class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: props.card.url,
+      url: getCardSrc(this.props.card),
       isFlipped: false
     };
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -54,18 +55,22 @@ class Card extends Component {
   }
 
   onMouseEnter() {
-    if(this.props.card.isDoubleFaced) {
+    if (this.props.card.isDoubleFaced) {
       this.setState({
-        url: this.props.card.flippedCardURL,
+        url: getCardSrc({
+          ...this.props.card,
+          isBack: this.props.card.flippedIsBack,
+          number: this.props.card.flippedNumber,
+        }),
         flipped: this.props.card.layout === "flip"
       });
     }
   }
 
   onMouseLeave() {
-    if(this.props.card.isDoubleFaced) {
+    if (this.props.card.isDoubleFaced) {
       this.setState({
-        url: this.props.card.url,
+        url: getCardSrc(this.props.card),
         flipped: false
       });
     }
@@ -111,8 +116,8 @@ const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity 
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      onError= {setFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
-      src={getCardSrc({url: imgUrl, scryfallId, setCode, number})}
+      onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
+      src={imgUrl}
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
