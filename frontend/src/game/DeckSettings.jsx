@@ -51,14 +51,14 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{getZoneDisplayName(zoneName)}</td>
-    {BASICS.map((cardName, index) =>
+    {BASICS.map((card, index) =>
       <td key={index}>
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName, cardName)}
+          onChange={App._emit("land", zoneName, card)}
           type='number'
-          value={Zones[zoneName][cardName] || 0}/>
+          value={Zones[zoneName].filter((c) => c.name == card.name).length || 0}/>
       </td>)}
   </tr>
 );

@@ -1,18 +1,10 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
-import {times, constant} from "lodash";
+import {times, constant, countBy, findIndex, pullAt, pull, range, remove, keyBy} from "lodash";
+let clickedCardId;
 
-let Cards = {
-  Plains: 401994,
-  Island: 401927,
-  Swamp: 402059,
-  Mountain: 401961,
-  Forest: 401886
-};
-
-export let BASICS = Object.keys(Cards);
-let COLORS_TO_LANDS = {
+const COLORS_TO_LANDS = {
   "W": "Plains",
   "U": "Island",
   "B": "Swamp",
@@ -20,53 +12,59 @@ let COLORS_TO_LANDS = {
   "G": "Forest",
 };
 
-for (let name in Cards)
-  Cards[name] = {
-    name,
-    cmc: 0,
-    code: "BFZ",
-    color: "Colorless",
-    rarity: "Basic",
-    type: "Land",
-    url: `https://api.scryfall.com/cards/named?exact=${name.toLowerCase()}&format=image&version=${App.state.cardSize}`
-  };
+/**
+ * BASICS is an array of basic lands
+ */
+export const BASICS = Object.entries(COLORS_TO_LANDS)
+  .map(([colorSign, cardName]) => {
+    return {
+      name: cardName,
+      cmc: 0,
+      colorSign,
+      code: "BFZ",
+      color: "Colorless",
+      rarity: "Basic",
+      type: "Land",
+      manaCost: 0,
+      url: `https://api.scryfall.com/cards/named?exact=${cardName.toLowerCase()}&format=image&version=${App.state.cardSize}`
+    };
+  });
 
-let rawPack, clicked;
+const basicKeyByColor = keyBy(BASICS, "colorSign");
+
 export let Zones = {
-  pack: {},
-  main: {},
-  side: {},
-  junk: {}
+  pack: [],
+  main: [],
+  side: [],
+  junk: []
 };
 
 function hash() {
   const { main, side } = Zones;
-  App.send("hash", { main, side });
+  App.send("hash", {
+    main: countBy(main, ({name}) => name),
+    side: countBy(side, ({name}) => name)
+  });
 }
 
 let events = {
-  add(cardName) {
-    let zone = Zones[App.state.side ? "side" : "main"];
-    zone[cardName] || (zone[cardName] = 0);
-    zone[cardName]++;
+  add(card) {
+    const zone = Zones[App.state.side ? "side" : "main"];
+    zone.push(card);
     App.update();
   },
-  click(zoneName, cardName, e) {
+  click(zoneName, card, e) {
     if (zoneName === "pack")
-      return clickPack(cardName);
+      return clickPack(card);
 
-    let src = Zones[zoneName];
-    let dst = Zones[e.shiftKey
+    const src = Zones[zoneName];
+    const dst = Zones[e.shiftKey
       ? zoneName === "junk" ? "main" : "junk"
       : zoneName === "side" ? "main" : "side"];
 
-    dst[cardName] || (dst[cardName] = 0);
-
-    src[cardName]--;
-    dst[cardName]++;
-
-    if (!src[cardName])
-      delete src[cardName];
+    const cardIndex = findIndex(src, card);
+    pullAt(src, cardIndex);
+    dst.push(card);
 
     App.update();
   },
@@ -80,29 +78,21 @@ let events = {
     hash();
   },
   download() {
-    let { filename, filetype } = App.state;
-    let data = filetypes[filetype]();
+    const { filename, filetype } = App.state;
+    const data = filetypes[filetype]();
     _.download(data, filename + "." + filetype);
     hash();
   },
   start() {
-    let { addBots, useTimer, timerLength, shufflePlayers } = App.state;
-    let options = { addBots, useTimer, timerLength, shufflePlayers };
+    const { addBots, useTimer, timerLength, shufflePlayers } = App.state;
+    const options = { addBots, useTimer, timerLength, shufflePlayers };
     App.send("start", options);
   },
   pickNumber(pick) {
     App.save("pickNumber", pick);
   },
   pack(cards) {
-    rawPack = cards;
-    let pack = Zones.pack = {};
-
-    for (let card of cards) {
-      let { name } = card;
-      Cards[name] = card;
-      pack[name] || (pack[name] = 0);
-      pack[name]++;
-    }
+    Zones["pack"] = cards;
     App.update();
     if (App.state.beep) {
       if (App.state.notify) {
@@ -190,27 +180,18 @@ let events = {
     App.save(type, sets);
   },
   pool(cards) {
-    ["main", "side", "junk"].forEach(zoneName => Zones[zoneName] = {});
-
-    let zone = Zones[App.state.side
-      ? "side"
-      : "main"];
-
-    for (let card of cards) {
-      let { name } = card;
-      Cards[name] = card;
-
-      zone[name] || (zone[name] = 0);
-      zone[name]++;
-    }
+    ["main", "side", "junk"].forEach((zoneName) => Zones[zoneName] = []);
+    Zones[App.state.side ? "side" : "main"] = cards;
     App.update();
   },
-  land(zoneName, cardName, e) {
-    let n = Number(e.target.value);
-    if (n)
-      Zones[zoneName][cardName] = n;
-    else
-      delete Zones[zoneName][cardName];
+  land(zoneName, card, e) {
+    const n = Number(e.target.value);
+    const zone = Zones[zoneName];
+    remove(zone, (c) => c.name == card.name);
+    // add n land
+    range(n).forEach(() => {
+      zone.push(card);
+    });
     App.update();
   },
   deckSize(e) {
@@ -222,37 +203,38 @@ let events = {
   suggestLands() {
     // Algorithm: count the number of mana symbols appearing in the costs of
     // the cards in the pool, then assign lands roughly commensurately.
-    let colors = ["W", "U", "B", "R", "G"];
-    let colorRegex = /{[^}]+}/g;
-    let manaSymbols = {};
+    const colors = ["W", "U", "B", "R", "G"];
+    const colorRegex = /{[^}]+}/g;
+    const manaSymbols = {};
     colors.forEach(x => manaSymbols[x] = 0);
 
     // Count the number of mana symbols of each type.
-    for (let card of Object.keys(Zones["main"])) {
-      let quantity = Zones["main"][card];
-      card = Cards[card];
-
+    for (const card of Zones["main"]) {
       if (!card.manaCost)
         continue;
-      let cardManaSymbols = card.manaCost.match(colorRegex);
+      const cardManaSymbols = card.manaCost.match(colorRegex);
 
-      for (let color of colors)
-        for (let symbol of cardManaSymbols)
+      for (const color of colors)
+        for (const symbol of cardManaSymbols)
           // Test to see if '{U}' contains 'U'. This also handles things like
           // '{G/U}' triggering both 'G' and 'U'.
           if (symbol.indexOf(color) !== -1)
-            manaSymbols[color] += quantity;
+            manaSymbols[color] += 1;
     }
 
     _resetLands();
     // NB: We could set only the sideboard lands of the colors we are using to
     // 5, but this reveals information to the opponent on Cockatrice (and
     // possibly other clients) since it tells the opponent the sideboard size.
-    colors.forEach(color => Zones["side"][COLORS_TO_LANDS[color]] = 5);
+    colors.forEach(color => {
+      range(5).forEach(() => {
+        Zones["side"].push(basicKeyByColor[color]);
+      });
+    });
 
-    colors = colors.filter(x => manaSymbols[x] > 0);
-    colors.forEach(x => manaSymbols[x] = Math.max(3, manaSymbols[x]));
-    colors.sort((a, b) => manaSymbols[b] - manaSymbols[a]);
+    const mainColors = colors.filter(x => manaSymbols[x] > 0);
+    mainColors.forEach(x => manaSymbols[x] = Math.max(3, manaSymbols[x]));
+    mainColors.sort((a, b) => manaSymbols[b] - manaSymbols[a]);
 
     // Round-robin choose the lands to go into the deck. For example, if the
     // mana symbol counts are W: 2, U: 2, B: 1, cycle through the sequence
@@ -276,30 +258,25 @@ let events = {
     //
     //   * The problem of deciding how to round land counts is now easy to
     //   solve.
-    let manaSymbolsToAdd = colors.map(color => manaSymbols[color]);
-    let colorsToAdd = [];
+    const manaSymbolsToAdd = mainColors.map(color => manaSymbols[color]);
+    const colorsToAdd = [];
     const emptyManaSymbols = () => !manaSymbolsToAdd.every(x => x === 0);
 
-    for (let i = 0; emptyManaSymbols(); i = (i + 1) % colors.length) {
+    for (let i = 0; emptyManaSymbols(); i = (i + 1) % mainColors.length) {
       if (manaSymbolsToAdd[i] === 0)
         continue;
-      colorsToAdd.push(colors[i]);
+      colorsToAdd.push(mainColors[i]);
       manaSymbolsToAdd[i]--;
     }
 
     if (colorsToAdd.length > 0) {
-      let mainDeckSize = Object.keys(Zones["main"])
-        .map(x => Zones["main"][x])
-        .reduce((a, b) => a + b);
-      let landsToAdd = App.state.deckSize - mainDeckSize;
+      const mainDeckSize = Zones["main"].length;
+      const landsToAdd = App.state.deckSize - mainDeckSize;
 
       let j = 0;
       for (let i = 0; i < landsToAdd; i++) {
-        let color = colorsToAdd[j];
-        let land = COLORS_TO_LANDS[color];
-        if (!Zones["main"][land])
-          Zones["main"][land] = 0;
-        Zones["main"][land]++;
+        const color = colorsToAdd[j];
+        Zones["main"].push(basicKeyByColor[color]);
 
         j = (j + 1) % colorsToAdd.length;
       }
@@ -345,9 +322,10 @@ let events = {
 };
 
 function _resetLands() {
-  Object.keys(COLORS_TO_LANDS).forEach((key) => {
-    let land = COLORS_TO_LANDS[key];
-    Zones["main"][land] = Zones["side"][land] = 0;
+  Object.values(COLORS_TO_LANDS).forEach((basicLandName) => {
+    ["main", "side", "junk"].forEach((zoneName) => {
+      remove(Zones[zoneName], ({name}) => basicLandName.toLowerCase() == name.toLowerCase());
+    });
   });
 }
 
@@ -356,8 +334,9 @@ for (let event in events)
 
 function codify(zone) {
   let arr = [];
-  for (let name in zone)
-    arr.push(`    <card number="${zone[name]}" name="${name}"/>`);
+  Object.entries(countBy(zone, "name")).forEach(([name, number]) => {
+    arr.push(`    <card number="${number}" name="${name}"/>`);
+  });
   return arr.join("\n");
 }
 
@@ -376,33 +355,35 @@ ${codify(Zones.side)}
 </cockatrice_deck>`;
   },
   mwdeck() {
-    let arr = []
-      ;["main", "side"].forEach(zoneName => {
-      let prefix = zoneName === "side" ? "SB: " : "";
-      let zone = Zones[zoneName];
-      for (let name in zone) {
-        let { code } = Cards[name];
-        let count = zone[name];
-        name = name.replace(" // ", "/");
-        arr.push(`${prefix}${count} [${code}] ${name}`);
-      }
+    const arr = [];
+    ["main", "side"].forEach(zoneName => {
+      const prefix = zoneName === "side" ? "SB: " : "";
+      const zone = countBy(Zones[zoneName], ({setCode, name}) => `${setCode}|${name}`);
+      Object.entries(zone).forEach(([cardName, count]) => {
+        const [code, name] = cardName.split("|");
+        const sanitizedName = name.replace(" // ", "/");
+        arr.push(`${prefix}${count} [${code}] ${sanitizedName}`);
+      });
     });
     return arr.join("\n");
   },
   json() {
     let { main, side } = Zones;
-    return JSON.stringify({ main, side }, null, 2);
+    return JSON.stringify({
+      main: countBy(main, "name"),
+      side: countBy(side, "name")
+    }, null, 2);
   },
   txt() {
-    let arr = []
-      ;["main", "side"].forEach(zoneName => {
-      if (zoneName === "side")
+    const arr = [];
+    ["main", "side"].forEach(zoneName => {
+      if (zoneName === "side") {
         arr.push("Sideboard");
-      let zone = Zones[zoneName];
-      for (let name in zone) {
-        let count = zone[name];
-        arr.push(count + " " + name);
       }
+      Object.entries(countBy(Zones[zoneName], "name"))
+        .forEach(([name, count])=> {
+          arr.push(`${count} ${name}`);
+        });
     });
     return arr.join("\n");
   }
@@ -427,22 +408,21 @@ function cube() {
   return { list, cards, packs, cubePoolSize };
 }
 
-function clickPack(cardName) {
-  let index = rawPack.findIndex(x => x.name === cardName);
-
-  if (clicked !== cardName) {
-    clicked = cardName;
+function clickPack(card) {
+  const index = findIndex(Zones["pack"], ({draftId}) => draftId == card.draftId);
+  if (clickedCardId !== card.draftId) {
+    clickedCardId = card.draftId;
     // There may be duplicate cards in a pack, but only one copy of a card is
     // shown in the pick view. We must be sure to mark them all since we don't
     // know which one is being displayed.
-    rawPack.forEach(card => card.isAutopick = card.name === cardName);
+    Zones["pack"].forEach(c => c.isAutopick = card.draftId === c.draftId);
     App.update();
     App.send("autopick", index);
-    return clicked;
+    return;
   }
 
-  clicked = null;
-  Zones.pack = {};
+  clickedCardId = null;
+  Zones.pack = [];
   App.update();
   App.send("pick", index);
 }
@@ -496,29 +476,21 @@ function sortLandsBeforeNonLands(lhs, rhs) {
 
 function resetZones() {
   Zones = {
-    pack: {},
-    main: {},
-    side: {},
-    junk: {}
+    pack: [],
+    main: [],
+    side: [],
+    junk: []
   };
 }
 
 export function getZone(zoneName) {
-  let zone = Zones[zoneName];
-
-  let cards = [];
-  for (let cardName in zone)
-    for (let i = 0; i < zone[cardName]; i++)
-      cards.push(Cards[cardName]);
-
-  let { sort } = App.state;
-  let groups = _.group(cards, sort);
-  for (let key in groups)
+  const cards = Zones[zoneName];
+  const { sort } = App.state;
+  const groups = _.group(cards, sort);
+  for (const key in groups) {
     _.sort(groups[key], sortLandsBeforeNonLands, "color", "cmc", "name");
-
-  groups = Key(groups, sort);
-
-  return groups;
+  }
+  return Key(groups, sort);
 }
 
 export function getZoneDisplayName(zoneName) {

@@ -66,7 +66,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
         <div
           className={`${card.foil ? "foil-card": ""} card-col`}
           key={index}
-          onClick={App._emit("click", zoneName, card.name)}
+          onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
 
