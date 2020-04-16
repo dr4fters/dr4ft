@@ -47,6 +47,7 @@ class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDoubleFaced: false,
       url: getCardSrc(this.props.card),
       isFlipped: false
     };
@@ -57,6 +58,7 @@ class Card extends Component {
   onMouseEnter() {
     if (this.props.card.isDoubleFaced) {
       this.setState({
+        isDoubleFaced: true,
         url: getCardSrc({
           ...this.props.card,
           isBack: this.props.card.flippedIsBack,
@@ -71,7 +73,8 @@ class Card extends Component {
     if (this.props.card.isDoubleFaced) {
       this.setState({
         url: getCardSrc(this.props.card),
-        flipped: false
+        flipped: false,
+        isDoubleFaced: false
       });
     }
   }
@@ -95,7 +98,7 @@ class Card extends Component {
         onClick={App._emit("click", zoneName, card.name)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <CardImage imgUrl={this.state.url} {...card}/>
+        <CardImage isDoubleFaced={this.state.isDoubleFaced} imgUrl={this.state.url} {...card}/>
       </span>
     );
   }
@@ -106,7 +109,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
+const CardImage = ({ isDoubleFaced, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p><strong>{name}</strong> {manaCost}</p>
@@ -117,7 +120,10 @@ const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity 
     </div>
     : <img title={name}
       onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
-      src={imgUrl}
+      src={!isDoubleFaced
+        ? getCardSrc({ scryfallId, setCode, url, number })
+        : getCardSrc({ scryfallId, setCode, url, number: flippedNumber, isBack: flippedIsBack })
+      }
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
@@ -137,6 +143,10 @@ CardImage.propTypes = {
   setCode: PropTypes.string,
   number: PropTypes.string,
   scryfallId: PropTypes.string,
+  isDoubleFaced: PropTypes.bool,
+  url: PropTypes.string,
+  flippedIsBack: PropTypes.bool,
+  flippedNumber: PropTypes.string,
 };
 
 export default Grid;
