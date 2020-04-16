@@ -121,7 +121,7 @@ module.exports = class extends Player {
 
     this.pool.push(card);
     this.picks.push(pickcard);
-    this.send("add", card.name);
+    this.send("add", card);
 
     let [next] = this.packs;
     if (!next)

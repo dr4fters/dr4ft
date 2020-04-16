@@ -95,7 +95,7 @@ class Card extends Component {
     return (
       <span className={className}
         title={title}
-        onClick={App._emit("click", zoneName, card.name)}
+        onClick={App._emit("click", zoneName, card)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
         <CardImage isDoubleFaced={this.state.isDoubleFaced} imgUrl={this.state.url} {...card}/>
