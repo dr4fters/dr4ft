@@ -143,6 +143,10 @@ CardImage.propTypes = {
   setCode: PropTypes.string,
   number: PropTypes.string,
   scryfallId: PropTypes.string,
+  isDoubleFaced: PropTypes.bool,
+  url: PropTypes.string,
+  flippedIsBack: PropTypes.bool,
+  flippedNumber: PropTypes.string,
 };
 
 export default Grid;
