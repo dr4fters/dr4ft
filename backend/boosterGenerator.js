@@ -3,7 +3,6 @@ const logger = require("./logger");
 const boosterRules = require("../data/boosterRules.json");
 const weighted = require("weighted");
 const {sample, sampleSize, random, concat} = require("lodash");
-const draftId = require("uuid").v1;
 
 const makeBoosterFromRules = (setCode) => {
   const set = getSet(setCode);
@@ -54,10 +53,7 @@ const getDefaultBooster = (set) => {
     cardNames.push(sample(Basic));
   }
 
-  return cardNames.map(getCardByUuid).map((card) => ({
-    ...card,
-    draftId: draftId()
-  }));
+  return cardNames.map(getCardByUuid);
 };
 
 const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
@@ -108,8 +104,7 @@ function getRandomCards({cards, totalWeight: total}, numberOfCardsToPick) {
 
 const toCard = (sheetCode) => (uuid) => ({
   ...getCardByUuid(uuid),
-  foil: /foil/.test(sheetCode),
-  draftId: draftId()
+  foil: /foil/.test(sheetCode)
 });
 
 module.exports = makeBoosterFromRules;

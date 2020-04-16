@@ -13,6 +13,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.SealedCube({ cubeList, playersLength });
       assert.equal(playersLength, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
 
     it("should return a draft cube pool with length equal to player length per playersPack", () => {
@@ -22,6 +23,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.DraftCube({ cubeList, playersLength, packsNumber });
       assert.equal(playersLength*packsNumber, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
   });
 
@@ -32,6 +34,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.SealedNormal({ sets, playersLength });
       assert.equal(playersLength, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
 
     it("should return a draft pool with length equal to player length per playersPack", () => {
@@ -40,6 +43,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.DraftNormal({ sets, playersLength });
       assert.equal(playersLength * 3, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
   });
 
@@ -49,6 +53,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.SealedChaos({ modernOnly: true, totalChaos: true, playersLength });
       assert.equal(playersLength, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
 
     it("should return a draft chaos pool with length equal to player length per playersPack", () => {
@@ -56,6 +61,7 @@ describe("Acceptance tests for Pool class", () => {
       const got = Pool.DraftChaos({ modernOnly: true, totalChaos: true, playersLength });
       assert.equal(playersLength * 3, got.length);
       got.forEach(pool => pool.forEach(card => assert(card.name != undefined)));
+      got.forEach(pool => pool.forEach(card => assert(card.draftId != undefined)));
     });
   });
 
@@ -64,6 +70,7 @@ describe("Acceptance tests for Pool class", () => {
       const [got] = Pool.DraftNormal({playersLength: 1, sets: ["TSP"]});
       assert.equal(got.length, 15);
       got.forEach(card => assert(card.name != undefined));
+      got.forEach(card => assert(card.draftId != undefined));
     });
   });
 
@@ -76,9 +83,8 @@ describe("Acceptance tests for Pool class", () => {
             return;
           }
           const [got] = Pool.DraftNormal({playersLength: 1, sets: [code]});
-          got.forEach(card => {
-            assert(card.name != undefined, `${code} has an error: ${card}`);
-          });
+          got.forEach(card => assert(card.name != undefined, `${code} has an error: ${card}`));
+          got.forEach(card => assert(card.draftId != undefined));
         });
       });
     });
