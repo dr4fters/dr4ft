@@ -1,6 +1,14 @@
 const {sample, shuffle, random, range, times, constant, pull} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
+const draftId = require("uuid").v1;
+
+const addDraftId = (card) => ({
+  ...card,
+  draftId: draftId()
+});
+
+const addDraftIdsToBoosterCards = (pack) => pack.map(addDraftId);
 
 const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
   return DraftCube({
@@ -11,14 +19,12 @@ const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
   });
 };
 
-//TODO: filter cards that are from set EXP etc.
 const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
   let list = shuffle(cubeList); // copy the list to work on it
 
   return range(playersLength * packsNumber)
-    .map(() => {
-      return list.splice(0, playerPackSize).map(getCardByName);
-    });
+    .map(() => list.splice(0, playerPackSize).map(getCardByName))
+    .map(addDraftIdsToBoosterCards);
 };
 
 // Replace RNG set with real set
@@ -29,12 +35,14 @@ const replaceRNGSet = (sets) => (
 const SealedNormal = ({ playersLength, sets }) => (
   times(playersLength , constant(replaceRNGSet(sets)))
     .map(sets => sets.flatMap(boosterGenerator))
+    .map(addDraftIdsToBoosterCards)
 );
 
 const DraftNormal = ({ playersLength, sets }) => (
   replaceRNGSet(sets)
     .flatMap(set => times(playersLength, constant(set)))
     .map(boosterGenerator)
+    .map(addDraftIdsToBoosterCards)
 );
 
 // Get a random set and transform it to pack
@@ -79,13 +87,15 @@ const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) 
   const setList = modernOnly ? getModernList() : getSetsList();
 
   return range(playersLength * packsNumber)
-    .map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList));
+    .map(() => totalChaos ? getTotalChaosPack(setList) : getRandomPack(setList))
+    .map(addDraftIdsToBoosterCards);
 };
 
 const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
   const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
   return range(playersLength)
-    .map(() => pool.splice(0, packsNumber).flat());
+    .map(() => pool.splice(0, packsNumber).flat())
+    .map(addDraftIdsToBoosterCards);
 };
 
 module.exports = {
