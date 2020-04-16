@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
+import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
 import {Spaced} from "../utils";
 
 const Grid = ({zones}) => (
@@ -17,7 +17,7 @@ Grid.propTypes = {
 };
 
 const zone = (zoneName, index) => {
-  const zone = getZone(zoneName);
+  const zone = getSortedZone(zoneName);
   const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);

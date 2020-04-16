@@ -1,7 +1,7 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
-import {times, constant, countBy, findIndex, pullAt, pull, range, remove, keyBy} from "lodash";
+import {times, constant, countBy, findIndex, pullAt, range, remove, keyBy} from "lodash";
 let clickedCardId;
 
 const COLORS_TO_LANDS = {
@@ -32,7 +32,18 @@ export const BASICS = Object.entries(COLORS_TO_LANDS)
 
 const basicKeyByColor = keyBy(BASICS, "colorSign");
 
-export let Zones = {
+const ZONE_MAIN = "main";
+const ZONE_SIDE = "side";
+const ZONE_PACK = "pack";
+const ZONE_JUNK = "junk";
+
+export const getZone = (zoneName) => Zones[zoneName];
+/**
+ * @desc the holder of the cards mapped by zone
+ * TODO: could be a Map or a Class ?
+ * @type {{side: [], junk: [], main: [], pack: []}}
+ */
+let Zones = {
   pack: [],
   main: [],
   side: [],
@@ -49,18 +60,18 @@ function hash() {
 
 let events = {
   add(card) {
-    const zone = Zones[App.state.side ? "side" : "main"];
+    const zone = Zones[App.state.side ? ZONE_SIDE : ZONE_MAIN];
     zone.push(card);
     App.update();
   },
   click(zoneName, card, e) {
-    if (zoneName === "pack")
+    if (zoneName === ZONE_PACK)
       return clickPack(card);
 
     const src = Zones[zoneName];
     const dst = Zones[e.shiftKey
-      ? zoneName === "junk" ? "main" : "junk"
-      : zoneName === "side" ? "main" : "side"];
+      ? zoneName === ZONE_JUNK ? ZONE_MAIN : ZONE_JUNK
+      : zoneName === ZONE_SIDE ? ZONE_MAIN : ZONE_SIDE];
 
     const cardIndex = findIndex(src, card);
     pullAt(src, cardIndex);
@@ -92,7 +103,7 @@ let events = {
     App.save("pickNumber", pick);
   },
   pack(cards) {
-    Zones["pack"] = cards;
+    Zones[ZONE_PACK] = cards;
     App.update();
     const anchor = document.querySelector("#cardZone");
     if (anchor) {
@@ -184,14 +195,14 @@ let events = {
     App.save(type, sets);
   },
   pool(cards) {
-    ["main", "side", "junk"].forEach((zoneName) => Zones[zoneName] = []);
-    Zones[App.state.side ? "side" : "main"] = cards;
+    [ZONE_MAIN, ZONE_SIDE, ZONE_JUNK].forEach((zoneName) => Zones[zoneName] = []);
+    Zones[App.state.side ? ZONE_SIDE : ZONE_MAIN] = cards;
     App.update();
   },
   land(zoneName, card, e) {
     const n = Number(e.target.value);
     const zone = Zones[zoneName];
-    remove(zone, (c) => c.name == card.name);
+    remove(zone, (c) => c.name === card.name);
     // add n land
     range(n).forEach(() => {
       zone.push(card);
@@ -213,7 +224,7 @@ let events = {
     colors.forEach(x => manaSymbols[x] = 0);
 
     // Count the number of mana symbols of each type.
-    for (const card of Zones["main"]) {
+    for (const card of Zones[ZONE_MAIN]) {
       if (!card.manaCost)
         continue;
       const cardManaSymbols = card.manaCost.match(colorRegex);
@@ -232,7 +243,7 @@ let events = {
     // possibly other clients) since it tells the opponent the sideboard size.
     colors.forEach(color => {
       range(5).forEach(() => {
-        Zones["side"].push(basicKeyByColor[color]);
+        Zones[ZONE_SIDE].push(basicKeyByColor[color]);
       });
     });
 
@@ -274,13 +285,13 @@ let events = {
     }
 
     if (colorsToAdd.length > 0) {
-      const mainDeckSize = Zones["main"].length;
+      const mainDeckSize = Zones[ZONE_MAIN].length;
       const landsToAdd = App.state.deckSize - mainDeckSize;
 
       let j = 0;
       for (let i = 0; i < landsToAdd; i++) {
         const color = colorsToAdd[j];
-        Zones["main"].push(basicKeyByColor[color]);
+        Zones[ZONE_MAIN].push(basicKeyByColor[color]);
 
         j = (j + 1) % colorsToAdd.length;
       }
@@ -327,8 +338,8 @@ let events = {
 
 function _resetLands() {
   Object.values(COLORS_TO_LANDS).forEach((basicLandName) => {
-    ["main", "side", "junk"].forEach((zoneName) => {
-      remove(Zones[zoneName], ({name}) => basicLandName.toLowerCase() == name.toLowerCase());
+    [ZONE_MAIN, ZONE_SIDE, ZONE_JUNK].forEach((zoneName) => {
+      remove(Zones[zoneName], ({name}) => basicLandName.toLowerCase() === name.toLowerCase());
     });
   });
 }
@@ -360,8 +371,8 @@ ${codify(Zones.side)}
   },
   mwdeck() {
     const arr = [];
-    ["main", "side"].forEach(zoneName => {
-      const prefix = zoneName === "side" ? "SB: " : "";
+    [ZONE_MAIN, ZONE_SIDE].forEach(zoneName => {
+      const prefix = zoneName === ZONE_SIDE ? "SB: " : "";
       const zone = countBy(Zones[zoneName], ({setCode, name}) => `${setCode}|${name}`);
       Object.entries(zone).forEach(([cardName, count]) => {
         const [code, name] = cardName.split("|");
@@ -380,8 +391,8 @@ ${codify(Zones.side)}
   },
   txt() {
     const arr = [];
-    ["main", "side"].forEach(zoneName => {
-      if (zoneName === "side") {
+    [ZONE_MAIN, ZONE_SIDE].forEach(zoneName => {
+      if (zoneName === ZONE_SIDE) {
         arr.push("Sideboard");
       }
       Object.entries(countBy(Zones[zoneName], "name"))
@@ -413,13 +424,13 @@ function cube() {
 }
 
 function clickPack(card) {
-  const index = findIndex(Zones["pack"], ({draftId}) => draftId == card.draftId);
+  const index = findIndex(Zones[ZONE_PACK], ({draftId}) => draftId === card.draftId);
   if (clickedCardId !== card.draftId) {
     clickedCardId = card.draftId;
     // There may be duplicate cards in a pack, but only one copy of a card is
     // shown in the pick view. We must be sure to mark them all since we don't
     // know which one is being displayed.
-    Zones["pack"].forEach(c => c.isAutopick = card.draftId === c.draftId);
+    Zones[ZONE_PACK].forEach(c => c.isAutopick = card.draftId === c.draftId);
     App.update();
     App.send("autopick", index);
     return;
@@ -487,7 +498,7 @@ function resetZones() {
   };
 }
 
-export function getZone(zoneName) {
+export function getSortedZone(zoneName) {
   const cards = Zones[zoneName];
   const { sort } = App.state;
   const groups = _.group(cards, sort);
@@ -499,10 +510,10 @@ export function getZone(zoneName) {
 
 export function getZoneDisplayName(zoneName) {
   switch (zoneName) {
-  case "pack": return "Pack";
-  case "main": return "Main Deck";
-  case "side": return "Sideboard";
-  case "junk": return "Junk";
+  case ZONE_PACK: return "Pack";
+  case ZONE_MAIN: return "Main Deck";
+  case ZONE_SIDE: return "Sideboard";
+  case ZONE_JUNK: return "Junk";
   default: return "UNKNOWN ZONENAME";
   }
 }
@@ -570,7 +581,7 @@ export const getFallbackSrc = ({setCode, number}) => {
  * @returns {string} the image url to display
  */
 export const getCardSrc = ({scryfallId = "", url, setCode, number, isBack}) => (
-  scryfallId != ""
+  scryfallId !== ""
     ? `${getScryfallImageWithLang(setCode, number)}${isBack ? "&face=back" : ""}`
     : url
 );
