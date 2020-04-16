@@ -67,12 +67,17 @@ class GameState {
     this.#onStateUpdated(this.inner);
   }
 
+  /**
+   *
+   * @param {string} zoneName
+   * @param {array} cards
+   */
   addToPool(zoneName, cards) {
     cards
       .filter((card) => {
-        return !this.get(ZONE_MAIN).includes(card) &&
-          !this.get(ZONE_SIDE).includes(card) &&
-          !this.get(ZONE_JUNK).includes(card);
+        return !this.get(ZONE_MAIN).map(({draftId}) => draftId).includes(card.draftId)
+          && !this.get(ZONE_SIDE).map(({draftId}) => draftId).includes(card.draftId) &&
+          !this.get(ZONE_JUNK).map(({draftId}) => draftId).includes(card.draftId);
       })
       .forEach((card) => {
         this.add(zoneName, card);
