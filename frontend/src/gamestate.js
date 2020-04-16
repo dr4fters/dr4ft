@@ -70,9 +70,9 @@ class GameState {
   addToPool(zoneName, cards) {
     cards
       .filter((card) => {
-        return this.get(ZONE_MAIN).includes(card) ||
-          this.get(ZONE_SIDE).includes(card) ||
-          this.get(ZONE_JUNK).includes(card);
+        return !this.get(ZONE_MAIN).includes(card) &&
+          !this.get(ZONE_SIDE).includes(card) &&
+          !this.get(ZONE_JUNK).includes(card);
       })
       .forEach((card) => {
         this.add(zoneName, card);
