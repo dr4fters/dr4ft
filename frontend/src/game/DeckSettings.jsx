@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {BASICS, Zones, getZoneDisplayName} from "../cards";
+import {BASICS, getZone, getZoneDisplayName} from "../cards";
 import {Select} from "../utils";
 
 const DeckSettings = () => (
@@ -58,7 +58,7 @@ const LandsRow = ({zoneName}) => (
           min={0}
           onChange={App._emit("land", zoneName, card)}
           type='number'
-          value={Zones[zoneName].filter((c) => c.name == card.name).length || 0}/>
+          value={getZone(zoneName).filter((c) => c.name == card.name).length || 0}/>
       </td>)}
   </tr>
 );
