@@ -19,14 +19,15 @@ function route() {
 
   switch(route) {
   case "g":
+    App.initGameState(id);
+    App.state.players = [];
+    App.send("join", id);
+    App.once("gameInfos", App.updateGameInfos);
     component = (
       <Suspense fallback={<div>Loading...</div>}>
         <Game id={ id } />
       </Suspense>
     );
-    App.state.players = [];
-    App.send("join", id);
-    App.once("gameInfos", App.updateGameInfos);
     break;
   case "":
     component = (

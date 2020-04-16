@@ -3,6 +3,7 @@ import EventEmitter from "events";
 import {STRINGS} from "./config";
 import eio from "engine.io-client";
 import {times, constant} from "lodash";
+import GameState from "./gamestate";
 
 function message(msg) {
   let args = JSON.parse(msg);
@@ -68,6 +69,8 @@ let App = {
     pickNumber: 0,
     packSize: 15,
     gameSeats: 8, // seats of the game being played
+    gameState: null, // records the current state of cards is a GameState
+    gameStates: {}, // Object representation of the gameState
 
     get didGameStart() {
       // both round === 0 and round is undefined
@@ -132,6 +135,20 @@ let App = {
   send(...args) {
     let msg = JSON.stringify(args);
     this.ws.send(msg);
+  },
+  initGameState(id) {
+    const { gameStates } = App.state;
+    const onStateUpdated = (gameState) => {
+      App.save("gameStates", {
+        ...App.state.gameStates,
+        [id]: gameState
+      });
+    };
+    if (!gameStates[id] === id) {
+      App.state.gameState = new GameState(onStateUpdated);
+    } else {
+      App.state.gameState = new GameState(onStateUpdated, gameStates[id]);
+    }
   },
   error(err) {
     App.err = err;
