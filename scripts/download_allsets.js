@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
 const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
@@ -53,7 +53,7 @@ const fetchZip = () => (
       response
         .pipe(unzip.Parse())
         .on("entry", (entry) => {
-          const setsDataDir = path.join(getDataDir(), "sets")
+          const setsDataDir = path.join(getDataDir(), "sets");
           if (!fs.existsSync(setsDataDir)) {
             fs.mkdirSync(setsDataDir);
           }

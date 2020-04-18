@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
 const logger = require("../backend/logger");
 const { saveSetsAndCards, getDataDir } = require("../backend/data");
 const doSet = require("../backend/import/doSet");
@@ -11,7 +11,7 @@ const updateDatabase = () => {
   // Add normal sets
   const setsToIgnore = ["ITP", "CP1", "CP2", "CP3"];
 
-  const setsDataDir = path.join(getDataDir(), "sets")
+  const setsDataDir = path.join(getDataDir(), "sets");
   if (fs.existsSync(setsDataDir)) {
     const files = fs.readdirSync(setsDataDir);
     files.forEach(file => {
@@ -40,7 +40,7 @@ const updateDatabase = () => {
     });
   }
   // Add custom sets
-  const customDataDir = path.join(getDataDir(), "custom")
+  const customDataDir = path.join(getDataDir(), "custom");
   if (fs.existsSync(customDataDir)) {
     const files = fs.readdirSync(customDataDir);
     files.forEach(file => {

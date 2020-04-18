@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 const {  keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
 
@@ -13,10 +13,10 @@ let cards, cubableCardsByName, sets;
 let playableSets, latestSet;
 
 const getDataDir = () => {
-  repoRoot = process.cwd()
-  dataDir = path.join(repoRoot, DATA_DIR)
-  return dataDir
-}
+  const repoRoot = process.cwd();
+  const dataDir = path.join(repoRoot, DATA_DIR);
+  return dataDir;
+};
 
 const reloadData = (filename) => {
   switch (filename) {

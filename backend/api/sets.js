@@ -5,10 +5,10 @@ const { getSets, saveSetAndCards } = require("../data");
 const doSet = require("../import/doSet");
 const logger = require("../logger");
 const parser = require("../import/xml/parser");
-const path = require('path')
+const path = require("path");
 const {getDataDir} = require("../data");
 
-const customDataDir = path.join(getDataDir(), "custom")
+const customDataDir = path.join(getDataDir(), "custom");
 if (!fs.existsSync(customDataDir)) {
   fs.mkdirSync(customDataDir);
 }
@@ -115,7 +115,7 @@ function integrateJson(json) {
 
   //TODO: That should be done by something else. Move out of controller
   //Moving custom set to custom directory
-  const customDataDir = path.join(getDataDir(), "custom")
+  const customDataDir = path.join(getDataDir(), "custom");
   if (!fs.existsSync(customDataDir)) {
     fs.mkdirSync(customDataDir);
   }
