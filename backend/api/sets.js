@@ -5,9 +5,12 @@ const { getSets, saveSetAndCards } = require("../data");
 const doSet = require("../import/doSet");
 const logger = require("../logger");
 const parser = require("../import/xml/parser");
+const path = require('path')
+const {getDataDir} = require("../data");
 
-if (!fs.existsSync("data/custom")) {
-  fs.mkdirSync("data/custom");
+const customDataDir = path.join(getDataDir(), "custom")
+if (!fs.existsSync(customDataDir)) {
+  fs.mkdirSync(customDataDir);
 }
 
 const CUSTOM_TYPE = "custom";
@@ -112,10 +115,11 @@ function integrateJson(json) {
 
   //TODO: That should be done by something else. Move out of controller
   //Moving custom set to custom directory
-  if (!fs.existsSync("data/custom")) {
-    fs.mkdirSync("data/custom");
+  const customDataDir = path.join(getDataDir(), "custom")
+  if (!fs.existsSync(customDataDir)) {
+    fs.mkdirSync(customDataDir);
   }
-  fs.writeFile(`data/custom/${json.code}.json`, JSON.stringify(json, undefined, 4), (err) => {
+  fs.writeFile(path.join(customDataDir, `${json.code}.json`), JSON.stringify(json, undefined, 4), (err) => {
     if (err) {
       logger.error(`Could not save file ${json.code}.json. ${err}`);
     } else {

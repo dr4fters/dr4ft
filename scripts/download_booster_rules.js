@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 const logger = require("../backend/logger");
-const {getCardByUuid, getSet} = require("../backend/data");
+const {getCardByUuid, getSet, getDataDir} = require("../backend/data");
 
 const URL = "https://raw.githubusercontent.com/taw/magic-sealed-data/master/sealed_basic_data.json";
 const REPO_URL = "https://api.github.com/repos/taw/magic-sealed-data/git/refs/heads/master";

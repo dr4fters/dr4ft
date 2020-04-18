@@ -1,6 +1,7 @@
 const fs = require("fs");
+const path = require("path")
 const logger = require("../backend/logger");
-const { saveSetsAndCards } = require("../backend/data");
+const { saveSetsAndCards, getDataDir } = require("../backend/data");
 const doSet = require("../backend/import/doSet");
 
 const updateDatabase = () => {
@@ -9,8 +10,10 @@ const updateDatabase = () => {
 
   // Add normal sets
   const setsToIgnore = ["ITP", "CP1", "CP2", "CP3"];
-  if (fs.existsSync("data/sets")) {
-    const files = fs.readdirSync("data/sets");
+
+  const setsDataDir = path.join(getDataDir(), "sets")
+  if (fs.existsSync(setsDataDir)) {
+    const files = fs.readdirSync(setsDataDir);
     files.forEach(file => {
       if (!/.json/g.test(file)) {
         return;
@@ -19,42 +22,43 @@ const updateDatabase = () => {
       if (setsToIgnore.includes(setName)) {
         return;
       }
-      const path = `data/sets/${file}`;
+      const filePath = path.join(setsDataDir, `${file}`);
       try {
-        const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
+        const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
         if (json.code) {
-          logger.info(`Found set to integrate ${json.code} with path ${path}`);
+          logger.info(`Found set to integrate ${json.code} with path ${filePath}`);
           const [set, cards] = doSet(json);
           allSets[json.code] = set;
           allCards = { ...allCards, ...cards };
           logger.info(`Parsing ${json.code} finished`);
         } else {
-          logger.warn(`Set ${json.name} with path ${path} will NOT BE INTEGRATED`);
+          logger.warn(`Set ${json.name} with path ${filePath} will NOT BE INTEGRATED`);
         }
       } catch (err) {
-        logger.error(`Error while integrating the file ${path}: ${err.stack}`);
+        logger.error(`Error while integrating the file ${filePath}: ${err.stack}`);
       }
     });
   }
   // Add custom sets
-  if (fs.existsSync("data/custom")) {
-    const files = fs.readdirSync("data/custom");
+  const customDataDir = path.join(getDataDir(), "custom")
+  if (fs.existsSync(customDataDir)) {
+    const files = fs.readdirSync(customDataDir);
     files.forEach(file => {
       // Integrate only json file
       if (/.json/g.test(file)) {
-        const path = `data/custom/${file}`;
+        const filePath = path.join(customDataDir, `${file}`);
         try {
-          const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
+          const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
           if (json.code) {
             json.type = "custom";
-            logger.info(`Found custom set to integrate ${json.code} with path ${path}`);
+            logger.info(`Found custom set to integrate ${json.code} with path ${filePath}`);
             const [set, cards] = doSet(json);
             allSets[json.code] = set;
             allCards = { ...allCards, ...cards };
             logger.info(`Parsing ${json.code} finished`);
           }
         } catch (err) {
-          logger.error(`Error while integrating the file ${path}: ${err.stack}`);
+          logger.error(`Error while integrating the file ${filePath}: ${err.stack}`);
         }
       }
     });

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path")
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
 const {  keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
 
@@ -10,6 +11,12 @@ const SETS_PATH = "sets.json";
 
 let cards, cubableCardsByName, sets;
 let playableSets, latestSet;
+
+const getDataDir = () => {
+  repoRoot = process.cwd()
+  dataDir = path.join(repoRoot, DATA_DIR)
+  return dataDir
+}
 
 const reloadData = (filename) => {
   switch (filename) {
@@ -32,7 +39,7 @@ const reloadData = (filename) => {
 
 const getSets = () => {
   if (!sets) {
-    sets = readFile(`${DATA_DIR}/${SETS_PATH}`);
+    sets = readFile(`${getDataDir()}/${SETS_PATH}`);
   }
   return sets;
 };
@@ -41,7 +48,7 @@ const getSet = (setCode) => getSets()[setCode];
 
 const getCards = () => {
   if (!cards) {
-    cards = readFile(`${DATA_DIR}/${CARDS_PATH}`);
+    cards = readFile(`${getDataDir()}/${CARDS_PATH}`);
   }
   return cards;
 };
@@ -71,13 +78,13 @@ const getCardByUuid = (uuid) => {
 
 const getCubableCardByName = (cardName) => {
   if (!cubableCardsByName) {
-    cubableCardsByName = readFile(`${DATA_DIR}/${CUBABLE_CARDS_PATH}`);
+    cubableCardsByName = readFile(`${getDataDir()}/${CUBABLE_CARDS_PATH}`);
   }
   return getCardByUuid(cubableCardsByName[cardName]);
 };
 
 const writeCards = (newCards) => {
-  fs.writeFileSync(`${DATA_DIR}/${CARDS_PATH}`, JSON.stringify(newCards, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${CARDS_PATH}`, JSON.stringify(newCards, undefined, 4));
 };
 
 const sortByPriority = allSets => (card1, card2) => {
@@ -116,11 +123,11 @@ const writeCubeCards = (allSets, allCards) => {
       })));
     });
   cubableCardsByName = keyCardsUuidByName(cubableCards);
-  fs.writeFileSync(`${DATA_DIR}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCardsByName, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCardsByName, undefined, 4));
 };
 
 const writeSets = (newSets) => {
-  fs.writeFileSync(`${DATA_DIR}/${SETS_PATH}`, JSON.stringify(newSets, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${SETS_PATH}`, JSON.stringify(newSets, undefined, 4));
 };
 
 const getPlayableSets = () => {
@@ -217,14 +224,15 @@ const isReleasedExpansionOrCoreSet = (type, releaseDate) => (
 );
 
 function saveDraftStats(id, stats) {
-  if (!fs.existsSync(`${DATA_DIR}/${DRAFT_STATS_DIR}`)) {
-    fs.mkdirSync(`${DATA_DIR}/${DRAFT_STATS_DIR}`);
+  if (!fs.existsSync(`${getDataDir()}/${DRAFT_STATS_DIR}`)) {
+    fs.mkdirSync(`${getDataDir()}/${DRAFT_STATS_DIR}`);
   }
 
-  fs.writeFileSync(`${DATA_DIR}/${DRAFT_STATS_DIR}/${id}.json`, JSON.stringify(stats, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${DRAFT_STATS_DIR}/${id}.json`, JSON.stringify(stats, undefined, 4));
 }
 
 module.exports = {
+  getDataDir,
   getCards,
   getSets,
   getSet,

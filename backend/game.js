@@ -9,7 +9,8 @@ const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
-const {saveDraftStats} = require("./data");
+const {saveDraftStats, getDataDir} = require("./data");
+const path = require("path")
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
@@ -327,7 +328,7 @@ module.exports = class Game extends Room {
       }))
     };
 
-    const file = "./data/cap.json";
+    const file = path.join(getDataDir(), "cap.json");
     jsonfile.writeFile(file, draftcap, { flag: "a" }, function (err) {
       if (err) logger.error(err);
     });
