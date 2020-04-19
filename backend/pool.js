@@ -6,7 +6,7 @@ const draftId = require("uuid").v1;
 /**
  * @desc add a unique id to a card
  * @param card
- * @returns {{cardId: string}}
+ * @returns {{...card, cardId: string}}
  */
 const addCardId = (card) => ({
   ...card,
