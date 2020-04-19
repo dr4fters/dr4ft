@@ -63,8 +63,8 @@ export default class Game extends Component {
 const CardsZone = () => {
   const pack
   = !App.state.isGameFinished && App.state.didGameStart
-    ? <Grid key={"pack"} zones={["pack"]} />
-    : <div key={"pack"}/>;
+    ? <div id="cardZone"><Grid key={"pack"} zones={["pack"]} /></div>
+    : <div id="cardZone" key={"pack"}/>;
   const props = { zones: ["main", "side", "junk"] };
   const pool = App.state.cols ? <Cols key={"pool"} {...props}/> : <Grid key={"pool"} {...props} />;
   const showPool = !App.state.hidepicks || App.state.isGameFinished;

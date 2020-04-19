@@ -104,6 +104,10 @@ let events = {
       pack[name]++;
     }
     App.update();
+    const anchor = document.querySelector("#cardZone");
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth" });
+    }
     if (App.state.beep) {
       if (App.state.notify) {
         if (document.hidden) {
