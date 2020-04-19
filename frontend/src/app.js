@@ -138,14 +138,14 @@ let App = {
   },
   initGameState(id) {
     const { gameStates } = App.state;
-    if (gameStates[id] !== id) {
+    if (!gameStates[id]) {
       App.state.gameState = new GameState();
     } else {
       App.state.gameState = new GameState(gameStates[id]);
     }
     App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {
-        ...App.state.gameStates,
+        // ...App.state.gameStates,
         [id]: gameState
       });
     });

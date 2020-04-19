@@ -1,9 +1,9 @@
-import {countBy, findIndex, pullAt, range, remove} from "lodash";
+import {countBy, findIndex, keyBy, pullAt, range, remove} from "lodash";
 import _ from "utils/utils";
 import EventEmitter from "events";
 
 export const ZONE_MAIN = "main";
-export const ZONE_SIDE = "side";
+export const ZONE_SIDEBOARD = "side";
 export const ZONE_PACK = "pack";
 export const ZONE_JUNK = "junk";
 
@@ -15,27 +15,66 @@ export const COLORS_TO_LANDS = {
   "G": "Forest",
 };
 
-const defaultState = {
+/**
+ * BASICS is an array of basic lands
+ */
+export const BASICS = Object.entries(COLORS_TO_LANDS)
+  .map(([colorSign, cardName]) => {
+    return {
+      name: cardName,
+      cmc: 0,
+      colorSign,
+      code: "BFZ",
+      color: "Colorless",
+      rarity: "Basic",
+      type: "Land",
+      manaCost: 0,
+      url: `https://api.scryfall.com/cards/named?exact=${cardName.toLowerCase()}&format=image`
+    };
+  });
+
+export const BASIC_LANDS_BY_COLOR_SIGN = keyBy(BASICS, "colorSign");
+
+const defaultState = () => ({
   [ZONE_MAIN]: [],
-  [ZONE_SIDE]: [],
+  [ZONE_SIDEBOARD]: [],
   [ZONE_PACK]: [],
   [ZONE_JUNK]: []
-};
+});
+
+/**
+ * @desc Map of <cardId, zoneName>
+ * @type {{}}
+ */
+const defaultCardState = () => ({});
+
+// Faire zone -> type de land -> number
+const defaultLandDistribution = () => ({
+  [ZONE_MAIN]: {},
+  [ZONE_SIDEBOARD]: {},
+});
 
 class GameState extends EventEmitter {
   #state;
+  #zoneState;
+  #landDistribution;
 
-  constructor(state = defaultState) {
+  constructor({state = defaultCardState(), landDistribution = defaultLandDistribution()} = {
+    state: defaultCardState(),
+    landDistribution: defaultLandDistribution()
+  }) {
     super();
     this.#state = state;
+    this.#landDistribution = landDistribution;
+    this.#zoneState = defaultState();
   }
 
   /**
    * @param zoneName
-   * @returns {array}
+   * @returns {array} the cards present in the zone
    */
   get(zoneName) {
-    return this.#state[zoneName];
+    return this.#zoneState[zoneName];
   }
 
   countCardsByName(zoneName, fun = ({name}) => name) {
@@ -48,22 +87,23 @@ class GameState extends EventEmitter {
   }
 
   pack(cards) {
-    this.#state[ZONE_PACK] = cards;
+    this.#zoneState[ZONE_PACK] = cards;
     this.updState();
   }
 
   add(zoneName, card) {
     const zone = this.get(zoneName);
     zone.push(card);
-    this.updState();
+    if (card.cardId) {
+      this.#state[card.cardId] = zoneName;
+    }
   }
 
   move(fromZone, toZone, card) {
     const src = this.get(fromZone);
-    const dst = this.get(toZone);
     const cardIndex = findIndex(src, card);
     pullAt(src, cardIndex);
-    dst.push(card);
+    this.add(toZone, card);
     this.updState();
   }
 
@@ -73,42 +113,46 @@ class GameState extends EventEmitter {
    * @param {array} cards
    */
   addToPool(zoneName, cards) {
-    cards
-      .filter((card) => {
-        return !this.get(ZONE_MAIN).map(({cardId}) => cardId).includes(card.cardId)
-          && !this.get(ZONE_SIDE).map(({cardId}) => cardId).includes(card.cardId) &&
-          !this.get(ZONE_JUNK).map(({cardId}) => cardId).includes(card.cardId);
-      })
-      .forEach((card) => {
-        this.add(zoneName, card);
+    Object.entries(this.#landDistribution).forEach(([zoneName, landsRepartition]) => {
+      Object.entries(landsRepartition).forEach(([colorSign, number]) => {
+        const basicLand = BASIC_LANDS_BY_COLOR_SIGN[colorSign];
+        this._setLands(zoneName, basicLand, number);
       });
+    });
+
+    cards
+      .forEach((card) => {
+        const knownZone = this.#state[card.cardId];
+        this.add(knownZone || zoneName, card);
+      });
+    this.updState();
   }
 
-  setLands(zoneName, card, n) {
+  _setLands(zoneName, card, n) {
     const zone = this.get(zoneName);
     remove(zone, (c) => c.name === card.name);
     // add n land
-    range(n).forEach(() => {
-      this.get(zoneName).add(card);
-    });
+    range(n).forEach(() => zone.push(card));
+    this.#landDistribution[zoneName][card.colorSign] = n;
+  }
+
+  setLands(zoneName, card, n) {
+    this._setLands(zoneName, card, n);
+    this.updState();
   }
 
   resetLands() {
     Object.values(COLORS_TO_LANDS).forEach((basicLandName) => {
-      [ZONE_MAIN, ZONE_SIDE, ZONE_JUNK].forEach((zoneName) => {
+      [ZONE_MAIN, ZONE_SIDEBOARD, ZONE_JUNK].forEach((zoneName) => {
         remove(this.get(zoneName), ({name}) => basicLandName.toLowerCase() === name.toLowerCase());
       });
     });
+    this.#landDistribution = defaultLandDistribution();
     this.updState();
   }
 
   getMainDeckSize() {
     return this.get(ZONE_MAIN).length;
-  }
-
-  addToMain(card) {
-    this.get(ZONE_MAIN).push(card);
-    this.updState();
   }
 
   getSortedZone(zoneName, sort) {
@@ -121,7 +165,10 @@ class GameState extends EventEmitter {
   }
 
   updState() {
-    this.emit("updateGameState", { gameState: this.#state });
+    this.emit("updateGameState", {
+      state: this.#state,
+      landDistribution: this.#landDistribution
+    });
   }
 }
 
