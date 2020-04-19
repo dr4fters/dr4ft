@@ -144,7 +144,7 @@ let App = {
         [id]: gameState
       });
     };
-    if (!gameStates[id] === id) {
+    if (gameStates[id] !== id) {
       App.state.gameState = new GameState(onStateUpdated);
     } else {
       App.state.gameState = new GameState(onStateUpdated, gameStates[id]);
