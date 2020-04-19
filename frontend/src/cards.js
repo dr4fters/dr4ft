@@ -389,13 +389,13 @@ function cube() {
 
 function clickPack(card) {
   const pack = App.state.gameState.get(ZONE_PACK);
-  const index = findIndex(pack, ({draftId}) => draftId === card.draftId);
-  if (clickedCardId !== card.draftId) {
-    clickedCardId = card.draftId;
+  const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
+  if (clickedCardId !== card.cardId) {
+    clickedCardId = card.cardId;
     // There may be duplicate cards in a pack, but only one copy of a card is
     // shown in the pick view. We must be sure to mark them all since we don't
     // know which one is being displayed.
-    pack.forEach(c => c.isAutopick = card.draftId === c.draftId);
+    pack.forEach(c => c.isAutopick = card.cardId === c.cardId);
     App.update();
     App.send("autopick", index);
   } else {

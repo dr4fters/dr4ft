@@ -75,9 +75,9 @@ class GameState extends EventEmitter {
   addToPool(zoneName, cards) {
     cards
       .filter((card) => {
-        return !this.get(ZONE_MAIN).map(({draftId}) => draftId).includes(card.draftId)
-          && !this.get(ZONE_SIDE).map(({draftId}) => draftId).includes(card.draftId) &&
-          !this.get(ZONE_JUNK).map(({draftId}) => draftId).includes(card.draftId);
+        return !this.get(ZONE_MAIN).map(({cardId}) => cardId).includes(card.cardId)
+          && !this.get(ZONE_SIDE).map(({cardId}) => cardId).includes(card.cardId) &&
+          !this.get(ZONE_JUNK).map(({cardId}) => cardId).includes(card.cardId);
       })
       .forEach((card) => {
         this.add(zoneName, card);
