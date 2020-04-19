@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
@@ -6,6 +7,7 @@ const updateDatabase = require("./update_database");
 const downloadBoosterRules = require("./download_booster_rules");
 const logger = require("../backend/logger");
 const { refresh: refreshVersion } = require("../backend/mtgjson");
+const {getDataDir} = require("../backend/data");
 
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/files/version.json";
@@ -51,11 +53,11 @@ const fetchZip = () => (
       response
         .pipe(unzip.Parse())
         .on("entry", (entry) => {
-
-          if (!fs.existsSync("data/sets")) {
-            fs.mkdirSync("data/sets", { recursive: true });
+          const setsDataDir = path.join(getDataDir(), "sets");
+          if (!fs.existsSync(setsDataDir)) {
+            fs.mkdirSync(setsDataDir);
           }
-          const file = fs.createWriteStream(`data/sets/${entry.path}`);
+          const file = fs.createWriteStream(path.join(setsDataDir, `${entry.path}`));
           entry.pipe(file)
             .on("finish", file.close);
         })
