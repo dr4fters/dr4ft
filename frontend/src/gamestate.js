@@ -1,5 +1,6 @@
 import {countBy, findIndex, pullAt, range, remove} from "lodash";
 import _ from "utils/utils";
+import EventEmitter from "events";
 
 export const ZONE_MAIN = "main";
 export const ZONE_SIDE = "side";
@@ -21,13 +22,12 @@ const defaultState = {
   [ZONE_JUNK]: []
 };
 
-class GameState {
-  inner;
-  #onStateUpdated;
+class GameState extends EventEmitter {
+  #state;
 
-  constructor(onStateUpdated, state = defaultState) {
-    this.#onStateUpdated = onStateUpdated;
-    this.inner = state;
+  constructor(state = defaultState) {
+    super();
+    this.#state = state;
   }
 
   /**
@@ -35,7 +35,7 @@ class GameState {
    * @returns {array}
    */
   get(zoneName) {
-    return this.inner[zoneName];
+    return this.#state[zoneName];
   }
 
   countCardsByName(zoneName, fun = ({name}) => name) {
@@ -48,14 +48,14 @@ class GameState {
   }
 
   pack(cards) {
-    this.inner[ZONE_PACK] = cards;
-    this.#onStateUpdated(this.inner);
+    this.#state[ZONE_PACK] = cards;
+    this.#updState();
   }
 
   add(zoneName, card) {
     const zone = this.get(zoneName);
     zone.push(card);
-    this.#onStateUpdated(this.inner);
+    this.#updState();
   }
 
   move(fromZone, toZone, card) {
@@ -64,7 +64,7 @@ class GameState {
     const cardIndex = findIndex(src, card);
     pullAt(src, cardIndex);
     dst.push(card);
-    this.#onStateUpdated(this.inner);
+    this.#updState();
   }
 
   /**
@@ -82,7 +82,6 @@ class GameState {
       .forEach((card) => {
         this.add(zoneName, card);
       });
-    this.#onStateUpdated(this.inner);
   }
 
   setLands(zoneName, card, n) {
@@ -90,9 +89,8 @@ class GameState {
     remove(zone, (c) => c.name === card.name);
     // add n land
     range(n).forEach(() => {
-      zone.push(card);
+      this.get(zoneName).add(card);
     });
-    this.#onStateUpdated(this.inner);
   }
 
   resetLands() {
@@ -101,7 +99,7 @@ class GameState {
         remove(this.get(zoneName), ({name}) => basicLandName.toLowerCase() === name.toLowerCase());
       });
     });
-    this.#onStateUpdated(this.inner);
+    this.#updState();
   }
 
   getMainDeckSize() {
@@ -110,7 +108,7 @@ class GameState {
 
   addToMain(card) {
     this.get(ZONE_MAIN).push(card);
-    this.#onStateUpdated(this.inner);
+    this.#updState();
   }
 
   getSortedZone(zoneName, sort) {
@@ -120,6 +118,10 @@ class GameState {
       _.sort(groups[key], sortLandsBeforeNonLands, "color", "cmc", "name");
     }
     return Key(groups, sort);
+  }
+
+  #updState() {
+    this.emit("updateGameState", { gameState: this.#state });
   }
 }
 
