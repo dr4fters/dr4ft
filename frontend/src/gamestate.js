@@ -49,13 +49,13 @@ class GameState extends EventEmitter {
 
   pack(cards) {
     this.#state[ZONE_PACK] = cards;
-    this.#updState();
+    this.updState();
   }
 
   add(zoneName, card) {
     const zone = this.get(zoneName);
     zone.push(card);
-    this.#updState();
+    this.updState();
   }
 
   move(fromZone, toZone, card) {
@@ -64,7 +64,7 @@ class GameState extends EventEmitter {
     const cardIndex = findIndex(src, card);
     pullAt(src, cardIndex);
     dst.push(card);
-    this.#updState();
+    this.updState();
   }
 
   /**
@@ -99,7 +99,7 @@ class GameState extends EventEmitter {
         remove(this.get(zoneName), ({name}) => basicLandName.toLowerCase() === name.toLowerCase());
       });
     });
-    this.#updState();
+    this.updState();
   }
 
   getMainDeckSize() {
@@ -108,7 +108,7 @@ class GameState extends EventEmitter {
 
   addToMain(card) {
     this.get(ZONE_MAIN).push(card);
-    this.#updState();
+    this.updState();
   }
 
   getSortedZone(zoneName, sort) {
@@ -120,7 +120,7 @@ class GameState extends EventEmitter {
     return Key(groups, sort);
   }
 
-  #updState() {
+  updState() {
     this.emit("updateGameState", { gameState: this.#state });
   }
 }
