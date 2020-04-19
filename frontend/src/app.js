@@ -138,17 +138,17 @@ let App = {
   },
   initGameState(id) {
     const { gameStates } = App.state;
-    const onStateUpdated = (gameState) => {
+    if (gameStates[id] !== id) {
+      App.state.gameState = new GameState();
+    } else {
+      App.state.gameState = new GameState(gameStates[id]);
+    }
+    App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {
         ...App.state.gameStates,
         [id]: gameState
       });
-    };
-    if (gameStates[id] !== id) {
-      App.state.gameState = new GameState(onStateUpdated);
-    } else {
-      App.state.gameState = new GameState(onStateUpdated, gameStates[id]);
-    }
+    });
   },
   error(err) {
     App.err = err;
