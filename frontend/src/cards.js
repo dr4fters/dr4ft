@@ -1,8 +1,8 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
-import {times, constant, countBy, findIndex, range, keyBy} from "lodash";
-import {COLORS_TO_LANDS, ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDE} from "./gamestate";
+import {times, constant, countBy, findIndex, range} from "lodash";
+import {BASIC_LANDS_BY_COLOR_SIGN, ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./gamestate";
 
 /**
  * TODO: add autopickId to GameState
@@ -11,32 +11,12 @@ import {COLORS_TO_LANDS, ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDE} from "./gam
  */
 let clickedCardId;
 
-/**
- * BASICS is an array of basic lands
- */
-export const BASICS = Object.entries(COLORS_TO_LANDS)
-  .map(([colorSign, cardName]) => {
-    return {
-      name: cardName,
-      cmc: 0,
-      colorSign,
-      code: "BFZ",
-      color: "Colorless",
-      rarity: "Basic",
-      type: "Land",
-      manaCost: 0,
-      url: `https://api.scryfall.com/cards/named?exact=${cardName.toLowerCase()}&format=image&version=${App.state.cardSize}`
-    };
-  });
-
-const basicKeyByColor = keyBy(BASICS, "colorSign");
-
 export const getZone = (zoneName) => App.state.gameState.get(zoneName);
 
 function hash() {
   App.send("hash", {
     main: App.state.gameState.countCardsByName(ZONE_MAIN),
-    side: App.state.gameState.countCardsByName(ZONE_SIDE),
+    side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD),
   });
 }
 
@@ -47,7 +27,7 @@ function hash() {
  */
 const events = {
   add(card) {
-    const zoneName = App.state.side ? ZONE_SIDE : ZONE_MAIN;
+    const zoneName = App.state.side ? ZONE_SIDEBOARD : ZONE_MAIN;
     App.state.gameState.add(zoneName, card);
     App.update();
   },
@@ -57,7 +37,7 @@ const events = {
 
     const dst = e.shiftKey
       ? zoneName === ZONE_JUNK ? ZONE_MAIN : ZONE_JUNK
-      : zoneName === ZONE_SIDE ? ZONE_MAIN : ZONE_SIDE;
+      : zoneName === ZONE_SIDEBOARD ? ZONE_MAIN : ZONE_SIDEBOARD;
 
     App.state.gameState.move(zoneName, dst, card);
 
@@ -178,7 +158,7 @@ const events = {
     App.save(type, sets);
   },
   pool(cards) {
-    const zoneName = App.state.side ? ZONE_SIDE : ZONE_MAIN;
+    const zoneName = App.state.side ? ZONE_SIDEBOARD : ZONE_MAIN;
     this.state.gameState.addToPool(zoneName, cards);
     App.update();
   },
@@ -220,9 +200,8 @@ const events = {
     // 5, but this reveals information to the opponent on Cockatrice (and
     // possibly other clients) since it tells the opponent the sideboard size.
     colors.forEach(color => {
-      range(5).forEach(() => {
-        App.state.gameState.get(ZONE_SIDE).push(basicKeyByColor[color]);
-      });
+      const basicLand = BASIC_LANDS_BY_COLOR_SIGN[color];
+      App.state.gameState.setLands(ZONE_SIDEBOARD, basicLand, 5);
     });
 
     const mainColors = colors.filter(x => manaSymbols[x] > 0);
@@ -267,12 +246,16 @@ const events = {
       const landsToAdd = App.state.deckSize - mainDeckSize;
 
       let j = 0;
+      const basicLandsMap = {};
       for (let i = 0; i < landsToAdd; i++) {
         const color = colorsToAdd[j];
-        App.state.gameState.addToMain(basicKeyByColor[color]);
-
+        basicLandsMap[color] = ++basicLandsMap[color] || 1;
         j = (j + 1) % colorsToAdd.length;
       }
+
+      Object.entries(basicLandsMap).forEach(([color, number]) => {
+        App.state.gameState.setLands(ZONE_MAIN, BASIC_LANDS_BY_COLOR_SIGN[color], number);
+      });
     }
 
     App.update();
@@ -334,14 +317,14 @@ const filetypes = {
 ${codify(App.state.gameState.get(ZONE_MAIN))}
   </zone>
   <zone name="side">
-${codify(App.state.gameState.get(ZONE_SIDE))}
+${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
   </zone>
 </cockatrice_deck>`;
   },
   mwdeck() {
     const arr = [];
-    [ZONE_MAIN, ZONE_SIDE].forEach(zoneName => {
-      const prefix = zoneName === ZONE_SIDE ? "SB: " : "";
+    [ZONE_MAIN, ZONE_SIDEBOARD].forEach(zoneName => {
+      const prefix = zoneName === ZONE_SIDEBOARD ? "SB: " : "";
       const zone = App.state.gameState.countCardsBy(zoneName, ({setCode, name}) => `${setCode}|${name}`);
       Object.entries(zone).forEach(([cardName, count]) => {
         const [code, name] = cardName.split("|");
@@ -354,13 +337,13 @@ ${codify(App.state.gameState.get(ZONE_SIDE))}
   json() {
     return JSON.stringify({
       main: App.state.gameState.countCardsByName(ZONE_MAIN),
-      side: App.state.gameState.countCardsByName(ZONE_SIDE)
+      side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD)
     }, null, 2);
   },
   txt() {
     const arr = [];
-    [ZONE_MAIN, ZONE_SIDE].forEach(zoneName => {
-      if (zoneName === ZONE_SIDE) {
+    [ZONE_MAIN, ZONE_SIDEBOARD].forEach(zoneName => {
+      if (zoneName === ZONE_SIDEBOARD) {
         arr.push("Sideboard");
       }
       Object.entries(App.state.gameState.countCardsByName(zoneName))
@@ -418,7 +401,7 @@ export function getZoneDisplayName(zoneName) {
     return "Pack";
   case ZONE_MAIN:
     return "Main Deck";
-  case ZONE_SIDE:
+  case ZONE_SIDEBOARD:
     return "Sideboard";
   case ZONE_JUNK:
     return "Junk";

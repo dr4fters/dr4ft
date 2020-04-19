@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {BASICS, getZone, getZoneDisplayName} from "../cards";
+import {getZone, getZoneDisplayName} from "../cards";
+import {BASICS} from "../gamestate";
 import {Select} from "../utils";
 
 const DeckSettings = () => (
