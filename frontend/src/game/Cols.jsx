@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
+import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../events";
 import {Spaced} from "../utils.jsx";
 
 class Cols extends Component {

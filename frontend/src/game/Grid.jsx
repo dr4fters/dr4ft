@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
+import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../events";
 import {Spaced} from "../utils";
 import {ZONE_PACK} from "../gamestate";
 
