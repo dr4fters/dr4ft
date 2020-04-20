@@ -1,13 +1,9 @@
 import {countBy, findIndex, keyBy, pullAt, range, remove} from "lodash";
 import _ from "utils/utils";
 import EventEmitter from "events";
+import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 
-export const ZONE_MAIN = "main";
-export const ZONE_SIDEBOARD = "side";
-export const ZONE_PACK = "pack";
-export const ZONE_JUNK = "junk";
-
-export const COLORS_TO_LANDS = {
+export const COLORS_TO_LANDS_NAME = {
   "W": "Plains",
   "U": "Island",
   "B": "Swamp",
@@ -18,7 +14,7 @@ export const COLORS_TO_LANDS = {
 /**
  * BASICS is an array of basic lands
  */
-export const BASICS = Object.entries(COLORS_TO_LANDS)
+const BASICS = Object.entries(COLORS_TO_LANDS_NAME)
   .map(([colorSign, cardName]) => {
     return {
       name: cardName,
@@ -28,7 +24,7 @@ export const BASICS = Object.entries(COLORS_TO_LANDS)
       color: "Colorless",
       rarity: "Basic",
       type: "Land",
-      manaCost: 0,
+      manaCost: "0",
       url: `https://api.scryfall.com/cards/named?exact=${cardName.toLowerCase()}&format=image`
     };
   });
@@ -43,30 +39,44 @@ const defaultState = () => ({
 });
 
 /**
- * @desc Map of <cardId, zoneName>
- * @type {{}}
+ * @desc Map<cardId, zoneName>
+ * @example { "cardId": "main", "othercardId": "side}
  */
 const defaultCardState = () => ({});
 
-// Faire zone -> type de land -> number
+/**
+ * @desc Map<zoneName, Map<color, count>
+ * @example { "main": {"W": 2, "R": 3}, "side": {"B": 5, "U": 5} }
+ */
 const defaultLandDistribution = () => ({
   [ZONE_MAIN]: {},
   [ZONE_SIDEBOARD]: {},
 });
 
+/**
+ * @desc contains the cards in all zone, the autopick reference and the land distributions
+ * it is saved at every App update
+ */
 class GameState extends EventEmitter {
   #state;
   #zoneState;
   #landDistribution;
+  #autopickCardId;
 
-  constructor({state = defaultCardState(), landDistribution = defaultLandDistribution()} = {
+  constructor({
+    state = defaultCardState(),
+    landDistribution = defaultLandDistribution(),
+    autopickCardId = null
+  } = {
     state: defaultCardState(),
-    landDistribution: defaultLandDistribution()
+    landDistribution: defaultLandDistribution(),
+    autopickCardId: null
   }) {
     super();
     this.#state = state;
     this.#landDistribution = landDistribution;
     this.#zoneState = defaultState();
+    this.#autopickCardId = autopickCardId;
   }
 
   /**
@@ -128,6 +138,10 @@ class GameState extends EventEmitter {
     this.updState();
   }
 
+  getLandDistribution(zoneName, color) {
+    return this.#landDistribution[zoneName][color] || 0;
+  }
+
   _setLands(zoneName, card, n) {
     const zone = this.get(zoneName);
     remove(zone, (c) => c.name === card.name);
@@ -136,13 +150,13 @@ class GameState extends EventEmitter {
     this.#landDistribution[zoneName][card.colorSign] = n;
   }
 
-  setLands(zoneName, card, n) {
-    this._setLands(zoneName, card, n);
+  setLands(zoneName, color, n) {
+    this._setLands(zoneName, BASIC_LANDS_BY_COLOR_SIGN[color], n);
     this.updState();
   }
 
   resetLands() {
-    Object.values(COLORS_TO_LANDS).forEach((basicLandName) => {
+    Object.values(COLORS_TO_LANDS_NAME).forEach((basicLandName) => {
       [ZONE_MAIN, ZONE_SIDEBOARD, ZONE_JUNK].forEach((zoneName) => {
         remove(this.get(zoneName), ({name}) => basicLandName.toLowerCase() === name.toLowerCase());
       });
@@ -167,15 +181,30 @@ class GameState extends EventEmitter {
   updState() {
     this.emit("updateGameState", {
       state: this.#state,
-      landDistribution: this.#landDistribution
+      landDistribution: this.#landDistribution,
+      autopickCardId: this.#autopickCardId
     });
+  }
+
+  isAutopick(cardId) {
+    return this.#autopickCardId === cardId;
+  }
+
+  updateAutopick(cardId) {
+    this.#autopickCardId = cardId;
+    this.updState();
+  }
+
+  resetPack() {
+    this.get(ZONE_PACK).length = 0;
+    this.#autopickCardId = null;
   }
 }
 
 function sortLandsBeforeNonLands(lhs, rhs) {
-  let isLand = x => x.type.toLowerCase().indexOf("land") !== -1;
-  let lhsIsLand = isLand(lhs);
-  let rhsIsLand = isLand(rhs);
+  const isLand = x => x.type.toLowerCase().indexOf("land") !== -1;
+  const lhsIsLand = isLand(lhs);
+  const rhsIsLand = isLand(rhs);
   return rhsIsLand - lhsIsLand;
 }
 

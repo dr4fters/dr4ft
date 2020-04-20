@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 
 import App from "../app";
-import {Zones} from "../events";
 
 import PlayersPanel from "./PlayersPanel";
 import StartPanel from "./StartPanel";
@@ -14,7 +13,7 @@ import {STRINGS} from "../config";
 
 import {vanillaToast} from "vanilla-toast";
 import "vanilla-toast/vanilla-toast.css";
-import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "../gamestate";
+import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "../zones";
 
 export default class Game extends Component {
   constructor(props) {

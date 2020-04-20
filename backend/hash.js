@@ -1,5 +1,3 @@
-import {ZONE_SIDEBOARD} from "../frontend/src/gamestate";
-
 const crypto = require("crypto");
 
 const opts = {
@@ -31,7 +29,7 @@ const opts = {
 function hash(deck, opts) {
   let items = [];
   for (let zoneName in deck) {
-    const prefix = zoneName === ZONE_SIDEBOARD
+    const prefix = zoneName === "side"
       ? opts.prefix
       : "";
 

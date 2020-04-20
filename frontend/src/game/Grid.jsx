@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../events";
+import {getCardSrc, getFallbackSrc} from "../cardimage";
 import {Spaced} from "../utils";
-import {ZONE_PACK} from "../gamestate";
+import {ZONE_PACK, getZoneDisplayName} from "../zones";
 
 const Grid = ({zones}) => (
   <div>
@@ -18,7 +18,7 @@ Grid.propTypes = {
 };
 
 const zone = (zoneName, index) => {
-  const zone = getSortedZone(zoneName);
+  const zone = App.getSortedZone(zoneName);
   const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
@@ -82,7 +82,7 @@ class Card extends Component {
 
   render() {
     const {card, zoneName} = this.props;
-    const isAutopickable = zoneName === ZONE_PACK && card.isAutopick;
+    const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
 
     const className = `card
     ${isAutopickable ? "autopick-card " : ""}

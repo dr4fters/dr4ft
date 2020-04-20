@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../events";
+import {getZoneDisplayName} from "../zones";
 import {Spaced} from "../utils.jsx";
+import {getCardSrc, getFallbackSrc} from "../cardimage";
 
 class Cols extends Component {
   constructor(props) {
@@ -57,7 +58,7 @@ Cols.propTypes = {
 
 const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   const renderZone = (zoneName) => {
-    const zone = getSortedZone(zoneName);
+    const zone = App.getSortedZone(zoneName);
     let sum = 0;
     let cols = [];
 

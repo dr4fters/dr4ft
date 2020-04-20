@@ -1,24 +1,8 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
-import {times, constant, countBy, findIndex, range} from "lodash";
-import {BASIC_LANDS_BY_COLOR_SIGN, ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./gamestate";
-
-/**
- * TODO: add autopickId to GameState
- *  check when change of autopick or when a new pack arrives to modify the autopick value
- *  or find a way to indicate what card is autopick
- */
-let clickedCardId;
-
-export const getZone = (zoneName) => App.state.gameState.get(zoneName);
-
-function hash() {
-  App.send("hash", {
-    main: App.state.gameState.countCardsByName(ZONE_MAIN),
-    side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD),
-  });
-}
+import {range, times, constant, countBy, findIndex} from "lodash";
+import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 
 /**
  * @desc this is the list of all the events that can be triggered by the App
@@ -86,7 +70,7 @@ const events = {
     }
   },
   log(draftLog) {
-    App.state.log = draftLog;
+    App.save("log", draftLog);
   },
   getLog() {
     const {id, log, players, self, sets, gamesubtype, filename} = App.state;
@@ -158,9 +142,9 @@ const events = {
     this.state.gameState.addToPool(zoneName, cards);
     App.update();
   },
-  land(zoneName, card, e) {
+  land(zoneName, color, e) {
     const n = Number(e.target.value);
-    App.state.gameState.setLands(zoneName, card, n);
+    App.state.gameState.setLands(zoneName, color, n);
     App.update();
   },
   deckSize(e) {
@@ -178,26 +162,27 @@ const events = {
     colors.forEach(x => manaSymbols[x] = 0);
 
     // Count the number of mana symbols of each type.
-    for (const card of App.state.gameState.get(ZONE_MAIN)) {
+    App.state.gameState.get(ZONE_MAIN).forEach((card) => {
       if (!card.manaCost)
-        continue;
+        return;
       const cardManaSymbols = card.manaCost.match(colorRegex);
 
-      for (const color of colors)
-        for (const symbol of cardManaSymbols)
+      colors.forEach((color) => {
+        Object.values(cardManaSymbols).forEach((symbol) => {
           // Test to see if '{U}' contains 'U'. This also handles things like
           // '{G/U}' triggering both 'G' and 'U'.
           if (symbol.indexOf(color) !== -1)
             manaSymbols[color] += 1;
-    }
+        });
+      });
+    });
 
     App.state.gameState.resetLands();
     // NB: We could set only the sideboard lands of the colors we are using to
     // 5, but this reveals information to the opponent on Cockatrice (and
     // possibly other clients) since it tells the opponent the sideboard size.
     colors.forEach(color => {
-      const basicLand = BASIC_LANDS_BY_COLOR_SIGN[color];
-      App.state.gameState.setLands(ZONE_SIDEBOARD, basicLand, 5);
+      App.state.gameState.setLands(ZONE_SIDEBOARD, color, 5);
     });
 
     const mainColors = colors.filter(x => manaSymbols[x] > 0);
@@ -239,18 +224,17 @@ const events = {
 
     if (colorsToAdd.length > 0) {
       const mainDeckSize = App.state.gameState.getMainDeckSize();
-      const landsToAdd = App.state.deckSize - mainDeckSize;
 
       let j = 0;
       const basicLandsMap = {};
-      for (let i = 0; i < landsToAdd; i++) {
+      range(App.state.deckSize - mainDeckSize).forEach((i) => {
         const color = colorsToAdd[j];
         basicLandsMap[color] = ++basicLandsMap[color] || 1;
         j = (j + 1) % colorsToAdd.length;
-      }
+      });
 
       Object.entries(basicLandsMap).forEach(([color, number]) => {
-        App.state.gameState.setLands(ZONE_MAIN, BASIC_LANDS_BY_COLOR_SIGN[color], number);
+        App.state.gameState.setLands(ZONE_MAIN, color, number);
       });
     }
 
@@ -373,104 +357,19 @@ function cube() {
 function clickPack(card) {
   const pack = App.state.gameState.get(ZONE_PACK);
   const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
-  if (clickedCardId !== card.cardId) {
-    clickedCardId = card.cardId;
-    // There may be duplicate cards in a pack, but only one copy of a card is
-    // shown in the pick view. We must be sure to mark them all since we don't
-    // know which one is being displayed.
-    pack.forEach(c => c.isAutopick = card.cardId === c.cardId);
-    App.update();
+  if (!App.state.gameState.isAutopick(card.cardId)) {
+    App.state.gameState.updateAutopick(card.cardId);
     App.send("autopick", index);
   } else {
-    clickedCardId = null;
-    pack.length = 0;
+    App.state.gameState.resetPack();
     App.update();
     App.send("pick", index);
   }
 }
 
-export const getSortedZone = (zoneName) => App.state.gameState.getSortedZone(zoneName, App.state.sort);
-
-export function getZoneDisplayName(zoneName) {
-  switch (zoneName) {
-  case ZONE_PACK:
-    return "Pack";
-  case ZONE_MAIN:
-    return "Main Deck";
-  case ZONE_SIDEBOARD:
-    return "Sideboard";
-  case ZONE_JUNK:
-    return "Junk";
-  default:
-    return "UNKNOWN ZONENAME";
-  }
+function hash() {
+  App.send("hash", {
+    main: App.state.gameState.countCardsByName(ZONE_MAIN),
+    side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD),
+  });
 }
-
-/**
- *
- * @param {string} setCode the setCode of the card
- * @param {(string|number)} number the number of the card
- * @return {string} the
- *
- * @example
- *  getScryfallImage("XLN", 1)
- *  getScryfallImage("XLN", "10a")
- *  getScryfallImage("XLN", "10b")
- */
-const getScryfallImage = (setCode, number) => (
-  `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}?format=image&version=${App.state.cardSize}`
-);
-
-/**
- *
- * @description returns a cards image URL with the lang selected in the app
- * @param {string} setCode the setCode of the card
- * @param {(string|number)} number the number of the card
- * @return {string} the
- *
- * @example
- *  getScryfallImage("XLN", 1)
- *  getScryfallImage("XLN", "10a")
- *  getScryfallImage("XLN", "10b")
- */
-const getScryfallImageWithLang = (setCode, number) => (
-  `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}/${App.state.cardLang}?format=image&version=${App.state.cardSize}`
-);
-
-/**
- * A MTG card
- * @typedef {Object} Card
- * @property {string} setCode - The setCode
- * @property {(string|number)} number the number of the card
- * @property {string} scryfallId - The scryfallId
- * @property {string} url - The original image url of the card
- */
-
-
-/**
- * @description builds an event function that returns an image url
- * @param {Card} param0
- */
-export const getFallbackSrc = ({setCode, number}) => {
-  if (!setCode || !number) {
-    return null;
-  }
-
-  const url = getScryfallImage(setCode, number);
-  return ev => {
-    if (url !== ev.target.src) {
-      ev.target.src = url;
-    }
-  };
-};
-/**
- * @description builds an image url based on the card properties
- * @param {Card} card
- * @returns {string} the image url to display
- */
-export const getCardSrc = ({scryfallId = "", url, setCode, number, isBack}) => (
-  scryfallId !== ""
-    ? `${getScryfallImageWithLang(setCode, number)}${isBack ? "&face=back" : ""}`
-    : url
-);
-
