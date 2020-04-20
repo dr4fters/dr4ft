@@ -2,19 +2,22 @@
 const fs = require("fs");
 const assert = require("assert");
 const toBoosterCard = require("./toBoosterCard");
+const path = require("path");
+const {getDataDir} = require("../data");
 
 describe("Acceptance tests for toBoosterCard function", () => {
   describe("can parse all the sets", () => {
     it("parse cards without errors from all the sets downloaded", () => {
-      if (fs.existsSync("data/sets")) {
-        const files = fs.readdirSync("data/sets");
+      const setsDataDir = path.join(getDataDir(), "sets");
+      if (fs.existsSync(setsDataDir)) {
+        const files = fs.readdirSync(setsDataDir);
         files.forEach(file => {
           if (!/.json/g.test(file)) {
             return;
           }
-          const path = `data/sets/${file}`;
+          const filePath = path.join(setsDataDir, `${file}`);
           const [setCode] = file.split(".");
-          const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
+          const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
           json.cards
             .map(toBoosterCard(setCode))
             .forEach((card) => assert(card.name != undefined, "card must have a name"));

@@ -24,6 +24,8 @@ const GameOptions = () => {
     return <Chaos packsNumber={"chaosDraftPacksNumber"} />;
   case "chaos sealed":
     return <Chaos packsNumber={"chaosSealedPacksNumber"}/>;
+  default:
+    return <Regular sets={setsDraft} type={"setsDraft"} />;
   }
 };
 
