@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {BASICS, Zones, getZoneDisplayName} from "../cards";
+import {getZone, getZoneDisplayName} from "../cards";
+import {BASICS} from "../gamestate";
 import {Select} from "../utils";
 
 const DeckSettings = () => (
@@ -51,14 +52,14 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{getZoneDisplayName(zoneName)}</td>
-    {BASICS.map((cardName, index) =>
+    {BASICS.map((card, index) =>
       <td key={index}>
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName, cardName)}
+          onChange={App._emit("land", zoneName, card)}
           type='number'
-          value={Zones[zoneName][cardName] || 0}/>
+          value={getZone(zoneName).filter((c) => c.name == card.name).length || 0}/>
       </td>)}
   </tr>
 );

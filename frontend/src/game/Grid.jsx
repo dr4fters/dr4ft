@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
+import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
 import {Spaced} from "../utils";
 
 const Grid = ({zones}) => (
@@ -17,7 +17,7 @@ Grid.propTypes = {
 };
 
 const zone = (zoneName, index) => {
-  const zone = getZone(zoneName);
+  const zone = getSortedZone(zoneName);
   const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
@@ -58,7 +58,7 @@ class Card extends Component {
   onMouseEnter() {
     if (this.props.card.isDoubleFaced) {
       this.setState({
-        isDoubleFaced: true,
+        mouseEntered: true,
         url: getCardSrc({
           ...this.props.card,
           isBack: this.props.card.flippedIsBack,
@@ -74,7 +74,7 @@ class Card extends Component {
       this.setState({
         url: getCardSrc(this.props.card),
         flipped: false,
-        isDoubleFaced: false
+        mouseEntered: false
       });
     }
   }
@@ -95,10 +95,10 @@ class Card extends Component {
     return (
       <span className={className}
         title={title}
-        onClick={App._emit("click", zoneName, card.name)}
+        onClick={App._emit("click", zoneName, card)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <CardImage isDoubleFaced={this.state.isDoubleFaced} imgUrl={this.state.url} {...card}/>
+        <CardImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
       </span>
     );
   }
@@ -109,7 +109,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ isDoubleFaced, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
+const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p><strong>{name}</strong> {manaCost}</p>
@@ -120,7 +120,7 @@ const CardImage = ({ isDoubleFaced, url, flippedIsBack, flippedNumber, imgUrl, s
     </div>
     : <img title={name}
       onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
-      src={!isDoubleFaced
+      src={!mouseEntered
         ? getCardSrc({ scryfallId, setCode, url, number })
         : getCardSrc({ scryfallId, setCode, url, number: flippedNumber, isBack: flippedIsBack })
       }
@@ -143,7 +143,7 @@ CardImage.propTypes = {
   setCode: PropTypes.string,
   number: PropTypes.string,
   scryfallId: PropTypes.string,
-  isDoubleFaced: PropTypes.bool,
+  mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,
   flippedNumber: PropTypes.string,

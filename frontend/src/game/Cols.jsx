@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
+import {getSortedZone, getZoneDisplayName, getCardSrc, getFallbackSrc} from "../cards";
 import {Spaced} from "../utils.jsx";
 
 class Cols extends Component {
@@ -57,7 +57,7 @@ Cols.propTypes = {
 
 const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   const renderZone = (zoneName) => {
-    const zone = getZone(zoneName);
+    const zone = getSortedZone(zoneName);
     let sum = 0;
     let cols = [];
 
@@ -66,7 +66,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
         <div
           className={`${card.foil ? "foil-card": ""} card-col`}
           key={index}
-          onClick={App._emit("click", zoneName, card.name)}
+          onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
 
