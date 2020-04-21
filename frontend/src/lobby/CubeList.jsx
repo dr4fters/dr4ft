@@ -68,7 +68,7 @@ const CubeCobra = () => {
   return (
     <Fragment >
       <label style={{marginTop: "10px", marginLeft: "4px"}}>
-        <a href="https://cubecobra.com/" >CubeCobra</a> CubeId:{" "}
+        <a href="https://cubecobra.com/" target="_blank">CubeCobra</a> CubeId:{" "}
         <input
           style={{ width: "100px" }}
           type='text'
