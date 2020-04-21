@@ -16,8 +16,10 @@ const events = {
     App.update();
   },
   click(zoneName, card, e) {
-    if (zoneName === ZONE_PACK)
-      return clickPack(card);
+    if (zoneName === ZONE_PACK) {
+      clickPack(card);
+      return;
+    }
 
     const dst = e.shiftKey
       ? zoneName === ZONE_JUNK ? ZONE_MAIN : ZONE_JUNK
@@ -28,7 +30,7 @@ const events = {
     App.update();
   },
   copy() {
-    let textField = document.createElement("textarea");
+    const textField = document.createElement("textarea");
     textField.value = filetypes.txt();
     document.body.appendChild(textField);
     textField.select();
@@ -76,7 +78,7 @@ const events = {
     const {id, log, players, self, sets, gamesubtype, filename} = App.state;
     const isCube = /cube/.test(gamesubtype);
     const date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
-    let data = [
+    const data = [
       `Event #: ${id}`,
       `Time: ${date}`,
       "Players:"
@@ -90,7 +92,7 @@ const events = {
       data.push("", `------ ${isCube ? "Cube" : sets.shift()} ------`);
       round.forEach(function (pick, i) {
         data.push("", `Pack ${index} pick ${i + 1}:`);
-        data = data.concat(pick);
+        pick.forEach((card) => data.push(card));
       });
     });
 
@@ -114,7 +116,7 @@ const events = {
       break;
     }
     case "cube":
-      options.cube = cube();
+      options.cube = parseCubeOptions();
       break;
     case "chaos":
       options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
@@ -148,9 +150,10 @@ const events = {
     App.update();
   },
   deckSize(e) {
-    let n = Number(e.target.value);
-    if (n && n > 0)
+    const n = Number(e.target.value);
+    if (n && n > 0) {
       App.state.deckSize = n;
+    }
     App.update();
   },
   suggestLands() {
@@ -216,8 +219,9 @@ const events = {
     const emptyManaSymbols = () => !manaSymbolsToAdd.every(x => x === 0);
 
     for (let i = 0; emptyManaSymbols(); i = (i + 1) % mainColors.length) {
-      if (manaSymbolsToAdd[i] === 0)
+      if (manaSymbolsToAdd[i] === 0) {
         continue;
+      }
       colorsToAdd.push(mainColors[i]);
       manaSymbolsToAdd[i]--;
     }
@@ -227,7 +231,7 @@ const events = {
 
       let j = 0;
       const basicLandsMap = {};
-      range(App.state.deckSize - mainDeckSize).forEach((i) => {
+      range(App.state.deckSize - mainDeckSize).forEach(() => {
         const color = colorsToAdd[j];
         basicLandsMap[color] = ++basicLandsMap[color] || 1;
         j = (j + 1) % colorsToAdd.length;
@@ -280,7 +284,7 @@ const events = {
 Object.keys(events).forEach((event) => App.on(event, events[event]));
 
 function codify(zone) {
-  let arr = [];
+  const arr = [];
   Object.entries(countBy(zone, "name")).forEach(([name, number]) => {
     arr.push(`    <card number="${number}" name="${name}"/>`);
   });
@@ -335,7 +339,7 @@ ${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
   }
 };
 
-function cube() {
+const parseCubeOptions = () => {
   let {list, cards, packs, cubePoolSize} = App.state;
   cards = Number(cards);
   packs = Number(packs);
@@ -352,9 +356,9 @@ function cube() {
     .join("\n");
 
   return {list, cards, packs, cubePoolSize};
-}
+};
 
-function clickPack(card) {
+const clickPack = (card) => {
   const pack = App.state.gameState.get(ZONE_PACK);
   const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
   if (!App.state.gameState.isAutopick(card.cardId)) {
@@ -365,11 +369,11 @@ function clickPack(card) {
     App.update();
     App.send("pick", index);
   }
-}
+};
 
-function hash() {
+const hash = () => {
   App.send("hash", {
     main: App.state.gameState.countCardsByName(ZONE_MAIN),
     side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD),
   });
-}
+};

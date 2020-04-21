@@ -12,9 +12,9 @@ export const COLORS_TO_LANDS_NAME = {
 };
 
 /**
- * BASICS is an array of basic lands
+ * BASICS_LANDS is an array of all different basic lands
  */
-const BASICS = Object.entries(COLORS_TO_LANDS_NAME)
+const BASICS_LANDS = Object.entries(COLORS_TO_LANDS_NAME)
   .map(([colorSign, cardName]) => {
     return {
       name: cardName,
@@ -29,7 +29,7 @@ const BASICS = Object.entries(COLORS_TO_LANDS_NAME)
     };
   });
 
-export const BASIC_LANDS_BY_COLOR_SIGN = keyBy(BASICS, "colorSign");
+export const BASIC_LANDS_BY_COLOR_SIGN = keyBy(BASICS_LANDS, "colorSign");
 
 const defaultState = () => ({
   [ZONE_MAIN]: [],
@@ -201,12 +201,13 @@ class GameState extends EventEmitter {
   }
 }
 
-function sortLandsBeforeNonLands(lhs, rhs) {
-  const isLand = x => x.type.toLowerCase().indexOf("land") !== -1;
+const isLand = ({type}) => /land/i.test(type);
+
+const sortLandsBeforeNonLands = (lhs, rhs) => {
   const lhsIsLand = isLand(lhs);
   const rhsIsLand = isLand(rhs);
   return rhsIsLand - lhsIsLand;
-}
+};
 
 function Key(groups, sort) {
   let keys = Object.keys(groups);

@@ -2,6 +2,7 @@ const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
 const {random} = require("lodash");
+const logger = require("./logger");
 
 module.exports = class extends Player {
   constructor(sock) {
@@ -36,9 +37,10 @@ module.exports = class extends Player {
     this.send("error", message);
   }
   _hash(deck) {
-    if (!util.deck(deck, this.pool))
+    if (!util.deck(deck, this.pool)){
+      logger.warn(`wrong deck submitted for hashing by ${this.name}`);
       return;
-
+    }
     this.hash = hash(deck);
     this.emit("meta");
   }
