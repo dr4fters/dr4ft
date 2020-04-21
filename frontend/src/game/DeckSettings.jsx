@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getZone, getZoneDisplayName} from "../cards";
-import {BASICS} from "../gamestate";
+import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
+import {COLORS_TO_LANDS_NAME} from "../gamestate";
 import {Select} from "../utils";
 
 const DeckSettings = () => (
@@ -23,8 +23,8 @@ const LandsPanel = () => (
         <ManaSymbols />
       </thead>
       <tbody>
-        <LandsRow zoneName="main"/>
-        <LandsRow zoneName="side"/>
+        <LandsRow zoneName={ZONE_MAIN}/>
+        <LandsRow zoneName={ZONE_SIDEBOARD}/>
       </tbody>
       <tfoot>
         <SuggestLands />
@@ -52,14 +52,14 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{getZoneDisplayName(zoneName)}</td>
-    {BASICS.map((card, index) =>
+    {Object.keys(COLORS_TO_LANDS_NAME).map((color, index) =>
       <td key={index}>
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName, card)}
+          onChange={App._emit("land", zoneName, color)}
           type='number'
-          value={getZone(zoneName).filter((c) => c.name == card.name).length || 0}/>
+          value={App.state.gameState.getLandDistribution(zoneName, color) || 0}/>
       </td>)}
   </tr>
 );

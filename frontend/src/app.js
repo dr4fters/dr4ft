@@ -215,6 +215,12 @@ let App = {
       filename,
       game: {type, sets, packsInfo}
     });
+  },
+  getZone(zoneName){
+    return App.state.gameState.get(zoneName);
+  },
+  getSortedZone(zoneName) {
+    return App.state.gameState.getSortedZone(zoneName, App.state.sort);
   }
 };
 
