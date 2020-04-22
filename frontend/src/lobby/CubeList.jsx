@@ -4,10 +4,15 @@ import axios from "axios";
 import { Textarea } from "../utils";
 import App from "../app";
 
-const CubeList = () => (
-  <div id='cube-list'>
+const CubeList = () => {
+  const cubeListLength =
+    App.state.list.length === 0
+      ? 0
+      : App.state.list.split("\n").length;
+
+  return (<div id='cube-list'>
     <div className='column'>
-      <div>{`one card per line (${App.state.list.split("\n").length || 0} cards)`}</div>
+      <div>{`one card per line (${cubeListLength} cards)`}</div>
       <Textarea
         placeholder='cube list'
         link='list'
@@ -17,15 +22,20 @@ const CubeList = () => (
       <CubeCobra />
     </div>
   </div>
-);
+  );
+};
 
 const CubeCobra = () => {
   const [name, setName] = useState("");
 
   const getCubeCobraList = async (cubeId) => {
+    if (!cubeId) {
+      return;
+    }
     axios.get(`https://cubecobra.com/cube/api/cubelist/${cubeId}`)
       .then(({ data: list }) => {
-        App.set({ err: "", list });
+        App.err = "";
+        App.set({ list });
       })
       .catch(() => {
         App.error(`Could not retrieve CubeCobra list with id ${cubeId}`);
