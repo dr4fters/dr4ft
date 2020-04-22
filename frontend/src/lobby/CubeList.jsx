@@ -25,7 +25,7 @@ const CubeCobra = () => {
   const getCubeCobraList = async (cubeId) => {
     axios.get(`https://cubecobra.com/cube/api/cubelist/${cubeId}`)
       .then(({ data: list }) => {
-        App.set({ list });
+        App.set({ err: "", list });
       })
       .catch(() => {
         App.error(`Could not retrieve CubeCobra list with id ${cubeId}`);
