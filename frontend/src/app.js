@@ -208,8 +208,8 @@ let App = {
   updateGameInfos({type, sets, packsInfo}) {
     const savename = type === "draft" ? sets[0] + "-draft" : type;
     const date = new Date();
-    const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "-" + date.getTime().toString().slice(-8, -3);
-    const filename = `${savename.replace(/\W/, "-")}-${currentTime}`;
+    const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "_" + date.getTime().toString().slice(-8, -3);
+    const filename = `${savename.replace(/\W/, "-")}_${currentTime}`;
 
     App.set({
       filename,
