@@ -102,7 +102,7 @@ function getColor({ colors, layout, name, names = [], frameEffects = [] }, rawCa
   }
 
   // Handle split cards colors
-  if (layout === "split" && names.length > 1) {
+  if (["split", "aftermath"].includes(layout) && names.length > 1) {
     const otherName = names.filter((n) => n !== name)[0];
     const otherCard = find(rawCards, (card) => card.name === otherName);
     if (otherCard && otherCard.colors) {
