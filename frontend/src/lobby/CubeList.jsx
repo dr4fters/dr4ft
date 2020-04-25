@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import axios from "axios";
 
-import { Textarea } from "../utils";
+import TextArea from "../components/TextArea";
 import App from "../app";
 
 const CubeList = () => {
@@ -13,7 +13,7 @@ const CubeList = () => {
   return (<div id='cube-list'>
     <div className='column'>
       <div>{`one card per line (${cubeListLength} cards)`}</div>
-      <Textarea
+      <TextArea
         placeholder='cube list'
         link='list'
       />
