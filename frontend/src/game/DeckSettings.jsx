@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 import {COLORS_TO_LANDS_NAME} from "../gamestate";
-import {Select} from "../utils";
+import Select from "../components/Select";
 
 const DeckSettings = () => (
   (App.state.isGameFinished || App.state.didGameStart)

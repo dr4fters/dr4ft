@@ -8,29 +8,6 @@ import App from "./app";
  * through a "link" prop to connect to the app state
  */
 
-export const Select = ({
-  link,
-  opts,
-  onChange = (e) => { App.save(link, e.currentTarget.value); },
-  value = App.state[link],
-  ...rest}) => (
-  <select
-    onChange={onChange}
-    value={value}
-    {...rest}>
-    {opts.map((opt, index) =>
-      <option key={index}>{opt}</option>
-    )}
-  </select>
-);
-
-Select.propTypes = {
-  link: PropTypes.string,
-  onChange: PropTypes.func,
-  value: PropTypes.any,
-  opts: PropTypes.array
-};
-
 export const Textarea = ({link, ...rest}) => (
   <textarea
     style={ {"overflowY": "scroll", "height": "150px"}}

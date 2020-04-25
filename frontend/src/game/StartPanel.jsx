@@ -2,7 +2,8 @@ import React from "react";
 
 import App from "../app";
 import Checkbox from "../components/Checkbox";
-import { Select, toTitleCase } from "../utils";
+import Select from "../components/Select";
+import { toTitleCase } from "../utils";
 
 const StartPanel = () => {
   const gameType = toTitleCase(App.state.game.type);
