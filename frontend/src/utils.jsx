@@ -8,16 +8,6 @@ import App from "./app";
  * through a "link" prop to connect to the app state
  */
 
-export const Spaced = ({elements}) => (
-  elements
-    .map((x, index) => <span key={index}>{x}</span>)
-    .reduce((prev, curr) => [
-      prev,
-      <span key = {prev+curr} className = 'spacer-dot' />,
-      curr
-    ])
-);
-
 export const Select = ({
   link,
   opts,

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import _ from "utils/utils";
 import App from "../app";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
-import {Spaced} from "../utils";
+import Spaced from "../components/Spaced";
 import {ZONE_PACK, getZoneDisplayName} from "../zones";
 
 const Grid = ({zones}) => (
