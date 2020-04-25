@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import { Checkbox, Select } from "../utils";
+import Checkbox from "../components/Checkbox"
+import { Select } from "../utils";
 
 import Set from "./Set";
 import CubeList from "./CubeList";
