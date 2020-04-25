@@ -82,6 +82,9 @@ let App = {
     get isGameFinished() {
       return App.state.round === -1;
     },
+    get isDecadentDraft() {
+      return /decadent draft/.test(App.state.game.type);
+    },
 
     get notificationBlocked() {
       return ["denied", "notsupported"].includes(App.state.notificationResult);

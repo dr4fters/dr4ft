@@ -17,6 +17,23 @@ Grid.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
+const getZoneDetails = (appState, zoneName, cards) => {
+  if (!appState.didGameStart) {
+    return 0;
+  }
+
+  if (zoneName === ZONE_PACK) {
+    if (appState.isDecadentDraft) {
+      // Only 1 pick in decadent draft.
+      return `Pick 1 / 1`;
+    } else {
+      return `Pick ${appState.pickNumber} / ${appState.packSize}`
+    }
+  } else {
+    return cards.length;
+  }
+}
+
 const zone = (zoneName, index) => {
   const zone = App.getSortedZone(zoneName);
   const zoneDisplayName = getZoneDisplayName(zoneName);
@@ -24,16 +41,12 @@ const zone = (zoneName, index) => {
   const cards = _.flat(values);
 
   const zoneTitle = zoneDisplayName + (zoneName === ZONE_PACK ? " " + App.state.round : "");
-  const zoneHelper = App.state.didGameStart
-    ? zoneName === ZONE_PACK
-      ? `Pick ${App.state.pickNumber} / ${App.state.packSize}`
-      : cards.length
-    : 0;
+  const zoneDetails = getZoneDetails(App.state, zoneName, cards);
 
   return (
     <div className='zone' key={index}>
       <h1>
-        <Spaced elements={[zoneTitle, zoneHelper]}/>
+        <Spaced elements={[zoneTitle, zoneDetails]}/>
       </h1>
       {cards.map((card, i) =>
         <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
