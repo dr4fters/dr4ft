@@ -66,8 +66,17 @@ module.exports = {
     return true;
   },
   game({ seats, type, sets, cube, isPrivate, modernOnly = true, chaosPacksNumber, totalChaos = true }) {
-    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"].includes(type),
-      "type can be draft, sealed, chaos draft, chaos sealed, cube draft or cube sealed");
+    const acceptableGameTypes = [
+      "draft",
+      "sealed",
+      "cube draft",
+      "cube sealed",
+      "chaos draft",
+      "chaos sealed",
+      "decadent draft"
+    ];
+    assert(acceptableGameTypes.includes(type),
+      `type can be one of: ${acceptableGameTypes.join(", ")}`);
     assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
     assert(typeof seats === "number", "seats must be a number");
     assert(seats >= 1 && seats <= 100, "seats' number must be between 1 and 100");

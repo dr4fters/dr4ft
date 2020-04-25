@@ -17,6 +17,8 @@ const GameOptions = () => {
     return <Regular sets={setsDraft} type={"setsDraft"} />;
   case "regular sealed":
     return <Regular sets={setsSealed} type={"setsSealed"} />;
+  case "decadent draft":
+    return <Decadent sets={setsDraft} type={"setsDraft"} />;
   case "cube draft":
     return <CubeDraft />;
   case "cube sealed":
@@ -31,12 +33,12 @@ const GameOptions = () => {
 };
 
 const Regular = ({ sets, type }) => (
-  <Fragment >
+  <Fragment>
     <div>
       Number of packs:{" "}
       <Select
         value={sets.length}
-        onChange={App._emit("changeSetsNumber", type)}
+        onChange={App._emit("changeSetsNumber", type, false)}
         opts={_.seq(12, 1)} />
     </div>
     <div className="wrapper">
@@ -54,6 +56,26 @@ const Sets = ({ sets, type }) => (
   sets
     .map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
 );
+
+const Decadent = ({ sets, type }) => (
+  <Fragment>
+    <div>
+      Number of packs:{" "}
+      <Select
+        value={sets.length}
+        onChange={App._emit("changeSetsNumber", type, true)}
+        opts={_.seq(60, 36)} />
+    </div>
+    <div className="wrapper">
+      <Set type={type} selectedSet={sets[0]} index={0} key={0} useForAllSets={true} />
+    </div>
+  </Fragment>
+);
+
+Decadent.propTypes = {
+  sets: PropTypes.array,
+  type: PropTypes.string
+};
 
 const CubeDraft = () => (
   <div>

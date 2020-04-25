@@ -7,7 +7,7 @@ import { toTitleCase } from "../utils";
 
 const GameTypes = () => {
   const types = ["draft", "sealed"];
-  const subtypes = ["regular", "cube", "chaos"];
+  const subtypes = ["regular", "cube", "chaos", "decadent"];
   return (
     <div>
       <p>Game type:{" "}
