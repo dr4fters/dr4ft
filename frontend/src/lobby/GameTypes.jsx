@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import App from "../app";
 
+import { toTitleCase } from "../utils";
+
 const GameTypes = () => {
   const types = ["draft", "sealed"];
   const subtypes = ["regular", "cube", "chaos"];
@@ -42,7 +44,7 @@ const GameType = ({ name, type, isChecked, onChange}) => (
       type='radio'
       value={type}
       onChange={onChange}
-      checked={isChecked}/> {type.toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")}
+      checked={isChecked}/> {toTitleCase(type)}
   </label>
 );
 
