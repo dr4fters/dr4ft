@@ -25,6 +25,7 @@ module.exports = class Game extends Room {
       round: 0,
       bots: 0,
       sets: sets || [],
+      isDecadent: false,
       secret: uuid.v4(),
       logger: logger.child({ id: gameID })
     });
@@ -35,6 +36,11 @@ module.exports = class Game extends Room {
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
       this.rounds = this.sets.length;
+      break;
+    case "decadent draft":
+      this.packsInfo = this.sets.join(" / ");
+      this.rounds = this.sets.length;
+      this.isDecadent = true;
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
@@ -342,12 +348,18 @@ module.exports = class Game extends Room {
   }
 
   pass(p, pack) {
-    if (!pack.length) {
-      if (!--this.packCount)
-        this.startRound();
-      else
-        this.meta();
+    if (this.isDecadent) {
+      // Decadent starts new round after each pick.
+      this.startRound();
       return;
+    } else {
+      if (!pack.length) {
+        if (!--this.packCount)
+          this.startRound();
+        else
+          this.meta();
+        return;
+      }
     }
 
     const index = this.players.indexOf(p) + this.delta;
@@ -450,7 +462,8 @@ module.exports = class Game extends Room {
       });
       break;
     }
-    case "draft": {
+    case "draft": 
+    case "decadent draft": {
       this.pool = Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
