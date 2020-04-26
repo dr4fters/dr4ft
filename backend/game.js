@@ -38,7 +38,9 @@ module.exports = class Game extends Room {
       this.rounds = this.sets.length;
       break;
     case "decadent draft":
-      this.packsInfo = this.sets.join(" / ");
+      // Sets should all be the same and there can be a large number of them.
+      // Compress this info into e.g. "36x IKO" instead of "IKO / IKO / ...".
+      this.packsInfo = `${this.sets.length}x ${this.sets[0]}`;
       this.rounds = this.sets.length;
       this.isDecadent = true;
       break;
