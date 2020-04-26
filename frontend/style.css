@@ -627,3 +627,11 @@ input[type="checkbox"], input[type="radio"] {
   color: red;
   font-weight: bold;
 }
+
+.game-mode-description {
+  background: #ddd;
+  border-left: 5px solid #bbb;
+  margin: 0.5em 10px;
+  padding: 1px 1px 1px 10px;
+  font-style: italic;
+}

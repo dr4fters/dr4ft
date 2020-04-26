@@ -59,6 +59,10 @@ const Sets = ({ sets, type }) => (
 
 const Decadent = ({ sets, type }) => (
   <Fragment>
+    <blockquote className="game-mode-description">
+      <p>Also known as "Rich Man's Draft" or "Decadent Sealed".</p>
+      <p>Each round, each player chooses a single card from the pack, discards the rest, then gets a new pack.</p>
+    </blockquote>
     <div>
       Number of packs:{" "}
       <Select
