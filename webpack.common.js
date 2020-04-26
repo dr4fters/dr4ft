@@ -43,7 +43,10 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /(node_modules|\.spec\.js$)/,
+        exclude: [
+          "./node_modules",
+          "./frontend/test"
+        ],
         use: {
           loader: "babel-loader",
           options: {
