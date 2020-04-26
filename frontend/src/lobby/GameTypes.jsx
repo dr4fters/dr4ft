@@ -28,7 +28,14 @@ const GameTypes = () => {
               type={type}
               key={key}
               isChecked={App.state.gamesubtype === type}
-              onChange={() => App.save("gamesubtype", type)}/>
+              onChange={() => {
+                App.save("gamesubtype", type)
+                if (type === "decadent") {
+                  App.state.setsDraft.length = 36;
+                  App._emit("changeSetsNumber", "setsDraft", true)
+                }
+              }
+              }/>
           )}
         </span>
       </p>
