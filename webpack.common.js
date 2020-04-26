@@ -22,7 +22,7 @@ module.exports = {
       cache: false
     }),
     new CopyWebpackPlugin([
-      { from: "frontend", ignore: ["*.tpl", "src/**/*"] }
+      { from: "frontend", ignore: ["*.tpl", "src/**/*", "test/**/*"] }
     ], {
       copyUnmodified: true
     }),
@@ -44,8 +44,8 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: [
-          "./node_modules",
-          "./frontend/test"
+          /node_modules/,
+          /\.spec\.js$/
         ],
         use: {
           loader: "babel-loader",
