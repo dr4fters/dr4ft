@@ -32,8 +32,11 @@ const GameTypes = () => {
                 App.save("gamesubtype", type)
                 if (type === "decadent") {
                   App.state.setsDraft.length = 36;
-                  App._emit("changeSetsNumber", "setsDraft", true)
                 }
+                else if (type === "regular") {
+                  App.state.setsDraft.length = 3;
+                }
+                App._emit("changeSetsNumber", "setsDraft", true)
               }
               }/>
           )}

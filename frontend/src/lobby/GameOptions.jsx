@@ -38,7 +38,7 @@ const Regular = ({ sets, type }) => (
       Number of packs:{" "}
       <Select
         value={sets.length}
-        onChange={App._emit("changeSetsNumber", type, false)}
+        onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(12, 1)} />
     </div>
     <div className="wrapper">
@@ -63,7 +63,7 @@ const Decadent = ({ sets, type }) => (
       Number of packs:{" "}
       <Select
         value={sets.length}
-        onChange={App._emit("changeSetsNumber", type, true)}
+        onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
     <div className="wrapper">
