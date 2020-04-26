@@ -15,10 +15,10 @@ describe("Acceptance tests for Data functions", () => {
     it("data directory as absolute path", () => {
       const repoRoot = process.env.INIT_CWD;
       const dataDir = data.getDataDir();
-      
+
       assert(dataDir);
       assert(path.isAbsolute(dataDir));
-      assert(dataDir === `${repoRoot}/data`);
+      assert.equal(dataDir, `${repoRoot}/data`);
     });
   });
 });

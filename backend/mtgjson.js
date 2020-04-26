@@ -1,5 +1,7 @@
 const fs = require("fs");
-const VERSION_FILE = "data/version.json";
+const path = require("path");
+const {getDataDir} = require("../backend/data");
+const VERSION_FILE = path.join(getDataDir(), "version.json");
 const logger = require("./logger");
 const semver = require("semver");
 let version;

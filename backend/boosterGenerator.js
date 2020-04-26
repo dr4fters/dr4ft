@@ -1,6 +1,7 @@
-const {getCardByUuid, getSet} = require("./data");
+const {getDataDir, getCardByUuid, getSet} = require("./data");
 const logger = require("./logger");
-const boosterRules = require("../data/boosterRules.json");
+const path = require("path");
+const boosterRules = require(path.join(getDataDir(), "boosterRules.json"));
 const weighted = require("weighted");
 const {sample, sampleSize, random, concat} = require("lodash");
 
