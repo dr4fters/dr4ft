@@ -191,7 +191,7 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock);
+    const h = new Human(sock, this.isDecadent);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -348,20 +348,14 @@ module.exports = class Game extends Room {
   }
 
   pass(p, pack) {
-    if (this.isDecadent) {
-      // Decadent starts new round after each pick.
-      this.startRound();
+    if (!pack.length) {
+      if (!--this.packCount)
+        this.startRound();
+      else
+        this.meta();
       return;
-    } else {
-      if (!pack.length) {
-        if (!--this.packCount)
-          this.startRound();
-        else
-          this.meta();
-        return;
-      }
     }
-
+    
     const index = this.players.indexOf(p) + this.delta;
     const nextPlayer = this.getNextPlayer(index);
     nextPlayer.getPack(pack);
@@ -529,7 +523,7 @@ module.exports = class Game extends Room {
 
       if (addBots) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot());
+          this.players.push(new Bot(this.isDecadent));
           this.bots++;
         }
       }
@@ -549,7 +543,7 @@ module.exports = class Game extends Room {
       this.logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
     } catch(err) {
-      this.logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
+      this.logger.error(`Game ${this.id} encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
         if (!player.isBot) {
           player.exit();

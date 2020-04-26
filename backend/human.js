@@ -1,16 +1,17 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random} = require("lodash");
+const {random, pullAll} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock) {
+  constructor(sock, isDecadent) {
     super({
       isBot: false,
       isConnected: true,
       name: sock.name,
-      id: sock.id
+      id: sock.id,
+      isDecadent: isDecadent
     });
     this.attach(sock);
   }
@@ -130,6 +131,10 @@ module.exports = class extends Player {
       this.time = 0;
     else
       this.sendPack(next);
+
+    if (this.isDecadent) {
+      pullAll(pack, pack);
+    }
 
     this.autopick_index = -1;
     this.emit("pass", pack);
