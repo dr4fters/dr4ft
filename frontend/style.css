@@ -622,3 +622,8 @@ input[type="checkbox"], input[type="radio"] {
   display: flex;
   flex-direction: column;
 }
+
+.unavailable-game-options {
+  color: red;
+  font-weight: bold;
+}
