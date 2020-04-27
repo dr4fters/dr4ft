@@ -144,7 +144,7 @@ const PlayerEntry = ({player, index}) => {
       columns.push(
         <td key={8}>
           <button onClick={()=> App.send("kick", index)}>
-            kick
+            Kick
           </button>
         </td>);
     else
