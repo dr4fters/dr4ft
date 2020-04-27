@@ -7,7 +7,7 @@ const TextArea = ({link, ...rest}) => (
   <textarea
     style={ {"overflowY": "scroll", "height": "150px"}}
     onChange=
-      { (e) => { App.save("list", e.currentTarget.value); } }
+      { (e) => { App.save(link, e.currentTarget.value); } }
     value={App.state[link]}
     {...rest} />
 );
