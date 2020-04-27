@@ -4,17 +4,11 @@ import PropTypes from "prop-types";
 import App from "../app";
 import { toTitleCase } from "../utils";
 
-const Set = ({ index, selectedSet, type, useForAllSets=false }) => {
+const Set = ({ index, selectedSet, type }) => {
   const onSetChange = (e) => {
     const chosenSet = e.currentTarget.value;
     let sets = App.state[type];
-    if (!useForAllSets) {
-      sets[index] = chosenSet;
-    } else {
-      for (let i = 0; i < sets.length; i++) {
-        sets[i] = chosenSet;
-      }
-    }
+    sets[index] = chosenSet;
     App.save(type, App.state[type]);
   };
   let groups = [];
