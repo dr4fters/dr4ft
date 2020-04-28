@@ -1,21 +1,8 @@
 const {describe, it} = require("mocha");
 const assert = require("assert");
-const {capitalize, toTitleCase} = require("./../src/utils");
+const {toTitleCase} = require("./../src/utils");
 
 describe("Acceptance tests for frontend utils", () => {
-  it("capitalize() should capitalize a single word", () => {
-    assert(capitalize("") === "");
-    assert(capitalize(0) === "");
-    assert(capitalize({}) === "");
-
-    assert(capitalize("draft") === "Draft");
-    assert(capitalize("Draft") === "Draft");
-    assert(capitalize("DRAFT") === "Draft");
-    assert(capitalize("draft") === "Draft");
-
-    assert(capitalize("cube draft") === "Cube draft");
-    assert(capitalize("CUBE DRAFT") === "Cube draft");
-  });
   it("toTitleCase() should capitalize each word", () => {
     assert(toTitleCase("") === "");
     assert(toTitleCase(0) === "");

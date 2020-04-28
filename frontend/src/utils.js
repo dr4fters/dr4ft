@@ -1,9 +1,4 @@
-const capitalize = (word) => {
-  if (!word || typeof word !== "string") {
-    return "";
-  }
-  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-};
+const capitalize = require("lodash/capitalize");
 
 const toTitleCase = (sentence, separator=" ") => {
   if (!sentence || typeof sentence !== "string") {
@@ -16,6 +11,5 @@ const toTitleCase = (sentence, separator=" ") => {
 };
 
 module.exports = {
-  capitalize,
   toTitleCase
 };
