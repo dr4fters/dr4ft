@@ -38,7 +38,7 @@ const CreatePanel = () => {
       <GameOptions/>
       <p>
         <button onClick={App._emit("create")}>
-          Create room
+          Create Room
         </button>
       </p>
     </fieldset>

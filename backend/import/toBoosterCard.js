@@ -1,4 +1,4 @@
-const { upperFirst } = require("lodash");
+const { upperFirst, find } = require("lodash");
 const uuid_v1 = require("uuid").v1;
 
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
@@ -33,7 +33,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     name = names.join(" // ");
 
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
-  const color = upperFirst(getColor(mtgjsonCard));
+  const color = upperFirst(getColor(mtgjsonCard, rawCards));
 
   return {
     uuid,
@@ -96,9 +96,22 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   };
 }
 
-function getColor({ colors, frameEffects = [] }) {
+function getColor({ colors, layout, name, names = [], frameEffects = [] }, rawCards) {
   if (frameEffects.includes("devoid")) {
     return "colorless";
+  }
+
+  // Handle split cards colors
+  if (["split", "aftermath"].includes(layout) && names.length > 1) {
+    const otherName = names.filter((n) => n !== name)[0];
+    const otherCard = find(rawCards, (card) => card.name === otherName);
+    if (otherCard && otherCard.colors) {
+      for (const color of otherCard.colors) {
+        if (!colors.includes(color)) {
+          return "multicolor";
+        }
+      }
+    }
   }
 
   switch (colors.length) {

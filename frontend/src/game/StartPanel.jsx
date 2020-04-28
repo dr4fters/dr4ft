@@ -32,7 +32,7 @@ const StartControls = () => {
         ? <Options/>
         : <div/>}
       <div>
-        <button onClick={App._emit("start")}>Start game</button>
+        <button onClick={App._emit("start")}>Start Game</button>
       </div>
     </div>
   );

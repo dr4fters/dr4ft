@@ -11,7 +11,7 @@ const {getDataDir} = require("../backend/data");
 
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/files/version.json";
-const setsVersion = "data/version.json";
+const setsVersion = path.join(getDataDir(), "version.json");
 
 const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
   semver.gt(remoteVer, currentVer)

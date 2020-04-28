@@ -12,7 +12,7 @@ const CubeList = () => {
 
   return (<div id='cube-list'>
     <div className='column'>
-      <div>{`one card per line (${cubeListLength} cards)`}</div>
+      <div>{`One card per line! (${cubeListLength} cards)`}</div>
       <TextArea
         placeholder='cube list'
         link='list'
@@ -38,14 +38,14 @@ const CubeCobra = () => {
         App.set({ list });
       })
       .catch(() => {
-        App.error(`Could not retrieve CubeCobra list with id ${cubeId}`);
+        App.error(`Could not retrieve CubeCobra list with ID ${cubeId}`);
       });
   };
 
   return (
     <Fragment >
       <label style={{ marginTop: "10px", marginLeft: "4px" }}>
-        <a href="https://cubecobra.com/" target="_blank" rel="noopener noreferrer">CubeCobra</a> CubeId:{" "}
+        <a href="https://cubecobra.com/" target="_blank" rel="noopener noreferrer">CubeCobra</a> cube ID:{" "}
         <input
           style={{ width: "100px" }}
           type='text'
