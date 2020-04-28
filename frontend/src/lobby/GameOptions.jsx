@@ -27,8 +27,6 @@ const GameOptions = () => {
     return <Chaos packsNumber={"chaosDraftPacksNumber"} />;
   case "chaos sealed":
     return <Chaos packsNumber={"chaosSealedPacksNumber"}/>;
-  default:
-    return <Unavailable/>;
   }
 };
 
@@ -132,13 +130,5 @@ const Chaos = ({ packsNumber }) => (
 Chaos.propTypes = {
   packsNumber: PropTypes.number
 };
-
-const Unavailable = () => (
-  <Fragment>
-    <div className="unavailable-game-options">
-      This combination of game mode + game type unavailable!
-    </div>
-  </Fragment>
-);
 
 export default GameOptions;

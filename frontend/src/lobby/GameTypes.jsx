@@ -6,24 +6,38 @@ import App from "../app";
 import { toTitleCase } from "../utils";
 
 const GameTypes = () => {
-  const types = ["draft", "sealed"];
-  const subtypes = ["regular", "cube", "chaos", "decadent"];
+  const gameOptions = {
+    draft: ["regular", "cube", "chaos", "decadent"],
+    sealed: ["regular", "cube", "chaos"]
+  }
+
+  const getAvailableTypes = () => Object.keys(gameOptions);
+  const getAvailableSubTypes = (gameType) => gameOptions[gameType];
   return (
     <div>
       <p>Game type:{" "}
         <span className='connected-container'>
-          {types.map((type, key) =>
+          {getAvailableTypes().map((gameType, key) =>
             <GameType name={"type"}
-              type={type}
+              type={gameType}
               key={key}
-              isChecked={App.state.gametype === type}
-              onChange={() => App.save("gametype", type)}/>
+              isChecked={App.state.gametype === gameType}
+              onChange={() => {
+                App.save("gametype", gameType)
+                const availableSubtypes = getAvailableSubTypes(gameType)
+                if (!availableSubtypes.includes(App.state.gamesubtype)) {
+                  // Reset to first available subtype if the currently-selected
+                  // subtype is not available for the newly-selected type.
+                  App.save("gamesubtype", availableSubtypes[0])
+                }
+              }}
+            />
           )}
         </span>
       </p>
       <p>Game mode:{" "}
         <span className='connected-container'>
-          {subtypes.map((type, key) =>
+          {getAvailableSubTypes(App.state.gametype).map((type, key) =>
             <GameType name={"subtype"}
               type={type}
               key={key}
@@ -37,8 +51,8 @@ const GameTypes = () => {
                   App.state.setsDraft.length = 3;
                 }
                 App._emit("changeSetsNumber", "setsDraft", true)
-              }
-              }/>
+              }}
+            />
           )}
         </span>
       </p>
