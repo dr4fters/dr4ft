@@ -14,7 +14,7 @@ const versionURL = "https://www.mtgjson.com/files/version.json";
 const setsVersion = path.join(getDataDir(), "version.json");
 
 const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
-  semver.gt(remoteVer, currentVer)
+  semver.compareBuild(remoteVer, currentVer) > -1
 );
 
 const isVersionUpToDate = () => (
