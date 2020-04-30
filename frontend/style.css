@@ -630,3 +630,8 @@ input[type="checkbox"], input[type="radio"] {
   padding: 1px 1px 1px 10px;
   font-style: italic;
 }
+
+.cube-list {
+  overflow-y: "scroll";
+  height: 150px;
+}

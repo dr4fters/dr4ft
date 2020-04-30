@@ -5,11 +5,10 @@ import App from "../app";
 
 const TextArea = ({link, ...rest}) => (
   <textarea
-    style={ {"overflowY": "scroll", "height": "150px"}}
-    onChange=
-      { (e) => { App.save(link, e.currentTarget.value); } }
+    onChange={(e) => { App.save(link, e.currentTarget.value); }}
     value={App.state[link]}
-    {...rest} />
+    {...rest}
+  />
 );
 
 TextArea.propTypes = {

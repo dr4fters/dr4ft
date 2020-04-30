@@ -13,7 +13,7 @@ const CubeList = () => {
   return (<div id='cube-list'>
     <div className='column'>
       <div>{`One card per line! (${cubeListLength} cards)`}</div>
-      <TextArea
+      <TextArea className="cube-list"
         placeholder='cube list'
         link='list'
       />
