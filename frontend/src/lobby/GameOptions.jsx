@@ -7,6 +7,7 @@ import Checkbox from "../components/Checkbox";
 import Select from "../components/Select";
 
 import Set from "./Set";
+import SetReplicated from "./SetReplicated";
 import CubeList from "./CubeList";
 
 const GameOptions = () => {
@@ -101,7 +102,7 @@ const Decadent = ({ sets, type }) => (
         opts={_.seq(60, 36)} />
     </div>
     <div className="wrapper">
-      <Set type={type} selectedSet={sets[0]} index={0} key={0} useForAllSets={true} />
+      <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
   </Fragment>
 );

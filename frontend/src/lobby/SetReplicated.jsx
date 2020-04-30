@@ -4,24 +4,27 @@ import PropTypes from "prop-types";
 import App from "../app";
 import SetChoices from "./SetChoices";
 
-const Set = ({ index, selectedSet, type }) => {
+const SetReplicated = ({ selectedSet, type }) => {
+  // A single dropdown which is used to fill an entire array
+  // of sets with the same selection.
   const onSetChange = (e) => {
     const chosenSet = e.currentTarget.value;
     let sets = App.state[type];
-    sets[index] = chosenSet;
+    for (let i = 0; i < sets.length; i++) {
+      sets[i] = chosenSet;
+    }
     App.save(type, App.state[type]);
   };
   return (
-    <select value={selectedSet} onChange={onSetChange} key={index}>
+    <select value={selectedSet} onChange={onSetChange} key={0}>
       <SetChoices/>
     </select>
   );
 };
 
-Set.propTypes = {
-  index: PropTypes.number,
+SetReplicated.propTypes = {
   selectedSet: PropTypes.string,
   type: PropTypes.string
 };
 
-export default Set;
+export default SetReplicated;
