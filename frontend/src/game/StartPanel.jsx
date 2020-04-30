@@ -43,8 +43,14 @@ const Options = () => {
   const timers = ["Fast", "Moderate", "Slow", "Leisurely"];
   return (
     <span>
-      <Checkbox side="left" link="addBots" text="Fill empty seats with Bots"/>
-      <Checkbox side="left" link="shufflePlayers" text="Random seating"/>
+      {showAddBotsCheckbox()
+        ? <Checkbox side="left" link="addBots" text="Fill empty seats with Bots"/>
+        : null
+      }
+      {showShufflePlayersCheckbox()
+        ? <Checkbox side="left" link="shufflePlayers" text="Random seating"/>
+        : null
+      }
       <div>
         <Checkbox side="left" link="useTimer" text="Timer: "/>
         <Select link="timerLength" opts={timers} disabled={!useTimer}/>
@@ -52,5 +58,15 @@ const Options = () => {
     </span>
   );
 };
+
+const showAddBotsCheckbox = () => {
+  // No need for bots in decadent draft since there's no passing.
+  return !App.state.isDecadentDraft;
+}
+
+const showShufflePlayersCheckbox = () => {
+  // No need to shuffle players in decadent draft because there's no passing.
+  return !App.state.isDecadentDraft;
+}
 
 export default StartPanel;
