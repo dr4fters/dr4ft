@@ -34,8 +34,7 @@ const Set = ({ index, selectedSet, type }) => {
 Set.propTypes = {
   index: PropTypes.number,
   selectedSet: PropTypes.string,
-  type: PropTypes.string,
-  useForAllSets: PropTypes.bool
+  type: PropTypes.string
 };
 
 export default Set;
