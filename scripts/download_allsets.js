@@ -67,22 +67,18 @@ const fetchZip = () => (
   }));
 
 const download = async () => {
-  try {
-    logger.info("Checking if AllSets.json is up to date");
-    const [isUpToDate, version] = await isVersionUpToDate();
-    if (!isUpToDate) {
-      await fetchZip();
-      logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
-      updateDatabase();
-      logger.info("Update DB finished");
-      fs.writeFileSync(setsVersion, version);
-      refreshVersion();
-      await downloadBoosterRules();
-    } else {
-      logger.info("AllSets.json is up to date");
-    }
-  } catch(err) {
-    logger.error(`Couldn't complete AllSets.json check : ${err}`);
+  logger.info("Checking if AllSets.json is up to date");
+  const [isUpToDate, version] = await isVersionUpToDate();
+  if (!isUpToDate) {
+    await fetchZip();
+    logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
+    updateDatabase();
+    logger.info("Update DB finished");
+    fs.writeFileSync(setsVersion, version);
+    refreshVersion();
+    await downloadBoosterRules();
+  } else {
+    logger.info("AllSets.json is up to date");
   }
 };
 
