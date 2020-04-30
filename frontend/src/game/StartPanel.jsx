@@ -23,7 +23,7 @@ const StartPanel = () => {
 
 const StartControls = () => {
   const {gametype} = App.state;
-  const isDraft = /draft/.test(gametype);
+  const isDraft = /draft/.test(gametype) || /glimpse/.test(gametype);
 
   return (
     <div>

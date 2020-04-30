@@ -31,11 +31,13 @@ module.exports = class Game extends Room {
 
     // Handle packsInfos to show various informations about the game
     switch(type) {
+    case "glimpse":
     case "draft":
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
       this.rounds = this.sets.length;
       break;
+    case "cube glimpse":
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
       this.rounds = this.cube.packs;
@@ -44,6 +46,7 @@ module.exports = class Game extends Room {
       this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
       this.rounds = this.cube.packs;
       break;
+    case "chaos glimpse":
     case "chaos draft":
     case "chaos sealed": {
       const chaosOptions = [];
@@ -151,6 +154,23 @@ module.exports = class Game extends Room {
       }, []);
   }
 
+  static mkDraftFns(type) {
+    switch(type) {
+    case "draft":
+    case "cube draft":
+    case "chaos draft":
+      return {
+        defaultPickIndexes: () => [ null ],
+      };
+    case "glimpse":
+    case "cube glimpse":
+    case "chaos glimpse":
+      return {
+        defaultPickIndexes: () => [ null, null, null ],
+      };
+    }
+  }
+
   name(name, sock) {
     super.name(name, sock);
     sock.h.name = sock.name;
@@ -185,7 +205,7 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock);
+    const h = new Human(sock, this.constructor.mkDraftFns(this.type));
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -336,7 +356,7 @@ module.exports = class Game extends Room {
     this.renew();
     this.round = -1;
     this.meta({ round: -1 });
-    if (["cube draft", "draft"].includes(this.type)) {
+    if (["cube glimpse", "glimpse", "cube draft", "draft"].includes(this.type)) {
       this.uploadDraftStats();
     }
   }
@@ -350,12 +370,25 @@ module.exports = class Game extends Room {
       return;
     }
 
-    const index = this.players.indexOf(p) + this.delta;
-    const nextPlayer = this.getNextPlayer(index);
+    const nextIndex = this.players.indexOf(p) + this.delta;
+    const nextPlayer = this.getNextPlayer(nextIndex);
     nextPlayer.getPack(pack);
-    if (!nextPlayer.isBot) {
+    if (!nextPlayer.isBot)
       this.meta();
+  }
+
+  keep(p, pack) {
+    if (!pack.length) {
+      if (!--this.packCount)
+        return this.startRound();
+      else
+        return this.meta();
     }
+
+    const nextIndex = this.players.indexOf(p) + this.delta;
+    const nextPlayer = this.getNextPlayer(nextIndex);
+    if (!nextPlayer.isBot)
+      this.meta();
   }
 
   startRound() {
@@ -433,6 +466,7 @@ module.exports = class Game extends Room {
 
   createPool() {
     switch (this.type) {
+    case "cube glimpse":
     case "cube draft": {
       this.pool = Pool.DraftCube({
         cubeList: this.cube.list,
@@ -450,6 +484,7 @@ module.exports = class Game extends Room {
       });
       break;
     }
+    case "glimpse":
     case "draft": {
       this.pool = Pool.DraftNormal({
         playersLength: this.players.length,
@@ -464,6 +499,7 @@ module.exports = class Game extends Room {
       });
       break;
     }
+    case "chaos glimpse":
     case "chaos draft": {
       this.pool = Pool.DraftChaos({
         playersLength: this.players.length,
@@ -503,6 +539,7 @@ module.exports = class Game extends Room {
       p.timerLength = timerLength;
       p.self = self;
       p.on("pass", this.pass.bind(this, p));
+      p.on("keep", this.keep.bind(this, p));
       p.send("set", { self });
     });
 
@@ -516,7 +553,7 @@ module.exports = class Game extends Room {
 
       if (addBots) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot());
+          this.players.push(new Bot(this.constructor.mkDraftFns(this.type)));
           this.bots++;
         }
       }

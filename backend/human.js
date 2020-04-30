@@ -5,13 +5,24 @@ const {random} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock) {
+  constructor(sock, draftFns = {}) {
     super({
       isBot: false,
       isConnected: true,
       name: sock.name,
       id: sock.id
     });
+    let callbacks = Object.assign(
+      {},
+      {
+        autopick: this.constructor._autopick,
+        pick: this.constructor._pick,
+        defaultPickIndexes: () => [ null ],
+      },
+      draftFns
+    );
+    this.callbacks = callbacks;
+    this.autopickIndexes = callbacks.defaultPickIndexes();
     this.attach(sock);
   }
 
@@ -21,9 +32,9 @@ module.exports = class extends Player {
 
     sock.mixin(this);
     sock.removeAllListeners("autopick");
-    sock.on("autopick", this._autopick.bind(this));
+    sock.on("autopick", this.callbacks.autopick.bind(this));
     sock.removeAllListeners("pick");
-    sock.on("pick", this._pick.bind(this));
+    sock.on("pick", this.callbacks.pick.bind(this));
     sock.removeAllListeners("hash");
     sock.on("hash", this._hash.bind(this));
     sock.once("exit", this._farewell.bind(this));
@@ -49,15 +60,15 @@ module.exports = class extends Player {
     this.send = () => {};
     this.emit("meta");
   }
-  _autopick(index) {
+  static _autopick(index) {
     let [pack] = this.packs;
     if (pack && index < pack.length)
-      this.autopick_index = index;
+      this.autopickIndexes[0] = index;
   }
-  _pick(index) {
+  static _pick(index) {
     let [pack] = this.packs;
     if (pack && index < pack.length)
-      this.pick(index);
+      this.constructor.pick.apply(this, [index]);
   }
   getPack(pack) {
     if (this.packs.push(pack) === 1)
@@ -110,35 +121,105 @@ module.exports = class extends Player {
     let namePool = pool.map(card => card.name);
     this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
-  pick(index) {
-    const pack = this.packs.shift();
-    const card = pack.splice(index, 1)[0];
+  static pick(index) {
 
-    this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
-    this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+    const logPick = (card, pack) => {
+      this.draftLog.pack.push(
+        [`--> ${card.name}`].concat(
+          pack.map(x => `    ${x.name}`)
+        )
+      );
+      this.updateDraftStats(
+        this.draftLog.pack[ this.draftLog.pack.length-1 ],
+        this.pool
+      );
+    };
 
-    let pickcard = card.name;
-    if (card.foil === true)
-      pickcard = "*" + pickcard + "*";
+    const pickCardDo = (card) => {
+      let foilNameMaybe = card.name;
+      if (card.foil === true)
+        foilNameMaybe = "*" + foilNameMaybe + "*";
+      this.pool.push(card);
+      this.picks.push(foilNameMaybe);
+      this.send("add", card);
+    };
 
-    this.pool.push(card);
-    this.picks.push(pickcard);
-    this.send("add", card);
+    const pickCard = (index) => {
+      const pack = this.packs[0];
+      const card = pack.splice(index, 1)[0];
+      logPick(card, pack);
+      pickCardDo(card);
+    };
 
-    let [next] = this.packs;
-    if (!next)
-      this.time = 0;
-    else
-      this.sendPack(next);
+    const burnCard = (index) => {
+      const pack = this.packs[0];
+      const card = pack.splice(index, 1)[0];
+      logPick(card, pack);
+    };
 
-    this.autopick_index = -1;
-    this.emit("pass", pack);
+    const keepThePack = () => {
+      const pack = this.packs[0];
+      if (!pack)
+        this.time = 0;
+      else
+        this.sendPack(pack);
+      this.autopickIndexes.splice(0, 1);
+      this.emit("keep", pack);
+      return Symbol("ok");
+    };
+
+    const sendNextPackToFrontendMaybe = () => {
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+      return Symbol("ok");
+    };
+
+    const passThePack = () => {
+      const pack = this.packs.shift();
+      this.autopickIndexes = this.callbacks.defaultPickIndexes();
+      sendNextPackToFrontendMaybe();
+      this.emit("pass", pack);
+      return Symbol("ok");
+    };
+
+    const endRound = passThePack;
+
+    const pickDo = () => {
+      const pack = this.packs[0];
+      const indexes = this.autopickIndexes;
+      const picksTotal = this.callbacks.defaultPickIndexes().length;
+      if (indexes.length === picksTotal) {
+        pickCard(index);
+        if (pack.length === 0)
+          return endRound();
+        else if (picksTotal === 1)
+          return passThePack();
+        else
+          return keepThePack();
+      } else if (indexes.length === 1) {
+        burnCard(index);
+        return passThePack();
+      } else {
+        burnCard(index);
+        if (pack.length === 0)
+          return endRound();
+        else
+          return keepThePack();
+      }
+    };
+
+    return pickDo();
+
   }
   pickOnTimeout() {
-    let index = this.autopick_index;
-    if (index === -1)
-      index = random(this.packs[0].length - 1);
-    this.pick(index);
+    if (this.autopickIndexes[0] === null) {
+      this.callbacks.pick.apply(this, [random(this.packs[0].length - 1)]);
+    } else {
+      this.callbacks.pick.apply(this, [this.autopickIndexes[0]]);
+    }
   }
   kick() {
     this.send = () => {};

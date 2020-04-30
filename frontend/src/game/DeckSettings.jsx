@@ -135,7 +135,7 @@ const Copy = () => (
 );
 
 const Log = () => (
-  App.state.isGameFinished && /draft/.test(App.state.gametype)
+  App.state.isGameFinished && (/draft/.test(App.state.gametype) || /glimpse/.test(App.state.gametype))
     ? <div>
       <button className='connected-component'
         onClick={App._emit("getLog")}>

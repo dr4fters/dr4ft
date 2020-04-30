@@ -49,7 +49,7 @@ gamesRouter
     Request Params:
       title[string],
       seats[int],
-      type[enum:"draft","sealed","cube sealed","cube draft","chaos draft", "chaos sealed"],
+      type[enum:"draft","sealed","glimpse","cube sealed","cube draft","cube glimpse","chaos draft","chaos sealed","chaos glimpse"],
       sets[stringArray(for example "XLN,XLN,XLN"],
       cube[object],
       isPrivate[boolean],

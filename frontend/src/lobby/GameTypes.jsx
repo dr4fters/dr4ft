@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import App from "../app";
 
 const GameTypes = () => {
-  const types = ["draft", "sealed"];
+  const types = ["draft", "sealed", "glimpse"];
   const subtypes = ["regular", "cube", "chaos"];
   return (
     <div>

@@ -12,14 +12,17 @@ const GameOptions = () => {
   const { setsDraft, setsSealed, gametype, gamesubtype } = App.state;
 
   switch (`${gamesubtype} ${gametype}`) {
+  case "regular glimpse":
   case "regular draft":
     return <Regular sets={setsDraft} type={"setsDraft"} />;
   case "regular sealed":
     return <Regular sets={setsSealed} type={"setsSealed"} />;
+  case "cube glimpse":
   case "cube draft":
     return <CubeDraft />;
   case "cube sealed":
     return <CubeSealed />;
+  case "chaos glimpse":
   case "chaos draft":
     return <Chaos packsNumber={"chaosDraftPacksNumber"} />;
   case "chaos sealed":

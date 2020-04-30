@@ -21,7 +21,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
 
   list = list.split("\n");
 
-  const min = type === "cube draft"
+  const min = (type === "cube draft" || type === "cube glimpse")
     ? seats * cards * packs
     : seats * cubePoolSize;
   assert(min <= list.length && list.length <= 1e5,
@@ -66,8 +66,22 @@ module.exports = {
     return true;
   },
   game({ seats, type, sets, cube, isPrivate, modernOnly = true, chaosPacksNumber, totalChaos = true }) {
-    assert(["draft", "sealed", "cube draft", "cube sealed", "chaos draft", "chaos sealed"].includes(type),
-      "type can be draft, sealed, chaos draft, chaos sealed, cube draft or cube sealed");
+    const validTypes = [
+      "draft",
+      "sealed",
+      "glimpse",
+      "cube draft",
+      "cube sealed",
+      "cube glimpse",
+      "chaos draft",
+      "chaos sealed",
+      "chaos glimpse"
+    ];
+    const invalidTypeErrorMessage =
+      "type can be " +
+      validTypes.slice(0, -1).join(", ") +
+      " or " + validTypes[validTypes.length - 1];
+    assert(validTypes.includes(type), invalidTypeErrorMessage);
     assert(typeof isPrivate === "boolean", "isPrivate must be a boolean");
     assert(typeof seats === "number", "seats must be a number");
     assert(seats >= 1 && seats <= 100, "seats' number must be between 1 and 100");
@@ -75,6 +89,7 @@ module.exports = {
     switch (type) {
     case "draft":
     case "sealed":
+    case "glimpse":
       assert(Array.isArray(sets), "sets must be an array");
       assert(sets.length >= 1, "sets length must be at least 1");
       sets.forEach(set =>
@@ -82,11 +97,13 @@ module.exports = {
       break;
     case "cube draft":
     case "cube sealed":
+    case "cube glimpse":
       assert(typeof cube === "object", "cube must be an object");
       controlCubeSettingsAndTransformList(cube, seats, type);
       break;
     case "chaos draft":
     case "chaos sealed":
+    case "chaos glimpse":
       assert(typeof modernOnly === "boolean", "modernOnly must be a boolean");
       assert(typeof totalChaos === "boolean", "totalChaos must be a boolean");
       assert(typeof chaosPacksNumber === "number", "chaosPacksNumber must be a number");
