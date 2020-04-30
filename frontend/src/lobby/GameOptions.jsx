@@ -190,7 +190,7 @@ const Chaos = ({ packsNumber }) => (
 );
 
 Chaos.propTypes = {
-  packsNumber: PropTypes.number
+  packsNumber: PropTypes.string
 };
 
 export default GameOptions;
