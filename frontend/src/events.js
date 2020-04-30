@@ -109,22 +109,15 @@ const events = {
 
     let options = {type, seats, title, isPrivate, modernOnly, totalChaos};
 
-    if (gamesubtype === "decadent") {
-      // For decadent draft, all sets are the same.
-      const sets = App.state.setsDraft;
-      const firstSet = sets[0];
-      for (let i = 1; i < sets.length; i++) {
-        sets[i] = firstSet;
-      }
-    }
-
     switch (gamesubtype) {
-    case "regular":
-    case "decadent": {
+    case "regular": {
       const {setsDraft, setsSealed} = App.state;
       options.sets = gametype === "sealed" ? setsSealed : setsDraft;
       break;
     }
+    case "decadent":
+      options.sets = App.state.setsDecadentDraft;
+      break;
     case "cube":
       options.cube = parseCubeOptions();
       break;

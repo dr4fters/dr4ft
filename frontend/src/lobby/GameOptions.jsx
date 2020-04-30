@@ -10,7 +10,7 @@ import Set from "./Set";
 import CubeList from "./CubeList";
 
 const GameOptions = () => {
-  const { setsDraft, setsSealed, gametype, gamesubtype } = App.state;
+  const { setsDraft, setsSealed, setsDecadentDraft, gametype, gamesubtype } = App.state;
 
   switch (`${gamesubtype} ${gametype}`) {
   case "regular draft":
@@ -18,7 +18,7 @@ const GameOptions = () => {
   case "regular sealed":
     return <RegularSealed sets={setsSealed} type={"setsSealed"} />;
   case "decadent draft":
-    return <Decadent sets={setsDraft} type={"setsDraft"} />;
+    return <Decadent sets={setsDecadentDraft} type={"setsDecadentDraft"} />;
   case "cube draft":
     return <CubeDraft/>;
   case "cube sealed":
@@ -101,7 +101,7 @@ const Decadent = ({ sets, type }) => (
         opts={_.seq(60, 36)} />
     </div>
     <div className="wrapper">
-      <Set type={type} selectedSet={sets[0]} index={0} key={0}/>
+      <Set type={type} selectedSet={sets[0]} index={0} key={0} useForAllSets={true} />
     </div>
   </Fragment>
 );

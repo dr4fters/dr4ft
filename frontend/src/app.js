@@ -35,6 +35,7 @@ let App = {
     sets: [],
     setsDraft: [],
     setsSealed: [],
+    setsDecadentDraft: [],
     availableSets: {},
     list: "",
     cards: 15,
@@ -173,9 +174,10 @@ let App = {
     if (App.state.latestSet) {
       // Default sets to the latest set.
       const defaultSetCode = App.state.latestSet.code;
-      const multipleOfDefaultSet = (desiredLength) => times(desiredLength, constant(defaultSetCode));
-      App.state.setsSealed = multipleOfDefaultSet(6);
-      App.state.setsDraft = multipleOfDefaultSet(3);
+      const replicateDefaultSet = (desiredLength) => times(desiredLength, constant(defaultSetCode));
+      App.state.setsSealed = replicateDefaultSet(6);
+      App.state.setsDraft = replicateDefaultSet(3);
+      App.state.setsDecadentDraft = replicateDefaultSet(36);
     }
     App.update();
   },
