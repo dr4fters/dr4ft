@@ -5,7 +5,7 @@ const {EventEmitter} = require("events");
  * Abstract class for Human and Bot
  */
 class Player extends EventEmitter {
-  constructor({id, isBot, isConnected, name, isDecadent}) {
+  constructor({id, isBot, isConnected, name}) {
     super();
 
     if (this.constructor === Player) {
@@ -35,8 +35,7 @@ class Player extends EventEmitter {
       packSize: 15,
       self: 0,
       useTimer: false,
-      timeLength: "Slow",
-      isDecadent  // Pick a single card and discard the rest. Boujie!
+      timeLength: "Slow"
     });
   }
 

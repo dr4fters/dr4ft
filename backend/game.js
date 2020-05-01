@@ -193,7 +193,63 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock, this.isDecadent);
+    function regularDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+  
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+  
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+  
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+  
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+  
+      this.autopick_index = -1;
+      this.emit("pass", pack);
+    }
+
+    function decadentDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+  
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+  
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+  
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+  
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+      
+      // Discard the rest of the cards in the pack
+      // after one is chosen.
+      pack.length = 0;
+  
+      this.autopick_index = -1;
+      this.emit("pass", pack);
+    }
+    
+    const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
+
+    const h = new Human(sock, draftPickDelegate);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
