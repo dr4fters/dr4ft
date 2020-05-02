@@ -413,7 +413,7 @@ module.exports = class Game extends Room {
         this.meta();
       return;
     }
-    
+
     const index = this.players.indexOf(p) + this.delta;
     const nextPlayer = this.getNextPlayer(index);
     nextPlayer.getPack(pack);
