@@ -574,12 +574,16 @@ module.exports = class Game extends Room {
     this.startRound();
   }
 
+  shouldAddBots() {
+    return this.addBots && !this.isDecadent;
+  }
+
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
-      if (addBots) {
+      if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
           this.players.push(new Bot());
           this.bots++;
