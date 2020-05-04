@@ -129,7 +129,7 @@ const Copy = () => (
     <button
       className='connected-component'
       onClick={App._emit("copy")}>
-      Copy deck to clipboard
+      Copy deck as card list to clipboard
     </button>
   </div>
 );
