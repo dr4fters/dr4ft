@@ -28,6 +28,8 @@ const GameOptions = () => {
     return <ChaosDraft/>
   case "chaos sealed":
     return <ChaosSealed/>;
+  default:
+    return null;
   }
 };
 
