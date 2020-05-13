@@ -115,6 +115,9 @@ const events = {
       options.sets = gametype === "sealed" ? setsSealed : setsDraft;
       break;
     }
+    case "decadent":
+      options.sets = App.state.setsDecadentDraft;
+      break;
     case "cube":
       options.cube = parseCubeOptions();
       break;

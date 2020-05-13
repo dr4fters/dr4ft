@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import App from "../app";
 import {getZoneDisplayName} from "../zones";
-import {Spaced} from "../utils.jsx";
+import Spaced from "../components/Spaced";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
 
 class Cols extends Component {

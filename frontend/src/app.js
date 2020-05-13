@@ -35,6 +35,7 @@ let App = {
     sets: [],
     setsDraft: [],
     setsSealed: [],
+    setsDecadentDraft: [],
     availableSets: {},
     list: "",
     cards: 15,
@@ -81,6 +82,9 @@ let App = {
     },
     get isGameFinished() {
       return App.state.round === -1;
+    },
+    get isDecadentDraft() {
+      return /decadent draft/.test(App.state.game.type);
     },
 
     get notificationBlocked() {
@@ -167,12 +171,13 @@ let App = {
   },
   set(state) {
     Object.assign(App.state, state);
-    // Set default sets
-    if ( App.state.setsSealed.length === 0 && App.state.latestSet) {
-      App.state.setsSealed = times(6, constant(App.state.latestSet.code));
-    }
-    if ( App.state.setsDraft.length === 0 && App.state.latestSet) {
-      App.state.setsDraft = times(3, constant(App.state.latestSet.code));
+    if (App.state.latestSet) {
+      // Default sets to the latest set.
+      const defaultSetCode = App.state.latestSet.code;
+      const replicateDefaultSet = (desiredLength) => times(desiredLength, constant(defaultSetCode));
+      App.state.setsSealed = replicateDefaultSet(6);
+      App.state.setsDraft = replicateDefaultSet(3);
+      App.state.setsDecadentDraft = replicateDefaultSet(36);
     }
     App.update();
   },

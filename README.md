@@ -83,7 +83,7 @@ You can also create a Docker image and run the app in a container:
 
 ## Usage
 
-### Start server
+### Start Server
 
 `npm start`
 
@@ -97,6 +97,31 @@ This command downloads integrates all files previously downloaded from MTGJson.
 
 `npm run download_booster_rules`
  download and parse booster generation rules from [magic-sealed-data](https://github.com/taw/magic-sealed-data)
+
+## Development Notes
+
+### VSCode
+
+You can debug this application by adding the following configuration to your `launch.json`:
+
+```json
+{
+  "name": "Launch via NPM",
+  "type": "node",
+  "request": "launch",
+  "cwd": "${workspaceFolder}",
+  "runtimeExecutable": "npm",
+  "runtimeArgs": [
+      "run", "start-debug"
+  ],
+  "port": 1338
+}
+```
+
+You should now be able to set breakpoints in `backend/` and hit them when you start the debugger.
+This relies on the `--inspect-brk=1338` flag to open port 1338 for the debugger to attach to.
+
+Breakpoints for the frontend should be set in your browser console.
 
 ### Contributors
 

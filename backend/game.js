@@ -25,6 +25,7 @@ module.exports = class Game extends Room {
       round: 0,
       bots: 0,
       sets: sets || [],
+      isDecadent: false,
       secret: uuid.v4(),
       logger: logger.child({ id: gameID })
     });
@@ -35,6 +36,13 @@ module.exports = class Game extends Room {
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
       this.rounds = this.sets.length;
+      break;
+    case "decadent draft":
+      // Sets should all be the same and there can be a large number of them.
+      // Compress this info into e.g. "36x IKO" instead of "IKO / IKO / ...".
+      this.packsInfo = `${this.sets.length}x ${this.sets[0]}`;
+      this.rounds = this.sets.length;
+      this.isDecadent = true;
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
@@ -185,7 +193,63 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock);
+    function regularDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+  
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+  
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+  
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+  
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+  
+      this.autopick_index = -1;
+      this.emit("pass", pack);
+    }
+
+    function decadentDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+  
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+  
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+  
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+  
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+      
+      // Discard the rest of the cards in the pack
+      // after one is chosen.
+      pack.length = 0;
+  
+      this.autopick_index = -1;
+      this.emit("pass", pack);
+    }
+    
+    const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
+
+    const h = new Human(sock, draftPickDelegate);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -450,7 +514,8 @@ module.exports = class Game extends Room {
       });
       break;
     }
-    case "draft": {
+    case "draft": 
+    case "decadent draft": {
       this.pool = Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
@@ -509,12 +574,16 @@ module.exports = class Game extends Room {
     this.startRound();
   }
 
+  shouldAddBots() {
+    return this.addBots && !this.isDecadent;
+  }
+
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
-      if (addBots) {
+      if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
           this.players.push(new Bot());
           this.bots++;
@@ -536,7 +605,7 @@ module.exports = class Game extends Room {
       this.logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
     } catch(err) {
-      this.logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
+      this.logger.error(`Game ${this.id} encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
         if (!player.isBot) {
           player.exit();

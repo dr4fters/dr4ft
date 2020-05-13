@@ -35,7 +35,7 @@ class Player extends EventEmitter {
       packSize: 15,
       self: 0,
       useTimer: false,
-      timeLength: "Slow",
+      timeLength: "Slow"
     });
   }
 

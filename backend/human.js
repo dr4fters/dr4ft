@@ -5,13 +5,14 @@ const {random} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock) {
+  constructor(sock, pickDelegate) {
     super({
       isBot: false,
       isConnected: true,
       name: sock.name,
       id: sock.id
     });
+    this.pickDelegate = pickDelegate.bind(this);
     this.attach(sock);
   }
 
@@ -111,28 +112,7 @@ module.exports = class extends Player {
     this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
   pick(index) {
-    const pack = this.packs.shift();
-    const card = pack.splice(index, 1)[0];
-
-    this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
-    this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
-
-    let pickcard = card.name;
-    if (card.foil === true)
-      pickcard = "*" + pickcard + "*";
-
-    this.pool.push(card);
-    this.picks.push(pickcard);
-    this.send("add", card);
-
-    let [next] = this.packs;
-    if (!next)
-      this.time = 0;
-    else
-      this.sendPack(next);
-
-    this.autopick_index = -1;
-    this.emit("pass", pack);
+    this.pickDelegate(index);
   }
   pickOnTimeout() {
     let index = this.autopick_index;
