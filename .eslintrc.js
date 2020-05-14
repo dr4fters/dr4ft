@@ -51,6 +51,7 @@ module.exports = {
         "no-multi-spaces": [
           "error"
         ],
+        "no-trailing-spaces": "error",
         "import/namespace": 0,
         "import/named": 0
     },
