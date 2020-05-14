@@ -1,5 +1,5 @@
 const { upperFirst, find } = require("lodash");
-const uuid_v1 = require("uuid").v1;
+const uuidV1 = require("uuid").v1;
 
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   let {
@@ -22,7 +22,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     toughness,
     loyalty,
     text,
-    uuid = `dr4ft-${uuid_v1()}`
+    uuid = `dr4ft-${uuidV1()}`
   } = mtgjsonCard;
 
   if (supertypes.includes("Basic")) {

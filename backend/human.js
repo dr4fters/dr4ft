@@ -53,7 +53,7 @@ module.exports = class extends Player {
   _autopick(index) {
     let [pack] = this.packs;
     if (pack && index < pack.length)
-      this.autopick_index = index;
+      this.autopickIndex = index;
   }
   _pick(index) {
     let [pack] = this.packs;
@@ -115,7 +115,7 @@ module.exports = class extends Player {
     this.pickDelegate(index);
   }
   pickOnTimeout() {
-    let index = this.autopick_index;
+    let index = this.autopickIndex;
     if (index === -1)
       index = random(this.packs[0].length - 1);
     this.pick(index);

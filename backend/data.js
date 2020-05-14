@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const {  keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
+const { keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
 
 const DATA_DIR = "data";
 const DRAFT_STATS_DIR = "draftStats";
