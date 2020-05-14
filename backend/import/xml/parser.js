@@ -43,7 +43,7 @@ function parse(content) {
     throw new Error("node <cards> must have an array of <card>");
   }
 
-  if (typeof cards.card === "object"  && !Array.isArray(cards.card)) {
+  if (typeof cards.card === "object" && !Array.isArray(cards.card)) {
     cards.card = [cards.card];
   }
 
