@@ -13,6 +13,7 @@ const events = {
   add(card) {
     const zoneName = App.state.side ? ZONE_SIDEBOARD : ZONE_MAIN;
     App.state.gameState.add(zoneName, card);
+    App.state.gameState.resetPack();
     App.update();
   },
   click(zoneName, card, e) {
