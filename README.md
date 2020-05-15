@@ -21,6 +21,7 @@ The application provides the following features:
 
 * Draft and sealed format
 * Regular, Cube and chaos game types
+* Special game modes like "Glimpse Draft"
 * 1 to 100 players
 * 1 to 12 packs per player
 * All playable sets ever printed
@@ -63,11 +64,9 @@ It supports all their features, and many more.
 ### Native
 
 1) Install [Node.js](https://nodejs.org/en/download/) >= 11.0.0
-2) Run
-```bash
-$ npm install
-$ npm start
-```
+2) Run<br>
+`$ npm install`<br>
+`$ npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
 
 
@@ -86,7 +85,6 @@ You can also create a Docker image and run the app in a container:
 ### Start Server
 
 `npm start`
-
 This command start the server
 
 `npm run download_allsets`
