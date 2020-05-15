@@ -1,22 +1,18 @@
 const fs = require("fs");
 const axios = require("axios");
 const logger = require("../backend/logger");
-const {getCardByUuid, getSet} = require("../backend/data");
+const {getBoosterRulesVersion, getCardByUuid, getSet, saveBoosterRules} = require("../backend/data");
 
 const URL = "https://raw.githubusercontent.com/taw/magic-sealed-data/master/sealed_basic_data.json";
 const REPO_URL = "https://api.github.com/repos/taw/magic-sealed-data/git/refs/heads/master";
-const BOOSTER_RULES_PATH = "data/boosterRules.json";
 
 async function fetch() {
   logger.info("Checking boosterRules repository");
   const repo = await axios.get(REPO_URL);
   const sha = repo.data.object.sha;
-  if (fs.existsSync(BOOSTER_RULES_PATH)) {
-    const oldRules = JSON.parse(fs.readFileSync(BOOSTER_RULES_PATH, "UTF-8"));
-    if (oldRules.repoHash === sha) {
-      logger.info("found same boosterRules. Skip new download");
-      return;
-    }
+  if (getBoosterRulesVersion() === sha) {
+    logger.info("found same boosterRules. Skip new download");
+    return;
   }
   logger.info("Downloading new boosterRules");
   const resp = await axios.get(URL);
@@ -60,7 +56,7 @@ async function fetch() {
   }, {});
   rules.repoHash = sha;
   logger.info("Saving boosterRules");
-  fs.writeFileSync(BOOSTER_RULES_PATH, JSON.stringify(rules, undefined, 4));
+  saveBoosterRules(rules);
   logger.info("Finished saving boosterRules");
 }
 

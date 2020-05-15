@@ -1,7 +1,5 @@
-const {getDataDir, getCardByUuid, getSet} = require("./data");
+const {getCardByUuid, getSet, getBoosterRules} = require("./data");
 const logger = require("./logger");
-const path = require("path");
-const boosterRules = require(path.join(getDataDir(), "boosterRules.json"));
 const weighted = require("weighted");
 const {sample, sampleSize, random, concat} = require("lodash");
 
@@ -11,7 +9,7 @@ const makeBoosterFromRules = (setCode) => {
     throw new Error(`${setCode} does not exist`);
   }
 
-  const setRules = boosterRules[setCode];
+  const setRules = getBoosterRules(setCode);
   if (!setRules) {
     return getDefaultBooster(set);
   }

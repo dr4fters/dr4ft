@@ -8,7 +8,7 @@ const getLink = (version) => (
     `commit/${version}`
 );
 
-const Version = ({version, MTGJSONVersion}) => {
+const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
   return (
     <p>Running Version: {" "}
       <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`}>
@@ -17,14 +17,19 @@ const Version = ({version, MTGJSONVersion}) => {
       card data {" "}
       <a href={`https://mtgjson.com/changelog/#_${MTGJSONVersion.version.replace(/\./g, "-")}`}>
         v{MTGJSONVersion.version}
-      </a> ({MTGJSONVersion.date})
+      </a> ({MTGJSONVersion.date}) - Using <a href={"https://github.com/taw/magic-sealed-data"}>Magic Sealed Data</a> {" "}
+        booster rules
+      <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`}> {" "}
+         commit {boosterRulesVersion}
+      </a>
     </p>
   );
 };
 
 Version.propTypes = {
   version: PropTypes.string,
-  MTGJSONVersion: PropTypes.object
+  MTGJSONVersion: PropTypes.object,
+  boosterRulesVersion: PropTypes.string
 };
 
 export default Version;
