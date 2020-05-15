@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {getZone, getZoneDisplayName} from "../cards";
-import {Spaced} from "../utils.jsx";
+import {getZoneDisplayName} from "../zones";
+import Spaced from "../components/Spaced";
+import {getCardSrc, getFallbackSrc} from "../cardimage";
 
 class Cols extends Component {
   constructor(props) {
@@ -55,22 +56,9 @@ Cols.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
-
-export const setFallbackSrc = ({setCode, number}) => ev => {
-  if (setCode && number) {
-    ev.target.src = `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}?format=image&version=${App.state.cardSize}`;
-  }
-};
-
-export const getCardSrc = ({scryfallId = "", url, setCode, number}) => (
-  scryfallId != ""
-    ? `https://api.scryfall.com/cards/${setCode.toLowerCase()}/${number}/${App.state.cardLang}?format=image&version=${App.state.cardSize}`
-    : url
-);
-
 const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   const renderZone = (zoneName) => {
-    const zone = getZone(zoneName);
+    const zone = App.getSortedZone(zoneName);
     let sum = 0;
     let cols = [];
 
@@ -79,7 +67,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
         <div
           className={`${card.foil ? "foil-card": ""} card-col`}
           key={index}
-          onClick={App._emit("click", zoneName, card.name)}
+          onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
 
@@ -87,7 +75,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
             ? <div><strong>{card.name}</strong> {card.manaCost}</div>
             : <img
               src={getCardSrc(card)}
-              onError= {setFallbackSrc(card)}
+              onError= {getFallbackSrc(card)}
               alt={card.name + " " + card.manaCost} />}
         </div>
       );
@@ -120,15 +108,19 @@ const ImageHelper = ({onMouseEnter, className, card}) => (
   card
     ? card.isDoubleFaced
       ? <div className={className} id="doubleimg">
-        <img className="card" src={card.url} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={getCardSrc({
+          ...card,
+          isBack: card.flippedIsBack,
+          number: card.flippedNumber,
+        })} onError= {e => e.target.src = card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
       </div>
       :
       <div id='img' className = {className}>
         <img
           className = "image-inner"
           onMouseEnter = {e => onMouseEnter(card, e)}
-          onError= {setFallbackSrc(card)}
+          onError= {getFallbackSrc(card)}
           src = {getCardSrc(card)} />
       </div>
     : <div />

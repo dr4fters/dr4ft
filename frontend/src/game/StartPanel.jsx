@@ -1,8 +1,9 @@
 import React from "react";
 
 import App from "../app";
-import { Select, Checkbox, toTitleCase } from "../utils";
-
+import Checkbox from "../components/Checkbox";
+import Select from "../components/Select";
+import { toTitleCase } from "../utils";
 
 const StartPanel = () => {
   const gameType = toTitleCase(App.state.game.type);
@@ -31,7 +32,7 @@ const StartControls = () => {
         ? <Options/>
         : <div/>}
       <div>
-        <button onClick={App._emit("start")}>Start game</button>
+        <button onClick={App._emit("start")}>Start Game</button>
       </div>
     </div>
   );
@@ -42,8 +43,14 @@ const Options = () => {
   const timers = ["Fast", "Moderate", "Slow", "Leisurely"];
   return (
     <span>
-      <Checkbox side="left" link="addBots" text="Fill empty seats with Bots"/>
-      <Checkbox side="left" link="shufflePlayers" text="Random seating"/>
+      {showAddBotsCheckbox()
+        ? <Checkbox side="left" link="addBots" text="Fill empty seats with Bots"/>
+        : null
+      }
+      {showShufflePlayersCheckbox()
+        ? <Checkbox side="left" link="shufflePlayers" text="Random seating"/>
+        : null
+      }
       <div>
         <Checkbox side="left" link="useTimer" text="Timer: "/>
         <Select link="timerLength" opts={timers} disabled={!useTimer}/>
@@ -51,5 +58,15 @@ const Options = () => {
     </span>
   );
 };
+
+const showAddBotsCheckbox = () => {
+  // No need for bots in decadent draft since there's no passing.
+  return !App.state.isDecadentDraft;
+}
+
+const showShufflePlayersCheckbox = () => {
+  // No need to shuffle players in decadent draft because there's no passing.
+  return !App.state.isDecadentDraft;
+}
 
 export default StartPanel;

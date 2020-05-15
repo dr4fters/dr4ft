@@ -1,6 +1,5 @@
 /* eslint-env node, mocha */
 const assert = require("assert");
-const axios = require("axios").default;
 const Game = require("./game");
 const Sock = require("./sock");
 const Rooms = require("./rooms");

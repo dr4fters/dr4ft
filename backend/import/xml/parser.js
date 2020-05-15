@@ -43,7 +43,7 @@ function parse(content) {
     throw new Error("node <cards> must have an array of <card>");
   }
 
-  if (typeof cards.card === "object"  && !Array.isArray(cards.card)) {
+  if (typeof cards.card === "object" && !Array.isArray(cards.card)) {
     cards.card = [cards.card];
   }
 
@@ -82,6 +82,7 @@ function parse(content) {
     const set = jsonSets[setCode];
     set.cards.push({
       name: c.name,
+      names: getNames(layout, c.name),
       manaCost: manacost,
       cmc,
       loyalty,
@@ -104,14 +105,21 @@ function parse(content) {
   return jsonSets;
 }
 
+const getNames = (layout, name) => {
+  if (/split|aftermath|adventure/i.test(layout)) {
+    return name.split(" // ");
+  }
+  return [name];
+};
+
 const getTrueType = (type) => (
   type.split("-")[0].trim()
 );
 
 const getTrueColors = (version, colorv3, colorsv4) => (
   version === "3"
-    ? Array.isArray(colorv3) ? colorv3 : [colorv3]
-    : Array.isArray(colorsv4) ? colorsv4 : [colorsv4]
+    ? Array.isArray(colorv3) ? colorv3 : colorv3.split("")
+    : Array.isArray(colorsv4) ? colorsv4 : colorsv4.split("")
 );
 
 module.exports = {

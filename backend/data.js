@@ -1,27 +1,54 @@
 const fs = require("fs");
+const path = require("path");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const {  keyCardsByName, groupCardsByName } = require("./import/keyCards");
+const { keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
+
+const DATA_DIR = "data";
+const DRAFT_STATS_DIR = "draftStats";
+const CARDS_PATH = "cards.json";
+const CUBABLE_CARDS_PATH = "cubable_cards_by_name.json";
+const SETS_PATH = "sets.json";
 
 let cards, cubableCardsByName, sets;
 let playableSets, latestSet;
 
+const getDataDir = () => {
+  const repoRoot = process.cwd();
+  const dataDir = path.join(repoRoot, DATA_DIR);
+  return dataDir;
+};
+
+const reloadData = (filename) => {
+  switch (filename) {
+  case CARDS_PATH: {
+    cards = null;
+    break;
+  }
+  case CUBABLE_CARDS_PATH: {
+    cubableCardsByName = null;
+    break;
+  }
+  case SETS_PATH: {
+    sets = null;
+    playableSets = null;
+    latestSet = null;
+    break;
+  }
+  }
+};
+
 const getSets = () => {
   if (!sets) {
-    sets = readFile("data/sets.json");
+    sets = readFile(`${getDataDir()}/${SETS_PATH}`);
   }
   return sets;
 };
 
-const getSet = (setCode) => {
-  if (!sets) {
-    sets = readFile("data/sets.json");
-  }
-  return sets[setCode];
-};
+const getSet = (setCode) => getSets()[setCode];
 
 const getCards = () => {
   if (!cards) {
-    cards = readFile("data/cards.json");
+    cards = readFile(`${getDataDir()}/${CARDS_PATH}`);
   }
   return cards;
 };
@@ -43,8 +70,6 @@ const saveSetsAndCards = (allSets, allCards) => {
   writeSets(allSets);
   writeCards(allCards);
   writeCubeCards(allSets, allCards);
-  // Do not put here -> circular reference >_<
-  // Sock.broadcast("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet() });
 };
 
 const getCardByUuid = (uuid) => {
@@ -53,14 +78,13 @@ const getCardByUuid = (uuid) => {
 
 const getCubableCardByName = (cardName) => {
   if (!cubableCardsByName) {
-    cubableCardsByName = readFile("data/cubable_cards_by_name.json");
+    cubableCardsByName = readFile(`${getDataDir()}/${CUBABLE_CARDS_PATH}`);
   }
-  return cubableCardsByName[cardName];
+  return getCardByUuid(cubableCardsByName[cardName]);
 };
 
 const writeCards = (newCards) => {
-  fs.writeFileSync("data/cards.json", JSON.stringify(newCards, undefined, 4));
-  cards = newCards;
+  fs.writeFileSync(`${getDataDir()}/${CARDS_PATH}`, JSON.stringify(newCards, undefined, 4));
 };
 
 const sortByPriority = allSets => (card1, card2) => {
@@ -98,14 +122,12 @@ const writeCubeCards = (allSets, allCards) => {
         name
       })));
     });
-  cubableCardsByName = keyCardsByName(cubableCards);
-  fs.writeFileSync("data/cubable_cards_by_name.json", JSON.stringify(cubableCardsByName, undefined, 4));
+  cubableCardsByName = keyCardsUuidByName(cubableCards);
+  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCardsByName, undefined, 4));
 };
 
 const writeSets = (newSets) => {
-  fs.writeFileSync("data/sets.json", JSON.stringify(newSets, undefined, 4));
-  sets = newSets;
-  playableSets = null;
+  fs.writeFileSync(`${getDataDir()}/${SETS_PATH}`, JSON.stringify(newSets, undefined, 4));
 };
 
 const getPlayableSets = () => {
@@ -202,15 +224,15 @@ const isReleasedExpansionOrCoreSet = (type, releaseDate) => (
 );
 
 function saveDraftStats(id, stats) {
-  if (!fs.existsSync("data/draftStats")) {
-    fs.mkdirSync("data/draftStats");
+  if (!fs.existsSync(`${getDataDir()}/${DRAFT_STATS_DIR}`)) {
+    fs.mkdirSync(`${getDataDir()}/${DRAFT_STATS_DIR}`);
   }
 
-  const file = `data/draftStats/${id}.json`;
-  fs.writeFileSync(file, JSON.stringify(stats, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${DRAFT_STATS_DIR}/${id}.json`, JSON.stringify(stats, undefined, 4));
 }
 
 module.exports = {
+  getDataDir,
   getCards,
   getSets,
   getSet,
@@ -224,5 +246,6 @@ module.exports = {
   saveDraftStats,
   mergeCardsTogether,
   getCardByUuid,
-  getCardByName: getCubableCardByName
+  getCardByName: getCubableCardByName,
+  reloadData
 };

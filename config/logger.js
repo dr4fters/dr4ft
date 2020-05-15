@@ -9,9 +9,9 @@ const envVarsSchema = joi.object({
     .truthy("true")
     .falsy("FALSE")
     .falsy("false")
-    .default(false),
+    .default(true),
   LOGGER_FILE_PATH: joi.string()
-    .default("./data/app.log"),
+    .default("./data/log/app.log"),
   LOGGER_FILE_MAX_SIZE: joi.number()
     .default(100000000), // 100 MB
   LOGGER_FILE_MAX_FILES: joi.number()

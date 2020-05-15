@@ -9,13 +9,13 @@ function create(opts) {
   try {
     util.game(opts);
   } catch(err) {
-    logger.info(`game not created - ${err.message}`);
+    logger.error(`user ${this.name} could not create a game - ${err.message}`);
     return this.err(err.message);
   }
 
   opts.hostId = this.id;
   const g = new Game(opts);
-  logger.info(`game created - ${g.id}`);
+  logger.info(`user ${this.name} created a game with id ${g.id}`);
   this.send("route", "g/" + g.id);
 }
 

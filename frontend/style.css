@@ -622,3 +622,16 @@ input[type="checkbox"], input[type="radio"] {
   display: flex;
   flex-direction: column;
 }
+
+.game-mode-description {
+  background: #ddd;
+  border-left: 5px solid #bbb;
+  margin-left: 0px;
+  padding: 1px 1px 1px 10px;
+  font-style: italic;
+}
+
+.cube-list {
+  overflow-y: "scroll";
+  height: 150px;
+}

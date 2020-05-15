@@ -5,7 +5,7 @@ import App from "../app";
 
 const PlayersPanel = () => (
   <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.seats})</legend>
+    <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.gameSeats})</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
       <u>Time Left</u>
@@ -144,7 +144,7 @@ const PlayerEntry = ({player, index}) => {
       columns.push(
         <td key={8}>
           <button onClick={()=> App.send("kick", index)}>
-            kick
+            Kick
           </button>
         </td>);
     else

@@ -64,6 +64,7 @@ describe("Unit tests for XML Cockatrice Parser", () => {
             loyalty: 4,
             manaCost: "R",
             name: "Card name",
+            names: ["Card name"],
             number: 42,
             power: "",
             rarity: "common",
@@ -79,6 +80,65 @@ describe("Unit tests for XML Cockatrice Parser", () => {
           name: "MagicFest 2020",
           releaseDate: "2020-01-01",
           type: "Promo"
+        }
+      });
+    });
+    it("can parse split cards", () => {
+      const result = parser.parse(`
+      <cockatrice_carddatabase version="4">
+  <sets>
+    <set>
+      <name>IPR</name>
+      <longname>IPA Remastered</longname>
+      <settype>Custom</settype>
+      <releasedate>2020-04-10</releasedate>
+    </set>
+  </sets>
+  <cards>
+      <card>
+        <name>Fire // Ice</name>
+        <text>Fire deals 2 damage divided as you choose among one or two targets.  --- Tap target permanent. Draw a card.</text>
+        <prop>
+          <layout>split</layout>
+          <type>Instant</type>
+          <maintype>Instant</maintype>
+          <manacost>1R // 1U</manacost>
+          <cmc>4</cmc>
+          <colors>RU</colors>
+          <coloridentity>RU</coloridentity>
+        </prop>
+        <set rarity="uncommon" uuid="ae92942b-919c-4ea9-b693-85fcef765d5a" picurl="https://img.scryfall.com/cards/png/front/f/9/f98f4538-5b5b-475d-b98f-49d01dae6f04.png?1562954160" num="302" muid="27165">IPR</set>
+        <tablerow>3</tablerow>
+      </card>
+  </cards>
+</cockatrice_carddatabase>`);
+      assert.deepEqual(result, {
+        IPR: {
+          baseSetSize: 1,
+          cards: [{
+            cmc: 4,
+            colors: ["R", "U"],
+            isAlternative: false,
+            layout: "split",
+            loyalty: "",
+            manaCost: "1R // 1U",
+            name: "Fire // Ice",
+            names: ["Fire", "Ice"],
+            number: 302,
+            power: "",
+            rarity: "uncommon",
+            side: "a",
+            supertypes: [],
+            text: "Fire deals 2 damage divided as you choose among one or two targets.  --- Tap target permanent. Draw a card.",
+            toughness: "",
+            type: "Instant",
+            types: ["Instant"],
+            url: "https://img.scryfall.com/cards/png/front/f/9/f98f4538-5b5b-475d-b98f-49d01dae6f04.png?1562954160"
+          }],
+          code: "IPR",
+          name: "IPA Remastered",
+          releaseDate: "2020-04-10",
+          type: "Custom"
         }
       });
     });
@@ -120,6 +180,7 @@ describe("Unit tests for XML Cockatrice Parser", () => {
             loyalty: "",
             manaCost: "1W",
             name: "Aven Harrier",
+            names: ["Aven Harrier"],
             number: 0,
             power: 1,
             rarity: "common",
@@ -168,6 +229,7 @@ describe("Unit tests for XML Cockatrice Parser", () => {
             loyalty: "",
             manaCost: "1W",
             name: "Aven Harrier",
+            names: ["Aven Harrier"],
             number: 0,
             power: 1,
             rarity: "common",

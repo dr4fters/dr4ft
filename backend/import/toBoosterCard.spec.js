@@ -2,19 +2,22 @@
 const fs = require("fs");
 const assert = require("assert");
 const toBoosterCard = require("./toBoosterCard");
+const path = require("path");
+const {getDataDir} = require("../data");
 
 describe("Acceptance tests for toBoosterCard function", () => {
   describe("can parse all the sets", () => {
     it("parse cards without errors from all the sets downloaded", () => {
-      if (fs.existsSync("data/sets")) {
-        const files = fs.readdirSync("data/sets");
+      const setsDataDir = path.join(getDataDir(), "sets");
+      if (fs.existsSync(setsDataDir)) {
+        const files = fs.readdirSync(setsDataDir);
         files.forEach(file => {
           if (!/.json/g.test(file)) {
             return;
           }
-          const path = `data/sets/${file}`;
+          const filePath = path.join(setsDataDir, `${file}`);
           const [setCode] = file.split(".");
-          const json = JSON.parse(fs.readFileSync(path, "UTF-8"));
+          const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
           json.cards
             .map(toBoosterCard(setCode))
             .forEach((card) => assert(card.name != undefined, "card must have a name"));
@@ -131,6 +134,8 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [parsedCard] = [gisela, brisela].map(toBoosterCard("setCode"));
       assert(parsedCard.isDoubleFaced, "gisela should be double faced");
       assert(parsedCard.flippedCardURL != "", "gisela should have a flipped card");
+      assert(parsedCard.flippedCardNumber != "", "gisela should have a flipped card");
+      assert(parsedCard.flippedScryfallId != "", "gisela should have a flipped card");
     });
 
     it("parse a flip card as doubleFaced and with a flippedCardURL", () => {
@@ -300,6 +305,51 @@ describe("Acceptance tests for toBoosterCard function", () => {
       const [downParsed, dirtyParsed] = [down, dirty].map(toBoosterCard("setCode"));
       assert(downParsed.cmc == 7, "split card CMC must equal to both side CMC");
       assert(dirtyParsed.cmc == 7, "split card CMC must equal to both side CMC");
+    });
+
+    it("parse a split card with correct colors", () => {
+      const ice = {
+        "colorIdentity": ["R", "U"],
+        "colors": ["U"],
+        "convertedManaCost": 4.0,
+        "layout": "split",
+        "manaCost": "{1}{U}",
+        "name": "Ice",
+        "names": ["Fire", "Ice"],
+        "number": "128",
+        "rarity": "uncommon",
+        "scryfallId": "f98f4538-5b5b-475d-b98f-49d01dae6f04",
+        "side": "b",
+        "subtypes": [],
+        "supertypes": [],
+        "text": "Tap target permanent.\nDraw a card.",
+        "type": "Instant",
+        "types": ["Instant"],
+        "uuid": "3fe4b8e5-54dd-538d-b891-6016547aff15"
+      };
+      const fire = {
+        "colorIdentity": ["R", "U"],
+        "colors": ["R"],
+        "convertedManaCost": 4.0,
+        "layout": "split",
+        "manaCost": "{1}{R}",
+        "name": "Fire",
+        "names": ["Fire", "Ice"],
+        "number": "128",
+        "rarity": "uncommon",
+        "scryfallId": "f98f4538-5b5b-475d-b98f-49d01dae6f04",
+        "side": "a",
+        "subtypes": [],
+        "supertypes": [],
+        "text": "Fire deals 2 damage divided as you choose among one or two targets.",
+        "type": "Instant",
+        "types": ["Instant"],
+        "uuid": "bcef8350-ed57-5e3a-bffe-a3f9d955512e"
+      };
+
+      const [iceParsed, fireParsed] = [ice, fire].map(toBoosterCard("setCode"));
+      assert.equal(iceParsed.color, "Multicolor", "A split card’s colors are determined from its combined mana cost");
+      assert.equal(fireParsed.color, "Multicolor", "A split card’s colors are determined from its combined mana cost");
     });
 
     it("parse a card with multiple color identities as mono color", () => {

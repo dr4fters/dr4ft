@@ -2,7 +2,7 @@ import React from "react";
 
 import _ from "utils/utils";
 import App from "../app";
-import {Checkbox} from "../utils";
+import Checkbox from "../components/Checkbox";
 
 import GameTypes from "./GameTypes";
 import GameOptions from "./GameOptions";
@@ -38,7 +38,7 @@ const CreatePanel = () => {
       <GameOptions/>
       <p>
         <button onClick={App._emit("create")}>
-          Create room
+          Create Room
         </button>
       </p>
     </fieldset>

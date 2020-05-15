@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
-import {BASICS, Zones, getZoneDisplayName} from "../cards";
-import {Select} from "../utils";
+import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
+import {COLORS_TO_LANDS_NAME} from "../gamestate";
+import Select from "../components/Select";
 
 const DeckSettings = () => (
   (App.state.isGameFinished || App.state.didGameStart)
@@ -22,8 +23,8 @@ const LandsPanel = () => (
         <ManaSymbols />
       </thead>
       <tbody>
-        <LandsRow zoneName="main"/>
-        <LandsRow zoneName="side"/>
+        <LandsRow zoneName={ZONE_MAIN}/>
+        <LandsRow zoneName={ZONE_SIDEBOARD}/>
       </tbody>
       <tfoot>
         <SuggestLands />
@@ -51,14 +52,14 @@ const ManaSymbols = () => {
 const LandsRow = ({zoneName}) => (
   <tr>
     <td>{getZoneDisplayName(zoneName)}</td>
-    {BASICS.map((cardName, index) =>
+    {Object.keys(COLORS_TO_LANDS_NAME).map((color, index) =>
       <td key={index}>
         <input
           className='number'
           min={0}
-          onChange={App._emit("land", zoneName, cardName)}
+          onChange={App._emit("land", zoneName, color)}
           type='number'
-          value={Zones[zoneName][cardName] || 0}/>
+          value={App.state.gameState.getLandDistribution(zoneName, color) || 0}/>
       </td>)}
   </tr>
 );

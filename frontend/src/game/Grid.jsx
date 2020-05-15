@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import _ from "utils/utils";
 import App from "../app";
-import {getZone, getZoneDisplayName} from "../cards";
-import {Spaced} from "../utils";
-import {getCardSrc, setFallbackSrc} from "./Cols";
+import {getCardSrc, getFallbackSrc} from "../cardimage";
+import Spaced from "../components/Spaced";
+import {ZONE_PACK, getZoneDisplayName} from "../zones";
 
 const Grid = ({zones}) => (
   <div>
@@ -17,26 +17,41 @@ Grid.propTypes = {
   zones: PropTypes.array.isRequired
 };
 
+const getZoneDetails = (appState, zoneName, cards) => {
+  if (!appState.didGameStart) {
+    return 0;
+  }
+
+  if (zoneName === ZONE_PACK) {
+    if (appState.isDecadentDraft) {
+      // Only 1 pick in decadent draft.
+      return `Pick 1 / 1`;
+    } else {
+      return `Pick ${appState.pickNumber} / ${appState.packSize}`
+    }
+  } else {
+    return cards.length;
+  }
+}
+
 const zone = (zoneName, index) => {
-  const zone = getZone(zoneName);
+  const zone = App.getSortedZone(zoneName);
   const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
 
-  const zoneTitle = zoneDisplayName + (zoneName === "pack" ? " " + App.state.round : "");
-  const zoneHelper = App.state.didGameStart
-    ? zoneName === "pack"
-      ? `Pick ${App.state.pickNumber} / ${App.state.packSize}`
-      : cards.length
-    : 0;
+  const zoneTitle = zoneDisplayName + (zoneName === ZONE_PACK ? " " + App.state.round : "");
+  const zoneDetails = getZoneDetails(App.state, zoneName, cards);
 
   return (
     <div className='zone' key={index}>
       <h1>
-        <Spaced elements={[zoneTitle, zoneHelper]}/>
+        <Spaced elements={[zoneTitle, zoneDetails]}/>
       </h1>
-      {cards.map((card, i) => <Card key={i+zoneName+card.name} card={card} zoneName={zoneName} />)}
-      {cards.length === 0 && zoneName === "pack" &&
+      {cards.map((card, i) =>
+        <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+      )}
+      {cards.length === 0 && zoneName === ZONE_PACK &&
         <h2 className='waiting'>Waiting for the next pack...</h2>
       }
     </div>
@@ -46,7 +61,8 @@ class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: props.card.url,
+      isDoubleFaced: false,
+      url: getCardSrc(this.props.card),
       isFlipped: false
     };
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -54,26 +70,32 @@ class Card extends Component {
   }
 
   onMouseEnter() {
-    if(this.props.card.isDoubleFaced) {
+    if (this.props.card.isDoubleFaced) {
       this.setState({
-        url: this.props.card.flippedCardURL,
+        mouseEntered: true,
+        url: getCardSrc({
+          ...this.props.card,
+          isBack: this.props.card.flippedIsBack,
+          number: this.props.card.flippedNumber,
+        }),
         flipped: this.props.card.layout === "flip"
       });
     }
   }
 
   onMouseLeave() {
-    if(this.props.card.isDoubleFaced) {
+    if (this.props.card.isDoubleFaced) {
       this.setState({
-        url: this.props.card.url,
-        flipped: false
+        url: getCardSrc(this.props.card),
+        flipped: false,
+        mouseEntered: false
       });
     }
   }
 
   render() {
     const {card, zoneName} = this.props;
-    const isAutopickable = zoneName === "pack" && card.isAutopick;
+    const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
 
     const className = `card
     ${isAutopickable ? "autopick-card " : ""}
@@ -87,10 +109,10 @@ class Card extends Component {
     return (
       <span className={className}
         title={title}
-        onClick={App._emit("click", zoneName, card.name)}
+        onClick={App._emit("click", zoneName, card)}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
-        <CardImage imgUrl={this.state.url} {...card}/>
+        <CardImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
       </span>
     );
   }
@@ -101,7 +123,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
+const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p><strong>{name}</strong> {manaCost}</p>
@@ -111,8 +133,11 @@ const CardImage = ({ imgUrl, scryfallId = "", name, manaCost, type = "", rarity 
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      onError= {setFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
-      src={getCardSrc({url: imgUrl, scryfallId, setCode, number})}
+      onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
+      src={!mouseEntered
+        ? getCardSrc({ scryfallId, setCode, url, number })
+        : getCardSrc({ scryfallId, setCode, url, number: flippedNumber, isBack: flippedIsBack })
+      }
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
       ${power} ${toughness} ${loyalty}`}
@@ -132,6 +157,10 @@ CardImage.propTypes = {
   setCode: PropTypes.string,
   number: PropTypes.string,
   scryfallId: PropTypes.string,
+  mouseEntered: PropTypes.bool,
+  url: PropTypes.string,
+  flippedIsBack: PropTypes.bool,
+  flippedNumber: PropTypes.string,
 };
 
 export default Grid;

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
@@ -6,13 +7,14 @@ const updateDatabase = require("./update_database");
 const downloadBoosterRules = require("./download_booster_rules");
 const logger = require("../backend/logger");
 const { refresh: refreshVersion } = require("../backend/mtgjson");
+const {getDataDir} = require("../backend/data");
 
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/files/version.json";
-const setsVersion = "data/version.json";
+const setsVersion = path.join(getDataDir(), "version.json");
 
 const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
-  semver.gt(remoteVer, currentVer)
+  semver.compareBuild(remoteVer, currentVer) > -1
 );
 
 const isVersionUpToDate = () => (
@@ -51,11 +53,11 @@ const fetchZip = () => (
       response
         .pipe(unzip.Parse())
         .on("entry", (entry) => {
-
-          if (!fs.existsSync("data/sets")) {
-            fs.mkdirSync("data/sets", { recursive: true });
+          const setsDataDir = path.join(getDataDir(), "sets");
+          if (!fs.existsSync(setsDataDir)) {
+            fs.mkdirSync(setsDataDir);
           }
-          const file = fs.createWriteStream(`data/sets/${entry.path}`);
+          const file = fs.createWriteStream(path.join(setsDataDir, `${entry.path}`));
           entry.pipe(file)
             .on("finish", file.close);
         })
@@ -65,22 +67,18 @@ const fetchZip = () => (
   }));
 
 const download = async () => {
-  try {
-    logger.info("Checking if AllSets.json is up to date");
-    const [isUpToDate, version] = await isVersionUpToDate();
-    if (!isUpToDate) {
-      await fetchZip();
-      logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
-      updateDatabase();
-      logger.info("Update DB finished");
-      fs.writeFileSync(setsVersion, version);
-      refreshVersion();
-      await downloadBoosterRules();
-    } else {
-      logger.info("AllSets.json is up to date");
-    }
-  } catch(err) {
-    logger.error(`Couldn't complete AllSets.json check : ${err}`);
+  logger.info("Checking if AllSets.json is up to date");
+  const [isUpToDate, version] = await isVersionUpToDate();
+  if (!isUpToDate) {
+    await fetchZip();
+    logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
+    updateDatabase();
+    logger.info("Update DB finished");
+    fs.writeFileSync(setsVersion, version);
+    refreshVersion();
+    await downloadBoosterRules();
+  } else {
+    logger.info("AllSets.json is up to date");
   }
 };
 

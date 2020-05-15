@@ -9,7 +9,8 @@ const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
-const {saveDraftStats} = require("./data");
+const {saveDraftStats, getDataDir} = require("./data");
+const path = require("path");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
@@ -24,7 +25,9 @@ module.exports = class Game extends Room {
       round: 0,
       bots: 0,
       sets: sets || [],
-      secret: uuid.v4()
+      isDecadent: false,
+      secret: uuid.v4(),
+      logger: logger.child({ id: gameID })
     });
 
     // Handle packsInfos to show various informations about the game
@@ -33,6 +36,13 @@ module.exports = class Game extends Room {
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
       this.rounds = this.sets.length;
+      break;
+    case "decadent draft":
+      // Sets should all be the same and there can be a large number of them.
+      // Compress this info into e.g. "36x IKO" instead of "IKO / IKO / ...".
+      this.packsInfo = `${this.sets.length}x ${this.sets[0]}`;
+      this.rounds = this.sets.length;
+      this.isDecadent = true;
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
@@ -159,6 +169,7 @@ module.exports = class Game extends Room {
     // Reattach sock to player based on his id
     const reattachPlayer = this.players.some((player) => {
       if (player.id === sock.id) {
+        this.logger.debug(`${sock.name} re-joined the game`);
         player.err("only one window active");
         player.attach(sock);
         if (!this.didGameStart) {
@@ -180,8 +191,65 @@ module.exports = class Game extends Room {
     }
 
     super.join(sock);
+    this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock);
+    function regularDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+
+      this.autopickIndex = -1;
+      this.emit("pass", pack);
+    }
+
+    function decadentDraftPickDelegate(index) {
+      const pack = this.packs.shift();
+      const card = pack.splice(index, 1)[0];
+
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+
+      let pickcard = card.name;
+      if (card.foil === true)
+        pickcard = "*" + pickcard + "*";
+
+      this.pool.push(card);
+      this.picks.push(pickcard);
+      this.send("add", card);
+
+      let [next] = this.packs;
+      if (!next)
+        this.time = 0;
+      else
+        this.sendPack(next);
+
+      // Discard the rest of the cards in the pack
+      // after one is chosen.
+      pack.length = 0;
+
+      this.autopickIndex = -1;
+      this.emit("pass", pack);
+    }
+
+    const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
+
+    const h = new Human(sock, draftPickDelegate);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -213,6 +281,7 @@ module.exports = class Game extends Room {
     if (!h || h.isBot)
       return;
 
+    this.logger.debug(`${h.name} is being kicked from the game`);
     if (this.didGameStart)
       h.kick();
     else
@@ -263,6 +332,7 @@ module.exports = class Game extends Room {
       isBot: p.isBot,
       isConnected: p.isConnected,
     }));
+    state.gameSeats = this.seats;
     this.players.forEach((p) => p.send("set", state));
     Game.broadcastGameInfo();
   }
@@ -274,6 +344,7 @@ module.exports = class Game extends Room {
 
     Rooms.delete(this.id);
     Game.broadcastGameInfo();
+    this.logger.debug("is being shut down");
 
     this.emit("kill");
   }
@@ -295,6 +366,7 @@ module.exports = class Game extends Room {
   }
 
   end() {
+    this.logger.debug("game ended");
     this.players.forEach((p) => {
       if (!p.isBot) {
         p.send("log", p.draftLog.round);
@@ -320,7 +392,7 @@ module.exports = class Game extends Room {
       }))
     };
 
-    const file = "./data/cap.json";
+    const file = path.join(getDataDir(), "cap.json");
     jsonfile.writeFile(file, draftcap, { flag: "a" }, function (err) {
       if (err) logger.error(err);
     });
@@ -366,6 +438,8 @@ module.exports = class Game extends Room {
     if (this.round++ === this.rounds) {
       return this.end();
     }
+
+    this.logger.debug("new round started");
 
     this.packCount = players.length;
     this.delta *= -1;
@@ -440,7 +514,8 @@ module.exports = class Game extends Room {
       });
       break;
     }
-    case "draft": {
+    case "draft":
+    case "decadent draft": {
       this.pool = Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
@@ -499,12 +574,16 @@ module.exports = class Game extends Room {
     this.startRound();
   }
 
+  shouldAddBots() {
+    return this.addBots && !this.isDecadent;
+  }
+
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
-      if (addBots) {
+      if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
           this.players.push(new Bot());
           this.bots++;
@@ -523,10 +602,10 @@ module.exports = class Game extends Room {
         this.handleDraft();
       }
 
-      logger.info(`Game ${this.id} started.\n${this.toString()}`);
+      this.logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
     } catch(err) {
-      logger.error(`Game ${this.id}  encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
+      this.logger.error(`Game ${this.id} encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
         if (!player.isBot) {
           player.exit();

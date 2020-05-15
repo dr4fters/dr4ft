@@ -1,7 +1,7 @@
 import React from "react";
 
 import { STRINGS } from "../config";
-import { Spaced } from "../utils";
+import Spaced from "../components/Spaced";
 import App from "../app";
 
 const Header = () => (

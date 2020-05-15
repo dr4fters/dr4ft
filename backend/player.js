@@ -20,7 +20,7 @@ class Player extends EventEmitter {
       isHost: false,
       time: 0,
       packs: [],
-      autopick_index: -1,
+      autopickIndex: -1,
       pool: [],
       cap: {
         packs: {}
@@ -35,7 +35,7 @@ class Player extends EventEmitter {
       packSize: 15,
       self: 0,
       useTimer: false,
-      timeLength: "Slow",
+      timeLength: "Slow"
     });
   }
 

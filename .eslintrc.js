@@ -40,6 +40,18 @@ module.exports = {
         "no-unused-vars" : [
           "warn"
         ],
+        "camelcase": [
+          "warn", {
+            ignoreDestructuring: true,
+            allow: [
+              "^balance_colors$"
+            ]
+          }
+        ],
+        "no-multi-spaces": [
+          "error"
+        ],
+        "no-trailing-spaces": "error",
         "import/namespace": 0,
         "import/named": 0
     },

@@ -1,7 +1,7 @@
 import React from "react";
 
 import App from "../app";
-import {Checkbox} from "../utils";
+import Checkbox from "../components/Checkbox";
 
 const GameSettings = () => (
   <div className='game-settings'>
@@ -29,7 +29,7 @@ const GameSettings = () => (
         <Checkbox side="left" text="Use column view" link="cols" />
         <SortCards />
         <CardsImageQuality />
-        <CardsImageLanguage />
+        {App.state.cardSize != "text" && <CardsImageLanguage />}
       </span>
     </fieldset>
   </div>
