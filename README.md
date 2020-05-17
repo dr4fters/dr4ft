@@ -38,6 +38,7 @@ The application provides the following features:
 * Bots
 * Notifications when a pack is available
 * API to create and manage a game remotely. [More docs here](https://github.com/dr4fters/dr4ft/blob/master/doc/api.md)
+* Accurate Booster generation rules from @taw [magic-sealed-data](https://github.com/taw/magic-sealed-data)
 
 ## Technologies
 

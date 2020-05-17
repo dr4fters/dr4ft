@@ -1,13 +1,15 @@
 const { EventEmitter } = require("events");
 const { app: { DEFAULT_USERNAME } } = require("../config");
-const { getPlayableSets, getLatestReleasedSet } = require("./data");
+const { getPlayableSets, getLatestReleasedSet, getBoosterRulesVersion } = require("./data");
 const { getVersion } = require("./mtgjson");
 
 // All sockets currently connected to the server.
 let allSocks = [];
 
 function broadcastNumUsers() {
-  Sock.broadcast("set", { numUsers: allSocks.length });
+  Sock.broadcast("set", {
+    numUsers: allSocks.length
+  });
 }
 
 function message(msg) {
@@ -38,7 +40,12 @@ class Sock extends EventEmitter {
     for (let key in mixins)
       this[key] = mixins[key].bind(this);
 
-    this.send("set", { availableSets: getPlayableSets(), latestSet: getLatestReleasedSet(), mtgJsonVersion: getVersion() });
+    this.send("set", {
+      availableSets: getPlayableSets(),
+      latestSet: getLatestReleasedSet(),
+      mtgJsonVersion: getVersion(),
+      boosterRulesVersion: getBoosterRulesVersion()
+    });
     allSocks.push(this);
     broadcastNumUsers();
     ws.on("message", message.bind(this));
