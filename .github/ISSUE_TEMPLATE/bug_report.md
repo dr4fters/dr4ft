@@ -20,7 +20,7 @@ assignees: ''
 
 
 ## Detailed Description
-<!-- Explain what you exactly did and what exactly happened  -->
+<!-- Explain what you exactly did and what exactly happened -->
 
 
 
