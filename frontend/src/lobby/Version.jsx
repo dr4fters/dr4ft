@@ -19,8 +19,7 @@ const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
         v{MTGJSONVersion.version}
       </a> ({MTGJSONVersion.date}) - Using <a href={"https://github.com/taw/magic-sealed-data"}>Magic Sealed Data</a> {" "}
         booster rules{" "}
-      <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`}>commit {boosterRulesVersion}
-      </a>
+      commit <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`}>{boosterRulesVersion}</a>
     </p>
   );
 };
