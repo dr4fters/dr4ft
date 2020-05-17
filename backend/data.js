@@ -250,7 +250,7 @@ const getBoosterRulesVersion = () => {
       return "";
     }
   }
-  return boosterRules.repoHash;
+  return boosterRules.repoHash.substring(0,8);
 };
 
 const saveBoosterRules = (boosterRules) => {
