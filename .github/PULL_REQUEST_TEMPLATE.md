@@ -1,7 +1,7 @@
 ## Fixes
 - #xxxx
 
-## Explanation of the problem
+## Explanation of the issue
 
 
 
