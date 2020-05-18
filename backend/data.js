@@ -8,9 +8,9 @@ const DRAFT_STATS_DIR = "draftStats";
 const CARDS_PATH = "cards.json";
 const CUBABLE_CARDS_PATH = "cubable_cards_by_name.json";
 const SETS_PATH = "sets.json";
+const BOOSTER_RULES_PATH = "boosterRules.json";
 
-let cards, cubableCardsByName, sets;
-let playableSets, latestSet;
+let cards, cubableCardsByName, sets, playableSets, latestSet, boosterRules;
 
 const getDataDir = () => {
   const repoRoot = process.cwd();
@@ -32,6 +32,10 @@ const reloadData = (filename) => {
     sets = null;
     playableSets = null;
     latestSet = null;
+    break;
+  }
+  case BOOSTER_RULES_PATH: {
+    boosterRules = null;
     break;
   }
   }
@@ -231,6 +235,28 @@ function saveDraftStats(id, stats) {
   fs.writeFileSync(`${getDataDir()}/${DRAFT_STATS_DIR}/${id}.json`, JSON.stringify(stats, undefined, 4));
 }
 
+const getBoosterRules = (setCode) => {
+  if (!boosterRules) {
+    boosterRules = readFile(`${getDataDir()}/${BOOSTER_RULES_PATH}`);
+  }
+  return boosterRules[setCode];
+};
+
+const getBoosterRulesVersion = () => {
+  if (!boosterRules) {
+    try {
+      boosterRules = readFile(`${getDataDir()}/${BOOSTER_RULES_PATH}`);
+    } catch(error) {
+      return "";
+    }
+  }
+  return boosterRules.repoHash.substring(0,7);
+};
+
+const saveBoosterRules = (boosterRules) => {
+  fs.writeFileSync(`${getDataDir()}/${BOOSTER_RULES_PATH}`, JSON.stringify(boosterRules, undefined, 4));
+};
+
 module.exports = {
   getDataDir,
   getCards,
@@ -247,5 +273,8 @@ module.exports = {
   mergeCardsTogether,
   getCardByUuid,
   getCardByName: getCubableCardByName,
-  reloadData
+  reloadData,
+  getBoosterRules,
+  getBoosterRulesVersion,
+  saveBoosterRules
 };

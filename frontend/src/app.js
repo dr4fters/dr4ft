@@ -175,9 +175,14 @@ let App = {
       // Default sets to the latest set.
       const defaultSetCode = App.state.latestSet.code;
       const replicateDefaultSet = (desiredLength) => times(desiredLength, constant(defaultSetCode));
-      App.state.setsSealed = replicateDefaultSet(6);
-      App.state.setsDraft = replicateDefaultSet(3);
-      App.state.setsDecadentDraft = replicateDefaultSet(36);
+      const initializeIfEmpty = (sets, desiredLength) => {
+        if (sets.length === 0) {
+          sets = replicateDefaultSet(desiredLength);
+        }
+      };
+      initializeIfEmpty(App.state.setsSealed, 6);
+      initializeIfEmpty(App.state.setsDraft, 3);
+      initializeIfEmpty(App.state.setsDecadentDraft, 36);
     }
     App.update();
   },
