@@ -1,4 +1,3 @@
-const fs = require("fs");
 const axios = require("axios");
 const logger = require("../backend/logger");
 const {getBoosterRulesVersion, getCardByUuid, getSet, saveBoosterRules} = require("../backend/data");
