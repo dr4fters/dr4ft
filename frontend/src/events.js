@@ -1,6 +1,7 @@
 import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
+import DOMPurify from "dompurify";
 import {range, times, constant, countBy, findIndex} from "lodash";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 
@@ -262,7 +263,7 @@ const events = {
       messages: [...App.state.messages, message]
     });
     if (!App.state.chat) {
-      vanillaToast.info(`${message.name}: ${message.text}`);
+      vanillaToast.info(`${message.name}: ${DOMPurify.sanitize(message.text)}`);
     }
   },
   command(message) {
