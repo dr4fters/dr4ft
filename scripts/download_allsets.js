@@ -4,7 +4,6 @@ const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
 const updateDatabase = require("./update_database");
-const downloadBoosterRules = require("./download_booster_rules");
 const logger = require("../backend/logger");
 const { refresh: refreshVersion } = require("../backend/mtgjson");
 const {getDataDir} = require("../backend/data");
@@ -12,6 +11,8 @@ const {getDataDir} = require("../backend/data");
 const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/files/version.json";
 const setsVersion = path.join(getDataDir(), "version.json");
+
+const setsDataDir = path.join(getDataDir(), "sets");
 
 const isVersionNewer = ({ version: remoteVer }, { version: currentVer }) => (
   semver.compareBuild(remoteVer, currentVer) > 0
@@ -51,16 +52,7 @@ const fetchZip = () => (
     https.get(mtgJsonURL, response => {
       logger.info("Updating AllSets.json");
       response
-        .pipe(unzip.Parse())
-        .on("entry", (entry) => {
-          const setsDataDir = path.join(getDataDir(), "sets");
-          if (!fs.existsSync(setsDataDir)) {
-            fs.mkdirSync(setsDataDir);
-          }
-          const file = fs.createWriteStream(path.join(setsDataDir, `${entry.path}`));
-          entry.pipe(file)
-            .on("finish", file.close);
-        })
+        .pipe(unzip.Extract({ path: setsDataDir, concurrency: 4 }))
         .on("finish", resolve)
         .on("error", reject);
     });
@@ -76,7 +68,6 @@ const download = async () => {
     logger.info("Update DB finished");
     fs.writeFileSync(setsVersion, version);
     refreshVersion();
-    await downloadBoosterRules();
   } else {
     logger.info("AllSets.json is up to date");
   }

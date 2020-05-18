@@ -80,7 +80,6 @@ function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPi
     "U": cardsByColor["U"].length * numberOfCardsToPick - n,
     "R": cardsByColor["R"].length * numberOfCardsToPick - n,
     "G": cardsByColor["G"].length * numberOfCardsToPick - n,
-    "c": (cardsByColor["c"] || []).length * numberOfCardsToPick,
   };
   const total = Object.values(nums).reduce((total, num) => total + num);
   while (ret.size < numberOfCardsToPick) {
