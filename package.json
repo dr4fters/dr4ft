@@ -32,7 +32,7 @@
     "nodemon:debug": "nodemon --inspect-brk=1338 ./app.js -e html,js --ignore built --ignore frontend",
     "lint": "eslint --ignore-path .gitignore .",
     "pretest": "npm run lint",
-    "test": "mocha --reporter spec --exit \"./{,!(node_modules)/**/}*.spec.js\"",
+    "test": "npm run postinstall && mocha --reporter spec --exit \"./{,!(node_modules)/**/}*.spec.js\"",
     "postinstall": " npm run download_allsets && npm run download_booster_rules && webpack --config webpack.prod.js",
     "update_database": "node scripts/update_database ",
     "download_allsets": "node scripts/download_allsets",
