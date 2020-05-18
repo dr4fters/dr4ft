@@ -1,6 +1,6 @@
 ---
 name: "🐛 Bug Report"
-about: Report an issue while using dr4ft
+about: Report an issue with dr4ft
 title: 'Bug: '
 labels: 'bug'
 assignees: ''
