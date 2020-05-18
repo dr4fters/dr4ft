@@ -25,6 +25,7 @@ let App = {
 
     seats: 8,
     title: "",
+    gameId: "",
     isPrivate: true,
     modernOnly: false,
     totalChaos: false,
