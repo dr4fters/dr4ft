@@ -1,5 +1,5 @@
-## Fixes
-- #xxxx
+## Linked tickets
+- Fixes #xxxx
 
 ## Explanation of the issue
 

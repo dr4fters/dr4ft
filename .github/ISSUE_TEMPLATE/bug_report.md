@@ -15,7 +15,7 @@ assignees: ''
 ----------------------------------------------------------------------------------
 
 ## Background Information
-<!-- Provide as much helping information as possible like the selected options, a game ID and the time of event -->
+<!-- Provide as much helping information as possible like draft options, a game ID and the time of event -->
 
 
 
@@ -25,6 +25,6 @@ assignees: ''
 
 
 ## Further Information
-<!-- Add e.g. any screenshots or logs from your browsers console -->
+<!-- Add e.g. any screenshots, logs from your browser console or problematic xml files -->
 
 
