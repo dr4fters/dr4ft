@@ -1,7 +1,7 @@
 ---
 name: "🐛 Bug Report"
 about: Report an issue while using dr4ft
-title: '[Bug] '
+title: 'Bug: '
 labels: 'bug'
 assignees: ''
 ---
@@ -25,6 +25,6 @@ assignees: ''
 
 
 ## Further Information
-<!-- Any screenshots or logs from your browsers console -->
+<!-- Add e.g. any screenshots or logs from your browsers console -->
 
 
