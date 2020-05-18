@@ -27,6 +27,7 @@ app.use("/api", apiRouter);
 
 // Download Allsets.json if there's a new one and make the card DB
 spawn("node", ["scripts/download_allsets.js"], { stdio: "inherit" });
+spawn("node", ["scripts/download_booster_rules.js"], { stdio: "inherit" });
 
 // Schedule check of a new sets and new boosterRules every hour
 schedule.scheduleJob("0 * * * *", () => {
