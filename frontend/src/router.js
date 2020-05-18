@@ -19,6 +19,7 @@ function route() {
 
   switch(route) {
   case "g":
+    App.state.gameId = id;
     App.initGameState(id);
     App.state.players = [];
     App.send("join", id);
