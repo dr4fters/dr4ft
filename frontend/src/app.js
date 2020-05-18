@@ -25,6 +25,7 @@ let App = {
 
     seats: 8,
     title: "",
+    gameId: "",
     isPrivate: true,
     modernOnly: false,
     totalChaos: false,
@@ -141,6 +142,7 @@ let App = {
     this.ws.send(msg);
   },
   initGameState(id) {
+    App.state.gameId = id;
     const { gameStates } = App.state;
     if (!gameStates[id]) {
       App.state.gameState = new GameState();

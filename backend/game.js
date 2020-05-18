@@ -297,7 +297,9 @@ module.exports = class Game extends Room {
       isHost: h.isHost,
       round: this.round,
       self: this.players.indexOf(h),
-      sets: this.sets
+      sets: this.sets,
+      gameId: this.id,
+      title: this.title
     });
     h.send("gameInfos", {
       type: this.type,
