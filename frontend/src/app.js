@@ -178,7 +178,7 @@ let App = {
       const replicateDefaultSet = (desiredLength) => times(desiredLength, constant(defaultSetCode));
       const initializeIfEmpty = (sets, desiredLength) => {
         if (sets.length === 0) {
-          sets = replicateDefaultSet(desiredLength);
+          sets.push(...replicateDefaultSet(desiredLength));
         }
       };
       initializeIfEmpty(App.state.setsSealed, 6);
