@@ -140,17 +140,21 @@ const CubeSealed = () => (
 
 const CubeSealedOptions = () => (
   <div>
+    Cards per player:{" "}
     <Select link="cubePoolSize" opts={_.seq(120, 15)} />
-    {" "}cards per player
   </div>
 );
 
 const CubeOptions = () => (
   <div>
-    <Select link="cards" opts={_.seq(30, 5)} />
-    {" "}cards
-    <Select link="packs" opts={_.seq(12, 1)} />
-    {" "}packs
+    <div>
+      Number of packs:{" "}
+      <Select link="packs" opts={_.seq(12, 1)} />
+    </div>
+    <div>
+      Cards per pack:{" "}
+      <Select link="cards" opts={_.seq(30, 5)} />
+    </div>
   </div>
 );
 
