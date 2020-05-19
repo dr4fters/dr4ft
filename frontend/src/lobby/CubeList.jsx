@@ -52,7 +52,7 @@ const CubeCobra = () => {
           value={name}
           onChange={(e) => setName(e.target.value)} />
       </label>
-      <input style={{ marginTop: "5px", marginLeft: "4px" }} type="button" value="Fetch Cubelist" onClick={() => getCubeCobraList(name)} />
+      <input style={{ marginTop: "5px", marginLeft: "4px" }} type="button" value="Fetch Cube List" onClick={() => getCubeCobraList(name)} />
     </Fragment>
   );
 };
