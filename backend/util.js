@@ -25,7 +25,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
     ? seats * cards * packs
     : seats * cubePoolSize;
   assert(min <= list.length && list.length <= 1e5,
-    `this cube needs between ${min} and 100,000 cards; it has ${list.length}`);
+    `A cube needs between ${min} and 100,000 cards; it has ${list.length}`);
 
   const bad = [];
   for (let cardName of list)
@@ -33,7 +33,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
       bad.push(cardName);
 
   if (bad.length) {
-    let msg = `invalid cards: ${bad.splice(-10).join("; ")}`;
+    let msg = `Invalid cards: ${bad.splice(-10).join("; ")}`;
     if (bad.length)
       msg += `; and ${bad.length} more`;
     throw Error(msg);
@@ -87,7 +87,7 @@ module.exports = {
       assert(Array.isArray(sets), "sets must be an array");
       assert(sets.length >= 1, "sets length must be at least 1");
       sets.forEach(set =>
-        assert(set === "RNG" || getSet(set) !== undefined, `set ${set} is invalid or does not exist`));
+        assert(set === "RNG" || getSet(set) !== undefined, `Set ${set} is invalid or does not exist`));
       break;
     case "cube draft":
     case "cube sealed":
