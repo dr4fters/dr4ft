@@ -9,12 +9,14 @@ async function fetch() {
   logger.info("Checking boosterRules repository");
   const repo = await axios.get(REPO_URL);
   const sha = repo.data.object.sha;
-  if (getBoosterRulesVersion() === sha) {
-    logger.info("found same boosterRules. Skip new download");
+  const currentBoosterRulesVersion = getBoosterRulesVersion();
+  if (currentBoosterRulesVersion === sha) {
+    logger.info(`Found same boosterRules version (${currentBoosterRulesVersion}). Skip new download`);
     return;
   }
-  logger.info("Downloading new boosterRules");
+  logger.info(`Found diverse boosterRules version (current: ${currentBoosterRulesVersion} new: ${sha})`);
   const resp = await axios.get(URL);
+  logger.info("Finished download of new boosterRules");
   const rules = resp.data.reduce((acc, { code, boosters, sheets }) => {
     const totalWeight = boosters.reduce((acc, { weight }) => acc + weight, 0);
 
