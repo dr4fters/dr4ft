@@ -64,7 +64,7 @@ It supports all their features, and many more.
 
 ### Native
 
-1) Install [Node.js](https://nodejs.org/en/download/) >= 11.0.0
+1) Install [Node.js](https://nodejs.org/en/download/) >= 12.0.0
 2) Run<br>
 `$ npm install`<br>
 `$ npm start`
