@@ -21,10 +21,15 @@ module.exports = {
       template: "./frontend/index.html.tpl",
       cache: false
     }),
-    new CopyWebpackPlugin([
-      { from: "frontend", ignore: ["*.tpl", "src/**/*", "test/**/*"] }
-    ], {
-      copyUnmodified: true
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "frontend",
+          globOptions: {
+            ignore: ["*.tpl", "src/**/*", "test/**/*"]
+          }
+        }
+      ]
     }),
     new webpack.DefinePlugin({
       BUILD_DATE: JSON.stringify(new Date().toISOString().slice(0, 10))
