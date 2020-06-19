@@ -98,7 +98,7 @@
     "mocha": "8.0.1",
     "nodemon": "2.0.4",
     "style-loader": "1.2.1",
-    "webpack-cli": "3.3.11"
+    "webpack-cli": "3.3.12"
   },
   "engines": {
     "node": "12.16.3"
