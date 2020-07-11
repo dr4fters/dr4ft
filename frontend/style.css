@@ -153,19 +153,64 @@ button:disabled:active {
   box-shadow: none;
 }
 
-.radio-label {
-  display: inline-block;
-  padding: 5px;
-  background-color: #f0f0f0;
-  border: solid #d0d0d0 1px;
+label.radio-label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1rem !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.radio-label:hover {
-  border-color: #909090;
+.radio-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.radio-label:active {
-  box-shadow: 0 0 1px 0 black inset;
+.radio-button-replacement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid #79A4F7;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio-button-replacement:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-label input:checked ~ .radio-button-replacement:after {
+  display: block;
+}
+
+.radio-label input:focus ~ .radio-button-replacement {
+  box-shadow: 0 0px 0px 1px #6F686A, 0 0px 8px #79A4F7;
+
+  /* Since box shadows don't show up in high contrast mode,
+   *          we're adding a transparent outline (which does show up). */
+  outline: 2px dotted transparent;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-label .radio-button-replacement:after {
+  top: 2px;
+  left: 2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: #79A4F7;
 }
 
 .number {
@@ -214,7 +259,7 @@ input[type="checkbox"], input[type="radio"] {
 
 #cube-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 #preset-cubes {
@@ -618,14 +663,21 @@ input[type="checkbox"], input[type="radio"] {
   display: none;
 }
 
+/* for elements that should be read by screen readers, but not seen on the page */
+.vhidden {
+  position: fixed;
+  opacity: 0;
+  left: -100px;
+  top: -100px;
+}
+
 .column {
   display: flex;
   flex-direction: column;
 }
 
 .game-mode-description {
-  background: #ddd;
-  border-left: 5px solid #bbb;
+  border-left: 2px solid #bbb;
   margin-left: 0px;
   padding: 1px 1px 1px 10px;
   font-style: italic;
@@ -634,4 +686,172 @@ input[type="checkbox"], input[type="radio"] {
 .cube-list {
   overflow-y: "scroll";
   height: 150px;
+}
+
+/* Modal Styles */
+.modal-outer-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999999;
+}
+
+.modal-backdrop {
+  background: rgba(31, 31, 31, .72);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modal-close-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.modal-container {
+  width: 960px;
+  max-width: 90%;
+  background: #000;
+  color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 5px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.modal-container a, .modal-container a:visited {
+  color: #79A4F7;
+}
+
+.modal-container fieldset {
+  padding: 0;
+  border: 0;
+}
+
+.modal-container input, .modal-container textarea, .modal-container select {
+  background: #1D1E21;
+  color: rgb(162, 164, 165);
+  border-color: #3C4043;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.modal-container input:focus, .modal-container textarea:focus, .modal-container select:focus {
+  outline: none;
+  border-color: #79A4F7;
+}
+
+.modal-container input.error, .modal-container textarea.error, .modal-container select.error {
+  border-color: #F33173;
+  color: #F33173;
+}
+
+.modal-container select {
+  padding: 12px 30px 12px 12px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2379A4F7%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+}
+
+.modal-container input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #3C4043;
+  opacity: 1; /* Firefox */
+}
+
+.modal-container input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #3C4043;
+}
+
+.modal-container input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #3C4043;
+}
+
+.modal-header, .modal-footer {
+  position: relative;
+  padding: 20px;
+  background: #19191C;
+}
+
+.modal-header h2 {
+  font-family: Helvetica;
+  font-weight: normal;
+}
+
+.modal-footer {
+  text-align: right;
+}
+
+.modal-section {
+  background: #202124;
+  border: 1px solid #3C4043;
+  padding: 20px;
+  display: flex;
+}
+
+.modal-section label {
+  flex: 0 1 auto;
+  width: 100px;
+  font-size: 1.25rem;
+}
+
+.modal-footer button {
+  font-size: 1.25rem;
+}
+
+.modal-container button {
+  display: inline-block;
+  border: 2px solid #3C4043;
+  padding: 1rem 2rem;
+  min-width: 170px;
+  margin: 0 0 0 25px;
+  text-decoration: none;
+  border-radius: 10px;
+  background: #202124;
+  color: #79A4F7;
+  font-family: sans-serif;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, 
+  transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.modal-container button:focus {
+  outline: 1px solid #79A4F7;
+  outline-offset: -2px;
+}
+
+.modal-container button:active {
+  transform: scale(0.99);
+}
+
+.modal-container button.primary {
+  background: #79A4F7;
+  color: #202124;
+}
+
+.modal-body {
+  background: #202124;
+  border: 1px solid #3C4043;
+}
+ 
+.modal-tooltip {
+  opacity: 1 !important;
 }
