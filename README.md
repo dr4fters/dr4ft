@@ -12,7 +12,7 @@
 
 <br>
 
-# dr4ft [![Chat](https://badges.gitter.im/dr4fters/dr4ft.svg)](https://gitter.im/dr4fters/dr4ft)
+# dr4ft [![Discord](https://img.shields.io/discord/224178957103136779?label=Discord&logo=discord&logoColor=white&color=7289da)](https://mtgjson.com/discord)
 
 *dr4ft* is a <kbd>NodeJS</kbd> based web-application that simulates draft and sealed format between players and/or bots.
 Most of MTG sets are playable thanks to MTGJson support. We follow as much as possible the rules that determine how a real booster is created.
