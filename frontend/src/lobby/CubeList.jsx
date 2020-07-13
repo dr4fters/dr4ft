@@ -46,7 +46,7 @@ const CubeCobra = () => {
     axios.get(`https://cubecobra.com/cube/api/cubelist/${cubeId}`)
       .then(({ data: list }) => {
         setError("");
-        setCubeImportMessage(`The cube with the id "${cubeId}" was imported.`);
+        setCubeImportMessage(`The cube with ID "${cubeId}" was imported.`);
         App.save("list", list);
       })
       .catch(() => {
