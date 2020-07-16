@@ -80,7 +80,7 @@ const CubeCobra = () => {
 
       <div>
         <small>{cubeImportMessage}</small>
-        <small style={{ color: "#F33173" }}>{error}</small>
+        <small className="error">{error}</small>
       </div>
     </Fragment>
   );

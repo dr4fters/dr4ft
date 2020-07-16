@@ -180,7 +180,7 @@ label.radio-label {
   width: 15px;
   background-color: transparent;
   border-radius: 50%;
-  border: 1px solid #79A4F7;
+  border: 1px solid #079DFF;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -196,7 +196,7 @@ label.radio-label {
 }
 
 .radio-label input:focus ~ .radio-button-replacement {
-  box-shadow: 0 0px 0px 1px #6F686A, 0 0px 8px #79A4F7;
+  box-shadow: 0 0px 0px 1px #6F686A, 0 0px 8px #079DFF;
 
   /* Since box shadows don't show up in high contrast mode,
    *          we're adding a transparent outline (which does show up). */
@@ -210,7 +210,7 @@ label.radio-label {
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background-color: #79A4F7;
+  background-color: #079DFF;
 }
 
 .number {
@@ -469,7 +469,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .error {
-  color: red;
+  color: #E15252;
 }
 
 .success {
@@ -718,8 +718,8 @@ input[type="checkbox"], input[type="radio"] {
 .modal-container {
   width: 960px;
   max-width: 90%;
-  background: #000;
-  color: white;
+  background: #FAFBFC;
+  color: #24292E;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -731,7 +731,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .modal-container a, .modal-container a:visited {
-  color: #79A4F7;
+  color: #079DFF;
 }
 
 .modal-container fieldset {
@@ -740,9 +740,9 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .modal-container input, .modal-container textarea, .modal-container select {
-  background: #1D1E21;
-  color: rgb(162, 164, 165);
-  border-color: #3C4043;
+  background: #F1F2F3;
+  color: #24292E;
+  border-color: #D9DBDB;
   border-radius: 5px;
   padding: 12px;
   margin-bottom: 10px;
@@ -750,12 +750,12 @@ input[type="checkbox"], input[type="radio"] {
 
 .modal-container input:focus, .modal-container textarea:focus, .modal-container select:focus {
   outline: none;
-  border-color: #79A4F7;
+  border-color: #079DFF;
 }
 
 .modal-container input.error, .modal-container textarea.error, .modal-container select.error {
-  border-color: #F33173;
-  color: #F33173;
+  border-color: #E15252;
+  color: #E15252;
 }
 
 .modal-container select {
@@ -763,29 +763,29 @@ input[type="checkbox"], input[type="radio"] {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2379A4F7%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23079DFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
   background-repeat: no-repeat, repeat;
   background-position: right .7em top 50%, 0 0;
   background-size: .65em auto, 100%;
 }
 
 .modal-container input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #3C4043;
+  color: #868788;
   opacity: 1; /* Firefox */
 }
 
 .modal-container input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #3C4043;
+  color: #868788;
 }
 
 .modal-container input::-ms-input-placeholder { /* Microsoft Edge */
-  color: #3C4043;
+  color: #868788;
 }
 
 .modal-header, .modal-footer {
   position: relative;
   padding: 20px;
-  background: #19191C;
+  background: #F1F2F3;
 }
 
 .modal-header h2 {
@@ -798,10 +798,13 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .modal-section {
-  background: #202124;
-  border: 1px solid #3C4043;
+  border-bottom: 1px solid #D9DBDB;
   padding: 20px;
   display: flex;
+}
+
+.modal-section:last-child {
+  border-bottom: none;
 }
 
 .modal-section label {
@@ -816,14 +819,12 @@ input[type="checkbox"], input[type="radio"] {
 
 .modal-container button {
   display: inline-block;
-  border: 2px solid #3C4043;
+  border: 1px solid #586069;
   padding: 1rem 2rem;
   min-width: 170px;
   margin: 0 0 0 25px;
   text-decoration: none;
-  border-radius: 10px;
-  background: #202124;
-  color: #79A4F7;
+  border-radius: 4px;
   font-family: sans-serif;
   cursor: pointer;
   text-align: center;
@@ -834,7 +835,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .modal-container button:focus {
-  outline: 1px solid #79A4F7;
+  outline: 1px solid #079DFF;
   outline-offset: -2px;
 }
 
@@ -843,13 +844,12 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .modal-container button.primary {
-  background: #79A4F7;
-  color: #202124;
+  color: #079DFF;
+  border-color: #079DFF;
 }
 
 .modal-body {
-  background: #202124;
-  border: 1px solid #3C4043;
+  border: 1px solid #D9DBDB;
 }
  
 .modal-tooltip {
