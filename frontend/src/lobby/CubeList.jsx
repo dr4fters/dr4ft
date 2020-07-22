@@ -50,7 +50,7 @@ const CubeCobra = () => {
         App.save("list", list);
       })
       .catch(() => {
-        setError(`Could not retrieve CubeCobra list with ID ${cubeId}`);
+        setError(`Could not retrieve CubeCobra list with ID "${cubeId}"`);
         setCubeImportMessage("");
       });
   };
