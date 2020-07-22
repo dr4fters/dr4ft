@@ -27,7 +27,7 @@ const ManualCubeInput = () => {
     <Fragment>
       <div>{`Or copy and paste your cube. One card per line! (${cubeListLength} cards)`}</div>
       <TextArea className="cube-list"
-        placeholder='cube list'
+        placeholder='Cube List'
         link='list'
       />
     </Fragment>
