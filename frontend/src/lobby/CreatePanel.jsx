@@ -71,7 +71,7 @@ const CreateRoomModal = () => {
         <input type='text'
           ref={draftNameInput}
           id="game-title-input"
-          placeholder="Game Room Name"
+          placeholder="Name your draft"
           value={title}
           onChange={(e) => {App.save("title", e.currentTarget.value);}}
         />
