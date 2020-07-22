@@ -25,7 +25,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
     ? seats * cards * packs
     : seats * cubePoolSize;
   assert(min <= list.length && list.length <= 1e5,
-    `A cube needs between ${min} and 100 000 cards; it has ${list.length}`);
+    `The cube needs between ${min} and 100 000 cards with this settings, it has ${list.length}`);
 
   const bad = [];
   for (let cardName of list)
