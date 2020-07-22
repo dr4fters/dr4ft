@@ -148,10 +148,10 @@ const Chaos = ({ packsNumber }) => (
         opts={_.seq(12, 3)} />
     </div>
     <div>
-      <Checkbox link='modernOnly' side='left' text='Modern Sets Only' />
+      <Checkbox link='modernOnly' side='right' text='Only Modern Sets: ' />
     </div>
     <div>
-      <Checkbox link='totalChaos' side='left' text='Total Chaos' />
+      <Checkbox link='totalChaos' side='right' text='Total Chaos: ' />
     </div>
   </div>
 );
