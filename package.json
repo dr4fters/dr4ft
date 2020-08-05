@@ -96,7 +96,7 @@
     "eslint": "7.5.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-react": "7.20.5",
-    "mocha": "8.0.1",
+    "mocha": "8.1.1",
     "nodemon": "2.0.4",
     "style-loader": "1.2.1",
     "webpack-cli": "3.3.12"
