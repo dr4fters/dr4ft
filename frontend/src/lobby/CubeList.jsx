@@ -27,7 +27,7 @@ const ManualCubeInput = () => {
     <Fragment>
       <div>{`Or copy and paste your cube. One card per line! (${cubeListLength} cards)`}</div>
       <TextArea className="cube-list"
-        placeholder='cube list'
+        placeholder='Cube List'
         link='list'
       />
     </Fragment>
@@ -46,11 +46,11 @@ const CubeCobra = () => {
     axios.get(`https://cubecobra.com/cube/api/cubelist/${cubeId}`)
       .then(({ data: list }) => {
         setError("");
-        setCubeImportMessage(`The cube with ID "${cubeId}" was imported.`);
+        setCubeImportMessage(`The cube with ID "${cubeId}" was imported`);
         App.save("list", list);
       })
       .catch(() => {
-        setError(`Could not retrieve CubeCobra list with ID ${cubeId}`);
+        setError(`Could not retrieve CubeCobra list with ID "${cubeId}"`);
         setCubeImportMessage("");
       });
   };
