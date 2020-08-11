@@ -25,7 +25,7 @@ const GameOptions = () => {
   case "cube sealed":
     return <CubeSealed/>;
   case "chaos draft":
-    return <ChaosDraft/>
+    return <ChaosDraft/>;
   case "chaos sealed":
     return <ChaosSealed/>;
   default:
@@ -34,36 +34,22 @@ const GameOptions = () => {
 };
 
 const RegularDraft = ({sets, type}) => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>Each player starts with {sets.length} booster packs.</p>
-      <p>To begin, each player opens one pack, chooses (drafts) one card, and passes the rest to the next player.</p>
-      <p>That player drafts one card from what's left, passes it, and so on until no cards are left.</p>
-      <p>Then everyone opens their next pack, starting a new round. Packs are passed in alternating directions each round.</p>
-      <p>Once all cards have been drafted, each player builds a deck out of the cards they drafted.</p>
-    </blockquote>
-    <Regular sets={sets} type={type} />
-  </Fragment>
+  <Regular sets={sets} type={type} />
 );
 
 RegularDraft.propTypes = {
   sets: PropTypes.array,
   type: PropTypes.string
-}
+};
 
 const RegularSealed = ({sets, type}) => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>Each player opens {sets.length} booster packs and builds a deck using any of those cards.</p>
-    </blockquote>
-    <Regular sets={sets} type={type} />
-  </Fragment>
+  <Regular sets={sets} type={type} />
 );
 
 RegularSealed.propTypes = {
   sets: PropTypes.array,
   type: PropTypes.string
-}
+};
 
 const Regular = ({ sets, type }) => (
   <Fragment>
@@ -74,7 +60,7 @@ const Regular = ({ sets, type }) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(12, 1)} />
     </div>
-    <div className="wrapper">
+    <div>
       <Sets sets={sets} type={type} />
     </div>
   </Fragment>
@@ -92,10 +78,6 @@ const Sets = ({ sets, type }) => (
 
 const Decadent = ({ sets, type }) => (
   <Fragment>
-    <blockquote className="game-mode-description">
-      <p>Also known as "Rich Man's Draft" or "Decadent Sealed".</p>
-      <p>Like a regular draft except each player chooses one card from the pack, discards the rest, then opens a new pack.</p>
-    </blockquote>
     <div>
       Number of packs:{" "}
       <Select
@@ -103,7 +85,7 @@ const Decadent = ({ sets, type }) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
-    <div className="wrapper">
+    <div>
       <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
   </Fragment>
@@ -115,27 +97,17 @@ Decadent.propTypes = {
 };
 
 const CubeDraft = () => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>A draft where each pack is a random set of cards from a large pool of cards called the "cube".</p>
-    </blockquote>
-    <div>
-      <CubeList />
-      <CubeOptions />
-    </div>
-  </Fragment>
+  <div>
+    <CubeList />
+    <CubeOptions />
+  </div>
 );
 
 const CubeSealed = () => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>Like sealed except each pack is a random set of cards from a large pool of cards called the "cube".</p>
-    </blockquote>
-    <div>
-      <CubeList />
-      <CubeSealedOptions />
-    </div>
-  </Fragment>
+  <div>
+    <CubeList />
+    <CubeSealedOptions />
+  </div>
 );
 
 const CubeSealedOptions = () => (
@@ -159,23 +131,11 @@ const CubeOptions = () => (
 );
 
 const ChaosDraft = () => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>A draft where each booster pack is from a random set.</p>
-      <p>Take it up a notch with total chaos to build booster packs where each card in the pack is from a random set!</p>
-    </blockquote>
-    <Chaos packsNumber={"chaosDraftPacksNumber"} />
-  </Fragment>
+  <Chaos packsNumber={"chaosDraftPacksNumber"} />
 );
 
 const ChaosSealed = () => (
-  <Fragment>
-    <blockquote className="game-mode-description">
-      <p>Like sealed except each booster pack is from a random set.</p>
-      <p>Take it up a notch with total chaos to build booster packs where each card in the pack is from a random set!</p>
-    </blockquote>
-    <Chaos packsNumber={"chaosSealedPacksNumber"}/>
-  </Fragment>
+  <Chaos packsNumber={"chaosSealedPacksNumber"}/>
 );
 
 const Chaos = ({ packsNumber }) => (

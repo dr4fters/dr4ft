@@ -1,73 +1,45 @@
-import React from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 
+import RadioOptions from "../components/RadioOptions";
+import { toTitleCase } from "../utils";
 import App from "../app";
 
-import { toTitleCase } from "../utils";
+const gameDescriptions = {
+  regular: "Conventional 15 card booster packs",
+  cube: "A user curated draft set",
+  chaos: "Randomized booster packs",
+  decadent: "Packs are discarded after first pick"
+};
 
 const GameTypes = () => {
   const gameOptions = {
     draft: ["regular", "cube", "chaos", "decadent"],
     sealed: ["regular", "cube", "chaos"]
-  }
+  };
 
   const getAvailableTypes = () => Object.keys(gameOptions);
   const getAvailableSubTypes = (gameType) => gameOptions[gameType];
   return (
     <div>
-      <p>Game type:{" "}
-        <span className='connected-container'>
-          {getAvailableTypes().map((gameType, key) =>
-            <GameType name={"type"}
-              type={gameType}
-              key={key}
-              isChecked={App.state.gametype === gameType}
-              onChange={() => {
-                App.save("gametype", gameType)
-                const availableSubtypes = getAvailableSubTypes(gameType)
-                if (!availableSubtypes.includes(App.state.gamesubtype)) {
-                  // Reset to first available subtype if the currently-selected
-                  // subtype is not available for the newly-selected type.
-                  App.save("gamesubtype", availableSubtypes[0])
-                }
-              }}
-            />
-          )}
-        </span>
-      </p>
-      <p>Game mode:{" "}
-        <span className='connected-container'>
-          {getAvailableSubTypes(App.state.gametype).map((type, key) =>
-            <GameType name={"subtype"}
-              type={type}
-              key={key}
-              isChecked={App.state.gamesubtype === type}
-              onChange={() => App.save("gamesubtype", type)}
-            />
-          )}
-        </span>
-      </p>
+      <span className='connected-container'>
+        <RadioOptions
+          name="subtype"
+          description="Game subtype"
+          appProperty="gamesubtype"
+          options={
+            getAvailableSubTypes(App.state.gametype).map(type => {
+              return {
+                label: toTitleCase(type),
+                value: type,
+                tooltip: gameDescriptions[type]
+              };
+            })
+          }
+        />
+      </span>
     </div>
   );
-};
-
-const GameType = ({ name, type, isChecked, onChange}) => (
-  <label className='radio-label connected-component'>
-    <input
-      className="radio-input connected-component"
-      name={name}
-      type='radio'
-      value={type}
-      onChange={onChange}
-      checked={isChecked}/> {toTitleCase(type)}
-  </label>
-);
-
-GameType.propTypes = {
-  name: PropTypes.string,
-  type: PropTypes.string,
-  isChecked: PropTypes.bool,
-  onChange: PropTypes.func
 };
 
 export default GameTypes;

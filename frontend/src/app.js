@@ -67,6 +67,7 @@ let App = {
       version: "0.0.0",
       date: "1970-01-01"
     },
+    boosterRulesVersion: "",
     messages: [],
     pickNumber: 0,
     packSize: 15,

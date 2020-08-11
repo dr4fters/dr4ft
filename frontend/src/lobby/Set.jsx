@@ -12,9 +12,12 @@ const Set = ({ index, selectedSet, type }) => {
     App.save(type, App.state[type]);
   };
   return (
-    <select value={selectedSet} onChange={onSetChange} key={index}>
-      <SetChoices/>
-    </select>
+    <div>
+      {/* TODO pull down set icons */}
+      <select value={selectedSet} onChange={onSetChange} key={index}>
+        <SetChoices/>
+      </select>
+    </div>
   );
 };
 
