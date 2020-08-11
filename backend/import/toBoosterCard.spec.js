@@ -206,7 +206,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
       assert(parsedCard.isDoubleFaced, "Transform card should be doubleFaced");
     });
 
-    it("parse a split|aftermath|adventure card with double name", () => {
+    it("parse a split|aftermath card with double name", () => {
       const adventureCard = {
         "colorIdentity": ["U"],
         "colors": ["U"],
@@ -242,7 +242,7 @@ describe("Acceptance tests for toBoosterCard function", () => {
         "uuid": "9f08d4be-a5c4-5015-b369-1c82e182e2df",
       };
       const [parsedCard] = [adventureCard].map(toBoosterCard("setCode"));
-      assert(parsedCard.name === "Animating Faerie // Bring to Life", "Adventure card should be have names linked with //");
+      assert(parsedCard.name === "Bring to Life", "Adventure card should not have names linked with //");
     });
 
     it("parse a split card with correct mana cost", () => {

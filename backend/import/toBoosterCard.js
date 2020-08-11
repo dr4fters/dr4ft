@@ -29,7 +29,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     rarity = "basic";
   }
 
-  if (/split|aftermath|adventure/i.test(layout))
+  if (/split|aftermath/i.test(layout))
     name = names.join(" // ");
 
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
