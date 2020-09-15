@@ -76,7 +76,7 @@
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-filepond": "7.0.1",
+    "react-filepond": "7.1.0",
     "react-tooltip": "^4.2.9",
     "semver": "7.3.2",
     "unzipper": "0.10.11",
