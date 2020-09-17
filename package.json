@@ -77,7 +77,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-filepond": "7.1.0",
-    "react-tooltip": "^4.2.9",
+    "react-tooltip": "^4.2.10",
     "semver": "7.3.2",
     "unzipper": "0.10.11",
     "utils": "git://github.com/dr4fters/utils.git",
