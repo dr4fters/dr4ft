@@ -59,7 +59,7 @@
     "babel-loader": "8.1.0",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
-    "dompurify": "2.0.17",
+    "dompurify": "2.1.1",
     "engine.io": "3.4.2",
     "engine.io-client": "3.4.3",
     "express": "4.17.1",
