@@ -67,6 +67,7 @@ It supports all their features, and many more.
 1) Install [Node.js](https://nodejs.org/en/download/) >= 12.0.0
 2) Run<br>
 `$ npm install`<br>
+`$ npm run build`<br>
 `$ npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
 
