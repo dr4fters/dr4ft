@@ -91,7 +91,7 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "clean-webpack-plugin": "3.0.0",
-    "copy-webpack-plugin": "6.1.1",
+    "copy-webpack-plugin": "6.2.1",
     "css-loader": "3.6.0",
     "eslint": "7.9.0",
     "eslint-plugin-import": "2.22.1",
