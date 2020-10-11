@@ -583,10 +583,6 @@ input[type="checkbox"], input[type="radio"] {
   margin-right: 30px;
 }
 
-.game-settings {
-  flex-shrink: 0;
-}
-
 .deck-settings thead tr:first-of-type {
   text-align: center;
 }
@@ -617,18 +613,6 @@ input[type="checkbox"], input[type="radio"] {
 
 .copy-controls {
   margin-top: 3px;
-}
-
-.settings-sort-cards {
-  padding-top: 5px;
-}
-
-.settings-cards-size {
-  padding-top: 5px;
-}
-
-.settings-cards-language {
-  padding-top: 5px;
 }
 
 .inputfile {

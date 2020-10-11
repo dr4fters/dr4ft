@@ -97,7 +97,10 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-react": "7.20.6",
     "mocha": "8.1.3",
+    "node-sass": "^4.14.1",
     "nodemon": "2.0.4",
+    "sass": "^1.26.11",
+    "sass-loader": "^10.0.2",
     "style-loader": "1.2.1",
     "webpack-cli": "3.3.12"
   },

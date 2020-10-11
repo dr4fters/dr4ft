@@ -1,0 +1,38 @@
+.Game-Settings {
+  flex-shrink: 0;
+
+  .sort-cards, .card-quality {
+    padding-top: 10px;
+
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+
+      label {
+        background: #fff;
+        padding: 3px 5px;
+        border: solid #d0d0d0 1px;
+        margin-right: 5px;
+
+        display: flex;
+        justify-content: flex-start;
+
+        div {
+        }
+        input {
+          display: none;
+        }
+
+        &.active {
+          background: #3a87e5;
+          border: solid #3a87e5 1px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .cards-language {
+    padding-top: 5px;
+  }
+}

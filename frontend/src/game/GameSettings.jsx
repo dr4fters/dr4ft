@@ -2,9 +2,10 @@ import React from "react";
 
 import App from "../app";
 import Checkbox from "../components/Checkbox";
+import './GameSettings.scss';
 
 const GameSettings = () => (
-  <div className='game-settings'>
+  <div className='Game-Settings'>
     <fieldset className='fieldset'>
       <legend className='legend game-legend'>Settings</legend>
       <span>
@@ -36,20 +37,30 @@ const GameSettings = () => (
 );
 
 const SortCards = () => (
-  <div className="settings-sort-cards">
+  <div className="sort-cards">
     Sort cards by:
-    <div className= 'connected-container' >
-      {["CMC", "Color", "Type", "Rarity"].map((sort, index) =>
-        <label key={index} className='radio-label connected-component'>
-          <input checked= {sort.toLowerCase() === App.state.sort}
-            className='radio-input'
-            name= 'sort-order'
-            onChange= {e => App.save("sort", e.currentTarget.value)}
-            type='radio'
-            value={sort.toLowerCase()}/>
-          {sort}
-        </label>
-      )}
+    <div className='connected-container' >
+      {["CMC", "Color", "Type", "Rarity"].map((sort, index) => {
+        const isActive = sort.toLowerCase() === App.state.sort
+
+        return (
+          <label key={index} 
+            className={isActive
+              ? "active connected-component"
+              : "connected-component"
+            }
+          >
+            <input checked= {isActive}
+              className='radio-input'
+              name= 'sort-order'
+              onChange= {e => App.save("sort", e.currentTarget.value)}
+              type='radio'
+              value={sort.toLowerCase()}
+            />
+            <div>{sort}</div>
+          </label>
+        )
+      })}
     </div>
   </div>
 );
@@ -62,19 +73,29 @@ const sizeDisplay = {
 };
 
 const CardsImageQuality = () => (
-  <div className="settings-cards-size">
+  <div className="card-quality">
     Card image quality:
     <div className='connected-container'>
-      {Object.keys(sizeDisplay).map((size, index) =>
-        <label key={index} className='radio-label connected-component'>
-          <input checked={size.toLowerCase() === App.state.cardSize}
-            className='radio-input'
-            name='card-size'
-            onChange={e => App.save("cardSize", e.currentTarget.value)}
-            type='radio'
-            value={size.toLowerCase()} />
-          {sizeDisplay[size]}
-        </label>)}
+      {Object.keys(sizeDisplay).map((size, index) => {
+        const isActive = size.toLowerCase() === App.state.cardSize
+
+        return (
+          <label key={index}
+            className={isActive
+              ? "active connected-component"
+              : "connected-component"
+            }
+          >
+            <input checked={isActive}
+              className='radio-input'
+              name='card-size'
+              onChange={e => App.save("cardSize", e.currentTarget.value)}
+              type='radio'
+              value={size.toLowerCase()} />
+            <div>{sizeDisplay[size]}</div>
+          </label>
+        )
+      })}
     </div>
   </div>
 );
@@ -94,7 +115,7 @@ const imgLanguageDisplay = {
 };
 
 const CardsImageLanguage = () => (
-  <div className="settings-cards-language">
+  <div className="cards-language">
     Card image language:
     <div className='connected-container'>
       <select
