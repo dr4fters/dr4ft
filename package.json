@@ -81,7 +81,7 @@
     "semver": "7.3.2",
     "unzipper": "0.10.11",
     "utils": "git://github.com/dr4fters/utils.git",
-    "uuid": "8.3.0",
+    "uuid": "8.3.1",
     "vanilla-toast": "0.5.0",
     "webpack": "4.44.2",
     "webpack-merge": "4.2.2",
