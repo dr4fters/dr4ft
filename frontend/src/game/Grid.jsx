@@ -27,7 +27,8 @@ const getZoneDetails = (appState, zoneName, cards) => {
       // Only 1 pick in decadent draft.
       return `Pick 1 / 1`;
     } else {
-      return `Pick ${appState.pickNumber} / ${appState.packSize}`
+      let turns = Math.ceil(appState.packSize / appState.picksPerPack  );
+      return `Pick ${appState.pickNumber} / ${turns}`
     }
   } else {
     return cards.length;

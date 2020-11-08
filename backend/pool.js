@@ -49,7 +49,6 @@ const DraftNormal = ({ playersLength, sets }) => (
     .map(boosterGenerator)
     .map(addCardIdsToBoosterCards)
 );
-
 // Get a random set and transform it to pack
 function getRandomPack(setList) {
   const code = chooseRandomSet(setList).code;

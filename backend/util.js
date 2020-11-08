@@ -73,7 +73,8 @@ module.exports = {
       "cube sealed",
       "chaos draft",
       "chaos sealed",
-      "decadent draft"
+      "decadent draft",
+      "legends draft"
     ];
     assert(acceptableGameTypes.includes(type),
       `type can be one of: ${acceptableGameTypes.join(", ")}`);

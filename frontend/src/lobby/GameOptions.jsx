@@ -11,11 +11,14 @@ import SetReplicated from "./SetReplicated";
 import CubeList from "./CubeList";
 
 const GameOptions = () => {
-  const { setsDraft, setsSealed, setsDecadentDraft, gametype, gamesubtype } = App.state;
+  const { 
+      setsDraft, setsSealed, setsDecadentDraft, 
+      gametype, gamesubtype, 
+      picksPerPack} = App.state;
 
   switch (`${gamesubtype} ${gametype}`) {
   case "regular draft":
-    return <RegularDraft sets={setsDraft} type={"setsDraft"} />;
+    return <RegularDraft sets={setsDraft} type={"setsDraft"}  picksPerPack={picksPerPack}/>;
   case "regular sealed":
     return <RegularSealed sets={setsSealed} type={"setsSealed"} />;
   case "decadent draft":
@@ -33,14 +36,17 @@ const GameOptions = () => {
   }
 };
 
-const RegularDraft = ({sets, type}) => (
-  <Regular sets={sets} type={type} />
+const RegularDraft = ({sets, type, picksPerPack}) => (
+  <Regular sets={sets} type={type} picksPerPack={picksPerPack}/>
 );
 
 RegularDraft.propTypes = {
   sets: PropTypes.array,
   type: PropTypes.string
 };
+
+
+
 
 const RegularSealed = ({sets, type}) => (
   <Regular sets={sets} type={type} />
@@ -51,7 +57,7 @@ RegularSealed.propTypes = {
   type: PropTypes.string
 };
 
-const Regular = ({ sets, type }) => (
+const Regular = ({ sets, type, picksPerPack }) => (
   <Fragment>
     <div>
       Number of packs:{" "}
@@ -59,6 +65,14 @@ const Regular = ({ sets, type }) => (
         value={sets.length}
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(12, 1)} />
+        <br/>
+      Picks per turn:{" "}
+      <Select
+        value={picksPerPack}
+        onChange={App._emit("changePicksPerPack", type)}
+        opts={_.seq(12, 1)} />
+      Just first Pick:{" "}
+        <Checkbox/>
     </div>
     <div>
       <Sets sets={sets} type={type} />
@@ -70,6 +84,9 @@ Regular.propTypes = {
   sets: PropTypes.array,
   type: PropTypes.string
 };
+
+
+
 
 const Sets = ({ sets, type }) => (
   sets

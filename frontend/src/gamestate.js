@@ -61,22 +61,22 @@ class GameState extends EventEmitter {
   #state;
   #zoneState;
   #landDistribution;
-  #autopickCardId;
+  #autopickCardIds;
 
   constructor({
     state = defaultCardState(),
     landDistribution = defaultLandDistribution(),
-    autopickCardId = null
+    autopickCardIds = []
   } = {
     state: defaultCardState(),
     landDistribution: defaultLandDistribution(),
-    autopickCardId: null
+    autopickCardIds: []
   }) {
     super();
     this.#state = state;
     this.#landDistribution = landDistribution;
     this.#zoneState = defaultState();
-    this.#autopickCardId = autopickCardId;
+    this.#autopickCardIds = autopickCardIds;
   }
 
   /**
@@ -86,7 +86,9 @@ class GameState extends EventEmitter {
   get(zoneName) {
     return this.#zoneState[zoneName];
   }
-
+  getAutopickCardIds(){
+   return this.#autopickCardIds; 
+  }
   countCardsByName(zoneName, fun = ({name}) => name) {
     return this.countCardsBy(zoneName, fun);
   }
@@ -182,22 +184,23 @@ class GameState extends EventEmitter {
     this.emit("updateGameState", {
       state: this.#state,
       landDistribution: this.#landDistribution,
-      autopickCardId: this.#autopickCardId
+      autopickCardIds: this.#autopickCardIds
     });
   }
 
   isAutopick(cardId) {
-    return this.#autopickCardId === cardId;
+    return  this.#autopickCardIds.includes(cardId.toString());
   }
 
-  updateAutopick(cardId) {
-    this.#autopickCardId = cardId;
+  updateAutopick(cardId,picksPerPack) {
+    if (this.#autopickCardIds.length == picksPerPack) this.#autopickCardIds.shift();
+    this.#autopickCardIds.push(cardId);
     this.updState();
   }
 
   resetPack() {
     this.get(ZONE_PACK).length = 0;
-    this.#autopickCardId = null;
+    this.#autopickCardIds = [];
   }
 }
 

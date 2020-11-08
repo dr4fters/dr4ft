@@ -102,14 +102,14 @@ const events = {
   },
 
   create() {
-    let {gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber} = App.state;
+    let {gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber, picksPerPack} = App.state;
     seats = Number(seats);
 
     //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
     // OR change backend to accept "regular draft" instead of "draft" and "regular sealed" instead of "sealed"
     const type = `${/regular/.test(gamesubtype) ? "" : gamesubtype + " "}${gametype}`;
 
-    let options = {type, seats, title, isPrivate, modernOnly, totalChaos};
+    let options = {type, seats, title, isPrivate, modernOnly, totalChaos,picksPerPack};
 
     switch (gamesubtype) {
     case "regular": {
@@ -143,6 +143,10 @@ const events = {
     }
 
     App.save(type, sets);
+  },
+  changePicksPerPack(type, event) {
+    App.state.picksPerPack = event.currentTarget.value;
+    App.update();
   },
   pool(cards) {
     const zoneName = App.state.side ? ZONE_SIDEBOARD : ZONE_MAIN;
@@ -367,12 +371,16 @@ const clickPack = (card) => {
   const pack = App.state.gameState.get(ZONE_PACK);
   const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
   if (!App.state.gameState.isAutopick(card.cardId)) {
-    App.state.gameState.updateAutopick(card.cardId);
+    App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
     App.send("autopick", index);
   } else {
-    App.state.gameState.resetPack();
-    App.update();
-    App.send("pick", index);
+    if (App.state.picksPerPack == App.state.gameState.getAutopickCardIds().length ||
+        pack.length == App.state.gameState.getAutopickCardIds().length){
+      let picks = App.state.gameState.getAutopickCardIds().toString();
+      App.state.gameState.resetPack();
+      App.update();
+      App.send("pick");
+    }
   }
 };
 
