@@ -32,7 +32,7 @@ let App = {
     chaosDraftPacksNumber: 3,
     chaosSealedPacksNumber: 6,
     gametype: "draft",
-    picksPerPack: 2,
+    picksPerPack: 1,
     DoubleMasters: -1, 
     gamesubtype: "regular",
     sets: [],

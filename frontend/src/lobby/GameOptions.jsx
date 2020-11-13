@@ -22,22 +22,25 @@ const GameOptions = () => {
   case "regular sealed":
     return <RegularSealed sets={setsSealed} type={"setsSealed"} />;
   case "decadent draft":
-    return <Decadent sets={setsDecadentDraft} type={"setsDecadentDraft"} />;
+    return <Decadent sets={setsDecadentDraft} type={"setsDecadentDraft"} picksPerPack={picksPerPack}/>;
   case "cube draft":
-    return <CubeDraft/>;
+    return <CubeDraft picksPerPack={picksPerPack} />;
   case "cube sealed":
-    return <CubeSealed/>;
+    return <CubeSealed />;
   case "chaos draft":
-    return <ChaosDraft/>;
+    return <ChaosDraft picksPerPack={picksPerPack} />;
   case "chaos sealed":
-    return <ChaosSealed/>;
+    return <ChaosSealed />;
   default:
     return null;
   }
 };
 
 const RegularDraft = ({sets, type, picksPerPack}) => (
-  <Regular sets={sets} type={type} picksPerPack={picksPerPack}/>
+  <div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
+    <Regular sets={sets} type={type} />
+  </div>
 );
 
 RegularDraft.propTypes = {
@@ -57,23 +60,8 @@ RegularSealed.propTypes = {
   type: PropTypes.string
 };
 
-const Regular = ({ sets, type, picksPerPack }) => (
+const Regular = ({ sets, type }) => (
   <Fragment>
-    <div>
-      Number of packs:{" "}
-      <Select
-        value={sets.length}
-        onChange={App._emit("changeSetsNumber", type)}
-        opts={_.seq(12, 1)} />
-        <br/>
-      Picks per turn:{" "}
-      <Select
-        value={picksPerPack}
-        onChange={App._emit("changePicksPerPack", type)}
-        opts={_.seq(12, 1)} />
-      Just first Pick:{" "}
-        <Checkbox/>
-    </div>
     <div>
       <Sets sets={sets} type={type} />
     </div>
@@ -93,8 +81,9 @@ const Sets = ({ sets, type }) => (
     .map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
 );
 
-const Decadent = ({ sets, type }) => (
+const Decadent = ({ sets, type, picksPerPack }) => (
   <Fragment>
+    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       Number of packs:{" "}
       <Select
@@ -113,10 +102,11 @@ Decadent.propTypes = {
   type: PropTypes.string
 };
 
-const CubeDraft = () => (
+const CubeDraft = ({picksPerPack }) => (
   <div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
     <CubeList />
-    <CubeOptions />
+    <CubeOptions  />
   </div>
 );
 
@@ -147,14 +137,26 @@ const CubeOptions = () => (
   </div>
 );
 
-const ChaosDraft = () => (
-  <Chaos packsNumber={"chaosDraftPacksNumber"} />
+const ChaosDraft = ({picksPerPack }) => (
+  <div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
+    <Chaos packsNumber={"chaosDraftPacksNumber"} />
+  </div>
 );
 
 const ChaosSealed = () => (
-  <Chaos packsNumber={"chaosSealedPacksNumber"}/>
+  <Chaos packsNumber={"chaosSealedPacksNumber"} />
 );
 
+const PicksPerPacks = ({picksPerPack})=> (
+      <div>
+      Picks per turn:{" "}
+      <Select
+        value={picksPerPack}
+        onChange={App._emit("changePicksPerPack")}
+        opts={_.seq(12, 1)} />
+      </div>
+)
 const Chaos = ({ packsNumber }) => (
   <div>
     <div>

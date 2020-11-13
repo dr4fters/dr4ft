@@ -144,7 +144,7 @@ const events = {
 
     App.save(type, sets);
   },
-  changePicksPerPack(type, event) {
+  changePicksPerPack(event) {
     App.state.picksPerPack = event.currentTarget.value;
     App.update();
   },
