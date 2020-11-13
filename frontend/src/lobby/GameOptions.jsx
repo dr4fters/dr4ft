@@ -38,8 +38,8 @@ const GameOptions = () => {
 
 const RegularDraft = ({sets, type, picksPerPack}) => (
   <div>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <Regular sets={sets} type={type} />
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </div>
 );
 
@@ -47,9 +47,6 @@ RegularDraft.propTypes = {
   sets: PropTypes.array,
   type: PropTypes.string
 };
-
-
-
 
 const RegularSealed = ({sets, type}) => (
   <Regular sets={sets} type={type} />
@@ -60,8 +57,15 @@ RegularSealed.propTypes = {
   type: PropTypes.string
 };
 
-const Regular = ({ sets, type }) => (
+const Regular = ({sets, type}) => (
   <Fragment>
+    <div>
+      Number of packs:{" "}
+      <Select
+        value={sets.length}
+        onChange={App._emit("changeSetsNumber", type)}
+        opts={_.seq(12, 1)} />
+    </div>
     <div>
       <Sets sets={sets} type={type} />
     </div>
@@ -73,17 +77,12 @@ Regular.propTypes = {
   type: PropTypes.string
 };
 
-
-
-
-const Sets = ({ sets, type }) => (
-  sets
-    .map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
+const Sets = ({sets, type}) => (
+  sets.map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
 );
 
-const Decadent = ({ sets, type, picksPerPack }) => (
+const Decadent = ({sets, type, picksPerPack}) => (
   <Fragment>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       Number of packs:{" "}
       <Select
@@ -91,6 +90,7 @@ const Decadent = ({ sets, type, picksPerPack }) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
@@ -102,11 +102,11 @@ Decadent.propTypes = {
   type: PropTypes.string
 };
 
-const CubeDraft = ({picksPerPack }) => (
+const CubeDraft = ({picksPerPack}) => (
   <div>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <CubeList />
-    <CubeOptions  />
+    <CubeOptions />
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </div>
 );
 
@@ -137,10 +137,10 @@ const CubeOptions = () => (
   </div>
 );
 
-const ChaosDraft = ({picksPerPack }) => (
+const ChaosDraft = ({picksPerPack}) => (
   <div>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <Chaos packsNumber={"chaosDraftPacksNumber"} />
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </div>
 );
 
@@ -148,21 +148,22 @@ const ChaosSealed = () => (
   <Chaos packsNumber={"chaosSealedPacksNumber"} />
 );
 
-const PicksPerPacks = ({picksPerPack})=> (
-      <div>
-      Picks per turn:{" "}
-      <Select
-        value={picksPerPack}
-        onChange={App._emit("changePicksPerPack")}
-        opts={_.seq(12, 1)} />
-      </div>
+const PicksPerPacks = ({picksPerPack}) => (
+  <div>
+  Picks per pack:{" "}
+  <Select
+    value={picksPerPack}
+    onChange={App._emit("changePicksPerPack")}
+    opts={_.seq(12, 1)} />
+  </div>
 )
-const Chaos = ({ packsNumber }) => (
+
+const Chaos = ({packsNumber}) => (
   <div>
     <div>
       Number of packs:{" "}
       <Select
-        onChange={(e) => { App.save(packsNumber, parseInt(e.currentTarget.value));}}
+        onChange={(e) => {App.save(packsNumber, parseInt(e.currentTarget.value));}}
         link={packsNumber}
         opts={_.seq(12, 3)} />
     </div>
