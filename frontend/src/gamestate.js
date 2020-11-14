@@ -87,7 +87,7 @@ class GameState extends EventEmitter {
     return this.#zoneState[zoneName];
   }
   getAutopickCardIds(){
-   return this.#autopickCardIds; 
+    return this.#autopickCardIds;
   }
   countCardsByName(zoneName, fun = ({name}) => name) {
     return this.countCardsBy(zoneName, fun);
@@ -189,7 +189,7 @@ class GameState extends EventEmitter {
   }
 
   isAutopick(cardId) {
-    return  this.#autopickCardIds.includes(cardId.toString());
+    return this.#autopickCardIds.includes(cardId.toString());
   }
 
   updateAutopick(cardId,picksPerPack) {

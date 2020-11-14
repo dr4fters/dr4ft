@@ -193,10 +193,9 @@ module.exports = class Game extends Room {
     this.logger.debug(`${sock.name} joined the game`);
 
     function regularDraftPickDelegate(index) {
-      index.sort(function(a, b){return b-a});
+      index.sort(function(a, b){return b-a;});
       let cards=[];
       let pack = this.packs.shift();
-      let pickcard;
       for (var i = 0; i < index.length; i++) {
         cards.push( pack.splice(index[i], 1)[0]);
         this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
@@ -219,7 +218,7 @@ module.exports = class Game extends Room {
     }
 
     function decadentDraftPickDelegate(index) {
-      index.sort(function(a, b){return b-a});
+      index.sort(function(a, b){return b-a;});
       let cards=[];
 
       const pack = this.packs.shift();

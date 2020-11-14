@@ -1,7 +1,7 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random, sample, pull} = require("lodash");
+const {random, pull} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
@@ -12,7 +12,7 @@ module.exports = class extends Player {
       name: sock.name,
       id: sock.id,
     });
-    this.picksPerPack = picksPerPack
+    this.picksPerPack = picksPerPack;
     this.pickDelegate = pickDelegate.bind(this);
     this.attach(sock);
     this.autopickIndex = [];
@@ -57,7 +57,7 @@ module.exports = class extends Player {
     if (pack && index < pack.length){
       if (this.autopickIndex.length===this.picksPerPack){
         this.autopickIndex.shift();
-      } 
+      }
       this.autopickIndex.push(index);
     }
   }
@@ -120,19 +120,19 @@ module.exports = class extends Player {
   }
   pickOnTimeout() {
     let pack = this.packs.slice(0);
-    let new_index;
+    let newIndex;
     let card;
-    let min =  Math.min(pack.length,this.picksPerPack);
+    let min = Math.min(pack.length,this.picksPerPack);
     if(this.autopickIndex.length < min){
       for (var i = 0; i < this.autopickIndex.length; i++) {
         card = pack[this.autopickIndex[i]];
         pull(pack, card);
       }
       let difference = min - this.autopickIndex.length;
-      for (var i = 0; i < difference; i++) {
-        new_index = random(0,pack.length - 1);
-        this.autopickIndex.push(new_index);
-        card = pack[new_index];
+      for (var a = 0; a < difference; a++) {
+        newIndex = random(0,pack.length - 1);
+        this.autopickIndex.push(newIndex);
+        card = pack[newIndex];
         pull(pack, card);
       }
     }

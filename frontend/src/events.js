@@ -375,8 +375,7 @@ const clickPack = (card) => {
     App.send("autopick", index);
   } else {
     if (App.state.picksPerPack == App.state.gameState.getAutopickCardIds().length ||
-        pack.length == App.state.gameState.getAutopickCardIds().length){
-      let picks = App.state.gameState.getAutopickCardIds().toString();
+      pack.length == App.state.gameState.getAutopickCardIds().length){
       App.state.gameState.resetPack();
       App.update();
       App.send("pick");
