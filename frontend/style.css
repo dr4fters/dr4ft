@@ -421,6 +421,20 @@ input[type="checkbox"], input[type="radio"] {
   background: rgba(200, 200, 200, 0.25);
 }
 
+.autoremovable-pick:before {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: rgba(200, 200, 200, 0.25);
+}
+
 .foil-card:before {
   content: '';
 
@@ -457,6 +471,25 @@ input[type="checkbox"], input[type="radio"] {
   text-shadow: 0 0 2px #000;
 }
 
+.autoremovable-pick:after {
+  content: 'Autopick*';
+
+  display: inline-block;
+  position: absolute;
+
+  /* Center in the middle of the bottom border on the card. */
+  line-height: 25px;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+
+  color: #f00;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 0 2px #000;
+}
 /** Misc **/
 
 .icon {

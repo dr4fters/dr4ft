@@ -145,12 +145,13 @@ let App = {
     this.ws.send(msg);
   },
   initGameState(id) {
-    const { gameStates } = App.state;
+    const { gameStates, picksPerPack } = App.state;
     if (!gameStates[id]) {
       App.state.gameState = new GameState();
     } else {
       App.state.gameState = new GameState(gameStates[id]);
     }
+      App.state.gameState.setPicksPerPack(picksPerPack);
     App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {
         // ...App.state.gameStates,

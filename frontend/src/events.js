@@ -371,7 +371,7 @@ const clickPack = (card) => {
   const pack = App.state.gameState.get(ZONE_PACK);
   const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
   if (!App.state.gameState.isAutopick(card.cardId)) {
-    App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
+    App.state.gameState.updateAutopick(card.cardId);
     App.send("autopick", index);
   } else {
     if (App.state.picksPerPack == App.state.gameState.getAutopickCardIds().length ||
