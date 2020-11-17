@@ -423,16 +423,15 @@ input[type="checkbox"], input[type="radio"] {
 
 .autoremovable-pick:before {
   content: '';
-
   display: block;
   position: absolute;
-
+  background-image: url('https://i.pinimg.com/564x/7b/87/3c/7b873c21da94ab660be4590250c8fb86.jpg');
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 
-  background: rgba(200, 200, 200, 0.25);
+  background: rgba(200, 200, 200, 0.7);
 }
 
 .foil-card:before {
@@ -472,14 +471,13 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .autoremovable-pick:after {
-  content: 'Autopick*';
-
+  content: 'Autopick';
   display: inline-block;
   position: absolute;
 
   /* Center in the middle of the bottom border on the card. */
-  line-height: 25px;
-  bottom: 5px;
+  /*line-height: 25px;
+  bottom: 5px;*/
   left: 0;
   right: 0;
 
