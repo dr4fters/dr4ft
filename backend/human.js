@@ -55,7 +55,7 @@ module.exports = class extends Player {
   _autopick(index) {
     let [pack] = this.packs;
     if (pack && index < pack.length){
-      if (this.autopickIndex.length===this.picksPerPack){
+      if (this.autopickIndex.length == this.picksPerPack){
         this.autopickIndex.shift();
       }
       this.autopickIndex.push(index);
@@ -122,7 +122,7 @@ module.exports = class extends Player {
     let pack = this.packs.slice(0);
     let newIndex;
     let card;
-    let min = Math.min(pack.length,this.picksPerPack);
+    let min = Math.min(this.packs[0].length,this.picksPerPack);
     if(this.autopickIndex.length < min){
       for (var i = 0; i < this.autopickIndex.length; i++) {
         card = pack[this.autopickIndex[i]];

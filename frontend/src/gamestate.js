@@ -67,17 +67,20 @@ class GameState extends EventEmitter {
   constructor({
     state = defaultCardState(),
     landDistribution = defaultLandDistribution(),
-    autopickCardIds = []
+    autopickCardIds = [],
+    picksPerPack = 1
   } = {
     state: defaultCardState(),
     landDistribution: defaultLandDistribution(),
-    autopickCardIds: []
+    autopickCardIds: [],
+    picksPerPack: 1
   }) {
     super();
     this.#state = state;
     this.#landDistribution = landDistribution;
     this.#zoneState = defaultState();
     this.#autopickCardIds = autopickCardIds;
+    this.#picksPerPack = picksPerPack;
   }
 
   /**
@@ -185,7 +188,8 @@ class GameState extends EventEmitter {
     this.emit("updateGameState", {
       state: this.#state,
       landDistribution: this.#landDistribution,
-      autopickCardIds: this.#autopickCardIds
+      autopickCardIds: this.#autopickCardIds,
+      picksPerPack: this.#picksPerPack,
     });
   }
 

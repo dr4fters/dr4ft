@@ -148,10 +148,11 @@ let App = {
     const { gameStates, picksPerPack } = App.state;
     if (!gameStates[id]) {
       App.state.gameState = new GameState();
+      App.state.gameState.setPicksPerPack(picksPerPack);
     } else {
       App.state.gameState = new GameState(gameStates[id]);
+      App.state.picksPerPack = gameStates[id].picksPerPack;
     }
-    App.state.gameState.setPicksPerPack(picksPerPack);
     App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {
         // ...App.state.gameStates,
