@@ -406,21 +406,6 @@ input[type="checkbox"], input[type="radio"] {
   width: inherit;
 }
 
-.card:hover:before,
-.autopick-card:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-}
-
 .foil-card:before {
   content: '';
 
@@ -435,26 +420,70 @@ input[type="checkbox"], input[type="radio"] {
   background: rgba(200, 200, 200, 0.25);
   background-image: url('media/foil.png');
   background-size: 240px 340px;
+
 }
 
-.autopick-card:after {
-  content: 'Autopick';
+.foil-card.autopick-card:after {
+  content: '';
 
-  display: inline-block;
+  display: block;
   position: absolute;
 
-  /* Center in the middle of the bottom border on the card. */
-  line-height: 25px;
-  bottom: 5px;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
 
-  color: #fff;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-  text-shadow: 0 0 2px #000;
+  background: rgba(200, 200, 200, 0.25);
+  background-image: url('media/picked.png'),url('media/foil.png');
+  background-size: 240px 340px;
+  
+}
+.foil-card.autoremovable-pick:after {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: rgba(200, 200, 200, 0.25);
+  background-image: url('media/autoremove.png'),url('media/picked.png'),url('media/foil.png');
+  background-size: 240px 340px;
+  
+}
+.autopick-card:before {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: rgba(200, 200, 200, 0.25);
+  background-image: url('media/picked.png');
+  background-size: 240px 340px;
+}
+.autoremovable-pick:before {
+  content: '';
+
+  display: block;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: rgba(200, 200, 200, 0.25);
+  background-image: url('media/picked.png'),url('media/autoremove.png');
+  background-size: 240px 340px;
 }
 
 /** Misc **/

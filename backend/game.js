@@ -13,11 +13,11 @@ const {saveDraftStats, getDataDir} = require("./data");
 const path = require("path");
 
 module.exports = class Game extends Room {
-  constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber }) {
+  constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber, picksPerPack }) {
     super({ isPrivate });
     const gameID = uuid.v1();
     Object.assign(this, {
-      title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber,
+      title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber, picksPerPack,
       delta: -1,
       hostID: hostId,
       id: gameID,
@@ -29,7 +29,6 @@ module.exports = class Game extends Room {
       secret: uuid.v4(),
       logger: logger.child({ id: gameID })
     });
-
     // Handle packsInfos to show various informations about the game
     switch(type) {
     case "draft":
@@ -194,45 +193,48 @@ module.exports = class Game extends Room {
     this.logger.debug(`${sock.name} joined the game`);
 
     function regularDraftPickDelegate(index) {
-      const pack = this.packs.shift();
-      const card = pack.splice(index, 1)[0];
-
-      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
-      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
-
-      let pickcard = card.name;
-      if (card.foil === true)
-        pickcard = "*" + pickcard + "*";
-
-      this.pool.push(card);
-      this.picks.push(pickcard);
-      this.send("add", card);
+      index.sort(function(a, b){return b-a;});
+      let cards=[];
+      let pack = this.packs.shift();
+      for (var i = 0; i < index.length; i++) {
+        cards.push( pack.splice(index[i], 1)[0]);
+        this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
+        this.pool.push(cards[i]);
+        let pickcard = cards[i].name;
+        if (cards[i].foil === true)
+          pickcard = "*" + pickcard + "*";
+        this.picks.push(pickcard);
+        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-index.length ], this.pool);
+        this.send("add", cards[i]);
+      }
 
       let [next] = this.packs;
       if (!next)
         this.time = 0;
       else
         this.sendPack(next);
-
-      this.autopickIndex = -1;
+      this.autopickIndex = [];
       this.emit("pass", pack);
     }
 
     function decadentDraftPickDelegate(index) {
+      index.sort(function(a, b){return b-a;});
+      let cards=[];
+
       const pack = this.packs.shift();
-      const card = pack.splice(index, 1)[0];
+      for (var i = 0; i < index.length; i++) {
+        cards.push( pack.splice(index[i], 1)[0]);
+        this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
+        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
 
-      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
-      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
+        let pickcard = cards[i].name;
+        if (cards[i].foil === true)
+          pickcard = "*" + pickcard + "*";
 
-      let pickcard = card.name;
-      if (card.foil === true)
-        pickcard = "*" + pickcard + "*";
-
-      this.pool.push(card);
-      this.picks.push(pickcard);
-      this.send("add", card);
-
+        this.pool.push(cards[i]);
+        this.picks.push(pickcard);
+        this.send("add", cards[i]);
+      }
       let [next] = this.packs;
       if (!next)
         this.time = 0;
@@ -243,13 +245,13 @@ module.exports = class Game extends Room {
       // after one is chosen.
       pack.length = 0;
 
-      this.autopickIndex = -1;
+      this.autopickIndex = [];
       this.emit("pass", pack);
     }
 
     const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
 
-    const h = new Human(sock, draftPickDelegate);
+    const h = new Human(sock, draftPickDelegate, this.picksPerPack);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -523,6 +525,7 @@ module.exports = class Game extends Room {
       });
       break;
     }
+
     case "sealed": {
       this.pool = Pool.SealedNormal({
         playersLength: this.players.length,
@@ -586,7 +589,7 @@ module.exports = class Game extends Room {
 
       if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot());
+          this.players.push(new Bot(this.picksPerPack));
           this.bots++;
         }
       }
@@ -630,6 +633,7 @@ module.exports = class Game extends Room {
     type: ${this.type}
     sets: ${this.sets}
     isPrivate: ${this.isPrivate}
+    picksPerPack: ${this.picksPerPack}
     modernOnly: ${this.modernOnly}
     totalChaos: ${this.totalChaos}
     chaosPacksNumber: ${this.chaosPacksNumber}

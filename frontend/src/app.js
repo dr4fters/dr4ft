@@ -32,6 +32,8 @@ let App = {
     chaosDraftPacksNumber: 3,
     chaosSealedPacksNumber: 6,
     gametype: "draft",
+    picksPerPack: 1,
+    DoubleMasters: -1,
     gamesubtype: "regular",
     sets: [],
     setsDraft: [],
@@ -143,11 +145,13 @@ let App = {
     this.ws.send(msg);
   },
   initGameState(id) {
-    const { gameStates } = App.state;
+    const { gameStates, picksPerPack } = App.state;
     if (!gameStates[id]) {
       App.state.gameState = new GameState();
+      App.state.gameState.setPicksPerPack(picksPerPack);
     } else {
       App.state.gameState = new GameState(gameStates[id]);
+      App.state.picksPerPack = gameStates[id].picksPerPack;
     }
     App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {

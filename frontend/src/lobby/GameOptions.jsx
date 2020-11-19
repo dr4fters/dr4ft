@@ -11,30 +11,36 @@ import SetReplicated from "./SetReplicated";
 import CubeList from "./CubeList";
 
 const GameOptions = () => {
-  const { setsDraft, setsSealed, setsDecadentDraft, gametype, gamesubtype } = App.state;
+  const { 
+      setsDraft, setsSealed, setsDecadentDraft, 
+      gametype, gamesubtype, 
+      picksPerPack} = App.state;
 
   switch (`${gamesubtype} ${gametype}`) {
   case "regular draft":
-    return <RegularDraft sets={setsDraft} type={"setsDraft"} />;
+    return <RegularDraft sets={setsDraft} type={"setsDraft"}  picksPerPack={picksPerPack}/>;
   case "regular sealed":
     return <RegularSealed sets={setsSealed} type={"setsSealed"} />;
   case "decadent draft":
-    return <Decadent sets={setsDecadentDraft} type={"setsDecadentDraft"} />;
+    return <Decadent sets={setsDecadentDraft} type={"setsDecadentDraft"} picksPerPack={picksPerPack}/>;
   case "cube draft":
-    return <CubeDraft/>;
+    return <CubeDraft picksPerPack={picksPerPack} />;
   case "cube sealed":
-    return <CubeSealed/>;
+    return <CubeSealed />;
   case "chaos draft":
-    return <ChaosDraft/>;
+    return <ChaosDraft picksPerPack={picksPerPack} />;
   case "chaos sealed":
-    return <ChaosSealed/>;
+    return <ChaosSealed />;
   default:
     return null;
   }
 };
 
-const RegularDraft = ({sets, type}) => (
-  <Regular sets={sets} type={type} />
+const RegularDraft = ({sets, type, picksPerPack}) => (
+  <div>
+    <Regular sets={sets} type={type} />
+    <PicksPerPacks picksPerPack={picksPerPack} />
+  </div>
 );
 
 RegularDraft.propTypes = {
@@ -51,7 +57,7 @@ RegularSealed.propTypes = {
   type: PropTypes.string
 };
 
-const Regular = ({ sets, type }) => (
+const Regular = ({sets, type}) => (
   <Fragment>
     <div>
       Number of packs:{" "}
@@ -71,12 +77,11 @@ Regular.propTypes = {
   type: PropTypes.string
 };
 
-const Sets = ({ sets, type }) => (
-  sets
-    .map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
+const Sets = ({sets, type}) => (
+  sets.map((set, i) => <Set type={type} selectedSet={set} index={i} key={i} />)
 );
 
-const Decadent = ({ sets, type }) => (
+const Decadent = ({sets, type, picksPerPack}) => (
   <Fragment>
     <div>
       Number of packs:{" "}
@@ -85,6 +90,7 @@ const Decadent = ({ sets, type }) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
@@ -96,10 +102,11 @@ Decadent.propTypes = {
   type: PropTypes.string
 };
 
-const CubeDraft = () => (
+const CubeDraft = ({picksPerPack}) => (
   <div>
     <CubeList />
     <CubeOptions />
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </div>
 );
 
@@ -130,20 +137,33 @@ const CubeOptions = () => (
   </div>
 );
 
-const ChaosDraft = () => (
-  <Chaos packsNumber={"chaosDraftPacksNumber"} />
+const ChaosDraft = ({picksPerPack}) => (
+  <div>
+    <Chaos packsNumber={"chaosDraftPacksNumber"} />
+    <PicksPerPacks picksPerPack={picksPerPack} />
+  </div>
 );
 
 const ChaosSealed = () => (
-  <Chaos packsNumber={"chaosSealedPacksNumber"}/>
+  <Chaos packsNumber={"chaosSealedPacksNumber"} />
 );
 
-const Chaos = ({ packsNumber }) => (
+const PicksPerPacks = ({picksPerPack}) => (
+  <div>
+  Picks per pack:{" "}
+  <Select
+    value={picksPerPack}
+    onChange={App._emit("changePicksPerPack")}
+    opts={_.seq(12, 1)} />
+  </div>
+)
+
+const Chaos = ({packsNumber}) => (
   <div>
     <div>
       Number of packs:{" "}
       <Select
-        onChange={(e) => { App.save(packsNumber, parseInt(e.currentTarget.value));}}
+        onChange={(e) => {App.save(packsNumber, parseInt(e.currentTarget.value));}}
         link={packsNumber}
         opts={_.seq(12, 3)} />
     </div>

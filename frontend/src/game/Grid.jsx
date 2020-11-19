@@ -27,7 +27,8 @@ const getZoneDetails = (appState, zoneName, cards) => {
       // Only 1 pick in decadent draft.
       return `Pick 1 / 1`;
     } else {
-      return `Pick ${appState.pickNumber} / ${appState.packSize}`
+      let turns = Math.ceil(appState.packSize / appState.picksPerPack  );
+      return `Pick ${appState.pickNumber} / ${turns}`
     }
   } else {
     return cards.length;
@@ -42,11 +43,13 @@ const zone = (zoneName, index) => {
 
   const zoneTitle = zoneDisplayName + (zoneName === ZONE_PACK ? " " + App.state.round : "");
   const zoneDetails = getZoneDetails(App.state, zoneName, cards);
-
+  const min = Math.min(App.state.picksPerPack,cards.length);
+  const selectUpTo = 'select ' + min + (min>1? ' cards': ' card');
+  const elementsContent = zoneName === ZONE_PACK ? [zoneTitle, zoneDetails, selectUpTo]:[zoneTitle, zoneDetails];
   return (
     <div className='zone' key={index}>
       <h1>
-        <Spaced elements={[zoneTitle, zoneDetails]}/>
+        <Spaced elements={elementsContent}/>
       </h1>
       {cards.map((card, i) =>
         <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
@@ -96,11 +99,13 @@ class Card extends Component {
   render() {
     const {card, zoneName} = this.props;
     const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
-
+    const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId);
     const className = `card
-    ${isAutopickable ? "autopick-card " : ""}
     ${card.foil ? "foil-card " : ""}
+    ${isAutopickable ? "autopick-card " : ""}
+    ${isAutoremovableAutopick ? "autoremovable-pick " : ""}
     ${this.state.flipped ? "flipped " : ""}`;
+    
 
     const title
     = isAutopickable
