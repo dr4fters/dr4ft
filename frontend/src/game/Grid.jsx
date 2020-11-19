@@ -43,11 +43,13 @@ const zone = (zoneName, index) => {
 
   const zoneTitle = zoneDisplayName + (zoneName === ZONE_PACK ? " " + App.state.round : "");
   const zoneDetails = getZoneDetails(App.state, zoneName, cards);
+  const selectUpTo = 'select ' + Math.min(App.state.picksPerPack,cards.length) + 
+                  (Math.min(App.state.picksPerPack,cards.length)>1? ' cards': ' card');
 
   return (
     <div className='zone' key={index}>
       <h1>
-        <Spaced elements={[zoneTitle, zoneDetails]}/>
+        <Spaced elements={[zoneTitle, zoneDetails, selectUpTo]}/>
       </h1>
       {cards.map((card, i) =>
         <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />

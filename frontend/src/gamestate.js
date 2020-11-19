@@ -198,7 +198,7 @@ class GameState extends EventEmitter {
   }
 
   isAutoremovableAutopick(cardId) {
-    if (this.#autopickCardIds.length == this.#picksPerPack){
+    if (this.#autopickCardIds.length == this.#picksPerPack && this.#picksPerPack > 1){
       return this.#autopickCardIds[0] == cardId.toString();
     }
   }
