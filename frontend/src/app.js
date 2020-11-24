@@ -145,13 +145,11 @@ let App = {
     this.ws.send(msg);
   },
   initGameState(id) {
-    const { gameStates, picksPerPack } = App.state;
+    const { gameStates } = App.state;
     if (!gameStates[id]) {
       App.state.gameState = new GameState();
-      App.state.gameState.setPicksPerPack(picksPerPack);
     } else {
       App.state.gameState = new GameState(gameStates[id]);
-      App.state.picksPerPack = gameStates[id].picksPerPack;
     }
     App.state.gameState.on("updateGameState", (gameState) => {
       App.save("gameStates", {
@@ -221,15 +219,15 @@ let App = {
 
     return { requestChange, value };
   },
-  updateGameInfos({type, sets, packsInfo}) {
+  updateGameInfos({type, sets, packsInfo, picksPerPack}) {
     const savename = type === "draft" ? sets[0] + "-draft" : type;
     const date = new Date();
     const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "_" + date.toString().slice(16, 21).replace(":", "-");
     const filename = `${savename.replace(/\W/, "-")}_${currentTime}`;
-
     App.set({
       filename,
-      game: {type, sets, packsInfo}
+      game: {type, sets, packsInfo },
+      picksPerPack
     });
   },
   getZone(zoneName){

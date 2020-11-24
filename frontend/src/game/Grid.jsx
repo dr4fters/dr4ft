@@ -99,7 +99,7 @@ class Card extends Component {
   render() {
     const {card, zoneName} = this.props;
     const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
-    const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId);
+    const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId, App.state.picksPerPack);
     const className = `card
     ${card.foil ? "foil-card " : ""}
     ${isAutopickable ? "autopick-card " : ""}
