@@ -305,7 +305,8 @@ module.exports = class Game extends Room {
     h.send("gameInfos", {
       type: this.type,
       packsInfo: this.packsInfo,
-      sets: this.sets
+      sets: this.sets,
+      picksPerPack: this.picksPerPack
     });
 
     if (this.isGameFinished) {
