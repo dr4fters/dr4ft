@@ -24,7 +24,7 @@ const updateDatabase = () => {
       }
       const filePath = path.join(setsDataDir, `${file}`);
       try {
-        const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
+        const json = JSON.parse(fs.readFileSync(filePath, "UTF-8")).data;
         if (json.code) {
           logger.info(`Found set to integrate ${json.code} with path ${filePath}`);
           const [set, cards] = doSet(json);

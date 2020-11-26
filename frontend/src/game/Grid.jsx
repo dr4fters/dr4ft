@@ -161,7 +161,7 @@ CardImage.propTypes = {
   loyalty:  PropTypes.string,
   setCode: PropTypes.string,
   number: PropTypes.string,
-  scryfallId: PropTypes.string,
+  identifiers: PropTypes.string,
   mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,
