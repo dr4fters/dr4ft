@@ -87,7 +87,7 @@ const parseCubableCardName = (cardName) => {
   // * "Abrade" (just card name)
   // * "Abrade (CMR)" (card name + set code)
   // * "Abrade (CMR 410)" (card name + set code + number within set)
-  const match = cardName.match(/^(.*?)(?: +\(([^ ]+)(?: +(\d+))?\))? *$/);
+  const match = cardName.match(/^(.*?)(?: +\(([a-z0-9]+)(?: +([a-z0-9]+))?\))? *$/);
   if (!match) return null;
 
   return {name: match[1], set: match[2], number: match[3]};
