@@ -106,8 +106,8 @@ const getCubableCardUuidByName = (cardName) => {
   if (!card.set) return options.default;
 
   const byNumber = options[card.set];
-  if (!byNumber) return null;
-  if (card.number) return byNumber[card.number];
+  if (!byNumber) return options.default;
+  if (card.number && byNumber[card.number]) return byNumber[card.number];
 
   return byNumber[Object.keys(byNumber).sort()[0]];
 }
