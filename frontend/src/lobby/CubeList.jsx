@@ -43,16 +43,38 @@ const CubeCobra = () => {
     if (!cubeId) {
       return;
     }
-    axios.get(`https://cubecobra.com/cube/api/cubelist/${cubeId}`)
-      .then(({ data: list }) => {
-        setError("");
-        setCubeImportMessage(`The cube with ID "${cubeId}" was imported`);
-        App.save("list", list);
-      })
-      .catch(() => {
-        setError(`Could not retrieve CubeCobra list with ID "${cubeId}"`);
-        setCubeImportMessage("");
-      });
+
+    try {
+      const {data: {cards}} = await axios.get(`https://cubecobra.com/cube/api/cubeJSON/${cubeId}`);
+
+      setCubeImportMessage(`Fetching card versions... (0/${cards.length})`);
+
+      let totalCards = 0;
+      const cardNames = (await Promise.all(
+        _.chunk(cards, 75)
+          .map(async (chunk) => {
+            const {data} = await axios.post(
+              'https://api.scryfall.com/cards/collection',
+              {identifiers: chunk.map((card) => ({id: card.cardID}))});
+
+            totalCards += data.data.length;
+            setCubeImportMessage(`Fetching card versions... (${totalCards}/${cards.length})`);
+
+            return data.data.map((card) => {
+              const name = card.card_faces ? card.card_faces[0].name : card.name;
+              return `${name} (${card.set} ${card.collector_number.replace('★', '')})`;
+            });
+          })
+      )).flat().join('\n');
+
+      setError("");
+      setCubeImportMessage(`The cube with ID "${cubeId}" was imported`);
+
+      App.save("list", cardNames);
+    } catch (_) {
+      setError(`Could not retrieve CubeCobra list with ID "${cubeId}" (${_})`);
+      setCubeImportMessage("");
+    }
   };
 
   const onKeyPress = (e) => {
