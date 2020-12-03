@@ -17,12 +17,16 @@ const rarityPlucker = ({rarity}) => rarity;
 const numberPlucker = ({number}) => number;
 const uuidPlucker = ({uuid}) => uuid;
 const namePlucker = ({name}) => name.toLowerCase();
+const setPlucker = ({setCode}) => setCode.toLowerCase();
 
 const groupCardsUuidByRarity = (cards = []) =>
   groupCardsBy(rarityPlucker, uuidPlucker,cards);
 
 const groupCardsByName = (cards = []) =>
   groupCardsBy(namePlucker, card => card, cards);
+
+const groupCardsBySet = (cards = []) =>
+  groupCardsBy(setPlucker, card => card, cards);
 
 const keyCardsUuidByNumber = (cards = []) =>
   keyBy(numberPlucker, uuidPlucker, cards);
@@ -36,6 +40,7 @@ const keyCardsByUuid = (cards = []) =>
 module.exports = {
   groupCardsUuidByRarity,
   groupCardsByName,
+  groupCardsBySet,
   keyCardsUuidByNumber,
   keyCardsUuidByName,
   keyCardsByUuid

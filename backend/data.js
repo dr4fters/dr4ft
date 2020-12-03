@@ -1,7 +1,8 @@
 const fs = require("fs");
+const _ = require("lodash");
 const path = require("path");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const { keyCardsUuidByName, groupCardsByName } = require("./import/keyCards");
+const { keyCardsUuidByName, keyCardsUuidByNumber, groupCardsBySet, groupCardsByName } = require("./import/keyCards");
 
 const DATA_DIR = "data";
 const DRAFT_STATS_DIR = "draftStats";
@@ -80,11 +81,39 @@ const getCardByUuid = (uuid) => {
   return getCards()[uuid];
 };
 
-const getCubableCardByName = (cardName) => {
+const parseCubableCardName = (cardName) => {
+  // Cube cards can be written as:
+  //
+  // * "Abrade" (just card name)
+  // * "Abrade (CMR)" (card name + set code)
+  // * "Abrade (CMR 410)" (card name + set code + number within set)
+  const match = cardName.match(/^(.*?)(?: +\(([^ ]+)(?: +(\d+))?\))? *$/);
+  if (!match) return null;
+
+  return {name: match[1], set: match[2], number: match[3]};
+};
+
+const getCubableCardUuidByName = (cardName) => {
   if (!cubableCardsByName) {
     cubableCardsByName = readFile(`${getDataDir()}/${CUBABLE_CARDS_PATH}`);
   }
-  return getCardByUuid(cubableCardsByName[cardName]);
+
+  const card = parseCubableCardName(cardName);
+  if (!card) return null;
+
+  const options = cubableCardsByName[card.name];
+  if (!options) return null;
+  if (!card.set) return options.default;
+
+  const byNumber = options[card.set];
+  if (!byNumber) return null;
+  if (card.number) return byNumber[card.number];
+
+  return byNumber[Object.keys(byNumber).sort()[0]];
+}
+
+const getCubableCardByName = (cardName) => {
+  return getCardByUuid(getCubableCardUuidByName(cardName));
 };
 
 const writeCards = (newCards) => {
@@ -116,18 +145,37 @@ const writeCubeCards = (allSets, allCards) => {
     cards.sort(mySort);
   });
 
+  // Group cubable cards so they're easy to look up. A single card ends up
+  // looking like:
+  //
+  // "abrade": {
+  //     "default": "4b921a1e-853d-50f7-9d76-d7f107c6c7e3",
+  //     "cmr": {
+  //         "410": "7aad9d6f-4cef-5e79-a2c2-2491ae3a5498",
+  //         "659": "5f43d620-b3a9-5f52-a6ce-325d63199131"
+  //     },
+  //     ...
+  // }
+  //
+  // Split cards are listed multiple times, once for their combined name and
+  // once each for each half of the split name.
   const cubableCards = groupedCardsArray
-    .map((cards) => cards[0]) // take the first card of each group
-    .flatMap((card) => {
-      const names = card.name.split(" // ");
-      const arr = (names.length > 1) ? [card] : [];
-      return arr.concat(names.map((name) => ({
-        ...card,
-        name
-      })));
+    .map((cards) => {
+      return [cards[0].name.toLowerCase(), {
+        default: cards[0].uuid,
+        ..._.mapValues(groupCardsBySet(cards), keyCardsUuidByNumber)
+      }];
+    })
+    .flatMap((pair) => {
+      const names = pair[0].split(" // ");
+      if (names.length <= 1) return [pair];
+
+      return [
+        pair,
+        ...names.map((name) => [name, pair[1]])
+      ];
     });
-  cubableCardsByName = keyCardsUuidByName(cubableCards);
-  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCardsByName, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(_.fromPairs(cubableCards), undefined, 4));
 };
 
 const writeSets = (newSets) => {
