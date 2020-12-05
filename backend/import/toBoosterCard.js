@@ -47,7 +47,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     manaCost: manaCost || "",
     rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
-    scryfallId: identifiers.scryfallId,
+    identifiers,
     layout,
     isDoubleFaced,
     flippedCardURL,
@@ -80,7 +80,7 @@ function getDoubleFacedProps({layout, name}, rawCards) {
   if (isDoubleFaced) {
     rawCards.some(x => {
       if (x.faceName === names[1]) {
-        flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image`;
+        flippedCardURL = `https://api.scryfall.com/cards/${x.identifiers.scryfallId}?format=image`;
         if (/^modal_dfc$|^double-faced$|^transform$/i.test(layout)) {
           flippedCardURL += "&face=back";
           flippedIsBack = true;
