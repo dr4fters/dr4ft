@@ -45,6 +45,9 @@ module.exports = class Game extends Room {
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
+      if (cube.burnsPerPack > 0) {
+        this.packsInfo += ` and ${cube.burnsPerPack} cards to burn per pack`
+      }
       this.rounds = this.cube.packs;
       break;
     case "cube sealed":
@@ -306,7 +309,8 @@ module.exports = class Game extends Room {
       type: this.type,
       packsInfo: this.packsInfo,
       sets: this.sets,
-      picksPerPack: this.picksPerPack
+      picksPerPack: this.picksPerPack,
+      burnsPerPack: this.type === "cube draft" ? this.cube.burnsPerPack : 0
     });
 
     if (this.isGameFinished) {

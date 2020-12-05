@@ -33,6 +33,7 @@ let App = {
     chaosSealedPacksNumber: 6,
     gametype: "draft",
     picksPerPack: 1,
+    burnsPerPack: 0,
     DoubleMasters: -1,
     gamesubtype: "regular",
     sets: [],
@@ -219,15 +220,15 @@ let App = {
 
     return { requestChange, value };
   },
-  updateGameInfos({type, sets, packsInfo, picksPerPack}) {
+  updateGameInfos({type, sets, packsInfo, picksPerPack, burnsPerPack}) {
     const savename = type === "draft" ? sets[0] + "-draft" : type;
     const date = new Date();
     const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "_" + date.toString().slice(16, 21).replace(":", "-");
     const filename = `${savename.replace(/\W/, "-")}_${currentTime}`;
     App.set({
       filename,
-      game: {type, sets, packsInfo },
-      picksPerPack
+      game: { type, sets, packsInfo, burnsPerPack },
+      picksPerPack,
     });
   },
   getZone(zoneName){

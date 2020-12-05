@@ -40,19 +40,22 @@ const zone = (zoneName, index) => {
   const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
+  const isPackZone = zoneName === ZONE_PACK;
 
-  const zoneTitle = zoneDisplayName + (zoneName === ZONE_PACK ? " " + App.state.round : "");
+  const zoneTitle = zoneDisplayName + (isPackZone ? " " + App.state.round : "");
   const zoneDetails = getZoneDetails(App.state, zoneName, cards);
   const min = Math.min(App.state.picksPerPack,cards.length);
   const selectUpTo = 'select ' + min + (min>1? ' cards': ' card');
-  const elementsContent = zoneName === ZONE_PACK ? [zoneTitle, zoneDetails, selectUpTo]:[zoneTitle, zoneDetails];
+  const elementsContent = isPackZone ? [zoneTitle, zoneDetails, selectUpTo]:[zoneTitle, zoneDetails];
   return (
     <div className='zone' key={index}>
       <h1>
         <Spaced elements={elementsContent}/>
       </h1>
       {cards.map((card, i) =>
-        <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+        isPackZone && App.state.game.burnsPerPack > 0
+        ? <PackCard key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+        : <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
       )}
       {cards.length === 0 && zoneName === ZONE_PACK &&
         <h2 className='waiting'>Waiting for the next pack...</h2>
@@ -127,6 +130,75 @@ Card.propTypes = {
   card: PropTypes.object.isRequired,
   zoneName: PropTypes.string.isRequired
 };
+
+class PackCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isClicked: false,
+    };
+    this.onClick = this.onClick.bind(this);
+    this.onClickPickCard = this.onClickPickCard.bind(this);
+    this.onClickBurnCard = this.onClickBurnCard.bind(this);
+  }
+
+  onClick(e) {
+    if (!this.state.isClicked) {
+      e.stopPropagation(); //TOOD: Use specific Card with no onClick and change opacity of the card on click
+      this.setState({
+        isClicked: true,
+      });
+    }
+  }
+
+  onClickPickCard(e) {
+    e.stopPropagation();
+    App.emit("click", this.props.zoneName, this.props.card);
+    this.setState({
+      isClicked: false,
+    });
+  }
+
+  onClickBurnCard(e) {
+    e.stopPropagation();
+    App.emit("burn", this.props.card);
+    this.setState({
+      isClicked: false,
+    });
+  }
+  
+
+  render() {
+    const {zoneName, card} = this.props;
+    return (
+      <span style={{ position:"relative", height:"340px", width: "240px", display:"inline-flex" }} onClickCapture={this.onClick}>
+        <Card card={card} zoneName={zoneName} />
+        {this.state.isClicked && 
+        <span style={{position:"absolute" }} >
+          <div
+            style={{ textAlign:"center", alignContent:"center", fontSize: 20, height:170, width:240 }} 
+            id="pick"
+            onClick={this.onClickPickCard}
+          >
+            Pick
+          </div>
+          <div
+            onClick={this.onClickBurnCard}
+            style={{textAlign: "center", fontSize: 20, alignContent:"center", fontSize: 20, height:170, width:240}} 
+            id="burn">
+              Burn
+          </div>
+        </span>}
+      </span>
+    );
+  }
+}
+
+PackCard.propTypes = {
+  card: PropTypes.object.isRequired,
+  zoneName: PropTypes.string.isRequired
+};
+
 
 const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"

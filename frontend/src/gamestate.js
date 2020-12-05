@@ -62,22 +62,26 @@ class GameState extends EventEmitter {
   #zoneState;
   #landDistribution;
   #autopickCardIds;
+  #burnCardIds;
   #picksPerPack;
 
   constructor({
     state = defaultCardState(),
     landDistribution = defaultLandDistribution(),
-    autopickCardIds = []
+    autopickCardIds = [],
+    burnCardIds = []
   } = {
     state: defaultCardState(),
     landDistribution: defaultLandDistribution(),
-    autopickCardIds: []
+    autopickCardIds: [],
+    burnCardIds: []
   }) {
     super();
     this.#state = state;
     this.#landDistribution = landDistribution;
     this.#zoneState = defaultState();
     this.#autopickCardIds = autopickCardIds;
+    this.#burnCardIds = burnCardIds;
   }
 
   /**
@@ -187,6 +191,7 @@ class GameState extends EventEmitter {
       landDistribution: this.#landDistribution,
       autopickCardIds: this.#autopickCardIds,
       picksPerPack: this.#picksPerPack,
+      burnCardIds: this.#burnCardIds
     });
   }
 
@@ -208,6 +213,19 @@ class GameState extends EventEmitter {
   resetPack() {
     this.get(ZONE_PACK).length = 0;
     this.#autopickCardIds = [];
+    this.#burnCardIds = [];
+  }
+
+  addBurnCard(card, burnsPerPack) {
+    if (burnsPerPack <= 0) {
+      return;
+    }
+
+    if (this.#burnCardIds.length == burnsPerPack) {
+      this.#burnCardIds.shift();
+    }
+
+    this.#burnCardIds.push(card.cardId);
   }
 }
 

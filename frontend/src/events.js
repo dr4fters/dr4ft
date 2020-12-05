@@ -17,6 +17,10 @@ const events = {
     App.state.gameState.resetPack();
     App.update();
   },
+  burn(card) {
+    App.state.gameState.addBurnCard(card);
+    App.update();
+  },
   click(zoneName, card, e) {
     if (zoneName === ZONE_PACK) {
       clickPack(card);
@@ -349,7 +353,7 @@ ${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
 };
 
 const parseCubeOptions = () => {
-  let {list, cards, packs, cubePoolSize} = App.state;
+  let {list, cards, packs, cubePoolSize, burnsPerPack} = App.state;
   cards = Number(cards);
   packs = Number(packs);
   cubePoolSize = Number(cubePoolSize);
@@ -364,7 +368,7 @@ const parseCubeOptions = () => {
     .filter(x => x)
     .join("\n");
 
-  return {list, cards, packs, cubePoolSize};
+  return {list, cards, packs, cubePoolSize, burnsPerPack};
 };
 
 const clickPack = (card) => {
