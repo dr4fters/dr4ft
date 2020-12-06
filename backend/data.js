@@ -2,7 +2,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
 const readFile = (path) => JSON.parse(fs.readFileSync(path, "UTF-8"));
-const { keyCardsUuidByName, keyCardsUuidByNumber, groupCardsBySet, groupCardsByName } = require("./import/keyCards");
+const { keyCardsUuidByNumber, groupCardsBySet, groupCardsByName } = require("./import/keyCards");
 
 const DATA_DIR = "data";
 const DRAFT_STATS_DIR = "draftStats";
@@ -110,7 +110,7 @@ const getCubableCardUuidByName = (cardName) => {
   if (card.number && byNumber[card.number]) return byNumber[card.number];
 
   return byNumber[Object.keys(byNumber).sort()[0]];
-}
+};
 
 const getCubableCardByName = (cardName) => {
   return getCardByUuid(getCubableCardUuidByName(cardName));
