@@ -18,6 +18,7 @@ const events = {
     App.update();
   },
   burn(card) {
+    // TODO: check if card is already selected. If so, undo autopick or avoid to burn it?
     App.state.gameState.addBurnCard(card, App.state.game.burnsPerPack);
     App.send("burn", card.cardId);
     if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
