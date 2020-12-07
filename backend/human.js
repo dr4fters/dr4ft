@@ -1,7 +1,7 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random, pull, find, pullAt} = require("lodash");
+const {random, pull, find, pullAt, remove} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
