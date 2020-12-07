@@ -383,7 +383,8 @@ const clickPack = (card) => {
   if (!App.state.gameState.isAutopick(card.cardId)) {
     App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
     App.send("autopick", index);
-  } else if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)){
+  }
+  if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)){
     App.state.gameState.resetPack();
     App.update();
     App.send("pick");
