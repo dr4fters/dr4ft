@@ -44,9 +44,11 @@ const zone = (zoneName, index) => {
 
   const zoneTitle = zoneDisplayName + (isPackZone ? " " + App.state.round : "");
   const zoneDetails = getZoneDetails(App.state, zoneName, cards);
-  const min = Math.min(App.state.picksPerPack,cards.length);
-  const selectUpTo = 'select ' + min + (min>1? ' cards': ' card');
-  const elementsContent = isPackZone ? [zoneTitle, zoneDetails, selectUpTo]:[zoneTitle, zoneDetails];
+  const remainingCardsToSelect = Math.min(App.state.picksPerPack, cards.length);
+  const remainingCardsToBurn = Math.min(App.state.game.burnsPerPack, cards.length);
+  const selectUpTo = 'select ' + remainingCardsToSelect + (remainingCardsToSelect>1? ' cards': ' card');
+  const burnUpTo = 'burn ' + remainingCardsToBurn + (remainingCardsToBurn>1? ' cards': ' card');
+  const elementsContent = isPackZone ? [zoneTitle, zoneDetails, selectUpTo, burnUpTo]:[zoneTitle, zoneDetails];
   return (
     <div className='zone' key={index}>
       <h1>
@@ -54,7 +56,7 @@ const zone = (zoneName, index) => {
       </h1>
       {cards.map((card, i) =>
         isPackZone && App.state.game.burnsPerPack > 0
-        ? <PackCard key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+        ? <PackCardContextualMenuDecorator key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
         : <Card key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
       )}
       {cards.length === 0 && zoneName === ZONE_PACK &&
@@ -131,7 +133,9 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-class PackCard extends Component {
+
+// TODO: find better name, move to own file mb
+class PackCardContextualMenuDecorator extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -176,7 +180,7 @@ class PackCard extends Component {
         {this.state.isClicked && 
         <span style={{position:"absolute" }} >
           <div
-            style={{ textAlign:"center", alignContent:"center", fontSize: 20, height:170, width:240 }} 
+            style={{ textAlign:"center", alignContent:"center", fontSize: 20, height:170, width:240, backgroundColor: "green" }} 
             id="pick"
             onClick={this.onClickPickCard}
           >
@@ -184,7 +188,7 @@ class PackCard extends Component {
           </div>
           <div
             onClick={this.onClickBurnCard}
-            style={{textAlign: "center", fontSize: 20, alignContent:"center", fontSize: 20, height:170, width:240}} 
+            style={{textAlign: "center", fontSize: 20, alignContent:"center", fontSize: 20, height:170, width:240, backgroundColor: "red"}} 
             id="burn">
               Burn
           </div>
@@ -194,7 +198,7 @@ class PackCard extends Component {
   }
 }
 
-PackCard.propTypes = {
+PackCardContextualMenuDecorator.propTypes = {
   card: PropTypes.object.isRequired,
   zoneName: PropTypes.string.isRequired
 };

@@ -1,11 +1,11 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random, pull} = require("lodash");
+const {random, pull, find, pullAt} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock, pickDelegate, picksPerPack) {
+  constructor(sock, pickDelegate, picksPerPack, burnsPerPack) {
     super({
       isBot: false,
       isConnected: true,
@@ -13,9 +13,11 @@ module.exports = class extends Player {
       id: sock.id,
     });
     this.picksPerPack = picksPerPack;
+    this.burnsPerPack = burnsPerPack;
     this.pickDelegate = pickDelegate.bind(this);
     this.attach(sock);
     this.autopickIndex = [];
+    this.burnPickCardIds = [];
   }
 
   attach(sock) {
@@ -25,6 +27,7 @@ module.exports = class extends Player {
     sock.mixin(this);
     sock.removeAllListeners("autopick");
     sock.on("autopick", this._autopick.bind(this));
+    sock.on("burn", this._burn.bind(this));
     sock.removeAllListeners("pick");
     sock.on("pick", this._pick.bind(this));
     sock.removeAllListeners("hash");
@@ -52,6 +55,7 @@ module.exports = class extends Player {
     this.send = () => {};
     this.emit("meta");
   }
+  //TODO: use cardId instead of index of the card
   _autopick(index) {
     let [pack] = this.packs;
     if (pack && index < pack.length){
@@ -59,6 +63,15 @@ module.exports = class extends Player {
         this.autopickIndex.shift();
       }
       this.autopickIndex.push(index);
+    }
+  }
+  _burn(cardId) {
+    const [pack] = this.packs;
+    if (pack && find(pack, (c) => c.cardId === cardId)){
+      if (this.burnPickCardIds.length == this.burnsPerPack){
+        this.burnPickCardIds.shift();
+      }
+      this.burnPickCardIds.push(cardId);
     }
   }
   _pick() {
@@ -116,21 +129,24 @@ module.exports = class extends Player {
     this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
   pick() {
-    this.pickDelegate(this.autopickIndex);
+    this.pickDelegate(this.autopickIndex, this.burnPickCardIds);
   }
   pickOnTimeout() {
+    //TODO: filter instead of removing a copy of a pack
     let pack = this.packs.slice(0);
     let newIndex;
     let card;
-    let min = Math.min(this.packs[0].length,this.picksPerPack);
-    if(this.autopickIndex.length < min){
-      for (var i = 0; i < this.autopickIndex.length; i++) {
-        card = pack[this.autopickIndex[i]];
-        pull(pack, card);
-      }
-      let difference = min - this.autopickIndex.length;
-      for (var a = 0; a < difference; a++) {
-        newIndex = random(0,pack.length - 1);
+    let min = Math.min(this.packs[0].length, this.picksPerPack);
+    if (this.autopickIndex.length < min) {
+      // Remove autopick cards from selection
+      pullAt(pack, this.autopickIndex);
+
+      // Remove burned cards from pack
+      remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
+
+      const remainingCardsToPick = min - this.autopickIndex.length;
+      for (var a = 0; a < remainingCardsToPick; a++) {
+        newIndex = random(0, pack.length - 1);
         this.autopickIndex.push(newIndex);
         card = pack[newIndex];
         pull(pack, card);

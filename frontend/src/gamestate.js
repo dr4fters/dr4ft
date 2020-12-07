@@ -218,7 +218,7 @@ class GameState extends EventEmitter {
 
   addBurnCard(card, burnsPerPack) {
     if (burnsPerPack <= 0) {
-      return;
+      return false;
     }
 
     if (this.#burnCardIds.length == burnsPerPack) {
@@ -226,6 +226,28 @@ class GameState extends EventEmitter {
     }
 
     this.#burnCardIds.push(card.cardId);
+    this.updState();
+  }
+
+  isPickReady(picksPerPack, burnsPerPack) {
+    const packLength = this.get(ZONE_PACK);
+    if (packLength >= picksPerPack) {
+      return true;
+    }
+
+    if (packLength == (this.#autopickCardIds.length + this.#burnCardIds.length)) {
+      return true;
+    }
+
+    if (picksPerPack != this.#autopickCardIds.length) {
+      return false;
+    }
+
+    if (burnsPerPack != this.#burnCardIds.length) {
+      return false;
+    }
+
+    return true;
   }
 }
 

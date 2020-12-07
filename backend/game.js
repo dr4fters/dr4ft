@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const {shuffle, truncate} = require("lodash");
+const {shuffle, truncate, remove} = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
 const Bot = require("./bot");
@@ -195,21 +195,24 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    function regularDraftPickDelegate(index) {
-      index.sort(function(a, b){return b-a;});
+    function regularDraftPickDelegate(autopickIndexes, burnPickCardIds) {
+      autopickIndexes.sort(function(a, b){return b-a;});
       let cards=[];
       let pack = this.packs.shift();
-      for (var i = 0; i < index.length; i++) {
-        cards.push( pack.splice(index[i], 1)[0]);
+      for (var i = 0; i < autopickIndexes.length; i++) {
+        cards.push( pack.splice(autopickIndexes[i], 1)[0]);
         this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
         this.pool.push(cards[i]);
         let pickcard = cards[i].name;
         if (cards[i].foil === true)
           pickcard = "*" + pickcard + "*";
         this.picks.push(pickcard);
-        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-index.length ], this.pool);
+        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-autopickIndexes.length ], this.pool);
         this.send("add", cards[i]);
       }
+
+      // Remove burned cards from pack
+      remove(pack, (card) => burnPickCardIds.includes(card.cardId));
 
       let [next] = this.packs;
       if (!next)
