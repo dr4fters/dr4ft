@@ -4,6 +4,7 @@ import {vanillaToast} from "vanilla-toast";
 import DOMPurify from "dompurify";
 import {range, times, constant, countBy, findIndex} from "lodash";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
+import store from "./state/store";
 
 /**
  * @desc this is the list of all the events that can be triggered by the App
@@ -47,9 +48,9 @@ const events = {
     hash();
   },
   start() {
-    const {addBots, useTimer, timerLength, shufflePlayers} = App.state;
-    const options = {addBots, useTimer, timerLength, shufflePlayers};
-    App.send("start", options);
+    App.send("start", {
+      ...store.getState().inGameHostSettings
+    });
   },
   pickNumber(pick) {
     App.save("pickNumber", pick);
