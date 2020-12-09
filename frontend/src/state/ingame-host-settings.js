@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const timers = ["Fast", "Moderate", "Slow", "Leisurely"];
+
 const inGameHostSettings = createSlice({
         name: "ingameHostSettings",
         initialState: {
@@ -17,6 +19,11 @@ const inGameHostSettings = createSlice({
             },
             toggleUseTimer: state => {
                 state.useTimer = !state.useTimer;
+            },
+            setTimerLength: (state, action) => {
+                if (timers.includes(action.payload)) {
+                    state.timerLength = action.payload;
+                }
             }
         }
     }
@@ -25,8 +32,8 @@ const inGameHostSettings = createSlice({
 export const selectAddBots = state => state.inGameHostSettings.addBots;
 export const selectShufflePlayers = state => state.inGameHostSettings.shufflePlayers;
 export const selectUseTimer = state => state.inGameHostSettings.useTimer;
+export const selectTimerLength = state => state.inGameHostSettings.timerLength;
 
-
-export const { toggleBots, toggleShufflePlayers, toggleUseTimer } = inGameHostSettings.actions;
+export const { toggleBots, toggleShufflePlayers, toggleUseTimer, setTimerLength } = inGameHostSettings.actions;
 
 export default inGameHostSettings;
