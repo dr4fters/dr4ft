@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import App from "../app";
 
-const Checkbox = ({link, text, side, onChange, ...rest}) => (
+const Checkbox = ({link, text, side, onChange, value, ...rest}) => (
   <div>
     {side === "right" ? text : ""}
     <input
@@ -12,7 +12,7 @@ const Checkbox = ({link, text, side, onChange, ...rest}) => (
       onChange={onChange || function (e) {
         App.save(link, e.currentTarget.checked);
       }}
-      checked={App.state[link]}/>
+      checked={value || App.state[link]}/>
     {side === "left" ? text : ""}
   </div>
 );

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import React, { Suspense } from "react";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
+import store from "./state/store";
 
 const Lobby = React.lazy(() => import("./lobby/Lobby"));
 const Game = React.lazy(() => import("./game/Game"));
@@ -26,7 +28,9 @@ function route() {
     App.once("gameInfos", App.updateGameInfos);
     component = (
       <Suspense fallback={<div>Loading...</div>}>
-        <Game id={ id } />
+        <Provider store={store}>
+          <Game id={ id } />
+        </Provider>
       </Suspense>
     );
     break;
