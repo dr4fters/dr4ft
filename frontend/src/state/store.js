@@ -6,12 +6,12 @@ import { persistReducer, FLUSH,
     PERSIST,
     PURGE,
     REGISTER } from 'redux-persist';
-import {initialState as startControlInitState} from "./ingame-host-settings";
-import inGameHostSettings from "./ingame-host-settings";
+import {initialState as startControlInitState} from "./start-controls";
+import startControls from "./start-controls";
 import migrateState from './migration';
 
 const reducers = combineReducers({
-    inGameHostSettings: inGameHostSettings.reducer
+    startControls: startControls.reducer
 });
 
 const persistConfig = {
@@ -25,7 +25,7 @@ const persistConfig = {
         console.log("state before migration", state);
         const newState = {
             ...state,
-            inGameHostSettings: migrateState(startControlInitState, state.inGameHostSettings)
+            startControls: migrateState(startControlInitState, state.startControls)
         };
         console.log("state after migration", newState);
         return Promise.resolve(newState);

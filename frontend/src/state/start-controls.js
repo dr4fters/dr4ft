@@ -9,9 +9,8 @@ export const initialState = {
     timerLength: "Moderate", // Fast Moderate or Slow
 };
 
-//TODO: rename StartControl
-const inGameHostSettings = createSlice({
-        name: "ingameHostSettings",
+const startControls = createSlice({
+        name: "startControls",
         initialState,
         reducers: {
             toggleBots: state => {
@@ -32,11 +31,11 @@ const inGameHostSettings = createSlice({
     }
 );
 
-export const selectAddBots = state => state.inGameHostSettings.addBots;
-export const selectShufflePlayers = state => state.inGameHostSettings.shufflePlayers;
-export const selectUseTimer = state => state.inGameHostSettings.useTimer;
-export const selectTimerLength = state => state.inGameHostSettings.timerLength;
+export const selectAddBots = state => state.startControls.addBots;
+export const selectShufflePlayers = state => state.startControls.shufflePlayers;
+export const selectUseTimer = state => state.startControls.useTimer;
+export const selectTimerLength = state => state.startControls.timerLength;
 
-export const { toggleBots, toggleShufflePlayers, toggleUseTimer, setTimerLength } = inGameHostSettings.actions;
+export const { toggleBots, toggleShufflePlayers, toggleUseTimer, setTimerLength } = startControls.actions;
 
-export default inGameHostSettings;
+export default startControls;

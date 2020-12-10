@@ -49,7 +49,7 @@ const events = {
   },
   start() {
     App.send("start", {
-      ...store.getState().inGameHostSettings
+      ...store.getState().startControls
     });
   },
   pickNumber(pick) {

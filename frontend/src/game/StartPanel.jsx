@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import App from "../app";
 import Checkbox from "../components/Checkbox";
 import Select from "../components/Select";
-import { selectAddBots, selectShufflePlayers, selectUseTimer, toggleBots, toggleUseTimer, toggleShufflePlayers, selectTimerLength, setTimerLength, timers } from "../state/ingame-host-settings";
+import { selectAddBots, selectShufflePlayers, selectUseTimer, toggleBots, toggleUseTimer, toggleShufflePlayers, selectTimerLength, setTimerLength, timers } from "../state/start-controls";
 import { toTitleCase } from "../utils";
 
 const StartPanel = () => {
