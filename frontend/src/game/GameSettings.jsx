@@ -2,7 +2,7 @@ import React from "react";
 
 import App from "../app";
 import Checkbox from "../components/Checkbox";
-import './GameSettings.scss';
+import "./GameSettings.scss";
 
 const GameSettings = () => (
   <div className='Game-Settings'>
@@ -41,10 +41,10 @@ const SortCards = () => (
     Sort cards by:
     <div className='connected-container' >
       {["CMC", "Color", "Type", "Rarity"].map((sort, index) => {
-        const isActive = sort.toLowerCase() === App.state.sort
+        const isActive = sort.toLowerCase() === App.state.sort;
 
         return (
-          <label key={index} 
+          <label key={index}
             className={isActive
               ? "active connected-component"
               : "connected-component"
@@ -59,7 +59,7 @@ const SortCards = () => (
             />
             <div>{sort}</div>
           </label>
-        )
+        );
       })}
     </div>
   </div>
@@ -77,7 +77,7 @@ const CardsImageQuality = () => (
     Card image quality:
     <div className='connected-container'>
       {Object.keys(sizeDisplay).map((size, index) => {
-        const isActive = size.toLowerCase() === App.state.cardSize
+        const isActive = size.toLowerCase() === App.state.cardSize;
 
         return (
           <label key={index}
@@ -94,7 +94,7 @@ const CardsImageQuality = () => (
               value={size.toLowerCase()} />
             <div>{sizeDisplay[size]}</div>
           </label>
-        )
+        );
       })}
     </div>
   </div>

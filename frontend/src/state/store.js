@@ -1,5 +1,5 @@
-import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage'
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
 import {
   persistReducer, FLUSH,
   REHYDRATE,
@@ -7,10 +7,10 @@ import {
   PERSIST,
   PURGE,
   REGISTER
-} from 'redux-persist';
+} from "redux-persist";
 import { initialState as startControlInitState } from "./start-controls";
 import startControls from "./start-controls";
-import migrateState from './migration';
+import migrateState from "./migration";
 
 const reducers = combineReducers({
   startControls: startControls.reducer
@@ -41,4 +41,4 @@ export default configureStore({
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
     }
   }),
-})
+});

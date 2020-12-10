@@ -51,32 +51,32 @@ const Options = () => {
   return (
     <span>
       {showAddBotsCheckbox()
-        ? <Checkbox 
-        side="left" 
-        text="Fill empty seats with Bots"
-        value={addBots}
-        onChange={()=> dispatch(toggleBots())} />
+        ? <Checkbox
+          side="left"
+          text="Fill empty seats with Bots"
+          value={addBots}
+          onChange={()=> dispatch(toggleBots())} />
         : null
       }
       {showShufflePlayersCheckbox()
-        ? <Checkbox 
-        side="left" 
-        text="Random seating"
-        value={shufflePlayers}
-        onChange={()=> dispatch(toggleShufflePlayers())} />
+        ? <Checkbox
+          side="left"
+          text="Random seating"
+          value={shufflePlayers}
+          onChange={()=> dispatch(toggleShufflePlayers())} />
         : null
       }
       <div>
-        <Checkbox 
-        side="left" 
-        text="Timer: "
-        value={useTimer}
-        onChange={()=> dispatch(toggleUseTimer())} />
+        <Checkbox
+          side="left"
+          text="Timer: "
+          value={useTimer}
+          onChange={()=> dispatch(toggleUseTimer())} />
         <Select
-        value={timerLength}
-        onChange={(e) => dispatch(setTimerLength(e.target.value))}
-        opts={timers} 
-        disabled={!useTimer} />
+          value={timerLength}
+          onChange={(e) => dispatch(setTimerLength(e.target.value))}
+          opts={timers}
+          disabled={!useTimer} />
       </div>
     </span>
   );
@@ -85,11 +85,11 @@ const Options = () => {
 const showAddBotsCheckbox = () => {
   // No need for bots in decadent draft since there's no passing.
   return !App.state.isDecadentDraft;
-}
+};
 
 const showShufflePlayersCheckbox = () => {
   // No need to shuffle players in decadent draft because there's no passing.
   return !App.state.isDecadentDraft;
-}
+};
 
 export default StartPanel;
