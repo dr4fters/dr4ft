@@ -45,11 +45,6 @@ let App = {
     packs: 3,
     cubePoolSize: 90,
 
-    addBots: true,
-    shufflePlayers: true,
-    useTimer: true,
-    timerLength: "Moderate", // Fast Moderate or Slow
-
     beep: true,
     notify: false,
     notificationGranted: false,
