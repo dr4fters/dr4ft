@@ -2,14 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const timers = ["Fast", "Moderate", "Slow", "Leisurely"];
 
+export const initialState = {
+    addBots: true,
+    shufflePlayers: true,
+    useTimer: true,
+    timerLength: "Moderate", // Fast Moderate or Slow
+};
+
+//TODO: rename StartControl
 const inGameHostSettings = createSlice({
         name: "ingameHostSettings",
-        initialState: {
-            addBots: true,
-            shufflePlayers: true,
-            useTimer: true,
-            timerLength: "Moderate", // Fast Moderate or Slow
-        },
+        initialState,
         reducers: {
             toggleBots: state => {
                 state.addBots = !state.addBots;
