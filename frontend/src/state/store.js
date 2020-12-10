@@ -21,13 +21,10 @@ const persistConfig = {
         if (!state) { 
             state = {};
         }
-        console.log("Migration running");
-        console.log("state before migration", state);
         const newState = {
             ...state,
             startControls: migrateState(startControlInitState, state.startControls)
         };
-        console.log("state after migration", newState);
         return Promise.resolve(newState);
     }
 };
