@@ -9,11 +9,13 @@ import {
   REGISTER
 } from "redux-persist";
 import { initialState as startControlInitState } from "./start-controls";
+import gameSettings, { initialState as gameSettingslInitState } from "./game-settings";
 import startControls from "./start-controls";
 import migrateState from "./migration";
 
 const reducers = combineReducers({
-  startControls: startControls.reducer
+  startControls: startControls.reducer,
+  gameSettings: gameSettings.reducer
 });
 
 const persistConfig = {
@@ -25,7 +27,8 @@ const persistConfig = {
     }
     const newState = {
       ...state,
-      startControls: migrateState(startControlInitState, state.startControls)
+      startControls: migrateState(startControlInitState, state.startControls),
+      gameSettings: migrateState(gameSettingslInitState, state.gameSettings),
     };
     return Promise.resolve(newState);
   }
