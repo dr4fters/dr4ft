@@ -189,6 +189,10 @@ module.exports = class Game extends Room {
       return sock.err("game already started");
     }
 
+    if (this.players.length >= this.seats) {
+      return sock.err("game is full");
+    }
+
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
