@@ -86,6 +86,9 @@ function getDoubleFacedProps({layout, name}, rawCards) {
           flippedIsBack = true;
           flippedNumber = x.number;
         }
+        if (/^meld$/i.test(layout)) {
+          flippedNumber = x.number;
+        }
         return true;
       }
     });
