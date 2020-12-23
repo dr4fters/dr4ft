@@ -90,10 +90,10 @@ const Decadent = ({sets, type, picksPerPack}) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </Fragment>
 );
 

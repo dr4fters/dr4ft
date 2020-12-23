@@ -128,7 +128,7 @@ Card.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, scryfallId = "", name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
+const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, identifiers, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
   App.state.cardSize === "text"
     ? <div style={{display: "block"}}>
       <p><strong>{name}</strong> {manaCost}</p>
@@ -138,10 +138,10 @@ const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, sc
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
+      onError= {getFallbackSrc({url: imgUrl, identifiers, setCode, number})}
       src={!mouseEntered
-        ? getCardSrc({ scryfallId, setCode, url, number })
-        : getCardSrc({ scryfallId, setCode, url, number: flippedNumber, isBack: flippedIsBack })
+        ? getCardSrc({ identifiers, setCode, url, number })
+        : getCardSrc({ identifiers, setCode, url, number: flippedNumber, isBack: flippedIsBack })
       }
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
@@ -161,7 +161,7 @@ CardImage.propTypes = {
   loyalty:  PropTypes.string,
   setCode: PropTypes.string,
   number: PropTypes.string,
-  scryfallId: PropTypes.string,
+  identifiers: PropTypes.array,
   mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,
