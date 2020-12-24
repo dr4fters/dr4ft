@@ -198,6 +198,7 @@ module.exports = class Game extends Room {
       let pack = this.packs.shift();
       for (var i = 0; i < index.length; i++) {
         cards.push( pack.splice(index[i], 1)[0]);
+        logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${cards[i].name}`);
         this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
         this.pool.push(cards[i]);
         let pickcard = cards[i].name;
@@ -251,7 +252,7 @@ module.exports = class Game extends Room {
 
     const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
 
-    const h = new Human(sock, draftPickDelegate, this.picksPerPack);
+    const h = new Human(sock, draftPickDelegate, this.picksPerPack,this.id);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -590,7 +591,7 @@ module.exports = class Game extends Room {
 
       if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot(this.picksPerPack));
+          this.players.push(new Bot(this.picksPerPack,this.id));
           this.bots++;
         }
       }
