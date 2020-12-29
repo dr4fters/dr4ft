@@ -214,10 +214,10 @@ const CardImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, imgUrl, sc
       {loyalty && <p>{loyalty}</p>}
     </div>
     : <img title={name}
-      onError= {getFallbackSrc({url: imgUrl, scryfallId, setCode, number})}
+      onError= {getFallbackSrc({url: imgUrl, identifiers, setCode, number})}
       src={!mouseEntered
-        ? getCardSrc({ scryfallId, setCode, url, number })
-        : getCardSrc({ scryfallId, setCode, url, number: flippedNumber, isBack: flippedIsBack })
+        ? getCardSrc({ identifiers, setCode, url, number })
+        : getCardSrc({ identifiers, setCode, url, number: flippedNumber, isBack: flippedIsBack })
       }
       alt={`${name} ${manaCost}
       ${type} | ${rarity} ${text}
@@ -237,7 +237,7 @@ CardImage.propTypes = {
   loyalty:  PropTypes.string,
   setCode: PropTypes.string,
   number: PropTypes.string,
-  scryfallId: PropTypes.string,
+  identifiers: PropTypes.array,
   mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,

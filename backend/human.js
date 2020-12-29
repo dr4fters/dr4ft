@@ -5,13 +5,14 @@ const {random, pull, find, pullAt, remove} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock, pickDelegate, picksPerPack, burnsPerPack) {
+  constructor(sock, pickDelegate, picksPerPack, burnsPerPack, gameId) {
     super({
       isBot: false,
       isConnected: true,
       name: sock.name,
       id: sock.id,
     });
+    this.GameId = gameId;
     this.picksPerPack = picksPerPack;
     this.burnsPerPack = burnsPerPack;
     this.pickDelegate = pickDelegate.bind(this);

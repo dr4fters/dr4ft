@@ -4,19 +4,20 @@ const uuidV1 = require("uuid").v1;
 const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   let {
     name,
+    faceName,
     frameEffects,
     number,
     layout,
     colors,
     colorIdentity,
-    names = [],
+    otherFaceIds,
     convertedManaCost,
     types,
     supertypes = [],
     subtypes = [],
     manaCost,
     url,
-    scryfallId,
+    identifiers = [],
     rarity,
     power,
     toughness,
@@ -24,13 +25,9 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     text,
     uuid = `dr4ft-${uuidV1()}`
   } = mtgjsonCard;
-
   if (supertypes.includes("Basic")) {
     rarity = "basic";
   }
-
-  if (/split|aftermath/i.test(layout))
-    name = names.join(" // ");
 
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = upperFirst(getColor(mtgjsonCard, rawCards));
@@ -38,18 +35,19 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   return {
     uuid,
     name,
-    names,
+    faceName,
+    otherFaceIds,
     color,
     colors,
     colorIdentity,
     setCode,
-    scryfallId,
     cmc: convertedManaCost || 0,
     number,
     type: types[types.length - 1],
     manaCost: manaCost || "",
     rarity: upperFirst(rarity),
-    url: url || `https://api.scryfall.com/cards/${scryfallId}?format=image`,
+    url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
+    identifiers,
     layout,
     isDoubleFaced,
     flippedCardURL,
@@ -73,18 +71,22 @@ const COLORS = {
   G: "green"
 };
 
-function getDoubleFacedProps({layout, names}, rawCards) {
-  const isDoubleFaced = /^double-faced$|^transform$|^flip$|^meld$/i.test(layout);
+function getDoubleFacedProps({layout, name}, rawCards) {
+  const isDoubleFaced = /^modal_dfc$|^double-faced$|^transform$|^flip$|^meld$/i.test(layout);
+  let names = name.split(" // ");
   let flippedCardURL = "";
   let flippedIsBack = false;
   let flippedNumber = "";
   if (isDoubleFaced) {
     rawCards.some(x => {
-      if (x.name === names[1]) {
-        flippedCardURL = `https://api.scryfall.com/cards/${x.scryfallId}?format=image`;
-        if (/^double-faced$|^transform$/.test(layout)) {
+      if (x.faceName === names[1]) {
+        flippedCardURL = `https://api.scryfall.com/cards/${x.identifiers.scryfallId}?format=image`;
+        if (/^modal_dfc$|^double-faced$|^transform$/i.test(layout)) {
           flippedCardURL += "&face=back";
           flippedIsBack = true;
+          flippedNumber = x.number;
+        }
+        if (/^meld$/i.test(layout)) {
           flippedNumber = x.number;
         }
         return true;
@@ -96,15 +98,15 @@ function getDoubleFacedProps({layout, names}, rawCards) {
   };
 }
 
-function getColor({ colors, layout, name, names = [], frameEffects = [] }, rawCards) {
+function getColor({ colors, layout, name,faceName, frameEffects = [] }, rawCards) {
   if (frameEffects.includes("devoid")) {
     return "colorless";
   }
 
   // Handle split cards colors
-  if (["split", "aftermath"].includes(layout) && names.length > 1) {
-    const otherName = names.filter((n) => n !== name)[0];
-    const otherCard = find(rawCards, (card) => card.name === otherName);
+  if (["split", "aftermath"].includes(layout) && name.split(" // ").length > 1) {
+    const otherName = name.split(" // ").filter((n) => n !== faceName)[0];
+    const otherCard = find(rawCards, (card) => card.faceName === otherName);
     if (otherCard && otherCard.colors) {
       for (const color of otherCard.colors) {
         if (!colors.includes(color)) {

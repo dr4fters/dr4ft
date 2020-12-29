@@ -192,6 +192,10 @@ module.exports = class Game extends Room {
       return sock.err("game already started");
     }
 
+    if (this.players.length >= this.seats) {
+      return sock.err("game is full");
+    }
+
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
@@ -201,6 +205,7 @@ module.exports = class Game extends Room {
       let pack = this.packs.shift();
       for (var i = 0; i < autopickIndexes.length; i++) {
         cards.push( pack.splice(autopickIndexes[i], 1)[0]);
+        logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${cards[i].name}`);
         this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
         this.pool.push(cards[i]);
         let pickcard = cards[i].name;
@@ -257,7 +262,7 @@ module.exports = class Game extends Room {
 
     const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
 
-    const h = new Human(sock, draftPickDelegate, this.picksPerPack);
+    const h = new Human(sock, draftPickDelegate, this.picksPerPack, this.burnsPerPack, this.id);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -597,7 +602,7 @@ module.exports = class Game extends Room {
 
       if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot(this.picksPerPack));
+          this.players.push(new Bot(this.picksPerPack, this.burnsPerPack, this.id));
           this.bots++;
         }
       }
