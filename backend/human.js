@@ -1,11 +1,11 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random, pull, find, pullAt, remove} = require("lodash");
+const {random, pull, find, pullAt, remove, times, sample} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
-  constructor(sock, pickDelegate, picksPerPack, burnsPerPack, gameId) {
+  constructor(sock, picksPerPack, burnsPerPack, gameId) {
     super({
       isBot: false,
       isConnected: true,
@@ -15,7 +15,6 @@ module.exports = class extends Player {
     this.GameId = gameId;
     this.picksPerPack = picksPerPack;
     this.burnsPerPack = burnsPerPack;
-    this.pickDelegate = pickDelegate.bind(this);
     this.attach(sock);
     this.autopickIndex = [];
     this.burnPickCardIds = [];
@@ -130,29 +129,62 @@ module.exports = class extends Player {
     this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
   pick() {
-    this.pickDelegate(this.autopickIndex, this.burnPickCardIds);
+    this.autopickIndexes.sort(function(a, b){return b-a;});
+    const cards = [];
+    const pack = this.packs.shift();
+    for (var i = 0; i < autopickIndexes.length; i++) {
+      cards.push( pack.splice(autopickIndexes[i], 1)[0]);
+      logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${cards[i].name}`);
+      this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.pool.push(cards[i]);
+      let pickcard = cards[i].name;
+      if (cards[i].foil === true)
+        pickcard = "*" + pickcard + "*";
+      this.picks.push(pickcard);
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-autopickIndexes.length ], this.pool);
+      this.send("add", cards[i]);
+    }
+
+    // Remove burned cards from pack
+    remove(pack, (card) => burnPickCardIds.includes(card.cardId));
+
+    const [next] = this.packs;
+    if (!next)
+      this.time = 0;
+    else
+      this.sendPack(next);
+    
+    // reset state
+    this.autopickIndex = [];
+    this.burnPickCardIds = [];
+
+    this.emit("pass", pack);
   }
   pickOnTimeout() {
     //TODO: filter instead of removing a copy of a pack
-    let pack = this.packs.slice(0);
-    let newIndex;
-    let card;
-    let min = Math.min(this.packs[0].length, this.picksPerPack);
+    const pack = this.packs.slice(0);
+    const min = Math.min(pack.length, this.picksPerPack);
     if (this.autopickIndex.length < min) {
       // Remove autopick cards from selection
       pullAt(pack, this.autopickIndex);
 
-      // Remove burned cards from pack
-      remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
-
       const remainingCardsToPick = min - this.autopickIndex.length;
-      for (var a = 0; a < remainingCardsToPick; a++) {
-        newIndex = random(0, pack.length - 1);
+      times(remainingCardsToPick, () => {
+        const newIndex = random(0, pack.length - 1);
         this.autopickIndex.push(newIndex);
-        card = pack[newIndex];
+        const card = pack[newIndex];
         pull(pack, card);
-      }
+      });
     }
+
+    // Add cards to burn
+    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.burnPickCardIds.length;
+    times(cardsToBurn, () => {
+      const card = sample(pack);
+      this.burnPickCardIds.push(card.cardId);
+      remove(pack, ({cardId}) => card.cardId === cardId);
+    });
+
     this.pick();
   }
   kick() {
