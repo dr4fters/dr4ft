@@ -1,4 +1,4 @@
-const {sample, sampleSize, pull, times} = require("lodash");
+const {sample, pull, times} = require("lodash");
 const Player = require("./player");
 const logger = require("./logger");
 
