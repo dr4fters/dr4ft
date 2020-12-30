@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const {shuffle, truncate, remove} = require("lodash");
+const {shuffle, truncate} = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
 const Bot = require("./bot");

@@ -129,11 +129,11 @@ module.exports = class extends Player {
     this.draftStats.push( { picked, notPicked, pool: namePool } );
   }
   pick() {
-    this.autopickIndexes.sort(function(a, b){return b-a;});
+    this.autopickIndex.sort(function(a, b){return b-a;});
     const cards = [];
     const pack = this.packs.shift();
-    for (var i = 0; i < autopickIndexes.length; i++) {
-      cards.push( pack.splice(autopickIndexes[i], 1)[0]);
+    for (var i = 0; i < this.autopickIndex.length; i++) {
+      cards.push( pack.splice(this.autopickIndex[i], 1)[0]);
       logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${cards[i].name}`);
       this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
       this.pool.push(cards[i]);
@@ -141,19 +141,19 @@ module.exports = class extends Player {
       if (cards[i].foil === true)
         pickcard = "*" + pickcard + "*";
       this.picks.push(pickcard);
-      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-autopickIndexes.length ], this.pool);
+      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-this.autopickIndex.length ], this.pool);
       this.send("add", cards[i]);
     }
 
     // Remove burned cards from pack
-    remove(pack, (card) => burnPickCardIds.includes(card.cardId));
+    remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
 
     const [next] = this.packs;
     if (!next)
       this.time = 0;
     else
       this.sendPack(next);
-    
+
     // reset state
     this.autopickIndex = [];
     this.burnPickCardIds = [];
