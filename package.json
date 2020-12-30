@@ -55,7 +55,7 @@
     "@babel/preset-env": "7.11.5",
     "@babel/preset-react": "7.12.10",
     "@hapi/joi": "17.1.1",
-    "axios": "0.20.0",
+    "axios": "0.21.1",
     "babel-loader": "8.1.0",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
