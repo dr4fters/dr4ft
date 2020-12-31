@@ -5,6 +5,7 @@ import _ from "utils/utils";
 import App from "../app";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
 import {ZONE_PACK} from "../zones";
+import "./Card.scss"
 
 export default class Card extends Component {
   constructor(props) {
@@ -46,11 +47,11 @@ export default class Card extends Component {
     const {card, zoneName} = this.props;
     const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
     const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId, App.state.picksPerPack);
-    const className = `card
-    ${card.foil ? "foil-card " : ""}
-    ${isAutopickable ? "autopick-card " : ""}
-    ${isAutoremovableAutopick ? "autoremovable-pick " : ""}
-    ${this.state.flipped ? "flipped " : ""}`;
+    const className = `Card
+    ${card.foil ? "-foil " : ""}
+    ${isAutopickable ? "-autopick" : ""}
+    ${isAutoremovableAutopick ? "-autoremovable-pick " : ""}
+    ${this.state.flipped ? "-flipped " : ""}`;
 
     const title = isAutopickable
       ? "This card will be automatically picked if your time expires."
@@ -62,9 +63,11 @@ export default class Card extends Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
 
-        App.state.cardSize === "text"
-          ? <CardText mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
-          : <CardImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+        {
+          App.state.cardSize === "text"
+            ? <CardText mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+            : <CardImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+        }
       </span>
     );
   }

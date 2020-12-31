@@ -406,85 +406,6 @@ input[type="checkbox"], input[type="radio"] {
   width: inherit;
 }
 
-.foil-card:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/foil.png');
-  background-size: 240px 340px;
-
-}
-
-.foil-card.autopick-card:after {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png'),url('media/foil.png');
-  background-size: 240px 340px;
-  
-}
-.foil-card.autoremovable-pick:after {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/autoremove.png'),url('media/picked.png'),url('media/foil.png');
-  background-size: 240px 340px;
-  
-}
-.autopick-card:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png');
-  background-size: 240px 340px;
-}
-.autoremovable-pick:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png'),url('media/autoremove.png');
-  background-size: 240px 340px;
-}
 
 /** Misc **/
 
@@ -656,14 +577,6 @@ input[type="checkbox"], input[type="radio"] {
 .split-card {
   transform: rotate(90deg);
   margin: -50px 50px;
-}
-
-.flipped {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
 }
 
 .wrapper {
