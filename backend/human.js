@@ -147,6 +147,11 @@ module.exports = class extends Player {
 
     // Remove burned cards from pack
     remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
+    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.burnPickCardIds.length;
+    times(cardsToBurn, () => {
+      const card = sample(pack);
+      pull(pack, card);
+    });
 
     const [next] = this.packs;
     if (!next)
@@ -176,14 +181,6 @@ module.exports = class extends Player {
         pull(pack, card);
       });
     }
-
-    // Add cards to burn
-    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.burnPickCardIds.length;
-    times(cardsToBurn, () => {
-      const card = sample(pack);
-      this.burnPickCardIds.push(card.cardId);
-      remove(pack, ({cardId}) => card.cardId === cardId);
-    });
 
     this.pick();
   }

@@ -199,7 +199,7 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock, this.picksPerPack, this.burnsPerPack, this.id);
+    const h = new Human(sock, this.picksPerPack, this.getBurnsPerPack(), this.id);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -212,6 +212,17 @@ module.exports = class Game extends Room {
     this.players.push(h);
     this.greet(h);
     this.meta();
+  }
+
+  getBurnsPerPack() {
+    switch (this.type) {
+      case "decadent draft":
+        return Number.MAX_VALUE;
+      case "cube draft":
+        return this.cube.burnsPerPack;
+      default:
+        return 0;
+    }
   }
 
   swap([i, j]) {
