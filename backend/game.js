@@ -216,12 +216,12 @@ module.exports = class Game extends Room {
 
   getBurnsPerPack() {
     switch (this.type) {
-      case "decadent draft":
-        return Number.MAX_VALUE;
-      case "cube draft":
-        return this.cube.burnsPerPack;
-      default:
-        return 0;
+    case "decadent draft":
+      return Number.MAX_VALUE;
+    case "cube draft":
+      return this.cube.burnsPerPack;
+    default:
+      return 0;
     }
   }
 
