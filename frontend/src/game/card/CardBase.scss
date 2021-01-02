@@ -1,0 +1,33 @@
+.CardBase {
+  display: grid;
+  position: relative;
+  
+  .CardBaseText, .CardBaseImage {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  &.-flipped {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  &.-foil:before {
+    content: '';
+
+    display: block;
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background: rgba(200, 200, 200, 0.25);
+    background-image: url('/media/foil.png');
+    background-size: 240px 340px;
+  }
+}

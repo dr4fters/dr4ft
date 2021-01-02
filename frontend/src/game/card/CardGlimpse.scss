@@ -1,0 +1,82 @@
+.CardGlimpse {
+  --width: 240px;
+  --height: 340px;
+
+  --btn-size: 40px;
+
+  width: var(--width);
+  height: var(--height);
+
+  display: grid;
+
+  .CardDefault, .glimpse-options, .glimpse-state {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .CardDefault {
+  }
+
+  .glimpse-options {
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+
+    display: grid;
+    grid-template-rows: calc(var(--height) * 0.6);
+    --col: calc(var(--width) / 2);
+    grid-template-columns: var(--col) var(--col);
+    grid-gap: var(--gap);
+    
+    .pick, .burn {
+      width: 100%;
+      height: 100%;
+
+      cursor: pointer;
+
+      display: grid;
+      justify-items: center;
+      align-items: center;
+
+      img {
+        max-width: var(--btn-size);
+        max-height: var(--btn-size);
+
+        transition: filter .1s ease-in;
+        filter:
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 10px);
+      }
+      
+      &:hover img {
+        filter:
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 4px);
+
+      }
+    }
+  }
+
+  &:hover {
+    .glimpse-options {
+      opacity: 1;
+    }
+  }
+  
+  .glimpse-state {
+    justify-self: start;
+    align-self: start;
+
+    padding: 10px;
+    margin: 12px;
+
+    img {
+      max-width: 30px;
+      max-height: 30px;
+      filter:
+        drop-shadow(white 0 0 5px)
+        drop-shadow(white 0 0 5px)
+        drop-shadow(white 0 0 1px);
+    }
+  }
+}

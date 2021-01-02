@@ -32,7 +32,9 @@ class Cols extends Component {
     }
 
     if (card.foil) {
-      className += " foil-card ";
+      className += " foil-card "; 
+      // mixmix - I broke this by absorbing .foil-card into .Card.-foil (see Card.scss)
+      // personally I don't care about whether pickedc cards in the col view display their foiliness
     }
 
     this.setState({ card, className });
@@ -105,15 +107,15 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 };
 
 const ImageHelper = ({onMouseEnter, className, card}) => (
+  // TODO use Card.jsx here?
   card
     ? card.isDoubleFaced
       ? <div className={className} id="doubleimg">
-        <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={getCardSrc({
-          ...card,
-          isBack: card.flippedIsBack,
-          number: card.flippedNumber,
-        })} onError= {e => e.target.src = card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className="Card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`Card ${card.layout === "flip" ? "-flipped" : ""}`}
+          src={getCardSrc({ ...card, isBack: card.flippedIsBack, number: card.flippedNumber, })}
+          onError={e => e.target.src = card.flippedCardURL}
+          onMouseEnter={onMouseEnter.bind(card)} />
       </div>
       :
       <div id='img' className = {className}>
