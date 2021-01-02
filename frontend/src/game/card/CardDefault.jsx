@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import App from "../../app";
 import {ZONE_PACK} from "../../zones";
 import CardBase from "./CardBase";
-import "./CardDefault.scss"
+import "./CardDefault.scss";
 
 // mixmix - this could be a stateless functional component
 export default class CardDefault extends Component {
