@@ -46,7 +46,7 @@ export default class CardBase extends Component {
   render () {
     const { card } = this.props;
 
-    if (!this.props.card.isDoubleFacedz) return (
+    if (!this.props.card.isDoubleFaced) return (
       <div className={`CardBase ${card.foil ? "-foil " : ""}`}>
         <CardBaseText {...card}/>
         {

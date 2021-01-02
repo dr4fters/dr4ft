@@ -1,5 +1,6 @@
 .CardBase {
   display: grid;
+  position: relative;
   
   .CardBaseText, .CardBaseImage {
     grid-row: 1;

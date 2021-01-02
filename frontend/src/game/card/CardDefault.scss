@@ -1,49 +1,36 @@
 .CardDefault {
-  .-autopick {
-    &:before, &:after {
-      content: '';
-      display: block;
-      position: absolute;
+  --width: 240px;
+  --height: 340px;
 
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+  position: relative;
 
-      background: rgba(200, 200, 200, 0.25);
-      background-size: 240px 340px;
-    }
+  width: var(--width);
+  height: var(--height);
 
-    &:before {
-      background-image: url('/media/picked.png');
-    }
+  display: grid;
 
-    &.-foil:after {
-      background-image: url('/media/picked.png'),url('/media/foil.png');
-    }
+  .CardBase, .pick-state {
+    grid-row: 1;
+    grid-column: 1;
   }
 
-  .-autoremovable-pick {
-    &:before, &:after {
-      content: '';
+  .CardBase {
+  }
+  
+  .pick-state {
+    justify-self: start;
+    align-self: start;
 
-      display: block;
-      position: absolute;
+    padding: 10px;
+    margin: 12px;
 
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      background: rgba(200, 200, 200, 0.25);
-      background-size: 240px 340px;
-    }
-
-    &:before {
-      background-image: url('/media/picked.png'),url('/media/autoremove.png');
-    }
-    &.-foil:after {
-      background-image: url('/media/autoremove.png'),url('/media/picked.png'),url('/media/foil.png');
+    img {
+      max-width: 30px;
+      max-height: 30px;
+      filter:
+        drop-shadow(white 0 0 5px)
+        drop-shadow(white 0 0 5px)
+        drop-shadow(white 0 0 1px);
     }
   }
 }
