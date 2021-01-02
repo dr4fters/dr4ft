@@ -67,12 +67,16 @@
     justify-self: start;
     align-self: start;
 
+    padding: 10px;
+    margin: 12px;
+
     img {
       max-width: 30px;
       max-height: 30px;
       filter:
         drop-shadow(white 0 0 5px)
-        drop-shadow(white 0 0 5px);
+        drop-shadow(white 0 0 5px)
+        drop-shadow(white 0 0 1px);
     }
   }
 }

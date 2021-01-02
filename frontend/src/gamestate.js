@@ -199,6 +199,10 @@ class GameState extends EventEmitter {
     return this.#autopickCardIds.includes(cardId.toString());
   }
 
+  isBurn(cardId) {
+    return this.#burnCardIds.includes(cardId.toString());
+  }
+
   isAutoremovableAutopick(cardId, picksPerPack) {
     if (this.#autopickCardIds.length == picksPerPack && picksPerPack > 1){
       return this.#autopickCardIds[0] == cardId.toString();
