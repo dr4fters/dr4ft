@@ -88,7 +88,7 @@ const getCubableCardByName = (cardName) => {
 };
 
 const writeCards = (newCards) => {
-  fs.writeFileSync(`${getDataDir()}/${CARDS_PATH}`, JSON.stringify(newCards, undefined, 4));
+  fs.writeFileSync(`${getDataDir()}/${CARDS_PATH}`, JSON.stringify(newCards, undefined, undefined));
 };
 
 const sortByPriority = allSets => (card1, card2) => {

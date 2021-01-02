@@ -47,7 +47,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     manaCost: manaCost || "",
     rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
-    identifiers,
+    identifiers: {scryfallId: identifiers.scryfallId},
     layout,
     isDoubleFaced,
     flippedCardURL,
