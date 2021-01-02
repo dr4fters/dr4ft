@@ -209,7 +209,14 @@ class GameState extends EventEmitter {
     }
   }
   updateAutopick(cardId, picksPerPack) {
-    if (this.#autopickCardIds.length == picksPerPack) this.#autopickCardIds.shift();
+    if (this.#autopickCardIds.length == picksPerPack) {
+      this.#autopickCardIds.shift();
+    }
+
+    if (this.isBurn(cardId)) {
+      remove(this.#burnCardIds, id => id === cardId);
+    }
+
     this.#autopickCardIds.push(cardId);
     this.updState();
   }
@@ -227,6 +234,10 @@ class GameState extends EventEmitter {
 
     if (this.#burnCardIds.length == burnsPerPack) {
       this.#burnCardIds.shift();
+    }
+
+    if (this.isAutopick(card.cardId)) {
+      remove(this.#autopickCardIds, id => id === card.cardId);
     }
 
     this.#burnCardIds.push(card.cardId);
