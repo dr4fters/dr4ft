@@ -75,11 +75,11 @@ module.exports = {
           "css-loader",
           // Compiles Sass to CSS
           {
-            loader: 'resolve-url-loader',
+            loader: "resolve-url-loader",
             options: {
             }
           }, {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               sourceMap: true,
             }
