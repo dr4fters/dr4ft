@@ -18,7 +18,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
   assert(5 <= cards && cards <= 30, "cube.cards range must be between 5 and 30");
   assert(typeof packs === "number", "cube.packs must be a number");
   assert(1 <= packs && packs <= 12, "cube.packs range must be between 1 and 12");
-  assert(0 <= burnsPerPack && burnsPerPack <= 4, "cube.burnsPerPack range must be between 0 and 2");
+  assert(0 <= burnsPerPack && burnsPerPack <= 4, "cube.burnsPerPack range must be between 0 and 4");
 
   list = list.split("\n");
 
