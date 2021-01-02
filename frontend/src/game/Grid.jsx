@@ -73,6 +73,4 @@ const zone = (zoneName, index) => {
   );
 };
 
-
-
 export default Grid;
