@@ -250,7 +250,7 @@ class GameState extends EventEmitter {
       return true;
     }
 
-    if (packLength == (this.#autopickCardIds.length + this.#burnCardIds.length)) {
+    if (packLength <= (this.#autopickCardIds.length + this.#burnCardIds.length)) {
       return true;
     }
 
