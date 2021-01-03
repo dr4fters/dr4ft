@@ -500,6 +500,13 @@ input[type="checkbox"], input[type="radio"] {
 #doubleimg.right {
   right: 0;
 }
+.flipped {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 
 #players th,
 #players td {

@@ -75,7 +75,7 @@ CardBase.propTypes = {
   card: PropTypes.object.isRequired,
 };
 
-const CardBaseImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, identifiers, name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "", setCode = "", number = "" }) => (
+const CardBaseImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
   <div className="CardBaseImage">
     <img
       title={name}

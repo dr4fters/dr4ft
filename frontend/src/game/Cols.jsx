@@ -5,6 +5,7 @@ import App from "../app";
 import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
+import CardBase from "./card/CardBase.jsx"
 
 class Cols extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Cols extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
+
   onMouseEnter(card, e) {
     let {offsetLeft} = e.target;
     let {clientWidth} = document.documentElement;
@@ -33,7 +35,7 @@ class Cols extends Component {
 
     if (card.foil) {
       className += " foil-card "; 
-      // mixmix - I broke this by absorbing .foil-card into .Card.-foil (see Card.scss)
+      // mixmix - I broke this by absorbing .foil-card into .CardBase.-foil (see CardBase.scss)
       // personally I don't care about whether pickedc cards in the col view display their foiliness
     }
 
@@ -44,6 +46,7 @@ class Cols extends Component {
       card: undefined
     });
   }
+
   render() {
     return (
       <div>
@@ -66,19 +69,14 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 
     for (let key in zone) {
       let items = zone[key].map((card, index) =>
-        <div
-          className={`${card.foil ? "foil-card": ""} card-col`}
+        <div 
+          className="card-col"
           key={index}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
 
-          {App.state.cardSize === "text"
-            ? <div><strong>{card.name}</strong> {card.manaCost}</div>
-            : <img
-              src={getCardSrc(card)}
-              onError= {getFallbackSrc(card)}
-              alt={card.name + " " + card.manaCost} />}
+          <CardBase card={card} />
         </div>
       );
 
@@ -106,27 +104,28 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   return zoneNames.map(renderZone);
 };
 
-const ImageHelper = ({onMouseEnter, className, card}) => (
-  // TODO use Card.jsx here?
-  card
-    ? card.isDoubleFaced
+const ImageHelper = ({onMouseEnter, className, card}) => {
+  if (!card) return <div />
+
+  return (
+    card.isDoubleFaced
       ? <div className={className} id="doubleimg">
-        <img className="Card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`Card ${card.layout === "flip" ? "-flipped" : ""}`}
+        <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`}
           src={getCardSrc({ ...card, isBack: card.flippedIsBack, number: card.flippedNumber, })}
           onError={e => e.target.src = card.flippedCardURL}
           onMouseEnter={onMouseEnter.bind(card)} />
       </div>
-      :
-      <div id='img' className = {className}>
+
+      : <div id='img' className = {className}>
         <img
           className = "image-inner"
           onMouseEnter = {e => onMouseEnter(card, e)}
           onError= {getFallbackSrc(card)}
           src = {getCardSrc(card)} />
       </div>
-    : <div />
-);
+  )
+};
 
 ImageHelper.propTypes = {
   onMouseEnter: PropTypes.func.isRequired,
