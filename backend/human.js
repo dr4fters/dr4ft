@@ -1,7 +1,7 @@
 const Player = require("./player");
 const util = require("./util");
 const hash = require("./hash");
-const {random, pull, find, pullAt, remove, times, sample} = require("lodash");
+const {random, pull, find, pullAt, remove, times, sample, chain} = require("lodash");
 const logger = require("./logger");
 
 module.exports = class extends Player {
@@ -16,7 +16,7 @@ module.exports = class extends Player {
     this.picksPerPack = picksPerPack;
     this.burnsPerPack = burnsPerPack;
     this.attach(sock);
-    this.autopickIndex = [];
+    this.autopicks = [];
     this.burnPickCardIds = [];
   }
 
@@ -25,9 +25,8 @@ module.exports = class extends Player {
       this.sock.ws.close();
 
     sock.mixin(this);
-    sock.removeAllListeners("autopick");
-    sock.on("autopick", this._autopick.bind(this));
-    sock.on("burn", this._burn.bind(this));
+    sock.removeAllListeners("pickState");
+    sock.on("pickState", this._pickState.bind(this));
     sock.removeAllListeners("pick");
     sock.on("pick", this._pick.bind(this));
     sock.removeAllListeners("hash");
@@ -55,24 +54,9 @@ module.exports = class extends Player {
     this.send = () => {};
     this.emit("meta");
   }
-  //TODO: use cardId instead of index of the card
-  _autopick(index) {
-    let [pack] = this.packs;
-    if (pack && index < pack.length){
-      if (this.autopickIndex.length == this.picksPerPack){
-        this.autopickIndex.shift();
-      }
-      this.autopickIndex.push(index);
-    }
-  }
-  _burn(cardId) {
-    const [pack] = this.packs;
-    if (pack && find(pack, (c) => c.cardId === cardId)){
-      if (this.burnPickCardIds.length == this.burnsPerPack){
-        this.burnPickCardIds.shift();
-      }
-      this.burnPickCardIds.push(cardId);
-    }
+  _pickState(state) {
+    this.autopicks = state.autopicks;
+    this.burnPickCardIds = state.burns;
   }
   _pick() {
     this.pick();
@@ -118,32 +102,33 @@ module.exports = class extends Player {
     this.send("pack", pack);
   }
   updateDraftStats(pack, pool) {
-    let picked;
-    const notPicked = [];
-    for (const card in pack) {
-      pack[card].charAt(0) === "-" ?
-        picked = pack[card].slice(4) :
-        notPicked.push( pack[card].slice(4) );
-    }
-    let namePool = pool.map(card => card.name);
-    this.draftStats.push( { picked, notPicked, pool: namePool } );
+    this.draftStats.push({
+      picked: chain(pack)
+        .filter(card => this.autopicks.includes(card.cardId))
+        .map(card => card.name)
+        .value(),
+      notPicked: chain(pack)
+        .filter(card => !this.autopicks.includes(card.cardId))
+        .map(card => card.name)
+        .value(),
+      pool: pool.map(card => card.name)
+    });
   }
   pick() {
-    this.autopickIndex.sort(function(a, b){return b-a;});
-    const cards = [];
     const pack = this.packs.shift();
-    for (var i = 0; i < this.autopickIndex.length; i++) {
-      cards.push( pack.splice(this.autopickIndex[i], 1)[0]);
-      logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${cards[i].name}`);
-      this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
-      this.pool.push(cards[i]);
-      let pickcard = cards[i].name;
-      if (cards[i].foil === true)
-        pickcard = "*" + pickcard + "*";
+    this.autopicks.forEach((cardId) => {
+      const card = find(pack, c => c.cardId === cardId);
+      if (!card) {
+        return;
+      }
+      pull(pack, card);
+      logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${card.name}`);
+      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      this.pool.push(card);
+      const pickcard = card.foil ? "*" + card.name + "*" : card.name ;
       this.picks.push(pickcard);
-      this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-this.autopickIndex.length ], this.pool);
-      this.send("add", cards[i]);
-    }
+      this.send("add", card);
+    });
 
     // Remove burned cards from pack
     remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
@@ -160,8 +145,10 @@ module.exports = class extends Player {
       this.sendPack(next);
 
     // reset state
-    this.autopickIndex = [];
+    this.autopicks = [];
     this.burnPickCardIds = [];
+
+    this.updateDraftStats(this.draftLog.pack, this.pool);
 
     this.emit("pass", pack);
   }
@@ -169,16 +156,15 @@ module.exports = class extends Player {
     //TODO: filter instead of removing a copy of a pack
     const pack = this.packs.slice(0);
     const min = Math.min(pack.length, this.picksPerPack);
-    if (this.autopickIndex.length < min) {
+    if (this.autopicks.length < min) {
       // Remove autopick cards from selection
-      pullAt(pack, this.autopickIndex);
+      pullAt(pack, this.autopicks);
 
-      const remainingCardsToPick = min - this.autopickIndex.length;
+      const remainingCardsToPick = min - this.autopicks.length;
       times(remainingCardsToPick, () => {
-        const newIndex = random(0, pack.length - 1);
-        this.autopickIndex.push(newIndex);
-        const card = pack[newIndex];
-        pull(pack, card);
+        const randomCard = sample(pack);
+        this.autopicks.push(randomCard.cardId);
+        pull(pack, randomCard);
       });
     }
 

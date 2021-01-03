@@ -2,7 +2,7 @@ import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
 import DOMPurify from "dompurify";
-import {range, times, constant, countBy, findIndex} from "lodash";
+import {range, times, constant, countBy} from "lodash";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 
 /**
@@ -18,10 +18,9 @@ const events = {
     App.update();
   },
   burn(card) {
-    // TODO: check if card is already selected. If so, undo autopick or avoid to burn it?
-    App.state.gameState.addBurnCard(card, App.state.game.burnsPerPack);
-    App.send("burn", card.cardId);
-    if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+    if (!App.state.gameState.isBurn(card.cardId)) {
+      App.state.gameState.addBurnCard(card.cardId, App.state.game.burnsPerPack);
+    } else if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
       App.state.gameState.resetPack();
       App.update();
       App.send("pick");
@@ -378,11 +377,8 @@ const parseCubeOptions = () => {
 };
 
 const clickPack = (card) => {
-  const pack = App.state.gameState.get(ZONE_PACK);
-  const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
   if (!App.state.gameState.isAutopick(card.cardId)) {
     App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
-    App.send("autopick", index);
   } else if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
     App.state.gameState.resetPack();
     App.update();

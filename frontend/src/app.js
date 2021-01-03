@@ -158,6 +158,9 @@ let App = {
         [id]: gameState
       });
     });
+    App.state.gameState.on("pickState", (state) => {
+      App.send("pickState", state);
+    });
   },
   error(err) {
     App.err = err;
