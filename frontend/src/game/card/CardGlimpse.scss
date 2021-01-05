@@ -1,11 +1,11 @@
 .CardGlimpse {
-  --width: 240px;
-  --height: 340px;
+  --card-width: 240px;
+  --card-height: 340px;
 
   --btn-size: 40px;
 
-  width: var(--width);
-  height: var(--height);
+  width: var(--card-width);
+  height: var(--card-height);
 
   display: grid;
 
@@ -23,7 +23,7 @@
 
     display: grid;
     grid-template-rows: calc(var(--height) * 0.6);
-    --col: calc(var(--width) / 2);
+    --col: calc(var(--card-width) / 2);
     grid-template-columns: var(--col) var(--col);
     grid-gap: var(--gap);
     

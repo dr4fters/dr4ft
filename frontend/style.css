@@ -357,28 +357,11 @@ input[type="checkbox"], input[type="radio"] {
 
 /** Zones **/
 
-.zone img,
 #img,
 .card {
   height: 340px;
   width: 240px;
   cursor: pointer;
-}
-
-.col {
-  float: left;
-  width: 180px;
-  padding: 1px;
-}
-
-.col img {
-  height: 255px;
-  width: 180px;
-  margin-bottom: -235px;
-}
-
-.col div:last-child img {
-  margin-bottom: 0;
 }
 
 .waiting {
@@ -389,13 +372,6 @@ input[type="checkbox"], input[type="radio"] {
 
 .card {
   display: inline-flex;
-  position: relative;
-  margin: 0;
-  cursor: pointer;
-  padding: 1px;
-}
-
-.card-col {
   position: relative;
   margin: 0;
   cursor: pointer;

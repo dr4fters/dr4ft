@@ -1,11 +1,8 @@
 .CardDefault {
-  --width: 240px;
-  --height: 340px;
-
   position: relative;
 
-  width: var(--width);
-  height: var(--height);
+  width: var(--card-width);
+  height: var(--card-height);
 
   display: grid;
 

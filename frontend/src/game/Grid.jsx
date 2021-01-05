@@ -46,16 +46,25 @@ const zone = (zoneName, index) => {
 
   const zoneTitle = zoneDisplayName + (isPackZone ? " " + App.state.round : "");
   const zoneDetails = getZoneDetails(App.state, zoneName, cards);
+
   const remainingCardsToSelect = Math.min(App.state.picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(App.state.game.burnsPerPack, cards.length);
-  const selectUpTo = 'select ' + remainingCardsToSelect + (remainingCardsToSelect>1? ' cards': ' card');
-  const burnUpTo = 'burn ' + remainingCardsToBurn + (remainingCardsToBurn>1? ' cards': ' card');
-  const elementsContent = isPackZone ? [zoneTitle, zoneDetails, selectUpTo, burnUpTo] : [zoneTitle, zoneDetails];
 
   return (
     <div className='Grid zone' key={index}>
       <h1>
-        <Spaced elements={elementsContent} />
+        <Spaced elements={[zoneTitle, zoneDetails]} />
+        {
+          (
+            App.state.game.picksPerPack > 1 ||
+            App.state.game.burnsPerPack > 0
+          ) &&
+            <span className="picks">{`select ${remainingCardsToSelect} card${remainingCardsToSelect > 1 ? 's' : ''}`}</span>
+        }
+        {
+          App.state.game.burnsPerPack > 0 &&
+            <span className="burns">{`burn ${remainingCardsToBurn} card${remainingCardsToBurn > 1 ? 's' : ''}`}</span>
+        }
       </h1>
 
       <div className="cards">

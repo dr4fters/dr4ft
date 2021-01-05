@@ -31,3 +31,76 @@
     background-size: 240px 340px;
   }
 }
+
+.CardBaseText {
+  width: calc(var(--card-width) - 10px);
+  height: calc(var(--card-height) - 10px);
+  // 2* (padding + border)
+
+  background: #fff;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid #555;
+  border-radius: 6px;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  grid-gap: 6px;
+
+  align-content: start;
+
+  .header, .sub-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .header, .sub-header, .body {
+    padding: 0 4px;
+  }
+
+  .header {
+    .name {
+      color: #000;
+      font-weight: bold;
+    }
+    .cost {}
+  }
+
+  .sub-header {
+    background: #eee;
+    border-radius: 4px;
+
+    .type {}
+    .rarity {
+      color: #777;
+    }
+  }
+
+  .body {
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+
+    .text {}
+    overflow-y: auto;
+  }
+
+  .footer {
+    display: grid;
+    justify-content: end;
+
+    .power-toughness, .loyalty {
+      padding: 1px 4px;
+      background: #eee;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+  }
+}
+
+.CardBaseImage {
+  img {
+    width: var(--card-width);
+    height: var(--card-height);
+  }
+}

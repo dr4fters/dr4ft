@@ -6,6 +6,7 @@ import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
 import CardBase from "./card/CardBase.jsx"
+import "./Cols.scss"
 
 class Cols extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class Cols extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Cols">
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
         <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
       </div>
@@ -70,7 +71,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
     for (let key in zone) {
       let items = zone[key].map((card, index) =>
         <div 
-          className="card-col"
+          className="card-container"
           key={index}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
@@ -105,8 +106,10 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 };
 
 const ImageHelper = ({onMouseEnter, className, card}) => {
+  // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
   if (!card) return <div />
 
+  // TODO - consider text case
   return (
     card.isDoubleFaced
       ? <div className={className} id="doubleimg">
