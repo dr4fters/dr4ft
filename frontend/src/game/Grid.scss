@@ -2,7 +2,13 @@
   --card-width: 240px;
   --card-height: 340px;
 
-  h1 {}
+  h1 {
+
+    .picks, .burns {
+      font-size: 1rem;
+      margin-left: 1rem;
+    }
+  }
   
   .cards {
     display: grid;

@@ -1,0 +1,23 @@
+.Cols {
+  --card-width: 180px;
+  --card-height: 255px;
+
+  .col {
+    float: left;
+    width: var(--card-width);
+    padding: 1px;
+
+    .card-container {
+      position: relative;
+      cursor: pointer;
+
+      padding: 1px;
+      margin: 0;
+      margin-bottom: calc(20px - var(--card-height));
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

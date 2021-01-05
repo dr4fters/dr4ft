@@ -45,6 +45,8 @@ export default class CardBase extends Component {
 
   render () {
     const { card } = this.props;
+    // at the moment for Text view, you can't see both sides of a card on hover
+    // as the same card is passed into CardBaseText regardless mouseEntered
 
     if (!this.props.card.isDoubleFaced) return (
       <div className={`CardBase ${card.foil ? "-foil " : ""}`}>
@@ -108,14 +110,35 @@ CardBaseImage.propTypes = {
   flippedNumber: PropTypes.string
 };
 
-// mixmix: come back and style
 const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
-  <div className="CardBaseText" style={{display: "block"}}>
-    <p><strong>{name}</strong> {manaCost}</p>
-    <p>{type} | {rarity}</p>
-    {text && <p>{text}</p>}
-    {power && toughness && <p>{power}/{toughness}</p>}
-    {loyalty && <p>{loyalty}</p>}
+  <div className="CardBaseText" >
+    <div className="header">
+      <div className="name">{name}</div>
+      <div className="cost">{manaCost}</div>
+    </div>
+
+    <div className="sub-header">
+      <div className="type">{type}</div>
+      <div className="rarity">{rarity}</div>
+    </div>
+
+    <div className="body">
+      {
+        text &&
+          <div className="text">{text}</div>
+      }
+    </div>
+
+    <div className="footer">
+      {
+        power && toughness &&
+          <div className="power-toughness">{power}/{toughness}</div>
+      }
+      {
+        loyalty &&
+          <div className="loyalty">{loyalty}</div>
+      }
+    </div>
   </div>
 );
 
