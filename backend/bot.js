@@ -2,7 +2,7 @@ const {sample, pull, times} = require("lodash");
 const Player = require("./player");
 const logger = require("./logger");
 
-module.exports = class extends Player {
+module.exports = class Bot extends Player {
   constructor(picksPerPack, burnsPerPack, gameId) {
     super({
       isBot: true,

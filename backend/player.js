@@ -20,7 +20,10 @@ class Player extends EventEmitter {
       isHost: false,
       time: 0,
       packs: [],
-      autopicks: [],
+      selected: {
+        picks: [],
+        burns: []
+      },
       pool: [],
       cap: {
         packs: {}
