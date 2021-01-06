@@ -22,7 +22,7 @@
     transition: opacity 0.2s ease-in;
 
     display: grid;
-    grid-template-rows: calc(var(--height) * 0.6);
+    grid-template-rows: calc(var(--card-height) * 0.6);
     --col: calc(var(--card-width) / 2);
     grid-template-columns: var(--col) var(--col);
     grid-gap: var(--gap);

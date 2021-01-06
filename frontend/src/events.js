@@ -19,11 +19,11 @@ const events = {
   },
   burn(card) {
     if (!App.state.gameState.isBurn(card.cardId)) {
-      App.state.gameState.addBurnCard(card.cardId, App.state.game.burnsPerPack);
-    } else if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+      App.state.gameState.updateCardBurn(card.cardId, App.state.game.burnsPerPack);
+    } else if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
       App.state.gameState.resetPack();
       App.update();
-      App.send("pick");
+      App.send("confirmSelection");
     }
   },
   click(zoneName, card, e) {
@@ -377,12 +377,12 @@ const parseCubeOptions = () => {
 };
 
 const clickPack = (card) => {
-  if (!App.state.gameState.isAutopick(card.cardId)) {
-    App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
-  } else if (App.state.gameState.isPickReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+  if (!App.state.gameState.isPick(card.cardId)) {
+    App.state.gameState.updateCardPick(card.cardId, App.state.picksPerPack);
+  } else if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
     App.state.gameState.resetPack();
     App.update();
-    App.send("pick");
+    App.send("confirmSelection");
   }
 };
 
