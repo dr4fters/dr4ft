@@ -17,8 +17,6 @@ module.exports = class Bot extends Player {
   }
 
   getPack(pack) {
-    console.log("pack before", pack.length, pack.map(m => m.name))
-
     const cardsToPick = Math.min(this.picksPerPack, pack.length);
     times(cardsToPick, () => {
       const randomPick = sample(pack);
@@ -34,8 +32,6 @@ module.exports = class Bot extends Player {
       logger.info(`GameID: ${this.gameId}, Bot, burnt: ${randomPick.name}`);
       pull(pack, randomPick);
     });
-
-    console.log("pack after", pack.length, pack.map(m => m.name))
 
     this.emit("pass", pack);
   }

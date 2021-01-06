@@ -1,4 +1,4 @@
-const {pull, find, pullAt, remove, times, sample, chain} = require("lodash");
+const {pull, find, pullAllWith, remove, times, sample, chain} = require("lodash");
 
 const Player = require("./index");
 const util = require("../util");
@@ -154,20 +154,37 @@ module.exports = class Human extends Player {
     this.emit("pass", pack);
   }
   pickOnTimeout() {
+    console.log('AUTO selection!!! <<<<<')
+    console.log({
+      autopicks: this.autopicks,
+      burns: this.burnPickCardIds
+    })
     //TODO: filter instead of removing a copy of a pack
-    const pack = this.packs.slice(0);
-    const min = Math.min(pack.length, this.picksPerPack);
-    if (this.autopicks.length < min) {
-      // Remove autopick cards from selection
-      pullAt(pack, this.autopicks);
+    const pack = Array.from(this.packs[0][0]);
+    console.log('raw pack', pack.length, pack.map(c => c.name))
+    pullAllWith(pack, this.autopicks, (card, cardId) => card.cardId === cardId);
+    pullAllWith(pack, this.burnPickCardIds, (card, cardId) => card.cardId === cardId);
+    console.log('thinned pack', pack.length, pack.map(c => c.name))
 
-      const remainingCardsToPick = min - this.autopicks.length;
-      times(remainingCardsToPick, () => {
-        const randomCard = sample(pack);
-        this.autopicks.push(randomCard.cardId);
-        pull(pack, randomCard);
-      });
-    }
+    const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.autopicks.length;
+    times(remainingToPick, () => {
+      const randomCard = sample(pack);
+      this.autopicks.push(randomCard.cardId);
+      pull(pack, randomCard);
+    });
+
+    // burn cards
+    const remainingToBurn = Math.min(this.burnsPerPack, pack.length) - this.burnPickCardIds.length;
+    times(remainingToBurn, () => {
+      const randomCard = sample(pack);
+      this.burnPickCardIds.push(randomCard.cardId);
+      pull(pack, randomCard);
+    });
+    console.log('final pack', pack.length, pack.map(c => c.name))
+    console.log({
+      autopicks: this.autopicks,
+      burns: this.burnPickCardIds
+    })
 
     this.pick();
   }
