@@ -1,10 +1,11 @@
-const Player = require("./player");
-const util = require("./util");
-const hash = require("./hash");
 const {pull, find, pullAt, remove, times, sample, chain} = require("lodash");
-const logger = require("./logger");
 
-module.exports = class extends Player {
+const Player = require("./index");
+const util = require("../util");
+const hash = require("../hash");
+const logger = require("../logger");
+
+module.exports = class Human extends Player {
   constructor(sock, picksPerPack, burnsPerPack, gameId) {
     super({
       isBot: false,

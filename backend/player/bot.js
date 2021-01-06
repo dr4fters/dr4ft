@@ -1,8 +1,9 @@
 const {sample, pull, times} = require("lodash");
-const Player = require("./player");
-const logger = require("./logger");
 
-module.exports = class extends Player {
+const Player = require("./index");
+const logger = require("../logger");
+
+module.exports = class Bot extends Player {
   constructor(picksPerPack, burnsPerPack, gameId) {
     super({
       isBot: true,
@@ -16,6 +17,8 @@ module.exports = class extends Player {
   }
 
   getPack(pack) {
+    console.log("pack before", pack.length, pack.map(m => m.name))
+
     const cardsToPick = Math.min(this.picksPerPack, pack.length);
     times(cardsToPick, () => {
       const randomPick = sample(pack);
@@ -31,6 +34,8 @@ module.exports = class extends Player {
       logger.info(`GameID: ${this.gameId}, Bot, burnt: ${randomPick.name}`);
       pull(pack, randomPick);
     });
+
+    console.log("pack after", pack.length, pack.map(m => m.name))
 
     this.emit("pass", pack);
   }
