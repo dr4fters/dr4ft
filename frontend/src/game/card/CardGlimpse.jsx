@@ -28,7 +28,7 @@ class CardGlimpse extends Component {
   render () {
     const {zoneName, card} = this.props;
 
-    const isAutoPickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
+    const isAutoPickable = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
     const isBurn = App.state.gameState.isBurn(card.cardId);
 
     return (

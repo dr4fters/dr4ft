@@ -10,7 +10,7 @@ import "./CardDefault.scss";
 export default class CardDefault extends Component {
   render () {
     const { card, zoneName } = this.props;
-    const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isAutopick(card.cardId);
+    const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
     const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId, App.state.picksPerPack);
 
     return (

@@ -158,8 +158,8 @@ let App = {
         [id]: gameState
       });
     });
-    App.state.gameState.on("pickState", (state) => {
-      App.send("pickState", state);
+    App.state.gameState.on("setSelected", (state) => {
+      App.send("setSelected", state);
     });
   },
   error(err) {

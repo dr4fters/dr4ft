@@ -17,8 +17,6 @@ module.exports = class Human extends Player {
     this.picksPerPack = picksPerPack;
     this.burnsPerPack = burnsPerPack;
     this.attach(sock);
-    this.autopicks = [];
-    this.burnPickCardIds = [];
   }
 
   attach(sock) {
@@ -26,10 +24,10 @@ module.exports = class Human extends Player {
       this.sock.ws.close();
 
     sock.mixin(this);
-    sock.removeAllListeners("pickState");
-    sock.on("pickState", this._pickState.bind(this));
-    sock.removeAllListeners("pick");
-    sock.on("pick", this._pick.bind(this));
+    sock.removeAllListeners("setSelected");
+    sock.on("setSelected", this._setSelected.bind(this));
+    sock.removeAllListeners("confirmSelection");
+    sock.on("confirmSelection", this._confirmSelection.bind(this));
     sock.removeAllListeners("hash");
     sock.on("hash", this._hash.bind(this));
     sock.once("exit", this._farewell.bind(this));
@@ -55,12 +53,11 @@ module.exports = class Human extends Player {
     this.send = () => {};
     this.emit("meta");
   }
-  _pickState(state) {
-    this.autopicks = state.autopicks;
-    this.burnPickCardIds = state.burns;
+  _setSelected({ picks, burns }) {
+    this.selected = { picks, burns }
   }
-  _pick() {
-    this.pick();
+  _confirmSelection() {
+    this.confirmSelection();
   }
   getPack(pack) {
     if (this.packs.push(pack) === 1)
@@ -105,19 +102,19 @@ module.exports = class Human extends Player {
   updateDraftStats(pack, pool) {
     this.draftStats.push({
       picked: chain(pack)
-        .filter(card => this.autopicks.includes(card.cardId))
+        .filter(card => this.selected.picks.includes(card.cardId))
         .map(card => card.name)
         .value(),
       notPicked: chain(pack)
-        .filter(card => !this.autopicks.includes(card.cardId))
+        .filter(card => !this.selected.picks.includes(card.cardId))
         .map(card => card.name)
         .value(),
       pool: pool.map(card => card.name)
     });
   }
-  pick() {
+  confirmSelection() {
     const pack = this.packs.shift();
-    this.autopicks.forEach((cardId) => {
+    this.selected.picks.forEach((cardId) => {
       const card = find(pack, c => c.cardId === cardId);
       if (!card) {
         return;
@@ -132,8 +129,8 @@ module.exports = class Human extends Player {
     });
 
     // Remove burned cards from pack
-    remove(pack, (card) => this.burnPickCardIds.includes(card.cardId));
-    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.burnPickCardIds.length;
+    remove(pack, (card) => this.selected.burns.includes(card.cardId));
+    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.selected.burns.length;
     times(cardsToBurn, () => {
       const card = sample(pack);
       pull(pack, card);
@@ -146,8 +143,10 @@ module.exports = class Human extends Player {
       this.sendPack(next);
 
     // reset state
-    this.autopicks = [];
-    this.burnPickCardIds = [];
+    this.selected = {
+      picks: [],
+      burns: []
+    }
 
     this.updateDraftStats(this.draftLog.pack, this.pool);
 
@@ -166,6 +165,7 @@ module.exports = class Human extends Player {
     pullAllWith(pack, this.burnPickCardIds, (card, cardId) => card.cardId === cardId);
     console.log('thinned pack', pack.length, pack.map(c => c.name))
 
+    // pick cards
     const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.autopicks.length;
     times(remainingToPick, () => {
       const randomCard = sample(pack);
@@ -186,13 +186,13 @@ module.exports = class Human extends Player {
       burns: this.burnPickCardIds
     })
 
-    this.pick();
+    this.confirmSelection();
   }
   kick() {
     this.send = () => {};
     while(this.packs.length)
-      this.pickOnTimeout();
-    this.sendPack = this.pickOnTimeout;
+      this.handleTimeout();
+    this.sendPack = this.handleTimeout;
     this.isBot = true;
   }
 };
