@@ -54,7 +54,7 @@ module.exports = class Human extends Player {
     this.emit("meta");
   }
   _setSelected({ picks, burns }) {
-    this.selected = { picks, burns }
+    this.selected = { picks, burns };
   }
   _confirmSelection() {
     this.confirmSelection();
@@ -146,24 +146,24 @@ module.exports = class Human extends Player {
     this.selected = {
       picks: [],
       burns: []
-    }
+    };
 
     this.updateDraftStats(this.draftLog.pack, this.pool);
 
     this.emit("pass", pack);
   }
   pickOnTimeout() {
-    console.log('AUTO selection!!! <<<<<')
+    console.log("AUTO selection!!! <<<<<");
     console.log({
       autopicks: this.autopicks,
       burns: this.burnPickCardIds
-    })
+    });
     //TODO: filter instead of removing a copy of a pack
     const pack = Array.from(this.packs[0][0]);
-    console.log('raw pack', pack.length, pack.map(c => c.name))
+    console.log("raw pack", pack.length, pack.map(c => c.name));
     pullAllWith(pack, this.autopicks, (card, cardId) => card.cardId === cardId);
     pullAllWith(pack, this.burnPickCardIds, (card, cardId) => card.cardId === cardId);
-    console.log('thinned pack', pack.length, pack.map(c => c.name))
+    console.log("thinned pack", pack.length, pack.map(c => c.name));
 
     // pick cards
     const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.autopicks.length;
@@ -180,11 +180,11 @@ module.exports = class Human extends Player {
       this.burnPickCardIds.push(randomCard.cardId);
       pull(pack, randomCard);
     });
-    console.log('final pack', pack.length, pack.map(c => c.name))
+    console.log("final pack", pack.length, pack.map(c => c.name));
     console.log({
       autopicks: this.autopicks,
       burns: this.burnPickCardIds
-    })
+    });
 
     this.confirmSelection();
   }
