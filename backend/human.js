@@ -53,7 +53,7 @@ module.exports = class Human extends Player {
     this.emit("meta");
   }
   _setSelected({ picks, burns }) {
-    this.selected = { picks, burns }
+    this.selected = { picks, burns };
   }
   _confirmSelection() {
     this.confirmSelection();
@@ -145,7 +145,7 @@ module.exports = class Human extends Player {
     this.selected = {
       picks: [],
       burns: []
-    }
+    };
 
     this.updateDraftStats(this.draftLog.pack, this.pool);
 
