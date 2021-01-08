@@ -130,11 +130,6 @@ module.exports = class Human extends Player {
 
     // Remove burned cards from pack
     remove(pack, (card) => this.selected.burns.includes(card.cardId));
-    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.selected.burns.length;
-    times(cardsToBurn, () => {
-      const card = sample(pack);
-      pull(pack, card);
-    });
 
     const [next] = this.packs;
     if (!next)
@@ -152,38 +147,28 @@ module.exports = class Human extends Player {
 
     this.emit("pass", pack);
   }
-  pickOnTimeout() {
-    console.log("AUTO selection!!! <<<<<");
-    console.log({
-      autopicks: this.autopicks,
-      burns: this.burnPickCardIds
-    });
+  handleTimeout() {
     //TODO: filter instead of removing a copy of a pack
-    const pack = Array.from(this.packs[0][0]);
-    console.log("raw pack", pack.length, pack.map(c => c.name));
-    pullAllWith(pack, this.autopicks, (card, cardId) => card.cardId === cardId);
-    pullAllWith(pack, this.burnPickCardIds, (card, cardId) => card.cardId === cardId);
-    console.log("thinned pack", pack.length, pack.map(c => c.name));
+    const pack = Array.from(this.packs[0]);
+
+    pullAllWith(pack, this.selected.picks, (card, cardId) => card.cardId === cardId);
+    pullAllWith(pack, this.selected.burns, (card, cardId) => card.cardId === cardId);
+
 
     // pick cards
-    const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.autopicks.length;
+    const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.selected.picks.length;
     times(remainingToPick, () => {
       const randomCard = sample(pack);
-      this.autopicks.push(randomCard.cardId);
+      this.selected.picks.push(randomCard.cardId);
       pull(pack, randomCard);
     });
 
     // burn cards
-    const remainingToBurn = Math.min(this.burnsPerPack, pack.length) - this.burnPickCardIds.length;
+    const remainingToBurn = Math.min(this.burnsPerPack, pack.length) - this.selected.burns.length;
     times(remainingToBurn, () => {
       const randomCard = sample(pack);
-      this.burnPickCardIds.push(randomCard.cardId);
+      this.selected.burns.push(randomCard.cardId);
       pull(pack, randomCard);
-    });
-    console.log("final pack", pack.length, pack.map(c => c.name));
-    console.log({
-      autopicks: this.autopicks,
-      burns: this.burnPickCardIds
     });
 
     this.confirmSelection();
