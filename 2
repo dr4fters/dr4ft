@@ -37,20 +37,17 @@ class CardGlimpse extends Component {
 
         <div className="glimpse-options">
           <div className="pick" onClick={this.onClickPickCard} >
-            <i className="icon ion-android-checkbox" />
+            <img src="/media/pick.svg" alt="Pick" />
           </div>
 
           <div className="burn" onClick={this.onClickBurnCard} >
-            <i className="icon ion-flame" />
+            <img src="/media/burn.svg" alt="Burn" />
           </div>
         </div>
 
         <div className="glimpse-state">
-          {(isAutoPickable) && <i className="bookmark pick icon ion-android-bookmark" />}
-          {(isBurn) && <i className="bookmark burn icon ion-android-bookmark" />}
-
-          {isAutoPickable && <i className="icon ion-android-checkbox" />}
-          {isBurn && <i className="icon ion-flame" />}
+          {isAutoPickable && <img src="/media/pick.svg" alt="Picked" />}
+          {isBurn && <img src="/media/burn.svg" alt="Picked" />}
         </div>
       </div>
     );

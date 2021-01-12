@@ -1,8 +1,11 @@
 .CardDefault {
+  --pick-color: #00d400;
+
   position: relative;
 
   width: var(--card-width);
   height: var(--card-height);
+  cursor: pointer;
 
   display: grid;
 
@@ -15,19 +18,30 @@
   }
   
   .pick-state {
+    z-index: 10;
     justify-self: start;
     align-self: start;
 
-    padding: 10px;
-    margin: 12px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
 
-    img {
-      max-width: 30px;
-      max-height: 30px;
-      filter:
-        drop-shadow(white 0 0 5px)
-        drop-shadow(white 0 0 5px)
-        drop-shadow(white 0 0 1px);
+    margin: -18px 30px;
+
+    i {
+      grid-row: 1;
+      grid-column: 1;
+
+      z-index: 0;
+      color: #fff;
+      font-size: 30px;
+
+      &.bookmark {
+        font-size: 80px;
+        filter: drop-shadow(#0000005e 5px 5px 0);
+
+        &.pick { color: var(--pick-color); }
+      }
     }
   }
 }

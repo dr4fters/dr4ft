@@ -11,7 +11,6 @@ export default class CardDefault extends Component {
   render () {
     const { card, zoneName } = this.props;
     const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
-    const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId, App.state.picksPerPack);
 
     return (
       <div
@@ -22,8 +21,8 @@ export default class CardDefault extends Component {
         <CardBase card={card} zoneName={zoneName} />
 
         <div className="pick-state">
-          {isAutopickable && <img src="/media/pick.svg" alt="Picked" />}
-          {isAutoremovableAutopick && <img src="/media/autoremove.png" alt="Auto-removeable" />}
+          {isAutopickable && <i className="bookmark pick icon ion-android-bookmark" />}
+          {isAutopickable && <i className="icon ion-android-checkbox" />}
         </div>
       </div>
     );

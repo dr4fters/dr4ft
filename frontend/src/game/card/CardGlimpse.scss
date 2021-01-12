@@ -4,6 +4,9 @@
 
   --btn-size: 40px;
 
+  --pick-color: #00d400;
+  --burn-color: #d40000;
+
   width: var(--card-width);
   height: var(--card-height);
 
@@ -18,8 +21,10 @@
   }
 
   .glimpse-options {
+    z-index: 10;
     opacity: 0;
     transition: opacity 0.2s ease-in;
+    font-size: 2.5rem;
 
     display: grid;
     grid-template-rows: calc(var(--card-height) * 0.6);
@@ -37,7 +42,7 @@
       justify-items: center;
       align-items: center;
 
-      img {
+      i {
         max-width: var(--btn-size);
         max-height: var(--btn-size);
 
@@ -46,8 +51,7 @@
           drop-shadow(white 0 0 10px)
           drop-shadow(white 0 0 10px);
       }
-      
-      &:hover img {
+      &:hover i {
         filter:
           drop-shadow(white 0 0 10px)
           drop-shadow(white 0 0 10px)
@@ -55,6 +59,17 @@
 
       }
     }
+    .pick i {
+      color: var(--pick-color);
+      padding-left: calc(var(--card-width) / 10);
+    }
+    .burn i {
+      color: var(--burn-color);
+      font-size: 2.8rem;
+      padding-bottom: 0.4rem;
+      padding-right: calc(var(--card-width) / 10);
+    }
+      
   }
 
   &:hover {
@@ -64,19 +79,31 @@
   }
   
   .glimpse-state {
+    z-index: 10;
     justify-self: start;
     align-self: start;
 
-    padding: 10px;
-    margin: 12px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
 
-    img {
-      max-width: 30px;
-      max-height: 30px;
-      filter:
-        drop-shadow(white 0 0 5px)
-        drop-shadow(white 0 0 5px)
-        drop-shadow(white 0 0 1px);
+    margin: -18px 30px;
+
+    i {
+      grid-row: 1;
+      grid-column: 1;
+
+      z-index: 0;
+      color: #fff;
+      font-size: 30px;
+
+      &.bookmark {
+        font-size: 80px;
+        filter: drop-shadow(#0000005e 5px 5px 0);
+
+        &.pick { color: var(--pick-color); }
+        &.burn { color: var(--burn-color); }
+      }
     }
   }
 }
