@@ -17,5 +17,23 @@
     grid-gap: 2px;
   }
 
+  button.confirm-btn {
+    justify-self: center;
+    align-self: center;
+
+    font-size: 18px;
+    color: #fff;
+    background: #3a87e5;
+    padding: 10px;
+    border: #3a87e5 solid 1px;
+    border-radius: 2px;
+  }
+  button[disabled].confirm-btn {
+    color: #777;
+    background: white;
+    border: #777 solid 1px;
+    border-radius: 2px;
+  }
+
   h2 {}
 }

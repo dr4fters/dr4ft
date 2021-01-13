@@ -23,7 +23,6 @@ class CardGlimpse extends Component {
     e.stopPropagation();
     App.emit("burn", this.props.card);
   }
-  
 
   render () {
     const {zoneName, card} = this.props;

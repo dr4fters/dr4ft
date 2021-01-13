@@ -49,6 +49,7 @@ const zone = (zoneName, index) => {
 
   const remainingCardsToSelect = Math.min(App.state.picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(App.state.game.burnsPerPack, cards.length);
+  const canConfirm = App.state.gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
 
   return (
     <div className='Grid zone' key={index}>
@@ -73,6 +74,18 @@ const zone = (zoneName, index) => {
             ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
             : <CardDefault key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
         )}
+
+        {
+          cards.length && zoneName === ZONE_PACK &&
+            <button
+              className="confirm-btn"
+              disabled={!canConfirm}
+              onClick={() => App.emit("confirmSelection")}
+            >
+              Confirm
+            </button>
+        }
+
       </div>
 
       {cards.length === 0 && zoneName === ZONE_PACK &&
