@@ -49,23 +49,40 @@ const zone = (zoneName, index) => {
 
   const remainingCardsToSelect = Math.min(App.state.picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(App.state.game.burnsPerPack, cards.length);
+  const canConfirm = App.state.gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
 
   return (
     <div className='Grid zone' key={index}>
-      <h1>
-        <Spaced elements={[zoneTitle, zoneDetails]} />
+      <div className='header'>
+        <h1>
+          <Spaced elements={[zoneTitle, zoneDetails]} />
+        </h1>
+
+        <div className='pick-burn-detail'>
+          {
+            (
+              App.state.game.picksPerPack > 1 ||
+              App.state.game.burnsPerPack > 0
+            ) &&
+              <span className="picks">{`Pick ${remainingCardsToSelect}`}</span>
+          }
+          {
+            App.state.game.burnsPerPack > 0 &&
+              <span className="burns">{`Burn ${remainingCardsToBurn}`}</span>
+          }
+        </div>
+
         {
-          (
-            App.state.game.picksPerPack > 1 ||
-            App.state.game.burnsPerPack > 0
-          ) &&
-            <span className="picks">{`select ${remainingCardsToSelect} card${remainingCardsToSelect > 1 ? 's' : ''}`}</span>
+          cards.length > 0 && zoneName === ZONE_PACK &&
+            <button
+              className="confirm-btn"
+              disabled={!canConfirm}
+              onClick={() => App.emit("confirmSelection")}
+            >
+              Confirm
+            </button>
         }
-        {
-          App.state.game.burnsPerPack > 0 &&
-            <span className="burns">{`burn ${remainingCardsToBurn} card${remainingCardsToBurn > 1 ? 's' : ''}`}</span>
-        }
-      </h1>
+      </div>
 
       <div className="cards">
         {cards.map((card, i) =>
@@ -73,6 +90,7 @@ const zone = (zoneName, index) => {
             ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
             : <CardDefault key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
         )}
+
       </div>
 
       {cards.length === 0 && zoneName === ZONE_PACK &&
