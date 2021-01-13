@@ -1,8 +1,9 @@
-const Player = require("./player");
-const util = require("./util");
-const hash = require("./hash");
-const {pull, find, pullAt, remove, times, sample, chain} = require("lodash");
-const logger = require("./logger");
+const {pull, find, pullAllWith, remove, times, sample, chain} = require("lodash");
+
+const Player = require("./index");
+const util = require("../util");
+const hash = require("../hash");
+const logger = require("../logger");
 
 module.exports = class Human extends Player {
   constructor(sock, picksPerPack, burnsPerPack, gameId) {
@@ -129,11 +130,6 @@ module.exports = class Human extends Player {
 
     // Remove burned cards from pack
     remove(pack, (card) => this.selected.burns.includes(card.cardId));
-    const cardsToBurn = Math.min(pack.length, this.burnsPerPack) - this.selected.burns.length;
-    times(cardsToBurn, () => {
-      const card = sample(pack);
-      pull(pack, card);
-    });
 
     const [next] = this.packs;
     if (!next)
@@ -152,22 +148,28 @@ module.exports = class Human extends Player {
     this.emit("pass", pack);
   }
   handleTimeout() {
-    // top up the selections auto random selections
     //TODO: filter instead of removing a copy of a pack
-    const pack = this.packs.slice(0);
+    const pack = Array.from(this.packs[0]);
 
-    const remainingCardsToPick = Math.min(pack.length, this.picksPerPack) - this.selected.picks.length;
-    if (remainingCardsToPick) {
-      // Remove picks from the pack
-      pullAt(pack, this.selected.picks);
+    pullAllWith(pack, this.selected.picks, (card, cardId) => card.cardId === cardId);
+    pullAllWith(pack, this.selected.burns, (card, cardId) => card.cardId === cardId);
 
-      times(remainingCardsToPick, () => {
-        const randomCard = sample(pack);
-        this.selected.picks.push(randomCard.cardId);
-        pull(pack, randomCard);
-      });
-    }
-    // remainingCardsToBurn ??
+
+    // pick cards
+    const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.selected.picks.length;
+    times(remainingToPick, () => {
+      const randomCard = sample(pack);
+      this.selected.picks.push(randomCard.cardId);
+      pull(pack, randomCard);
+    });
+
+    // burn cards
+    const remainingToBurn = Math.min(this.burnsPerPack, pack.length) - this.selected.burns.length;
+    times(remainingToBurn, () => {
+      const randomCard = sample(pack);
+      this.selected.burns.push(randomCard.cardId);
+      pull(pack, randomCard);
+    });
 
     this.confirmSelection();
   }
