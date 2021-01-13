@@ -53,30 +53,27 @@ const zone = (zoneName, index) => {
 
   return (
     <div className='Grid zone' key={index}>
-      <h1>
-        <Spaced elements={[zoneTitle, zoneDetails]} />
-        {
-          (
-            App.state.game.picksPerPack > 1 ||
-            App.state.game.burnsPerPack > 0
-          ) &&
-            <span className="picks">{`select ${remainingCardsToSelect} card${remainingCardsToSelect > 1 ? 's' : ''}`}</span>
-        }
-        {
-          App.state.game.burnsPerPack > 0 &&
-            <span className="burns">{`burn ${remainingCardsToBurn} card${remainingCardsToBurn > 1 ? 's' : ''}`}</span>
-        }
-      </h1>
+      <div className='header'>
+        <h1>
+          <Spaced elements={[zoneTitle, zoneDetails]} />
+        </h1>
 
-      <div className="cards">
-        {cards.map((card, i) =>
-          isPackZone && App.state.game.burnsPerPack > 0
-            ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
-            : <CardDefault key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
-        )}
+        <div className='pick-burn-detail'>
+          {
+            (
+              App.state.game.picksPerPack > 1 ||
+              App.state.game.burnsPerPack > 0
+            ) &&
+              <span className="picks">{`Pick ${remainingCardsToSelect}`}</span>
+          }
+          {
+            App.state.game.burnsPerPack > 0 &&
+              <span className="burns">{`Burn ${remainingCardsToBurn}`}</span>
+          }
+        </div>
 
         {
-          cards.length && zoneName === ZONE_PACK &&
+          cards.length > 0 && zoneName === ZONE_PACK &&
             <button
               className="confirm-btn"
               disabled={!canConfirm}
@@ -85,6 +82,14 @@ const zone = (zoneName, index) => {
               Confirm
             </button>
         }
+      </div>
+
+      <div className="cards">
+        {cards.map((card, i) =>
+          isPackZone && App.state.game.burnsPerPack > 0
+            ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+            : <CardDefault key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
+        )}
 
       </div>
 
