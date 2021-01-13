@@ -32,7 +32,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = upperFirst(getColor(mtgjsonCard, rawCards));
   const identifiersMini = {"scryfallId": identifiers.scryfallId};
-  
+
   return {
     uuid,
     name,
