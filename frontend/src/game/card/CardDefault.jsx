@@ -4,27 +4,24 @@ import PropTypes from "prop-types";
 import App from "../../app";
 import {ZONE_PACK} from "../../zones";
 import CardBase from "./CardBase";
+import SelectionState from "./SelectionState.jsx"
 import "./CardDefault.scss";
 
 // mixmix - this could be a stateless functional component
 export default class CardDefault extends Component {
   render () {
     const { card, zoneName } = this.props;
-    const isAutopickable = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
-    const isAutoremovableAutopick = App.state.gameState.isAutoremovableAutopick(card.cardId, App.state.picksPerPack);
+    const isPick = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
 
     return (
       <div
         className="CardDefault"
-        title={isAutopickable ? "This card will be automatically picked if your time expires." : ""}
+        title={isPick ? "This card will be automatically picked if your time expires." : ""}
         onClick={App._emit("click", zoneName, card)}
       >
         <CardBase card={card} zoneName={zoneName} />
 
-        <div className="pick-state">
-          {isAutopickable && <img src="/media/pick.svg" alt="Picked" />}
-          {isAutoremovableAutopick && <img src="/media/autoremove.png" alt="Auto-removeable" />}
-        </div>
+        <SelectionState isPick={isPick} />
       </div>
     );
   }

@@ -385,11 +385,6 @@ input[type="checkbox"], input[type="radio"] {
 
 /** Misc **/
 
-.icon {
-  font-size: 32px;
-  margin: 16px;
-}
-
 .name {
   color: #393;
 }

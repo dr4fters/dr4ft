@@ -210,12 +210,6 @@ class GameState extends EventEmitter {
     return this.#burnCardIds.includes(cardId.toString());
   }
 
-  // mixmix - what is this? it doesn't seem to be used for anything
-  isAutoremovableAutopick(cardId, picksPerPack) {
-    if (this.#pickCardIds.length == picksPerPack && picksPerPack > 1){
-      return this.#pickCardIds[0] == cardId.toString();
-    }
-  }
   updateCardPick(cardId, picksPerPack) {
     if (this.#pickCardIds.length == picksPerPack) {
       this.#pickCardIds.shift();
