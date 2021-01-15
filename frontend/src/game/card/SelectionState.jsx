@@ -3,15 +3,25 @@ import PropTypes from "prop-types";
 import "./SelectionState.scss";
 
 function SelectionState ({ isPick, isBurn }) {
-  return (
-    <div className="SelectionState">
-      {isPick && <i className="bookmark pick icon ion-android-bookmark" />}
-      {isBurn && <i className="bookmark burn icon ion-android-bookmark" />}
+  if (isPick && isBurn) throw new Error("Cannot pick and burn same card")
 
-      {isPick && <i className="icon ion-android-checkbox" />}
-      {isBurn && <i className="icon ion-flame" />}
-    </div>
-  )
+  if (!isPick && !isBurn) return <div className="SelectionState" />
+
+  if (isPick) {
+    return (
+      <div className="SelectionState -pick">
+        <i className="action icon ion-android-checkbox" />
+      </div>
+    )
+  }
+
+  if (isBurn) {
+    return (
+      <div className="SelectionState -burn">
+        <i className="action icon ion-flame" />
+      </div>
+    )
+  }
 }
 
 SelectionState.propTypes = {
@@ -20,3 +30,5 @@ SelectionState.propTypes = {
 };
 
 export default SelectionState;
+
+// <i className="frame icon ion-arrow-up-b" />

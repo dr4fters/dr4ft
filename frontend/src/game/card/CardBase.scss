@@ -28,7 +28,7 @@
 
     background: rgba(200, 200, 200, 0.25);
     background-image: url('/media/foil.png');
-    background-size: 240px 340px;
+    background-size: var(--card-width) var(--card-height);
   }
 }
 
@@ -103,8 +103,11 @@
   // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
   // booo!
 
+  width: var(--card-width);
+  height: var(--card-height);
+
   img {
-    width: var(--card-width);
-    height: var(--card-height);
+    max-width: var(--card-width);
+    max-height: var(--card-height);
   }
 }

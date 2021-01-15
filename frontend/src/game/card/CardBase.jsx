@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import {getCardSrc, getFallbackSrc} from "../../cardimage";
 
 import App from "../../app";
-import {ZONE_PACK} from "../../zones";
 import "./CardBase.scss"
 
 export default class CardBase extends Component {

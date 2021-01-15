@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import App from "../../app";
 import {ZONE_PACK} from "../../zones";
-import DefaultCard from "./CardDefault.jsx" // TODO just use CardBase.jsx
+import CardBase from "./CardBase.jsx"
+import CardDefault from "./CardDefault.jsx"
 import SelectionState from "./SelectionState.jsx"
 import "./CardGlimpse.scss"
 
@@ -16,6 +17,7 @@ class CardGlimpse extends Component {
   }
 
   onClickPickCard (e) {
+    console.log('boop')
     e.stopPropagation();
     App.emit("click", this.props.zoneName, this.props.card);
   }
@@ -28,12 +30,13 @@ class CardGlimpse extends Component {
   render () {
     const {zoneName, card} = this.props;
 
+    const Card = zoneName === ZONE_PACK ? CardBase : CardDefault
     const isPick = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
     const isBurn = zoneName === ZONE_PACK && App.state.gameState.isBurn(card.cardId);
 
     return (
       <div className='CardGlimpse' onClickCapture={this.onClick}>
-        <DefaultCard card={card} zoneName={zoneName} />
+        <Card card={card} zoneName={zoneName} />
 
         <div className="glimpse-options">
           <div className="pick" onClick={this.onClickPickCard} >
@@ -56,4 +59,4 @@ CardGlimpse.propTypes = {
   zoneName: PropTypes.string.isRequired
 };
 
-export default CardGlimpse
+export default CardGlimpse;
