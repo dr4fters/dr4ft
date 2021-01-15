@@ -26,9 +26,13 @@
     left: 0;
     right: 0;
 
-    background: rgba(200, 200, 200, 0.25);
+    background: rgba(50, 50, 50);
     background-image: url('/media/foil.png');
     background-size: var(--card-width) var(--card-height);
+
+    z-index: 2;
+    background-blend-mode: overlay;
+    mix-blend-mode: color-dodge;
   }
 }
 

@@ -58,7 +58,8 @@ export default class CardBase extends Component {
     )
 
     return (
-      <div className={`CardBase ${card.foil ? "-foil " : ""} ${this.state.isFlipped ? "-flipped " : ""}`}
+      <div 
+        className={`CardBase ${card.foil ? "-foil " : ""} ${this.state.isFlipped ? "-flipped " : ""}`}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
@@ -76,7 +77,7 @@ CardBase.propTypes = {
   card: PropTypes.object.isRequired,
 };
 
-const CardBaseImage = ({ mouseEntered, url, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
+const CardBaseImage = ({ mouseEntered, url, foil, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
   <div className="CardBaseImage">
     <img
       title={name}
