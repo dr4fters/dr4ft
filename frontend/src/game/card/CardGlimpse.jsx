@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import App from "../../app";
 import {ZONE_PACK} from "../../zones";
 import DefaultCard from "./CardDefault.jsx" // TODO just use CardBase.jsx
+import SelectionState from "./SelectionState.jsx"
 import "./CardGlimpse.scss"
 
 class CardGlimpse extends Component {
@@ -27,8 +28,8 @@ class CardGlimpse extends Component {
   render () {
     const {zoneName, card} = this.props;
 
-    const isAutoPickable = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
-    const isBurn = App.state.gameState.isBurn(card.cardId);
+    const isPick = zoneName === ZONE_PACK && App.state.gameState.isPick(card.cardId);
+    const isBurn = zoneName === ZONE_PACK && App.state.gameState.isBurn(card.cardId);
 
     return (
       <div className='CardGlimpse' onClickCapture={this.onClick}>
@@ -44,13 +45,7 @@ class CardGlimpse extends Component {
           </div>
         </div>
 
-        <div className="glimpse-state">
-          {(isAutoPickable) && <i className="bookmark pick icon ion-android-bookmark" />}
-          {(isBurn) && <i className="bookmark burn icon ion-android-bookmark" />}
-
-          {isAutoPickable && <i className="icon ion-android-checkbox" />}
-          {isBurn && <i className="icon ion-flame" />}
-        </div>
+        <SelectionState isPick={isPick} isBurn={isBurn} />
       </div>
     );
   }

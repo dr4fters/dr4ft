@@ -12,7 +12,7 @@
 
   display: grid;
 
-  .CardDefault, .glimpse-options, .glimpse-state {
+  .CardDefault, .glimpse-options, .SelectionState {
     grid-row: 1;
     grid-column: 1;
   }
@@ -78,32 +78,4 @@
     }
   }
   
-  .glimpse-state {
-    z-index: 10;
-    justify-self: start;
-    align-self: start;
-
-    display: grid;
-    justify-items: center;
-    align-items: center;
-
-    margin: -18px 30px;
-
-    i {
-      grid-row: 1;
-      grid-column: 1;
-
-      z-index: 0;
-      color: #fff;
-      font-size: 30px;
-
-      &.bookmark {
-        font-size: 80px;
-        filter: drop-shadow(#0000005e 5px 5px 0);
-
-        &.pick { color: var(--pick-color); }
-        &.burn { color: var(--burn-color); }
-      }
-    }
-  }
 }
