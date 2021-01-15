@@ -99,6 +99,10 @@
 }
 
 .CardBaseImage {
+  z-index: 1;
+  // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
+  // booo!
+
   img {
     width: var(--card-width);
     height: var(--card-height);
