@@ -26,6 +26,11 @@ const events = {
       App.send("confirmSelection");
     }
   },
+  confirmSelection () {
+    if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+      App.send("confirmSelection");
+    }
+  },
   click(zoneName, card, e) {
     if (zoneName === ZONE_PACK) {
       clickPack(card);
