@@ -17,7 +17,6 @@ class CardGlimpse extends Component {
   }
 
   onClickPickCard (e) {
-    console.log('boop')
     e.stopPropagation();
     App.emit("click", this.props.zoneName, this.props.card);
   }
