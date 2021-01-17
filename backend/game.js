@@ -552,7 +552,7 @@ module.exports = class Game extends Room {
         while (this.players.length < this.seats) {
           const burnsPerPack = this.type === "cube draft"
             ? this.cube.burnsPerPack
-            : 0
+            : 0;
           this.players.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
           this.bots++;
         }

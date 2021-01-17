@@ -81,8 +81,8 @@ function getDoubleFacedProps({layout, name}, rawCards) {
   if (isDoubleFaced) {
     rawCards.some(x => {
       if (x.faceName === names[1]) {
-        const scryfallId = (x.identifiers && x.identifiers.scryfallId) || x.scryfallId
-        if (!scryfallId) throw new Error(`cannot find scryfallId`)
+        const scryfallId = (x.identifiers && x.identifiers.scryfallId) || x.scryfallId;
+        if (!scryfallId) throw new Error("cannot find scryfallId");
 
         flippedCardURL = `https://api.scryfall.com/cards/${scryfallId}?format=image`;
         if (/^modal_dfc$|^double-faced$|^transform$/i.test(layout)) {
