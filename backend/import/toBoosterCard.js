@@ -31,6 +31,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
 
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = upperFirst(getColor(mtgjsonCard, rawCards));
+  const identifiersMini = {"scryfallId": identifiers.scryfallId};
 
   return {
     uuid,
@@ -47,7 +48,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     manaCost: manaCost || "",
     rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
-    identifiers: {scryfallId: identifiers.scryfallId},
+    identifiers: identifiersMini,
     layout,
     isDoubleFaced,
     flippedCardURL,
