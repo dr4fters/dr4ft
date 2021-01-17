@@ -156,7 +156,7 @@ module.exports = class Human extends Player {
 
 
     // pick cards
-    const remainingToPick = Math.min(pack.length, this.picksPerPack) - this.selected.picks.length;
+    const remainingToPick = Math.min(pack.length, this.picksPerPack - this.selected.picks.length);
     times(remainingToPick, () => {
       const randomCard = sample(pack);
       this.selected.picks.push(randomCard.cardId);
@@ -164,7 +164,7 @@ module.exports = class Human extends Player {
     });
 
     // burn cards
-    const remainingToBurn = Math.min(this.burnsPerPack, pack.length) - this.selected.burns.length;
+    const remainingToBurn = Math.min(pack.length, this.burnsPerPack - this.selected.burns.length);
     times(remainingToBurn, () => {
       const randomCard = sample(pack);
       this.selected.burns.push(randomCard.cardId);
