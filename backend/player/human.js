@@ -131,6 +131,10 @@ module.exports = class Human extends Player {
     // Remove burned cards from pack
     remove(pack, (card) => this.selected.burns.includes(card.cardId));
 
+    // burn remaining if needed cards
+    const remainingToBurn = Math.min(pack.length, this.burnsPerPack - this.selected.burns.length);
+    pack.length-=remainingToBurn;
+
     const [next] = this.packs;
     if (!next)
       this.time = 0;
@@ -154,20 +158,11 @@ module.exports = class Human extends Player {
     pullAllWith(pack, this.selected.picks, (card, cardId) => card.cardId === cardId);
     pullAllWith(pack, this.selected.burns, (card, cardId) => card.cardId === cardId);
 
-
     // pick cards
     const remainingToPick = Math.min(pack.length, this.picksPerPack - this.selected.picks.length);
     times(remainingToPick, () => {
       const randomCard = sample(pack);
       this.selected.picks.push(randomCard.cardId);
-      pull(pack, randomCard);
-    });
-
-    // burn cards
-    const remainingToBurn = Math.min(pack.length, this.burnsPerPack - this.selected.burns.length);
-    times(remainingToBurn, () => {
-      const randomCard = sample(pack);
-      this.selected.burns.push(randomCard.cardId);
       pull(pack, randomCard);
     });
 
