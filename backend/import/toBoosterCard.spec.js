@@ -18,7 +18,12 @@ describe("Acceptance tests for toBoosterCard function", () => {
           const filePath = path.join(setsDataDir, `${file}`);
           const [setCode] = file.split(".");
           const json = JSON.parse(fs.readFileSync(filePath, "UTF-8"));
-          json.data.cards
+
+          const cards = (json.data && json.data.cards) || json.cards;
+          // NOTE there seem to be some promo sets which have weird data scructure (e.g. json.cards)
+          if (!cards) throw new Error(`setCode "${setCode}" had no json.data.card not json.cards`);
+
+          cards
             .map(toBoosterCard(setCode))
             .forEach((card) => assert(card.name != undefined, "card must have a name"));
         });

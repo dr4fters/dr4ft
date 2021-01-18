@@ -54,30 +54,34 @@ const defaultLandDistribution = () => ({
 });
 
 /**
- * @desc contains the cards in all zone, the autopick reference and the land distributions
+ * @desc contains the cards in all zone, the pick + burn references and the land distributions
  * it is saved at every App update
  */
 class GameState extends EventEmitter {
   #state;
   #zoneState;
   #landDistribution;
-  #autopickCardIds;
+  #pickCardIds;
+  #burnCardIds;
   #picksPerPack;
 
   constructor({
     state = defaultCardState(),
     landDistribution = defaultLandDistribution(),
-    autopickCardIds = []
+    pickCardIds = [],
+    burnCardIds = []
   } = {
     state: defaultCardState(),
     landDistribution: defaultLandDistribution(),
-    autopickCardIds: []
+    pickCardIds: [],
+    burnCardIds: []
   }) {
     super();
     this.#state = state;
     this.#landDistribution = landDistribution;
     this.#zoneState = defaultState();
-    this.#autopickCardIds = autopickCardIds;
+    this.#pickCardIds = pickCardIds;
+    this.#burnCardIds = burnCardIds;
   }
 
   /**
@@ -88,7 +92,7 @@ class GameState extends EventEmitter {
     return this.#zoneState[zoneName];
   }
   getAutopickCardIds(){
-    return this.#autopickCardIds;
+    return this.#pickCardIds;
   }
   countCardsByName(zoneName, fun = ({name}) => name) {
     return this.countCardsBy(zoneName, fun);
@@ -185,29 +189,81 @@ class GameState extends EventEmitter {
     this.emit("updateGameState", {
       state: this.#state,
       landDistribution: this.#landDistribution,
-      autopickCardIds: this.#autopickCardIds,
+      pickCardIds: this.#pickCardIds,
       picksPerPack: this.#picksPerPack,
+      burnCardIds: this.#burnCardIds
     });
   }
 
-  isAutopick(cardId) {
-    return this.#autopickCardIds.includes(cardId.toString());
+  updateSelection() {
+    this.emit("setSelected", {
+      picks: this.#pickCardIds,
+      burns: this.#burnCardIds
+    });
   }
 
-  isAutoremovableAutopick(cardId, picksPerPack) {
-    if (this.#autopickCardIds.length == picksPerPack && picksPerPack > 1){
-      return this.#autopickCardIds[0] == cardId.toString();
-    }
+  isPick(cardId) {
+    return this.#pickCardIds.includes(cardId.toString());
   }
-  updateAutopick(cardId, picksPerPack) {
-    if (this.#autopickCardIds.length == picksPerPack) this.#autopickCardIds.shift();
-    this.#autopickCardIds.push(cardId);
+
+  isBurn(cardId) {
+    return this.#burnCardIds.includes(cardId.toString());
+  }
+
+  updateCardPick(cardId, picksPerPack) {
+    if (this.#pickCardIds.length == picksPerPack) {
+      this.#pickCardIds.shift();
+    }
+
+    if (this.isBurn(cardId)) {
+      remove(this.#burnCardIds, id => id === cardId);
+    }
+
+    this.#pickCardIds.push(cardId);
     this.updState();
+    this.updateSelection();
   }
 
   resetPack() {
     this.get(ZONE_PACK).length = 0;
-    this.#autopickCardIds = [];
+    this.#pickCardIds = [];
+    this.#burnCardIds = [];
+  }
+
+  updateCardBurn(cardId, burnsPerPack) {
+    if (burnsPerPack <= 0) {
+      return false;
+    }
+
+    if (this.#burnCardIds.length == burnsPerPack) {
+      this.#burnCardIds.shift();
+    }
+
+    if (this.isPick(cardId)) {
+      remove(this.#pickCardIds, id => id === cardId);
+    }
+
+    this.#burnCardIds.push(cardId);
+    this.updState();
+    this.updateSelection();
+  }
+
+  isSelectionReady(picksPerPack, burnsPerPack) {
+    const packLength = this.get(ZONE_PACK).length;
+
+    if (packLength === (this.#pickCardIds.length + this.#burnCardIds.length)) {
+      return true;
+    }
+
+    if (picksPerPack != this.#pickCardIds.length) {
+      return false;
+    }
+
+    if (burnsPerPack != this.#burnCardIds.length) {
+      return false;
+    }
+
+    return true;
   }
 }
 

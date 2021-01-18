@@ -357,28 +357,11 @@ input[type="checkbox"], input[type="radio"] {
 
 /** Zones **/
 
-.zone img,
 #img,
 .card {
   height: 340px;
   width: 240px;
   cursor: pointer;
-}
-
-.col {
-  float: left;
-  width: 180px;
-  padding: 1px;
-}
-
-.col img {
-  height: 255px;
-  width: 180px;
-  margin-bottom: -235px;
-}
-
-.col div:last-child img {
-  margin-bottom: 0;
 }
 
 .waiting {
@@ -395,103 +378,12 @@ input[type="checkbox"], input[type="radio"] {
   padding: 1px;
 }
 
-.card-col {
-  position: relative;
-  margin: 0;
-  cursor: pointer;
-  padding: 1px;
-}
-
 .image-inner {
   width: inherit;
 }
 
-.foil-card:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/foil.png');
-  background-size: 240px 340px;
-
-}
-
-.foil-card.autopick-card:after {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png'),url('media/foil.png');
-  background-size: 240px 340px;
-  
-}
-.foil-card.autoremovable-pick:after {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/autoremove.png'),url('media/picked.png'),url('media/foil.png');
-  background-size: 240px 340px;
-  
-}
-.autopick-card:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png');
-  background-size: 240px 340px;
-}
-.autoremovable-pick:before {
-  content: '';
-
-  display: block;
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  background: rgba(200, 200, 200, 0.25);
-  background-image: url('media/picked.png'),url('media/autoremove.png');
-  background-size: 240px 340px;
-}
 
 /** Misc **/
-
-.icon {
-  font-size: 32px;
-  margin: 16px;
-}
 
 .name {
   color: #393;
@@ -579,6 +471,13 @@ input[type="checkbox"], input[type="radio"] {
 #doubleimg.right {
   right: 0;
 }
+.flipped {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 
 #players th,
 #players td {
@@ -656,14 +555,6 @@ input[type="checkbox"], input[type="radio"] {
 .split-card {
   transform: rotate(90deg);
   margin: -50px 50px;
-}
-
-.flipped {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
 }
 
 .wrapper {
