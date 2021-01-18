@@ -94,7 +94,7 @@
     "clean-webpack-plugin": "3.0.0",
     "copy-webpack-plugin": "6.4.1",
     "css-loader": "3.6.0",
-    "eslint": "7.17.0",
+    "eslint": "7.18.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-react": "7.22.0",
     "mocha": "8.1.3",
