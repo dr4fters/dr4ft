@@ -111,6 +111,8 @@
   height: var(--card-height);
 
   img {
+    width: var(--card-width);
+    height: var(--card-height);
     max-width: var(--card-width);
     max-height: var(--card-height);
   }
