@@ -1,5 +1,5 @@
 const readAndDeleteFromLocalStorage = (key, defaultValue) => {
-  const val = localStorage[key];
+  const val = localStorage.getItem(key);
   if (!val) {
     return defaultValue;
   }
@@ -9,7 +9,7 @@ const readAndDeleteFromLocalStorage = (key, defaultValue) => {
   } catch (e) {
     return defaultValue;
   } finally {
-    delete localStorage[key];
+    delete localStorage.removeItem(key);
   }
 };
 

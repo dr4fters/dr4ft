@@ -21,6 +21,7 @@ Checkbox.propTypes = {
   link: PropTypes.string,
   text: PropTypes.string,
   side: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func
 };
 
