@@ -90,10 +90,10 @@ const Decadent = ({sets, type, picksPerPack}) => (
         onChange={App._emit("changeSetsNumber", type)}
         opts={_.seq(60, 36)} />
     </div>
-    <PicksPerPacks picksPerPack={picksPerPack} />
     <div>
       <SetReplicated type={type} selectedSet={sets[0]} />
     </div>
+    <PicksPerPacks picksPerPack={picksPerPack} />
   </Fragment>
 );
 
@@ -107,6 +107,7 @@ const CubeDraft = ({picksPerPack}) => (
     <CubeList />
     <CubeOptions />
     <PicksPerPacks picksPerPack={picksPerPack} />
+    <BurnsPerPacks />
   </div>
 );
 
@@ -157,6 +158,13 @@ const PicksPerPacks = ({picksPerPack}) => (
     opts={_.seq(12, 1)} />
   </div>
 )
+
+const BurnsPerPacks = () => (
+  <div>
+    Burns per pack:{" "}
+    <Select link={"burnsPerPack"} opts={_.seq(4, 0)} /> 
+  </div>
+);
 
 const Chaos = ({packsNumber}) => (
   <div>

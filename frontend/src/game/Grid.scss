@@ -1,0 +1,62 @@
+.Grid {
+  --card-width: 240px;
+  --card-height: 334.2px;
+
+  .header {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+    justify-items: start;
+    grid-gap: 1rem;
+
+    h1 {
+    }
+
+    .pick-burn-detail, .confirm-btn {
+      margin: 28px 0;
+    }
+
+    .pick-burn-detail {
+      font-size: 1rem;
+      font-weight: bold;
+
+      display: grid;
+      grid-auto-flow: column;
+      grid-gap: 14px;
+      align-content: end;
+
+      .picks, .burns {
+      }
+    }
+
+    button.confirm-btn {
+      justify-self: center;
+      align-self: center;
+
+      font-size: 18px;
+      color: #fff;
+      background: #3a87e5;
+      padding: 4px 10px;
+
+      border: #3a87e5 solid 1px;
+      border-radius: 2px;
+
+      margin-left: 1rem;
+    }
+    button[disabled].confirm-btn {
+      color: #777;
+      background: white;
+      border: #777 solid 1px;
+      border-radius: 2px;
+    }
+  }
+  
+  .cards {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, var(--card-height));
+    grid-template-columns: repeat(auto-fill, var(--card-width));
+    grid-gap: 2px;
+  }
+
+  h2 {}
+}

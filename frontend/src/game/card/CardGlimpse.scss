@@ -1,0 +1,81 @@
+.CardGlimpse {
+  --card-width: 240px;
+  --card-height: 334.2px;
+
+  --btn-size: 40px;
+
+  --pick-color: #00d400;
+  --burn-color: #d40000;
+
+  width: var(--card-width);
+  height: var(--card-height);
+
+  display: grid;
+
+  .CardBase, .CardDefault, .glimpse-options, .SelectionState {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .CardDefault {
+  }
+
+  .glimpse-options {
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+    font-size: 2.5rem;
+
+    display: grid;
+    grid-template-rows: calc(var(--card-height) * 0.6);
+    --col: calc(var(--card-width) / 2);
+    grid-template-columns: var(--col) var(--col);
+    grid-gap: var(--gap);
+    
+    .pick, .burn {
+      width: 100%;
+      height: 100%;
+
+      cursor: pointer;
+
+      display: grid;
+      justify-items: center;
+      align-items: center;
+
+      i {
+        max-width: var(--btn-size);
+        max-height: var(--btn-size);
+
+        transition: filter .1s ease-in;
+        filter:
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 10px);
+      }
+      &:hover i {
+        filter:
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 10px)
+          drop-shadow(white 0 0 4px);
+
+      }
+    }
+    .pick i {
+      color: var(--pick-color);
+      padding-left: calc(var(--card-width) / 10);
+    }
+    .burn i {
+      color: var(--burn-color);
+      font-size: 2.8rem;
+      padding-bottom: 0.4rem;
+      padding-right: calc(var(--card-width) / 10);
+    }
+      
+  }
+
+  &:hover {
+    .glimpse-options {
+      opacity: 1;
+    }
+  }
+  
+}

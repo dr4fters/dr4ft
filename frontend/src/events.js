@@ -2,7 +2,7 @@ import _ from "utils/utils";
 import App from "./app";
 import {vanillaToast} from "vanilla-toast";
 import DOMPurify from "dompurify";
-import {range, times, constant, countBy, findIndex} from "lodash";
+import {range, times, constant, countBy} from "lodash";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 import store from "./state/store";
 
@@ -17,6 +17,20 @@ const events = {
     App.state.gameState.add(zoneName, card);
     App.state.gameState.resetPack();
     App.update();
+  },
+  burn(card) {
+    if (!App.state.gameState.isBurn(card.cardId)) {
+      App.state.gameState.updateCardBurn(card.cardId, App.state.game.burnsPerPack);
+    } else if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+      App.state.gameState.resetPack();
+      App.update();
+      App.send("confirmSelection");
+    }
+  },
+  confirmSelection () {
+    if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+      App.send("confirmSelection");
+    }
   },
   click(zoneName, card, e) {
     if (zoneName === ZONE_PACK) {
@@ -350,7 +364,7 @@ ${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
 };
 
 const parseCubeOptions = () => {
-  let {list, cards, packs, cubePoolSize} = App.state;
+  let {list, cards, packs, cubePoolSize, burnsPerPack} = App.state;
   cards = Number(cards);
   packs = Number(packs);
   cubePoolSize = Number(cubePoolSize);
@@ -365,22 +379,16 @@ const parseCubeOptions = () => {
     .filter(x => x)
     .join("\n");
 
-  return {list, cards, packs, cubePoolSize};
+  return {list, cards, packs, cubePoolSize, burnsPerPack};
 };
 
 const clickPack = (card) => {
-  const pack = App.state.gameState.get(ZONE_PACK);
-  const index = findIndex(pack, ({cardId}) => cardId === card.cardId);
-  if (!App.state.gameState.isAutopick(card.cardId)) {
-    App.state.gameState.updateAutopick(card.cardId, App.state.picksPerPack);
-    App.send("autopick", index);
-  } else {
-    if (App.state.picksPerPack == App.state.gameState.getAutopickCardIds().length ||
-      pack.length == App.state.gameState.getAutopickCardIds().length){
-      App.state.gameState.resetPack();
-      App.update();
-      App.send("pick");
-    }
+  if (!App.state.gameState.isPick(card.cardId)) {
+    App.state.gameState.updateCardPick(card.cardId, App.state.picksPerPack);
+  } else if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
+    App.state.gameState.resetPack();
+    App.update();
+    App.send("confirmSelection");
   }
 };
 

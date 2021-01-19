@@ -1,16 +1,16 @@
 const crypto = require("crypto");
+const path = require("path");
 const {shuffle, truncate} = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
-const Bot = require("./bot");
-const Human = require("./human");
+const Bot = require("./player/bot");
+const Human = require("./player/human");
 const Pool = require("./pool");
 const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
 const {saveDraftStats, getDataDir} = require("./data");
-const path = require("path");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber, picksPerPack }) {
@@ -45,6 +45,9 @@ module.exports = class Game extends Room {
       break;
     case "cube draft":
       this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
+      if (cube.burnsPerPack > 0) {
+        this.packsInfo += ` and ${cube.burnsPerPack} cards to burn per pack`;
+      }
       this.rounds = this.cube.packs;
       break;
     case "cube sealed":
@@ -189,69 +192,14 @@ module.exports = class Game extends Room {
       return sock.err("game already started");
     }
 
+    if (this.players.length >= this.seats) {
+      return sock.err("game is full");
+    }
+
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    function regularDraftPickDelegate(index) {
-      index.sort(function(a, b){return b-a;});
-      let cards=[];
-      let pack = this.packs.shift();
-      for (var i = 0; i < index.length; i++) {
-        cards.push( pack.splice(index[i], 1)[0]);
-        this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
-        this.pool.push(cards[i]);
-        let pickcard = cards[i].name;
-        if (cards[i].foil === true)
-          pickcard = "*" + pickcard + "*";
-        this.picks.push(pickcard);
-        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-index.length ], this.pool);
-        this.send("add", cards[i]);
-      }
-
-      let [next] = this.packs;
-      if (!next)
-        this.time = 0;
-      else
-        this.sendPack(next);
-      this.autopickIndex = [];
-      this.emit("pass", pack);
-    }
-
-    function decadentDraftPickDelegate(index) {
-      index.sort(function(a, b){return b-a;});
-      let cards=[];
-
-      const pack = this.packs.shift();
-      for (var i = 0; i < index.length; i++) {
-        cards.push( pack.splice(index[i], 1)[0]);
-        this.draftLog.pack.push( [`--> ${cards[i].name}`].concat(pack.map(x => `    ${x.name}`)) );
-        this.updateDraftStats(this.draftLog.pack[ this.draftLog.pack.length-1 ], this.pool);
-
-        let pickcard = cards[i].name;
-        if (cards[i].foil === true)
-          pickcard = "*" + pickcard + "*";
-
-        this.pool.push(cards[i]);
-        this.picks.push(pickcard);
-        this.send("add", cards[i]);
-      }
-      let [next] = this.packs;
-      if (!next)
-        this.time = 0;
-      else
-        this.sendPack(next);
-
-      // Discard the rest of the cards in the pack
-      // after one is chosen.
-      pack.length = 0;
-
-      this.autopickIndex = [];
-      this.emit("pass", pack);
-    }
-
-    const draftPickDelegate = this.isDecadent ? decadentDraftPickDelegate : regularDraftPickDelegate;
-
-    const h = new Human(sock, draftPickDelegate, this.picksPerPack);
+    const h = new Human(sock, this.picksPerPack, this.getBurnsPerPack(), this.id);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -264,6 +212,17 @@ module.exports = class Game extends Room {
     this.players.push(h);
     this.greet(h);
     this.meta();
+  }
+
+  getBurnsPerPack() {
+    switch (this.type) {
+    case "decadent draft":
+      return Number.MAX_VALUE;
+    case "cube draft":
+      return this.cube.burnsPerPack;
+    default:
+      return 0;
+    }
   }
 
   swap([i, j]) {
@@ -306,7 +265,8 @@ module.exports = class Game extends Room {
       type: this.type,
       packsInfo: this.packsInfo,
       sets: this.sets,
-      picksPerPack: this.picksPerPack
+      picksPerPack: this.picksPerPack,
+      burnsPerPack: this.type === "cube draft" ? this.cube.burnsPerPack : 0
     });
 
     if (this.isGameFinished) {
@@ -590,7 +550,10 @@ module.exports = class Game extends Room {
 
       if (this.shouldAddBots()) {
         while (this.players.length < this.seats) {
-          this.players.push(new Bot(this.picksPerPack));
+          const burnsPerPack = this.type === "cube draft"
+            ? this.cube.burnsPerPack
+            : 0;
+          this.players.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
           this.bots++;
         }
       }

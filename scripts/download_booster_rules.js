@@ -5,6 +5,15 @@ const {getBoosterRulesVersion, getCardByUuid, getSet, saveBoosterRules} = requir
 const URL = "https://raw.githubusercontent.com/taw/magic-sealed-data/master/sealed_basic_data.json";
 const REPO_URL = "https://api.github.com/repos/taw/magic-sealed-data/git/refs/heads/master";
 
+const CardsByColorInitial = () => ({
+  W: [],
+  B: [],
+  U: [],
+  R: [],
+  G: [],
+  c: []
+});
+
 async function fetch() {
   logger.info("Checking boosterRules repository");
   const repo = await axios.get(REPO_URL);
@@ -37,17 +46,17 @@ async function fetch() {
             try {
               const {uuid, colorIdentity, type} = getCard(cardCode);
               if (type === "Land" || colorIdentity.length === 0) {
-                (acc["c"] = acc["c"] || []).push(uuid);
+                acc["c"].push(uuid);
               } else {
                 colorIdentity.forEach((color) => {
-                  (acc[color] = acc[color] || []).push(uuid);
+                  acc[color].push(uuid);
                 });
               }
             } catch(err) {
               logger.warn(cardCode + " doesn't match any card");
             }
             return acc;
-          },{})
+          }, CardsByColorInitial())
         };
         return acc;
       }, {}),

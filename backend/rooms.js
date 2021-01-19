@@ -19,7 +19,7 @@ schedule.scheduleJob("* * * * * *", () => {
       }
       players.forEach((player) => {
         if (player.time && !--player.time)
-          player.pickOnTimeout();
+          player.handleTimeout();
       });
     });
 });

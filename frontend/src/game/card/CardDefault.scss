@@ -1,0 +1,47 @@
+.CardDefault {
+  --pick-color: #00d400;
+
+  position: relative;
+
+  width: var(--card-width);
+  height: var(--card-height);
+  cursor: pointer;
+
+  display: grid;
+
+  .CardBase, .SelectionState {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .CardBase {
+  }
+  
+  .pick-state {
+    z-index: 10;
+    justify-self: start;
+    align-self: start;
+
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    margin: -18px 30px;
+
+    i {
+      grid-row: 1;
+      grid-column: 1;
+
+      z-index: 0;
+      color: #fff;
+      font-size: 30px;
+
+      &.bookmark {
+        font-size: 80px;
+        filter: drop-shadow(#0000005e 5px 5px 0);
+
+        &.pick { color: var(--pick-color); }
+      }
+    }
+  }
+}

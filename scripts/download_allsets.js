@@ -8,8 +8,8 @@ const logger = require("../backend/logger");
 const { refresh: refreshVersion } = require("../backend/mtgjson");
 const {getDataDir} = require("../backend/data");
 
-const mtgJsonURL = "https://www.mtgjson.com/files/AllSetFiles.zip";
-const versionURL = "https://www.mtgjson.com/files/version.json";
+const mtgJsonURL = "https://www.mtgjson.com/api/v5/AllSetFiles.zip";
+const versionURL = "https://www.mtgjson.com/api/v5/Meta.json";
 const setsVersion = path.join(getDataDir(), "version.json");
 
 const setsDataDir = path.join(getDataDir(), "sets");
@@ -25,7 +25,7 @@ const isVersionUpToDate = () => (
       res.on("data", chunk => { json += chunk; });
       res.on("end", function () {
         try {
-          const remoteVersion = JSON.parse(json);
+          const remoteVersion = JSON.parse(json).data;
 
           if (fs.existsSync(setsVersion)) {
             const version = JSON.parse(fs.readFileSync(setsVersion, "UTF-8"));

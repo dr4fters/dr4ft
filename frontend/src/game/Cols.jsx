@@ -5,6 +5,8 @@ import App from "../app";
 import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
 import {getCardSrc, getFallbackSrc} from "../cardimage";
+import CardBase from "./card/CardBase.jsx"
+import "./Cols.scss"
 
 class Cols extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class Cols extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
+
   onMouseEnter(card, e) {
     let {offsetLeft} = e.target;
     let {clientWidth} = document.documentElement;
@@ -32,7 +35,9 @@ class Cols extends Component {
     }
 
     if (card.foil) {
-      className += " foil-card ";
+      className += " foil-card "; 
+      // mixmix - I broke this by absorbing .foil-card into .CardBase.-foil (see CardBase.scss)
+      // personally I don't care about whether pickedc cards in the col view display their foiliness
     }
 
     this.setState({ card, className });
@@ -42,9 +47,10 @@ class Cols extends Component {
       card: undefined
     });
   }
+
   render() {
     return (
-      <div>
+      <div className="Cols">
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
         <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
       </div>
@@ -64,19 +70,14 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 
     for (let key in zone) {
       let items = zone[key].map((card, index) =>
-        <div
-          className={`${card.foil ? "foil-card": ""} card-col`}
+        <div 
+          className="card-container"
           key={index}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
 
-          {App.state.cardSize === "text"
-            ? <div><strong>{card.name}</strong> {card.manaCost}</div>
-            : <img
-              src={getCardSrc(card)}
-              onError= {getFallbackSrc(card)}
-              alt={card.name + " " + card.manaCost} />}
+          <CardBase card={card} />
         </div>
       );
 
@@ -104,27 +105,30 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   return zoneNames.map(renderZone);
 };
 
-const ImageHelper = ({onMouseEnter, className, card}) => (
-  card
-    ? card.isDoubleFaced
+const ImageHelper = ({onMouseEnter, className, card}) => {
+  // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
+  if (!card) return <div />
+
+  // TODO - consider text case
+  return (
+    card.isDoubleFaced
       ? <div className={className} id="doubleimg">
         <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`} src={getCardSrc({
-          ...card,
-          isBack: card.flippedIsBack,
-          number: card.flippedNumber,
-        })} onError= {e => e.target.src = card.flippedCardURL} onMouseEnter={onMouseEnter.bind(card)} />
+        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`}
+          src={getCardSrc({ ...card, isBack: card.flippedIsBack, number: card.flippedNumber, })}
+          onError={e => e.target.src = card.flippedCardURL}
+          onMouseEnter={onMouseEnter.bind(card)} />
       </div>
-      :
-      <div id='img' className = {className}>
+
+      : <div id='img' className = {className}>
         <img
           className = "image-inner"
           onMouseEnter = {e => onMouseEnter(card, e)}
           onError= {getFallbackSrc(card)}
           src = {getCardSrc(card)} />
       </div>
-    : <div />
-);
+  )
+};
 
 ImageHelper.propTypes = {
   onMouseEnter: PropTypes.func.isRequired,
