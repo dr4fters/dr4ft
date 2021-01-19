@@ -228,12 +228,11 @@ const getPlayableSets = () => {
 const getRandomSet = () => {
   const allSets = getPlayableSets();
   const allTypes = Object.keys(allSets);
-  let randomType = allTypes[allTypes.length * Math.random() << 0];
+  delete allTypes["custom"];
+  delete allTypes["random"];
 
-  //Avoid random set
-  while (randomType === "random") {
-    randomType = allTypes[allTypes.length * Math.random() << 0];
-  }
+  const randomType = allTypes[allTypes.length * Math.random() << 0];
+
   const randomSets = allSets[randomType];
   return randomSets[randomSets.length * Math.random() << 0];
 };
