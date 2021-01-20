@@ -19,9 +19,10 @@ export default class CardDefault extends Component {
         title={isPick ? "This card will be automatically picked if your time expires." : ""}
         onClick={App._emit("click", zoneName, card)}
       >
-        <CardBase card={card} zoneName={zoneName} />
+        <CardBase card={card} zoneName={zoneName}>
+          <SelectionState isPick={isPick} />
+        </CardBase>
 
-        <SelectionState isPick={isPick} />
       </div>
     );
   }

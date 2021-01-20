@@ -35,7 +35,9 @@ class CardGlimpse extends Component {
 
     return (
       <div className='CardGlimpse' onClickCapture={this.onClick}>
-        <Card card={card} zoneName={zoneName} />
+        <Card card={card} zoneName={zoneName}>
+          <SelectionState isPick={isPick} isBurn={isBurn} />
+        </Card>
 
         <div className="glimpse-options">
           <div className="pick" onClick={this.onClickPickCard} >
@@ -46,8 +48,6 @@ class CardGlimpse extends Component {
             <i className="icon ion-flame" />
           </div>
         </div>
-
-        <SelectionState isPick={isPick} isBurn={isBurn} />
       </div>
     );
   }
