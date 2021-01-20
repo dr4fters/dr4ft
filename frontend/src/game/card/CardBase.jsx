@@ -54,6 +54,8 @@ export default class CardBase extends Component {
           App.state.cardSize !== "text" &&
             <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
         }
+
+        {this.props.children}
       </div>
     )
 
@@ -63,11 +65,12 @@ export default class CardBase extends Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <CardBaseText {...card}/>
+        <CardBaseText {...card} />
         {
           App.state.cardSize !== "text" &&
             <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
         }
+        {this.props.children}
       </div>
     );
   }
@@ -150,5 +153,6 @@ CardBaseText.propTypes = {
   power: PropTypes.string,
   toughness: PropTypes.string,
   text: PropTypes.string,
-  loyalty: PropTypes.string
+  loyalty: PropTypes.string,
+  children: PropTypes.node
 };

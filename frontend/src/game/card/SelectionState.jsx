@@ -5,7 +5,7 @@ import "./SelectionState.scss";
 function SelectionState ({ isPick, isBurn }) {
   if (isPick && isBurn) throw new Error("Cannot pick and burn same card")
 
-  if (!isPick && !isBurn) return <div className="SelectionState" />
+  if (!isPick && !isBurn) return null
 
   if (isPick) {
     return (

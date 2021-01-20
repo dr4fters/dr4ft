@@ -30,16 +30,18 @@
     background-image: url('/media/foil.png');
     background-size: var(--card-width) var(--card-height);
 
-    z-index: 2;
     background-blend-mode: overlay;
     mix-blend-mode: color-dodge;
   }
 }
 
 .CardBaseText {
+  z-index: -1;
+  // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
+
   width: calc(var(--card-width) - 10px);
   height: calc(var(--card-height) - 10px);
-  // 2* (padding + border)
+  // 10px = 2* (padding + border)
 
   background: #fff;
   font-size: 16px;
@@ -103,10 +105,6 @@
 }
 
 .CardBaseImage {
-  z-index: 1;
-  // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
-  // booo!
-
   width: var(--card-width);
   height: var(--card-height);
 

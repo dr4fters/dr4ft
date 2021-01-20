@@ -12,16 +12,20 @@
 
   display: grid;
 
-  .CardBase, .CardDefault, .glimpse-options, .SelectionState {
+  .CardBase, {
     grid-row: 1;
     grid-column: 1;
-  }
 
-  .CardDefault {
+    .SelectionState {
+      grid-row: 1;
+      grid-column: 1;
+    }
   }
 
   .glimpse-options {
-    z-index: 10;
+    grid-row: 1;
+    grid-column: 1;
+
     opacity: 0;
     transition: opacity 0.2s ease-in;
     font-size: 2.5rem;
@@ -77,5 +81,4 @@
       opacity: 1;
     }
   }
-  
 }
