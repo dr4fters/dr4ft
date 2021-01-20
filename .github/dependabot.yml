@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "npm"
     # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
-    # Check the npm registry for updates once a week (TODO: add value for max open pr's to stress that it could be adjusted)
+    # Check the npm registry for updates once a week
     schedule:
       interval: "weekly"
     # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
