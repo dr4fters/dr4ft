@@ -1,6 +1,6 @@
 # Copied from https://docs.github.com/en/github/administering-a-repository/enabling-and-disabling-version-updates#enabling-github-dependabot-version-updates
 # Basic dependabot.yml file with minimum configuration for two package managers
-# Configuration options: https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#ignore
+# Configuration options: https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
 updates:
