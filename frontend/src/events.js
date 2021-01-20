@@ -355,7 +355,10 @@ ${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
       }
       Object.entries(App.state.gameState.countCardsByName(zoneName))
         .forEach(([name, count]) => {
-          arr.push(`${count} ${name}`);
+          const frontSideName = name.replace(/\s*\/\/.*$/, '')
+          // prunes off the name of any second side, as this causes problems with cockatrice import
+
+          arr.push(`${count} ${frontSideName}`);
         });
     });
     return arr.join("\n");

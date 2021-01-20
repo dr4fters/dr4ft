@@ -6,14 +6,17 @@ import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 import {COLORS_TO_LANDS_NAME} from "../gamestate";
 import Select from "../components/Select";
 
-const DeckSettings = () => (
-  (App.state.isGameFinished || App.state.didGameStart)
-    ? <div className='deck-settings'>
-      <LandsPanel />
-      <DownloadPanel />
-    </div>
-    : <div/>
-);
+const DeckSettings = () => {
+  if (App.state.didGameStart || App.state.isGameFinished) {
+    return (
+      <div className='deck-settings'>
+        <LandsPanel />
+        <ExportPanel />
+      </div>
+    )
+  }
+  return null
+};
 
 const LandsPanel = () => (
   <fieldset className='land-controls fieldset'>
@@ -92,9 +95,9 @@ const SuggestLands = () => (
   </tr>
 );
 
-const DownloadPanel = () => (
+const ExportPanel = () => (
   <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Download</legend>
+    <legend className='legend game-legend'>Export</legend>
     <div className='column'>
       <Download />
       <Copy />
@@ -105,7 +108,6 @@ const DownloadPanel = () => (
 
 const Download = () => {
   const filetypes = ["cod", "json", "mwdeck", "txt"];
-  const select = <Select link='filetype' opts={filetypes}/>;
 
   return (
     <div className='connected-container'>
@@ -118,7 +120,7 @@ const Download = () => {
         placeholder='filename'
         value={App.state["filename"]}
         onChange={e => { App.save("filename", e.currentTarget.value); }} />
-      {select}
+      <Select link='filetype' opts={filetypes}/>;
       <span className='download-button'/>
     </div>
   );
