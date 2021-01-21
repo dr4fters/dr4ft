@@ -230,6 +230,7 @@ const getRandomSet = () => {
   const allTypes = Object.keys(allSets);
   delete allTypes["custom"];
   delete allTypes["random"];
+  delete allTypes["funny"];
 
   const randomType = allTypes[allTypes.length * Math.random() << 0];
 
