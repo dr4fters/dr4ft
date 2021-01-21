@@ -497,7 +497,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .game .fieldset {
-  display: flex;
+  /* display: flex; */
   margin: 4px;
 }
 
@@ -506,23 +506,14 @@ input[type="checkbox"], input[type="radio"] {
   font-weight: normal;
 }
 
-.game-status,
-.deck-settings {
+.game-status {
   margin-right: 30px;
-}
-
-.deck-settings thead tr:first-of-type {
-  text-align: center;
 }
 
 .land-suggest-button {
   width: 100%;
 }
 
-.deck-settings img {
-  height: 32px;
-  width: 32px;
-}
 
 .start-controls,
 .download-controls {

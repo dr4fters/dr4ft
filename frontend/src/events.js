@@ -1,9 +1,11 @@
 import _ from "utils/utils";
-import App from "./app";
 import {vanillaToast} from "vanilla-toast";
 import DOMPurify from "dompurify";
 import {range, times, constant, countBy} from "lodash";
+
+import App from "./app";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
+import exportDeck from './exportdeck';
 
 /**
  * @desc this is the list of all the events that can be triggered by the App
@@ -46,8 +48,9 @@ const events = {
     App.update();
   },
   copy() {
+    const {exportDeckFormat: format } = App.state;
     const textField = document.createElement("textarea");
-    textField.value = filetypes.txt();
+    textField.value = exportDeck[format].copy();
     document.body.appendChild(textField);
     textField.select();
     document.execCommand("copy");
@@ -55,9 +58,9 @@ const events = {
     hash();
   },
   download() {
-    const {filename, filetype} = App.state;
-    const data = filetypes[filetype]();
-    _.download(data, filename + "." + filetype);
+    const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
+    const data = exportDeck[format].download();
+    _.download(data, filename + exportDeck[format].downloadExtension);
     hash();
   },
   start() {
@@ -305,65 +308,6 @@ const events = {
 };
 
 Object.keys(events).forEach((event) => App.on(event, events[event]));
-
-function codify(zone) {
-  const arr = [];
-  Object.entries(countBy(zone, "name")).forEach(([name, number]) => {
-    arr.push(`    <card number="${number}" name="${name}"/>`);
-  });
-  return arr.join("\n");
-}
-
-const filetypes = {
-  cod() {
-    return `\
-<?xml version="1.0" encoding="UTF-8"?>
-<cockatrice_deck version="1">
-  <deckname>${App.state.filename}</deckname>
-  <zone name="main">
-${codify(App.state.gameState.get(ZONE_MAIN))}
-  </zone>
-  <zone name="side">
-${codify(App.state.gameState.get(ZONE_SIDEBOARD))}
-  </zone>
-</cockatrice_deck>`;
-  },
-  mwdeck() {
-    const arr = [];
-    [ZONE_MAIN, ZONE_SIDEBOARD].forEach(zoneName => {
-      const prefix = zoneName === ZONE_SIDEBOARD ? "SB: " : "";
-      const zone = App.state.gameState.countCardsBy(zoneName, ({setCode, name}) => `${setCode}|${name}`);
-      Object.entries(zone).forEach(([cardName, count]) => {
-        const [code, name] = cardName.split("|");
-        const sanitizedName = name.replace(" // ", "/");
-        arr.push(`${prefix}${count} [${code}] ${sanitizedName}`);
-      });
-    });
-    return arr.join("\n");
-  },
-  json() {
-    return JSON.stringify({
-      main: App.state.gameState.countCardsByName(ZONE_MAIN),
-      side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD)
-    }, null, 2);
-  },
-  txt() {
-    const arr = [];
-    [ZONE_MAIN, ZONE_SIDEBOARD].forEach(zoneName => {
-      if (zoneName === ZONE_SIDEBOARD) {
-        arr.push("Sideboard");
-      }
-      Object.entries(App.state.gameState.countCardsByName(zoneName))
-        .forEach(([name, count]) => {
-          const frontSideName = name.replace(/\s*\/\/.*$/, '')
-          // prunes off the name of any second side, as this causes problems with cockatrice import
-
-          arr.push(`${count} ${frontSideName}`);
-        });
-    });
-    return arr.join("\n");
-  }
-};
 
 const parseCubeOptions = () => {
   let {list, cards, packs, cubePoolSize, burnsPerPack} = App.state;

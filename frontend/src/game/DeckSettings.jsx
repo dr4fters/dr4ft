@@ -4,14 +4,23 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 import {COLORS_TO_LANDS_NAME} from "../gamestate";
+import exportDeck from "../exportdeck";
 import Select from "../components/Select";
+
+import "./DeckSettings.scss";
 
 const DeckSettings = () => {
   if (App.state.didGameStart || App.state.isGameFinished) {
     return (
-      <div className='deck-settings'>
+      <div className='DeckSettings'>
         <LandsPanel />
-        <ExportPanel />
+        <ExportDeckPanel />
+
+        {
+          App.state.isGameFinished && /draft/.test(App.state.gametype)
+            ? <DraftLogPanel />
+            : null
+        }
       </div>
     )
   }
@@ -19,7 +28,7 @@ const DeckSettings = () => {
 };
 
 const LandsPanel = () => (
-  <fieldset className='land-controls fieldset'>
+  <fieldset className='LandsPanel fieldset'>
     <legend className='legend game-legend'>Lands</legend>
     <table>
       <thead>
@@ -95,56 +104,91 @@ const SuggestLands = () => (
   </tr>
 );
 
-const ExportPanel = () => (
-  <fieldset className='fieldset'>
-    <legend className='legend game-legend'>Export</legend>
-    <div className='column'>
-      <Download />
-      <Copy />
-      <Log />
-    </div>
-  </fieldset>
-);
-
-const Download = () => {
-  const filetypes = ["cod", "json", "mwdeck", "txt"];
+const ExportDeckPanel = () => {
+  const activeFormatKey = App.state.exportDeckFormat
+  const activeFormat = exportDeck[activeFormatKey]
 
   return (
-    <div className='connected-container'>
-      <button className='connected-component' onClick={App._emit("download")}>
-        Download as
-      </button>
-      <input
-        type='text'
-        className='download-filename connected-component'
-        placeholder='filename'
-        value={App.state["filename"]}
-        onChange={e => { App.save("filename", e.currentTarget.value); }} />
-      <Select link='filetype' opts={filetypes}/>;
-      <span className='download-button'/>
-    </div>
-  );
+    <fieldset className='ExportDeckPanel fieldset'>
+      <legend className='legend game-legend'>Deck Export</legend>
+
+      <div className="formats">
+        {
+          Object.entries(exportDeck).map(([formatKey, format]) => {
+            return (
+              <div 
+                className={`format ${formatKey === activeFormatKey ? "-active" : ""}`}
+                onClick={() => App.save("exportDeckFormat", formatKey)}
+                key={formatKey}
+              >
+                {format.name}
+              </div>
+            )
+          })
+        }
+      </div>
+
+      <div className='exports'>
+
+        { /* Download */ }
+        {
+          activeFormat.download
+            ? (
+              <div className='download'>
+                {/* <span>Download</span> */}
+                <input
+                  type='text'
+                  className=''
+                  placeholder='filename'
+                  value={App.state.exportDeckFilename}
+                  onChange={e => App.save("exportDeckFilename", e.currentTarget.value) }
+                />
+                
+                <div className="extension">
+                  {activeFormat.downloadExtension}
+                </div>
+
+                <button onClick={App._emit("download")}>
+                  <i className="icon ion-android-download" /> Download
+                </button>
+              </div>
+            )
+            : null
+        }
+
+        { /* Copy */ }
+        {
+          activeFormat.copy
+            ? (
+              <div className='copy'>
+                <span>Copy to clipboard</span>
+                <button onClick={App._emit("copy")}>
+                  <i className="icon ion-android-clipboard" /> Copy
+                </button>
+              </div>
+            )
+            : null
+        }
+
+      </div>
+    </fieldset>
+  )
 };
 
-const Copy = () => (
-  <div className='copy-controls connected-container'>
-    <button
-      className='connected-component'
-      onClick={App._emit("copy")}>
-      Copy deck to clipboard
-    </button>
-  </div>
-);
+const DraftLogPanel = () => (
+  <fieldset className='DraftLogPanel fieldset'>
+    <legend className='legend game-legend'>Draft Log</legend>
 
-const Log = () => (
-  App.state.isGameFinished && /draft/.test(App.state.gametype)
-    ? <div>
-      <button className='connected-component'
-        onClick={App._emit("getLog")}>
-        Download Draft Log
+    <div className="draft-log">
+      <div className='filename'>
+        {App.state.exportDeckFilename + '-draftlog.txt' }
+      </div>
+
+      <button onClick={App._emit("getLog")}>
+        <i className="icon ion-android-download" /> Download
       </button>
     </div>
-    : <div />
+  </fieldset>
 );
 
 export default DeckSettings;
