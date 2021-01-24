@@ -174,10 +174,10 @@ const writeCubeCards = (allSets, allCards) => {
     */
     .flatMap(([cardName, cardValues]) => {
       const names = cardName.split(" // ");
-      if (names.length <= 1) return [cardName, cardValues];
+      if (names.length <= 1) return [[cardName, cardValues]];
 
       return [
-        [cardName, cardValues], //
+        [cardName, cardValues],
         ...names.map((name) => [name, cardValues])
       ];
     })
