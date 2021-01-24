@@ -166,16 +166,42 @@ const writeCubeCards = (allSets, allCards) => {
         ..._.mapValues(groupCardsBySet(cards), keyCardsUuidByNumber)
       }];
     })
-    .flatMap((pair) => {
-      const names = pair[0].split(" // ");
-      if (names.length <= 1) return [pair];
+    /* Create entries for each side of split or double cards.
+       E.g Fire // Ice will create 3 entries :
+        - Fire // Ice
+        - Fire
+        - Ice
+    */
+    .flatMap(([cardName, cardValues]) => {
+      const names = cardName.split(" // ");
+      if (names.length <= 1) return [cardName, cardValues];
 
       return [
-        pair,
-        ...names.map((name) => [name, pair[1]])
+        [cardName, cardValues], //
+        ...names.map((name) => [name, cardValues])
       ];
-    });
-  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(_.fromPairs(cubableCards), undefined, 4));
+    })
+    /* It may happen that double cards have side's name clashing with other double cards names.
+      E.g. "fire" name may clash with Fire // Ice and Start // Fire.
+      To understand which is the true "default", we sort the cards by priority and choose the first one.
+    */
+    .reduce((cubableCards, [cardName, cardValues]) => {
+      if (!cubableCards[cardName]) {
+        cubableCards[cardName] = cardValues;
+      } else {
+        const card1 = getCardByUuid(cardValues.default);
+        const card2 = getCardByUuid(cubableCards[cardName].default);
+        const array = [card1, card2];
+        array.sort(mySort);
+        cubableCards[cardName] = {
+          ...cubableCards[cardName],
+          ...cardValues,
+          default: array[0].uuid
+        };
+      }
+      return cubableCards;
+    }, {});
+  fs.writeFileSync(`${getDataDir()}/${CUBABLE_CARDS_PATH}`, JSON.stringify(cubableCards, undefined, 4));
 };
 
 const writeSets = (newSets) => {
