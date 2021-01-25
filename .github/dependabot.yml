@@ -1,6 +1,6 @@
 # Copied from https://docs.github.com/en/github/administering-a-repository/enabling-and-disabling-version-updates#enabling-github-dependabot-version-updates
-# Basic dependabot.yml file with
-# minimum configuration for two package managers
+# Basic dependabot.yml file with minimum configuration for two package managers
+# Configuration options: https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
 updates:
@@ -8,9 +8,11 @@ updates:
   - package-ecosystem: "npm"
     # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
-    # Check the npm registry for updates every day (weekdays)
+    # Check the npm registry for updates once a week
     schedule:
       interval: "weekly"
+    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+    open-pull-requests-limit: 5
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
@@ -19,3 +21,5 @@ updates:
     # Check for updates once a week
     schedule:
       interval: "weekly"
+    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+    open-pull-requests-limit: 1
