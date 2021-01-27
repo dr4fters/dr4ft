@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName, ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 import {COLORS_TO_LANDS_NAME} from "../gamestate";
-import exportDeck from "../exportdeck";
+import exportDeck from "../export";
 import Select from "../components/Select";
 
 import "./DeckSettings.scss";

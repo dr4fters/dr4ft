@@ -42,4 +42,3 @@ io.on("connection", router);
 
 server.listen(config.PORT);
 logger.info(`Started up on port ${config.PORT} with version ${version}`);
-

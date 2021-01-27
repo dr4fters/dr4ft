@@ -5,7 +5,7 @@ import {range, times, constant, countBy} from "lodash";
 
 import App from "./app";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
-import exportDeck from './exportdeck';
+import exportDeck from "./export";
 
 /**
  * @desc this is the list of all the events that can be triggered by the App
