@@ -46,25 +46,10 @@ let App = {
     packs: 3,
     cubePoolSize: 90,
 
-    addBots: true,
-    shufflePlayers: true,
-    useTimer: true,
-    timerLength: "Moderate", // Fast Moderate or Slow
-
-    beep: true,
-    notify: false,
-    notificationGranted: false,
-    chat: false,
-    cols: false,
-    hidepicks: false,
     deckSize: 40,
     filename: "filename",
     filetype: "txt",
-    side: false,
-    sort: "rarity",
     log: {},
-    cardSize: "normal",
-    cardLang: "en",
     game: {},
     mtgJsonVersion: {
       version: "0.0.0",
