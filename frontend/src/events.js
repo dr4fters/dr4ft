@@ -1,7 +1,7 @@
 import _ from "utils/utils";
 import {vanillaToast} from "vanilla-toast";
 import DOMPurify from "dompurify";
-import {range, times, constant, countBy} from "lodash";
+import {range, times, constant} from "lodash";
 
 import App from "./app";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
@@ -49,18 +49,30 @@ const events = {
   },
   copy() {
     const {exportDeckFormat: format } = App.state;
+    const deck = {
+      [ZONE_MAIN]: App.state.gameState.get(ZONE_MAIN),
+      [ZONE_SIDEBOARD]: App.state.gameState.get(ZONE_SIDEBOARD)
+    };
     const textField = document.createElement("textarea");
-    textField.value = exportDeck[format].copy();
+    textField.value = exportDeck[format].copy(null, deck);
+
     document.body.appendChild(textField);
     textField.select();
     document.execCommand("copy");
     textField.remove();
+
     hash();
   },
   download() {
     const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
-    const data = exportDeck[format].download();
+    const deck = {
+      [ZONE_MAIN]: App.state.gameState.get(ZONE_MAIN),
+      [ZONE_SIDEBOARD]: App.state.gameState.get(ZONE_SIDEBOARD)
+    };
+    const data = exportDeck[format].download(filename, deck);
+
     _.download(data, filename + exportDeck[format].downloadExtension);
+
     hash();
   },
   start() {
