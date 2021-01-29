@@ -2,6 +2,7 @@ const {sample, shuffle, random, range, times, constant, pull} = require("lodash"
 const boosterGenerator = require("./boosterGenerator");
 const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
 const draftId = require("uuid").v1;
+const axios = require("axios");
 
 /**
  * @desc add a unique id to a card
@@ -44,10 +45,13 @@ const SealedNormal = ({ playersLength, sets }) => (
 );
 
 const DraftNormal = ({ playersLength, sets }) => (
-  replaceRNGSet(sets)
-    .flatMap(set => times(playersLength, constant(set)))
-    .map(boosterGenerator)
-    .map(addCardIdsToBoosterCards)
+  axios.post("http://localhost:5001/regular", {
+    players: playersLength,
+    sets: sets
+  }).then(function (response) {
+    console.log(response);
+    return response.data;
+  })
 );
 // Get a random set and transform it to pack
 function getRandomPack(setList) {

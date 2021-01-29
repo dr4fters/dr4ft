@@ -459,7 +459,7 @@ module.exports = class Game extends Room {
   }
 
 
-  createPool() {
+  async createPool() {
     switch (this.type) {
     case "cube draft": {
       this.pool = Pool.DraftCube({
@@ -480,7 +480,7 @@ module.exports = class Game extends Room {
     }
     case "draft":
     case "decadent draft": {
-      this.pool = Pool.DraftNormal({
+      this.pool = await Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
       });
@@ -543,7 +543,7 @@ module.exports = class Game extends Room {
     return this.addBots && !this.isDecadent;
   }
 
-  start({ addBots, useTimer, timerLength, shufflePlayers }) {
+  async start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
@@ -562,7 +562,7 @@ module.exports = class Game extends Room {
         this.players = shuffle(this.players);
       }
 
-      this.createPool();
+      await this.createPool();
 
       if (/sealed/.test(this.type)) {
         this.handleSealed();
