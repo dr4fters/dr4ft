@@ -1,3 +1,7 @@
+#root {
+  height: 100%;
+}
+
 .outer {
   display: table;
   position: absolute;
@@ -272,6 +276,9 @@ input[type="checkbox"], input[type="radio"] {
   flex-grow: 1;
   margin: 0 auto;
   padding-right: 30px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .lobby-header {
