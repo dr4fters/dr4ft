@@ -115,8 +115,9 @@ const ExportDeckPanel = () => {
       <div className="formats">
         {
           Object.entries(exportDeck).map(([formatKey, format]) => {
+            if (!format) return null
             return (
-              <div 
+              <div
                 className={`format ${formatKey === activeFormatKey ? "-active" : ""}`}
                 onClick={() => App.save("exportDeckFormat", formatKey)}
                 key={formatKey}
@@ -132,7 +133,7 @@ const ExportDeckPanel = () => {
 
         { /* Download */ }
         {
-          activeFormat.download
+          activeFormat && activeFormat.download
             ? (
               <div className='download'>
                 {/* <span>Download</span> */}
@@ -158,7 +159,7 @@ const ExportDeckPanel = () => {
 
         { /* Copy */ }
         {
-          activeFormat.copy
+          activeFormat && activeFormat.copy
             ? (
               <div className='copy'>
                 <span>Copy to clipboard</span>

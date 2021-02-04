@@ -1,16 +1,10 @@
-import {ZONE_MAIN, ZONE_SIDEBOARD} from "../zones.js";
-import { multiFacettedCards } from "./test-cards.js";
-import cockatrice from "./cockatrice.js";
-
 const {describe, it} = require("mocha");
 const assert = require("assert").strict;
 
-const deck = {
-  [ZONE_MAIN]: [multiFacettedCards[0], ...multiFacettedCards.slice(0, multiFacettedCards.length - 1)],
-  [ZONE_SIDEBOARD]: [multiFacettedCards[multiFacettedCards.length - 1]]
-};
+import { exampleDeck as deck } from "./test-cards.js";
+import cockatrice from "./cockatrice.js";
 
-describe.only("export/cockatrice", () => {
+describe("export/cockatrice", () => {
   it("download of .cod file", () => {
     assert.equal(
       cockatrice.download("My deck", deck),
@@ -39,9 +33,9 @@ const downloadOutput = () => (
     <card number="1" name="Refuse // Cooperate"/>
     <card number="1" name="Riverglide Pathway"/>
     <card number="1" name="Dead // Gone"/>
-    <card number="1" name="Catch // Release"/>
   </zone>
   <zone name="side">
+    <card number="1" name="Catch // Release"/>
     <card number="1" name="Who // What // When // Where // Why"/>
   </zone>
 </cockatrice_deck>`
@@ -54,7 +48,7 @@ const copyOutput = () => (
 1 Refuse // Cooperate
 1 Riverglide Pathway
 1 Dead // Gone
-1 Catch // Release
 Sideboard
+1 Catch // Release
 1 Who // What // When // Where // Why`
 );

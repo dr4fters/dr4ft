@@ -14,14 +14,14 @@ export default {
   <deckname>${name}</deckname>
   <zone name="main">
 ${
-  collectByName(deck[ZONE_MAIN])
+  deck[ZONE_MAIN]
     .map(renderDownloadCard)
     .join("\n")
 }
   </zone>
   <zone name="side">
 ${
-  collectByName(deck[ZONE_SIDEBOARD])
+  deck[ZONE_SIDEBOARD]
     .map(renderDownloadCard)
     .join("\n")
 }
@@ -32,24 +32,14 @@ ${
 
   copy(name, deck) {
     return [
-      ...collectByName(deck[ZONE_MAIN]).map(renderCopyCard),
+      ...deck[ZONE_MAIN].map(renderCopyCard),
       "Sideboard",
-      ...collectByName(deck[ZONE_SIDEBOARD]).map(renderCopyCard),
+      ...deck[ZONE_SIDEBOARD].map(renderCopyCard),
     ].join("\n");
   }
 };
 
 
-function collectByName (cards, sideboard = false) {
-  const collector = cards.reduce((acc, card) => {
-    if (acc[card.name]) acc[card.name].count += 1;
-    else acc[card.name] = { card, count: 1, sideboard };
-
-    return acc;
-  }, {});
-
-  return Object.values(collector);
-}
 
 function renderDownloadCard ({ count, card }) {
   return `    <card number="${count}" name="${correctName(card)}"/>`;

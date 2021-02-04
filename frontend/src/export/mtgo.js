@@ -3,8 +3,8 @@ import { ZONE_MAIN, ZONE_SIDEBOARD } from "../zones";
 export default {
   name: "MTGO",
   download,
-  downloadExtension: ".dek",
-  copy
+  downloadExtension: ".dek"
+  // copy // NOTE - mtgo does not support import from clipboard
 };
 
 function download (name, deck) {
@@ -14,46 +14,26 @@ function download (name, deck) {
   <PreconstructedDeckID>0</PreconstructedDeckID>
 
 ${
-  collectByName(deck[ZONE_MAIN])
+  deck[ZONE_MAIN]
     .map(renderDownloadCard)
+    .filter(Boolean)
     .join("\n")
 }
 
 ${
-  collectByName(deck[ZONE_SIDEBOARD], true)
+  deck[ZONE_SIDEBOARD]
     .map(renderDownloadCard)
+    .filter(Boolean)
     .join("\n")
 }
 </Deck>
 `;
 }
 
-function copy (name, deck) {
-  return [
-    ...collectByName(deck[ZONE_MAIN]).map(renderCopyCard),
-    "",
-    "Sideboard",
-    ...collectByName(deck[ZONE_SIDEBOARD]).map(renderCopyCard)
-  ].join("\n");
-}
-
-function collectByName (cards, sideboard = false) {
-  const collector = cards.reduce((acc, card) => {
-    if (acc[card.name]) acc[card.name].count += 1;
-    else acc[card.name] = { card, count: 1, sideboard };
-
-    return acc;
-  }, {});
-
-  return Object.values(collector);
-}
-function renderCopyCard ({ card, count }) {
-  return `${count} ${correctName(card)}`;
-}
-
 function renderDownloadCard ({ card, count, sideboard = false }) {
   if (!card.identifiers.mtgoId) {
-    return `  <Cards Quantity="${count}" Sideboard="${sideboard}" Name="${correctName(card)}" Annotation="0" />`;
+    console.error(`Cannot export ${card.name} to .dek, it lacks an mtgoId`);
+    return null;
   }
 
   return `  <Cards CatID="${card.identifiers.mtgoId}" Quantity="${count}" Sideboard="${sideboard}" Name="${correctName(card)}" Annotation="0" />`;
@@ -75,3 +55,15 @@ function correctName (card) {
     return card.name;
   }
 }
+
+// function copy (name, deck) {
+//   return [
+//     ...deck[ZONE_MAIN].map(renderCopyCard),
+//     "",
+//     "Sideboard",
+//     ...deck[ZONE_SIDEBOARD].map(renderCopyCard)
+//   ].join("\n");
+// }
+// function renderCopyCard ({ card, count }) {
+//   return `${count} ${correctName(card)}`;
+// }

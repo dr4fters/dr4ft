@@ -1,7 +1,6 @@
 /* NOTE think this export option is no longer needed? Magic Workstation doesn't seem to be maintained
  * Code left here in case that's wrong */
 
-// import App from "../app";
 // import {ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 
 // export default {

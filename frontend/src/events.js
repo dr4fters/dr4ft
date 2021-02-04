@@ -49,12 +49,8 @@ const events = {
   },
   copy() {
     const {exportDeckFormat: format } = App.state;
-    const deck = {
-      [ZONE_MAIN]: App.state.gameState.get(ZONE_MAIN),
-      [ZONE_SIDEBOARD]: App.state.gameState.get(ZONE_SIDEBOARD)
-    };
     const textField = document.createElement("textarea");
-    textField.value = exportDeck[format].copy(null, deck);
+    textField.value = exportDeck[format].copy(null, collectDeck());
 
     document.body.appendChild(textField);
     textField.select();
@@ -65,11 +61,7 @@ const events = {
   },
   download() {
     const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
-    const deck = {
-      [ZONE_MAIN]: App.state.gameState.get(ZONE_MAIN),
-      [ZONE_SIDEBOARD]: App.state.gameState.get(ZONE_SIDEBOARD)
-    };
-    const data = exportDeck[format].download(filename, deck);
+    const data = exportDeck[format].download(filename, collectDeck());
 
     _.download(data, filename + exportDeck[format].downloadExtension);
 
@@ -356,3 +348,19 @@ const hash = () => {
     side: App.state.gameState.countCardsByName(ZONE_SIDEBOARD),
   });
 };
+
+const collectDeck = () => ({
+  [ZONE_MAIN]: collectByName(App.state.gameState.get(ZONE_MAIN)),
+  [ZONE_SIDEBOARD]: collectByName(App.state.gameState.get(ZONE_SIDEBOARD), true)
+});
+
+function collectByName (cards, sideboard = false) {
+  const collector = cards.reduce((acc, card) => {
+    if (acc[card.name]) acc[card.name].count += 1;
+    else acc[card.name] = { card, count: 1, sideboard };
+
+    return acc;
+  }, {});
+
+  return Object.values(collector);
+}

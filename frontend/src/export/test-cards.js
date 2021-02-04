@@ -1,10 +1,12 @@
+import {ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
+
 // Multi-facetted layout | Example card
 // ----------------------|---------------------------------
 // split                 | Dead // Gone
 // split (fuse)          | Catch // Release
 // split (unhinged)      | Who // What // When // Where // Why
 
-const _splitCards = [
+const splitCards = [
   {
     "uuid": "bea0e066-b932-546f-ae6d-7c311e395bf8",
     "name": "Dead // Gone",
@@ -125,7 +127,7 @@ const _splitCards = [
 // ----------------------|---------------------------------
 // flip                  | Nezumi Shortfang
 
-const _flipCards = [
+const flipCards = [
   {
     "uuid": "a888a494-31c0-592a-bc4a-b4a9c9181ce6",
     "name": "Nezumi Shortfang // Stabwhisker the Odious",
@@ -172,7 +174,7 @@ const _flipCards = [
 // ----------------------|---------------------------------
 // transform             | Kessig Prowler
 
-const _transformCards = [
+const transformCards = [
   {
     "uuid": "dd845d91-fc48-591e-b172-faeafe968345",
     "name": "Kessig Prowler // Sinuous Predator",
@@ -223,7 +225,7 @@ const _transformCards = [
 // ----------------------|---------------------------------
 // adventure             | urderous Rider
 
-const _adventureCards = [
+const adventureCards = [
   {
     "uuid": "1583e21a-84a4-5299-b3aa-ab4dec02d2e7",
     "name": "Murderous Rider // Swift End",
@@ -270,7 +272,7 @@ const _adventureCards = [
 // ----------------------|---------------------------------
 // aftermath             | Refuse // Cooperate
 
-const _aftermathCards = [
+const aftermathCards = [
   {
     uuid: "7e1f20b1-f2bd-52ad-ac39-1e490018d067",
     name: "Refuse // Cooperate",
@@ -313,7 +315,7 @@ const _aftermathCards = [
 // ----------------------|---------------------------------
 // modal_dfc             | Riverglide Pathway
 
-const _modalDfcCards = [
+const modalDfcCards = [
   {
     "uuid": "b444c54f-a0fe-5c23-b89a-5ff49adab445",
     "name": "Riverglide Pathway // Lavaglide Pathway",
@@ -350,12 +352,42 @@ const _modalDfcCards = [
   }
 ];
 
-// convenience collection
-export const multiFacettedCards = [
-  ..._flipCards,
-  ..._transformCards,
-  ..._adventureCards,
-  ..._aftermathCards,
-  ..._modalDfcCards,
-  ..._splitCards
-];
+export const multiFacettedCards = {
+  flipCards,
+  transformCards,
+  adventureCards,
+  aftermathCards,
+  modalDfcCards,
+  splitCards
+};
+
+const deck = [
+  ...flipCards,
+  ...transformCards,
+  ...adventureCards,
+  ...aftermathCards,
+  ...modalDfcCards,
+  ...splitCards
+].reduce((acc, card, i, all) => {
+  if (i === 0) acc.main.push(card);
+
+  if (i < all.length - 2) acc.main.push(card);
+  else acc.side.push(card);
+  return acc;
+}, { main: [], side: [] });
+
+export const exampleDeck = {
+  [ZONE_MAIN]: collectByName(deck.main),
+  [ZONE_SIDEBOARD]: collectByName(deck.side, true)
+};
+
+function collectByName (cards, sideboard = false) {
+  const collector = cards.reduce((acc, card) => {
+    if (acc[card.name]) acc[card.name].count += 1;
+    else acc[card.name] = { card, count: 1, sideboard };
+
+    return acc;
+  }, {});
+
+  return Object.values(collector);
+}
