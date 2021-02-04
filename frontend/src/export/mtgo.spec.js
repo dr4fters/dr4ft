@@ -41,16 +41,3 @@ const downloadOutput = () => (
   <Cards CatID="48512" Quantity="1" Sideboard="true" Name="Catch/Release" Annotation="0" />
 </Deck>
 `);
-
-// const copyOutput = () => (
-//   `2 Nezumi Shortfang
-// 1 Kessig Prowler
-// 1 Murderous Rider
-// 1 Refuse/Cooperate
-// 1 Riverglide Pathway
-// 1 Dead/Gone
-// 1 Catch/Release
-
-// Sideboard
-// 1 Who/What/When/Where/Why`
-// );

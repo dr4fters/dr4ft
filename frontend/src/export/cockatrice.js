@@ -1,10 +1,5 @@
 import {ZONE_MAIN, ZONE_SIDEBOARD} from "../zones";
 
-// name = App.state.exportDeckFilename
-// deck = {
-//   [ZONE_MAIN]: App.state.gameState.get(ZONE_MAIN),
-//   [ZONE_SIDEBOARD]: App.state.gameState.get(ZONE_SIDEBOARD)
-// }
 export default {
   name: "Cockatrice",
   download (name, deck) {

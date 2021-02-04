@@ -55,15 +55,3 @@ function correctName (card) {
     return card.name;
   }
 }
-
-// function copy (name, deck) {
-//   return [
-//     ...deck[ZONE_MAIN].map(renderCopyCard),
-//     "",
-//     "Sideboard",
-//     ...deck[ZONE_SIDEBOARD].map(renderCopyCard)
-//   ].join("\n");
-// }
-// function renderCopyCard ({ card, count }) {
-//   return `${count} ${correctName(card)}`;
-// }
