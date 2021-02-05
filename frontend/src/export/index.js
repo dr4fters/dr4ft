@@ -13,8 +13,8 @@ const json = {
 
 export default {
   cockatrice,
-  mtgo,
   mtga,
+  mtgo,
   text,
   json: process.env.NODE_ENV === "development" ? json : null
   // NOTE this one is useful for extracting raw JSON of all the card info

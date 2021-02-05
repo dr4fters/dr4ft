@@ -1,7 +1,7 @@
 import { ZONE_MAIN, ZONE_SIDEBOARD } from "../zones";
 
 export default {
-  name: "Arena",
+  name: "MTG Arena",
   // download,
   // downloadExtension: "???"
   copy
