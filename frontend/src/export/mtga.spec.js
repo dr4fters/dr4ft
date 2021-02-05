@@ -7,11 +7,6 @@ import mtga from "./mtga.js";
 describe("export/mtga", () => {
   it("download of *** file", () => {
     assert.equal(mtga.download, undefined, "download disabled");
-  //   assert.equal(
-  //     mtga.download("My deck", deck),
-  //     downloadOutput(),
-  //     "correct output"
-  //   );
   });
 
   it("copy to clipboard", () => {

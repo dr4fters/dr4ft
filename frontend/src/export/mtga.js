@@ -2,6 +2,7 @@ import { ZONE_MAIN, ZONE_SIDEBOARD } from "../zones";
 
 export default {
   name: "MTG Arena",
+  /* If arena later offers file import, define these: */
   // download,
   // downloadExtension: "???"
   copy

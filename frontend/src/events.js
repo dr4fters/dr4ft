@@ -48,9 +48,9 @@ const events = {
     App.update();
   },
   copy() {
-    const {exportDeckFormat: format } = App.state;
+    const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
     const textField = document.createElement("textarea");
-    textField.value = exportDeck[format].copy(null, collectDeck());
+    textField.value = exportDeck[format].copy(filename, collectDeck());
 
     document.body.appendChild(textField);
     textField.select();

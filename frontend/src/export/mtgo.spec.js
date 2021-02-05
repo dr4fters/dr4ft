@@ -5,7 +5,6 @@ import { exampleDeck as deck } from "./test-cards.js";
 import mtgo from "./mtgo.js";
 
 describe("export/mtgo", () => {
-  // console.log(multiFacettedCards.map(c => ([c.name, c.layout])))
   it("download of .dek file", () => {
     assert.equal(
       mtgo.download("My deck", deck),
@@ -16,12 +15,6 @@ describe("export/mtgo", () => {
 
   it("copy to clipboard", () => {
     assert.equal(mtgo.copy, undefined, "copy to clipboard disabled");
-
-    // assert.equal(
-    //   mtgo.copy("My deck", deck),
-    //   copyOutput(),
-    //   "correct output"
-    // );
   });
 });
 
@@ -41,3 +34,6 @@ const downloadOutput = () => (
   <Cards CatID="48512" Quantity="1" Sideboard="true" Name="Catch/Release" Annotation="0" />
 </Deck>
 `);
+
+// NOTE - that we've dropped cards which don't have mtgoId
+// They probably don't have this identifier because not supported by MTGO (e.g. unset cards)

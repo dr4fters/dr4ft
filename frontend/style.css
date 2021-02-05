@@ -497,7 +497,6 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .game .fieldset {
-  /* display: flex; */
   margin: 4px;
 }
 

@@ -9,7 +9,6 @@ const Select = props => {
     opts,
     value = App.state[link],
     onChange = (e) => App.save(link, e.currentTarget.value),
-    printOpt = opt => opt,
     ...rest
   } = props
 
@@ -20,7 +19,7 @@ const Select = props => {
       {...rest}
     >
       {opts.map((opt, index) =>
-        <option value={opt} key={index}>{printOpt(opt)}</option>
+        <option value={opt} key={index}>{opt}</option>
       )}
     </select>
   );

@@ -1,4 +1,12 @@
-/* uncomment this and run this file to output lands! */
+/* The below script can be used to generate a different set of lands
+ * The data used here is for MTGO + MTGA exports, which prefer to know extra details beyond card name.
+ *
+ * ## Use
+ * 1. uncomment below lines
+ * 2. change the "set" code (keeping in mind must be > Ixalan for Arena)
+ * 3. run $ node frontend/src/basiclands.js
+ * 4. copy the output in to replace the current lands
+ */
 
 // const { getCardByName } = require('../../backend/data')
 // const set = 'm20' // must be lower case

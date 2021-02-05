@@ -4,6 +4,7 @@ export default {
   name: "MTGO",
   download,
   downloadExtension: ".dek"
+  /* If mtgo later supports clipboard import, define this: */
   // copy // NOTE - mtgo does not support import from clipboard
 };
 

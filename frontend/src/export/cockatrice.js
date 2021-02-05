@@ -34,8 +34,6 @@ ${
   }
 };
 
-
-
 function renderDownloadCard ({ count, card }) {
   return `    <card number="${count}" name="${correctName(card)}"/>`;
 }
