@@ -14,7 +14,7 @@ const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
     <div className="Version">
       <div>
         dr4ft version: {" "}
-        <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`} target=`_blank` className='code'>
+        <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`} className='code'>
           <code>{version}</code>
         </a> <span className='date'>({BUILD_DATE})</span>
       </div>
