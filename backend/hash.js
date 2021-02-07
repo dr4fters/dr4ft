@@ -53,6 +53,5 @@ function hash(deck, opts) {
 module.exports = function (deck) {
   return {
     cock: hash(deck, opts.cock),
-    mws: hash(deck, opts.mws)
   };
 };
