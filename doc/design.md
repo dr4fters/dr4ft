@@ -10,7 +10,7 @@ data: wrapper around the data folder
 
 game: class
 
-hash: create cockatrice/mws deck hashes
+hash: create cockatrice deck hashes
 
 human: class
 
