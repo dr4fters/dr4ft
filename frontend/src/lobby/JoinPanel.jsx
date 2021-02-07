@@ -30,7 +30,7 @@ const JoinPanel = ({roomInfo}) => {
             </tr>)}
           </tbody>
         </table>
-        : "There are no rooms currently open."}
+        : "There are no public rooms open currently."}
     </fieldset>
   );
 };
