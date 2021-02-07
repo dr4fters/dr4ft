@@ -12,6 +12,14 @@ export default function router(_App) {
   window.addEventListener("hashchange", route);
 }
 
+const Loading = () => {
+  // return null
+  return (
+    <div style={{ padding: 30 }}>
+      Loading...
+    </div>
+  )
+}
 function route() {
   let path = location.hash.slice(1);
   let [route, id] = path.split("/");
@@ -25,14 +33,14 @@ function route() {
     App.send("join", id);
     App.once("gameInfos", App.updateGameInfos);
     component = (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={Loading()}>
         <Game id={ id } />
       </Suspense>
     );
     break;
   case "":
     component = (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={Loading()}>
         <Lobby />
       </Suspense>
     );

@@ -1,6 +1,7 @@
 /*global BUILD_DATE*/
 import React from "react";
 import PropTypes from "prop-types";
+import "./Version.scss"
 
 const getLink = (version) => (
   (/^v\d+\.\d+\.\d+$/.test(version)) ?
@@ -10,17 +11,29 @@ const getLink = (version) => (
 
 const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
   return (
-    <p>Running Version: {" "}
-      <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`}>
-        {version}
-      </a> (build {BUILD_DATE}) - Using <a href="https://www.mtgjson.com">MTGJSON</a> {" "}
-      card data {" "}
-      <a href={`https://mtgjson.com/changelog/version-5/#_${MTGJSONVersion.version.replace(/\./g, "-")}`}>
-        v{MTGJSONVersion.version}
-      </a> ({MTGJSONVersion.date}) and <a href={"https://github.com/taw/magic-sealed-data"}>Magic Sealed Data</a> {" "}
-        booster rules{" "}
-      commit <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`}>{boosterRulesVersion.substring(0,7)}</a>
-    </p>
+    <div className="Version">
+      <div>
+        dr4ft version: {" "}
+        <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)}`} className='code'>
+          <code>{version}</code>
+        </a> <span className='date'>({BUILD_DATE})</span>
+      </div>
+
+      <div>
+        Card data: <a href="https://www.mtgjson.com">MTGJSON</a> {" "}
+        <a href={`https://mtgjson.com/changelog/version-5/#_${MTGJSONVersion.version.replace(/\./g, "-")}`} className='code'>
+          <code>v{MTGJSONVersion.version}</code>
+        </a> <span className='date'>({MTGJSONVersion.date})</span>
+      </div>
+
+      <div>
+        Booster rules: {" "}
+        <a href={"https://github.com/taw/magic-sealed-data"}>Magic Sealed Data</a> {" "}
+        <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`} className='code'>
+          <code>{boosterRulesVersion.substring(0, 7)}</code>
+        </a>
+      </div>
+    </div>
   );
 };
 
