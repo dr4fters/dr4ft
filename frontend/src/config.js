@@ -20,7 +20,7 @@ export const STRINGS = {
         </div>
         <div>
           Contributions welcome! &nbsp;
-          <a href='https://github.com/dr4fters/dr4ft'>
+          <a href='https://github.com/dr4fters/dr4ft' target='_blank'>
             <img
               src='https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg'
               alt='GitHub' title='GitHub Repository' align='top' height='18'
