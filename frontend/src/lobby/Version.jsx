@@ -14,7 +14,7 @@ const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
     <div className="Version">
       <div>
         dr4ft version: {" "}
-        <a href={`https://github.com/dr4fters/dr4ft/${getLink(version)} target="_blank`} className='code'>
+        <a href={"https://github.com/dr4fters/dr4ft/${getLink(version)}" target="_blank"} className='code'>
           <code>{version}</code>
         </a> <span className='date'>({BUILD_DATE})</span>
       </div>
@@ -28,7 +28,7 @@ const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
 
       <div>
         Booster rules: {" "}
-        <a href={"https://github.com/taw/magic-sealed-data" target="_blank"}>Magic Sealed Data</a> {" "}
+        <a href={`https://github.com/taw/magic-sealed-data` target=`_blank`}>Magic Sealed Data</a> {" "}
         <a href={`https://github.com/taw/magic-sealed-data/commit/${boosterRulesVersion}`} className='code'>
           <code>{boosterRulesVersion.substring(0, 7)}</code>
         </a>
