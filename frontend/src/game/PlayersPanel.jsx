@@ -82,8 +82,6 @@ const columnVisibility = (columnName) => {
     return App.state.isGameFinished || !App.state.didGameStart || App.state.isSealed ? "hidden" : "";
   case "trice":
     return !App.state.isGameFinished ? "hidden" : "";
-  case "mws":
-    return !App.state.isGameFinished ? "hidden" : "";
   default:
     return "";
   }
@@ -117,7 +115,6 @@ const PlayerEntry = ({player, index}) => {
     <td key={3} className={columnVisibility("packs")} >{packs}</td>,
     <td key={4} id={className==="self" ? "self-time":""} className={columnVisibility("timer")}>{time}</td>,
     <td key={5} className={columnVisibility("trice")}>{hash && hash.cock}</td>,
-    <td key={6} className={columnVisibility("mws")}>{hash && hash.mws}</td>
   ];
 
   const selfTimeFixed = document.getElementById("self-time-fixed-time");
