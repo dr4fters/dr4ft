@@ -12,7 +12,7 @@ export const STRINGS = {
     MOTD: null, // TODO: handle overwrite of this message of the day; can be a React element
 
     FOOTER:
-      <div style={{ padding: 10 }}>
+      <div style={{ padding: 5 }}>
         Contributions welcome! &nbsp;
         <a href='https://github.com/dr4fters/dr4ft'>
           <img
