@@ -13,11 +13,6 @@ export const STRINGS = {
 
     FOOTER:
       <div style={{ padding: 10 }}>
-        <div style={{ marginBottom: 5 }}>
-          <strong>dr4ft</strong> is a fork of
-          the <code>drafts.ninja</code> arxanas fork of
-          the <code>draft</code> project by aeosynth.
-        </div>
         <div>
           Contributions welcome! &nbsp;
           <a href='https://github.com/dr4fters/dr4ft'>
