@@ -58,8 +58,11 @@ let App = {
     cols: false,
     hidepicks: false,
     deckSize: 40,
-    filename: "filename",
-    filetype: "txt",
+
+    // export deck
+    exportDeckFormat: "cockatrice",
+    exportDeckFilename: "filename",
+
     side: false,
     sort: "rarity",
     log: {},
@@ -227,9 +230,8 @@ let App = {
     const savename = type === "draft" ? sets[0] + "-draft" : type;
     const date = new Date();
     const currentTime = date.toISOString().slice(0, 10).replace("T", " ") + "_" + date.toString().slice(16, 21).replace(":", "-");
-    const filename = `${savename.replace(/\W/, "-")}_${currentTime}`;
     App.set({
-      filename,
+      exportDeckFilename: `${savename.replace(/\W/, "-")}_${currentTime}`,
       game: { type, sets, packsInfo, burnsPerPack },
       picksPerPack,
     });

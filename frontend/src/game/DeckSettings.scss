@@ -1,0 +1,118 @@
+.DeckSettings {
+  margin-right: 30px;
+
+  .LandsPanel {
+  }
+  .ExportDeckPanel {
+  }
+
+}
+
+.ExportDeckPanel {
+  --highlight: #3a87e5;
+  legend {}
+
+  .formats {
+    display: flex;
+
+    .format {
+      background: #fff;
+      padding: 3px 5px;
+      border: 1px solid #d0d0d0;
+      border-bottom: none;
+      margin-right: 5px;
+      cursor: pointer;
+
+      &.-active {
+        color: #fff;
+        background: var(--highlight);
+        border: 1px solid var(--highlight);
+        border-bottom: none;
+      }
+    }
+  }
+
+  .exports {
+    background: #f0f0f0;
+    padding: 10px;
+    border: 1px solid var(--highlight);
+
+    display: grid;
+    grid-gap: 10px;
+
+    .download, .copy  {
+      display: flex;
+      align-items: center;
+      span {
+        margin-right: 10px;
+      }
+      button {
+        // background: #fff;
+        padding: 4px 8px;
+      }
+    }
+
+    .download {
+      input {
+        width: 200px;
+        height: 24px;
+        font-size: 12px;
+        font-family: monospace;
+        border: 1px solid #d0d0d0;
+        border-right: none;
+
+        padding: 0 4px;
+      }
+
+      .extension {
+        height: 24px;
+        font-size: 12px;
+        font-family: monospace;
+        border: 1px solid #d0d0d0;
+        border-left: none;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 4px;
+        margin-right: 10px;
+      }
+    }
+
+    .copy {
+    }
+  }
+}
+
+.DraftLogPanel {
+  .draft-log {
+    display: flex;
+    align-items: center;
+
+    span {
+    }
+
+    .filename {
+      font-size: 12px;
+      font-family: monospace;
+    }
+
+    button {
+      // background: #fff;
+      margin-left: 10px;
+      padding: 4px 8px;
+    }
+  }
+}
+
+.LandsPanel {
+  thead tr:first-of-type {
+    text-align: center;
+  }
+
+  img {
+    height: 32px;
+    width: 32px;
+  }
+
+}
