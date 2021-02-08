@@ -5,7 +5,7 @@ import Checkbox from "../components/Checkbox";
 import './GameSettings.scss';
 
 const GameSettings = () => (
-  <div className='Game-Settings'>
+  <div className='GameSettings'>
     <fieldset className='fieldset'>
       <legend className='legend game-legend'>Settings</legend>
       <span>

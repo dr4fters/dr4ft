@@ -62,7 +62,7 @@ const sanitize = (json) => {
     subtypes = [],
     manaCost,
     url,
-    identifiers = [],
+    identifiers = {},
     rarity,
     power,
     toughness,
