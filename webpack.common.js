@@ -26,7 +26,7 @@ module.exports = {
         {
           from: "frontend",
           globOptions: {
-            ignore: ["*.tpl", "src/**/*", "test/**/*"]
+            ignore: ["*.tpl", "src/**/*", "test/**/*", "**/*.spec.*"]
           }
         }
       ]
@@ -50,7 +50,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: [
           /node_modules/,
-          /\.spec\.js$/
+          /\.spec\.(js|mjs)$/
         ],
         use: {
           loader: "babel-loader",

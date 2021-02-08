@@ -17,7 +17,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     subtypes = [],
     manaCost,
     url,
-    identifiers = [],
+    identifiers = {},
     rarity,
     power,
     toughness,
@@ -31,7 +31,6 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
 
   const {isDoubleFaced, flippedCardURL, flippedIsBack, flippedNumber} = getDoubleFacedProps(mtgjsonCard, rawCards);
   const color = upperFirst(getColor(mtgjsonCard, rawCards));
-  const identifiersMini = {"scryfallId": identifiers.scryfallId};
 
   return {
     uuid,
@@ -48,7 +47,12 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     manaCost: manaCost || "",
     rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
-    identifiers: identifiersMini,
+    identifiers: {
+      scryfallId: identifiers.scryfallId,
+      mtgoId: identifiers.mtgoId
+      // needed for exporting cards to MTGO .dek
+      // NOTE: not all cards seem to have this identifier..?
+    },
     layout,
     isDoubleFaced,
     flippedCardURL,

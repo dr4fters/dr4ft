@@ -1,7 +1,8 @@
-import {countBy, findIndex, keyBy, pullAt, range, remove} from "lodash";
+import {countBy, findIndex, pullAt, range, remove} from "lodash";
 import _ from "utils/utils";
 import EventEmitter from "events";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
+import BASIC_LANDS_BY_COLOR_SIGN from "./basiclands";
 
 export const COLORS_TO_LANDS_NAME = {
   "W": "Plains",
@@ -10,26 +11,6 @@ export const COLORS_TO_LANDS_NAME = {
   "R": "Mountain",
   "G": "Forest",
 };
-
-/**
- * BASICS_LANDS is an array of all different basic lands
- */
-const BASICS_LANDS = Object.entries(COLORS_TO_LANDS_NAME)
-  .map(([colorSign, cardName]) => {
-    return {
-      name: cardName,
-      cmc: 0,
-      colorSign,
-      code: "BFZ",
-      color: "Colorless",
-      rarity: "Basic",
-      type: "Land",
-      manaCost: "0",
-      url: `https://api.scryfall.com/cards/named?exact=${cardName.toLowerCase()}&format=image`
-    };
-  });
-
-export const BASIC_LANDS_BY_COLOR_SIGN = keyBy(BASICS_LANDS, "colorSign");
 
 const defaultState = () => ({
   [ZONE_MAIN]: [],
@@ -154,7 +135,7 @@ class GameState extends EventEmitter {
     remove(zone, (c) => c.name === card.name);
     // add n land
     range(n).forEach(() => zone.push(card));
-    this.#landDistribution[zoneName][card.colorSign] = n;
+    this.#landDistribution[zoneName][card.colorIdentity[0]] = n;
   }
 
   setLands(zoneName, color, n) {
