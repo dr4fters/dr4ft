@@ -1,5 +1,4 @@
 data/*
-!data/mws.json
 !data/scores.json
 node_modules
 frontend/lib

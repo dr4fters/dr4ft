@@ -4,8 +4,8 @@ export default {
   name: "MTGO",
   download,
   downloadExtension: ".dek"
-  /* If mtgo later supports clipboard import, define this: */
-  // copy // NOTE - mtgo does not support import from clipboard
+  /* If mtgo later supports clipboard import, enable this: */
+  // copy
 };
 
 function download (name, deck) {

@@ -13,17 +13,6 @@ const opts = {
       return parseInt(digest.slice(0, 10), 16).toString(32);
     }
   },
-  mws: {
-    algo: "md5",
-    separator: "",
-    prefix: "#",
-    name(name) {
-      return name.toUpperCase().replace(/[^A-Z]/g, "");
-    },
-    digest(digest) {
-      return digest.slice(0, 8);
-    }
-  }
 };
 
 function hash(deck, opts) {
@@ -53,6 +42,5 @@ function hash(deck, opts) {
 module.exports = function (deck) {
   return {
     cock: hash(deck, opts.cock),
-    mws: hash(deck, opts.mws)
   };
 };
