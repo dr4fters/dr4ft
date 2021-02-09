@@ -17,9 +17,9 @@ Most of MTG sets are playable thanks to MTGJson support. We follow as much as po
 
 The application provides the following features:
 
-* Draft and sealed format
-* Regular, Cube and chaos game types
-* Special game modes like "Glimpse Draft"
+* Draft and Sealed format
+* Regular, Cube and Chaos game types
+* Special game modes like "Glimpse Draft" or "Decadent"
 * 1 to 100 players
 * 1 to 12 packs per player
 * All playable sets ever printed
@@ -32,11 +32,15 @@ The application provides the following features:
 * Connection indicators
 * Pick confirmation
 * Grid and column view
-* Card sorting by rarity, type, color or Manacost
+* Card sorting by rarity, type, color or mana cost
 * Bots
 * Notifications when a pack is available
 * API to create and manage a game remotely. [More docs here](https://github.com/dr4fters/dr4ft/blob/master/doc/api.md)
-* Accurate Booster generation rules from @taw [magic-sealed-data](https://github.com/taw/magic-sealed-data)
+* Accurate Booster generation rules from @taw's [magic-sealed-data](https://github.com/taw/magic-sealed-data)
+* Allow several picks per pack
+* Download draft logs for analysis
+* Export your deck to various other apps
+* Generate deck hashes for competitive play
 
 ## Technologies
 
