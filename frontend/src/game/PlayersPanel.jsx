@@ -125,9 +125,9 @@ const PlayerEntry = ({player, index}) => {
 
   if (isHost) {
     //Move Player
-    if(!didGameStart && length > 1)
+    if (!didGameStart && length > 1)
       columns.push(
-        <td key={7}>
+        <td key={6}>
           <button onClick={()=> App.send("swap", [index, index - 1])}>
             <img src="../../media/arrow-up.png" width="16px"/>
           </button>
@@ -138,13 +138,13 @@ const PlayerEntry = ({player, index}) => {
     //Kick button
     if (index !== self && !isBot)
       columns.push(
-        <td key={8}>
+        <td key={7}>
           <button onClick={()=> App.send("kick", index)}>
             Kick
           </button>
         </td>);
     else
-      columns.push(<td key={9}/>);
+      columns.push(<td key={8}/>);
 
   }
 
