@@ -33,8 +33,17 @@ ${
 
 function renderDownloadCard ({ card, count, sideboard = false }) {
   if (!card.identifiers.mtgoId) {
-    console.error(`Cannot export ${card.name} to .dek, it lacks an mtgoId`);
-    return null;
+    console.warn(`Exporting ${card.name} to .dek, it lacks an mtgoId, which may cause error on importing`);
+    return `  <Cards Quantity="${count}" Sideboard="${sideboard}" Name="${correctName(card)}" Annotation="0" />`;
+
+    // NOTE failing to have an mtgoId seems to mainly be because a set isn't present in MTGO.
+    // There are two cases so far known
+    // 1. it's a card that was never in mtgo - e.g. any unset card
+    //   - them import of any .dek containing this card will fail
+    //
+    // 2. it's a card that exists in mtgo, just not this printing - e.g. some promo Ancestral Recall
+    //   - exporting this card without a CatId leads MTGO to select another printing of the card
+    //   - the import of the .dek file works fine
   }
 
   return `  <Cards CatID="${card.identifiers.mtgoId}" Quantity="${count}" Sideboard="${sideboard}" Name="${correctName(card)}" Annotation="0" />`;
