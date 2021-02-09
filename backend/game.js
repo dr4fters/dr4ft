@@ -577,7 +577,7 @@ module.exports = class Game extends Room {
       this.players.forEach(player => {
         if (!player.isBot) {
           player.exit();
-          player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: <a href='https://github.com/dr4fters/dr4ft/issues'>https://github.com/dr4fters/dr4ft/issues</a>");
+          player.err("Whoops! An error occurred while starting the game. Please try again later. If the problem persists, you can open an issue on the Github repository: <a href='https://github.com/dr4fters/dr4ft/issues' target='_blank' rel='noreferrer'>https://github.com/dr4fters/dr4ft/issues</a>");
         }
       });
       Rooms.delete(this.id);
