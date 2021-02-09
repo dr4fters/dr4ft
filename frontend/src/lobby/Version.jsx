@@ -21,7 +21,7 @@ const Version = ({version, MTGJSONVersion, boosterRulesVersion}) => {
 
       <div>
         Card data: <a href="https://www.mtgjson.com">MTGJSON</a> {" "}
-        <a href={`https://mtgjson.com/changelog/version-5/#_${MTGJSONVersion.version.replace(/\./g, "-")}`} className='code'>
+        <a href={`https://mtgjson.com/changelog/mtgjson-v5/#_${MTGJSONVersion.version.replace(/\./g, "-")}`} className='code'>
           <code>v{MTGJSONVersion.version}</code>
         </a> <span className='date'>({MTGJSONVersion.date})</span>
       </div>
