@@ -98,7 +98,7 @@ const events = {
     App.save("log", draftLog);
   },
   getLog() {
-    const {gameId, log, players, self, sets, gamesubtype, filename} = App.state;
+    const {gameId, log, players, self, sets, gamesubtype, exportDeckFilename} = App.state;
     const isCube = /cube/.test(gamesubtype);
     const date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
     const data = [
@@ -119,7 +119,7 @@ const events = {
       });
     });
 
-    _.download(data.join("\n"), `${filename}-draftlog.txt`);
+    _.download(data.join("\n"), `${exportDeckFilename}-draftlog.txt`);
   },
 
   create() {
