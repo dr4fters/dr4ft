@@ -14,7 +14,8 @@ const StartPanel = () => {
       <span>
         <div>Type: {gameType}</div>
         <div>Info: {App.state.game.packsInfo}</div>
-        <div>Picks per pack: {" " + App.state.picksPerPack }</div>
+        {!App.state.isSealed && 
+          <div>Picks per pack: {" " + App.state.picksPerPack }</div>}
         {(App.state.isHost && !App.state.didGameStart)
           ? <StartControls/>
           : <div />}
