@@ -15,9 +15,25 @@ registerPlugin(FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // const allowed = ["application/json", "text/xml"]
+  // const label = `Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
+  //   JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`
+  const allowed = ["text/xml"]
+  const label = `Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
+    XML (Cockatrice formatted, v3 & v4) is supported.`
+
   return (
     <fieldset className='fieldset'>
       <legend className='legend'>Upload Custom Set</legend>
+
+      <p>
+        <i className="ion ion-android-alert" style={{ fontSize: 20, paddingRight: 5 }} />
+        Custom set uploads have been causing crashes.
+        While we debug this only XML uploads will be allowed
+      </p>
+
+      { allowed.length &&
       <FilePond
         server={{
           process: {
@@ -27,17 +43,17 @@ const FileUpload = () => {
         }}
         allowRevert={false}
         maxFileSize={"3MB"}
-        acceptedFileTypes={["application/json", "text/xml"]}
+        acceptedFileTypes={allowed}
         allowMultiple={true}
         files={files}
-        labelIdle={`Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
-        JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`}
+        labelIdle={label}
         labelFileProcessingError={errorMsg}
         onupdatefiles={fileItems => {
           // Set currently active file objects to this.state
           setFiles(fileItems.map(fileItem => fileItem.file));
         }}
       />
+      }
     </fieldset>
   );
 };
