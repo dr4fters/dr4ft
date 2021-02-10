@@ -32,6 +32,7 @@ const downloadOutput = () => (
   <Cards CatID="26517" Quantity="1" Sideboard="false" Name="Dead/Gone" Annotation="0" />
 
   <Cards CatID="48512" Quantity="1" Sideboard="true" Name="Catch/Release" Annotation="0" />
+  <Cards Quantity="1" Sideboard="true" Name="Who/What/When/Where/Why" Annotation="0" />
 </Deck>
 `);
 
