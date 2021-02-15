@@ -396,7 +396,7 @@ const meldCards = [
     "text": "At the beginning of combat on your turn, if you both own and control Graf Rats and a creature named Midnight Scavengers, exile them, then meld them into Chittering Host.",
     "cardId": "e201fcb3-6f2b-11eb-a6ec-db06e7a87e52"
   }
-]
+];
 
 export const multiFacettedCards = {
   flipCards,
