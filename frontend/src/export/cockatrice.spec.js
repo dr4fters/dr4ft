@@ -32,6 +32,7 @@ const downloadOutput = () => (
     <card number="1" name="Murderous Rider // Swift End"/>
     <card number="1" name="Refuse // Cooperate"/>
     <card number="1" name="Riverglide Pathway"/>
+    <card number="1" name="Graf Rats"/>
     <card number="1" name="Dead // Gone"/>
   </zone>
   <zone name="side">
@@ -47,6 +48,7 @@ const copyOutput = () => (
 1 Murderous Rider // Swift End
 1 Refuse // Cooperate
 1 Riverglide Pathway
+1 Graf Rats
 1 Dead // Gone
 Sideboard
 1 Catch // Release

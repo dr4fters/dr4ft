@@ -24,6 +24,7 @@ const downloadOutput = () => {
 1 Murderous Rider
 1 Refuse/Cooperate
 1 Riverglide Pathway
+1 Graf Rats
 1 Dead/Gone
 
 Sideboard
