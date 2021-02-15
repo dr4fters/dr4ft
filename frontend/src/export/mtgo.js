@@ -3,7 +3,7 @@ import { ZONE_MAIN, ZONE_SIDEBOARD } from "../zones";
 export default {
   name: "MTGO",
   download,
-  downloadExtension: ".mtgo.txt"
+  downloadExtension: ".txt"
   /* If mtgo later supports clipboard import, enable this: */
   // copy
 };
