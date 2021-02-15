@@ -67,6 +67,7 @@ function correctName (card) {
 // }
 
 // function renderDownloadCard ({ card, count, sideboard = false }) {
+//   // NOTE: to have card.identifiers.mtgoId, you need to add it to backend/import/toBoosterCard.js as something you want included
 //   if (!card.identifiers.mtgoId) {
 //     console.warn(`Exporting ${card.name} to .dek, it lacks an mtgoId, which may cause error on importing`);
 //     return `  <Cards Quantity="${count}" Sideboard="${sideboard}" Name="${correctName(card)}" Annotation="0" />`;

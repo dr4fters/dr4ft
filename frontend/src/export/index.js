@@ -16,7 +16,5 @@ export default {
   mtga,
   mtgo,
   text,
-  json: process.env.NODE_ENV === "development" ? json : null
-  // NOTE this one is useful for extracting raw JSON of all the card info
-  // This is particularly useful for populating test-cards.js
+  json
 };
