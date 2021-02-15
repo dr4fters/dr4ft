@@ -19,7 +19,7 @@ function correctName (card) {
   case "meld":
   case "adventure":
   case "modal_dfc":
-    return card.faceName || card.name.replace(/\s\/\/.*$/, "");
+    return card.name.replace(/\s\/\/.*$/, "");
 
   default:
     return card.name;
