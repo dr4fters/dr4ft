@@ -1,6 +1,6 @@
 const {describe, it} = require("mocha");
 const assert = require("assert");
-const {toTitleCase} = require("./../src/utils");
+const {toTitleCase} = require("./utils");
 
 describe("Acceptance tests for frontend utils", () => {
   it("toTitleCase() should capitalize each word", () => {
