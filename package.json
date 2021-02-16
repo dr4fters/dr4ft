@@ -31,7 +31,7 @@
     "nodemon": "nodemon ./app.js -e html,js --ignore built --ignore frontend",
     "nodemon:debug": "nodemon --inspect-brk=1338 ./app.js -e html,js --ignore built --ignore frontend",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "npm run postinstall && npm run test:js && npm run lint",
+    "test": "npm run postinstall && npm run test:js",
     "test:js": "mocha \"./{,!(node_modules|built)/**/}*.spec.*js\" --exit --require @babel/register",
     "postinstall": " npm run download_allsets && npm run download_booster_rules && webpack --config webpack.prod.js",
     "update_database": "node scripts/update_database ",
