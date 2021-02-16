@@ -48,10 +48,7 @@ const toBoosterCard = (setCode) => (mtgjsonCard, index, rawCards) => {
     rarity: upperFirst(rarity),
     url: url || `https://api.scryfall.com/cards/${identifiers.scryfallId}?format=image`,
     identifiers: {
-      scryfallId: identifiers.scryfallId,
-      mtgoId: identifiers.mtgoId
-      // needed for exporting cards to MTGO .dek
-      // NOTE: not all cards seem to have this identifier..?
+      scryfallId: identifiers.scryfallId
     },
     layout,
     isDoubleFaced,

@@ -17,11 +17,18 @@
 
     .format {
       background: #fff;
-      padding: 3px 5px;
+      padding: 3px 5px 0;
       border: 1px solid #d0d0d0;
       border-bottom: none;
       margin-right: 5px;
       cursor: pointer;
+
+      &.json {
+        opacity: 0;
+        transition: opacity .5s ease-in;
+
+        &:hover, &.-active { opacity: 1; }
+      }
 
       &.-active {
         color: #fff;

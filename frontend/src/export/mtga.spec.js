@@ -25,6 +25,7 @@ const copyOutput = () => (
 1 Murderous Rider (ELD) 97
 1 Refuse /// Cooperate (HOU) 156
 1 Riverglide Pathway (ZNR) 264
+1 Graf Rats (EMN) 91
 1 Dead /// Gone (PLC) 113
 
 Sideboard

@@ -229,7 +229,7 @@ const adventureCards = [
   {
     "uuid": "1583e21a-84a4-5299-b3aa-ab4dec02d2e7",
     "name": "Murderous Rider // Swift End",
-    "faceName": "Murderous Rider",
+    "meld": "Murderous Rider",
     "otherFaceIds": [
       "7d27e18f-6ffa-5328-a13b-dfb41a2f0109"
     ],
@@ -352,12 +352,59 @@ const modalDfcCards = [
   }
 ];
 
+// Multi-facetted layout | Example card
+// ----------------------|---------------------------------
+// meld                  | Graf Rats // Chittering Host
+
+const meldCards = [
+  {
+    "uuid": "d8483bbd-7271-5fd3-9892-38473dc69f8b",
+    "name": "Graf Rats // Chittering Host",
+    "faceName": "Graf Rats",
+    "otherFaceIds": [
+      "3f8cdafb-10d5-510a-b908-49dd4c80fff3"
+    ],
+    "color": "Black",
+    "colors": [
+      "B"
+    ],
+    "colorIdentity": [
+      "B"
+    ],
+    "setCode": "EMN",
+    "cmc": 2,
+    "number": "91",
+    "type": "Creature",
+    "manaCost": "{1}{B}",
+    "rarity": "Common",
+    "url": "https://api.scryfall.com/cards/3dedaff6-bd69-4fe3-a301-f7ea7c2f2861?format=image",
+    "identifiers": {
+      "scryfallId": "3dedaff6-bd69-4fe3-a301-f7ea7c2f2861",
+      "mtgoId": "61168"
+    },
+    "layout": "meld",
+    "isDoubleFaced": true,
+    "flippedCardURL": "https://api.scryfall.com/cards/70b94f21-4f01-46f8-ad50-e2bb0b68ea33?format=image",
+    "flippedIsBack": false,
+    "flippedNumber": "96b",
+    "supertypes": [],
+    "subtypes": [
+      "Rat"
+    ],
+    "power": "2",
+    "toughness": "1",
+    "text": "At the beginning of combat on your turn, if you both own and control Graf Rats and a creature named Midnight Scavengers, exile them, then meld them into Chittering Host.",
+    "cardId": "e201fcb3-6f2b-11eb-a6ec-db06e7a87e52"
+  }
+];
+
 export const multiFacettedCards = {
   flipCards,
   transformCards,
   adventureCards,
   aftermathCards,
   modalDfcCards,
+  meldCards,
   splitCards
 };
 
@@ -367,6 +414,7 @@ const deck = [
   ...adventureCards,
   ...aftermathCards,
   ...modalDfcCards,
+  ...meldCards,
   ...splitCards
 ].reduce((acc, card, i, all) => {
   if (i === 0) acc.main.push(card);

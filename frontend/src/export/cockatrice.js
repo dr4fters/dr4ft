@@ -51,6 +51,7 @@ function correctName (card) {
 
   case "flip":
   case "transform":
+  case "meld":
   case "modal_dfc":
     return card.name.replace(/\s\/\/.*$/, "");
 
