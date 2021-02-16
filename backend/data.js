@@ -251,12 +251,11 @@ const getPlayableSets = () => {
   return playableSets;
 };
 
+const SET_TYPES_EXCLUDED_FROM_RANDOM_SET = new Set(["custom", "random", "funny"]);
 const getRandomSet = () => {
   const allSets = getPlayableSets();
-  const allTypes = Object.keys(allSets);
-  delete allTypes["custom"];
-  delete allTypes["random"];
-  delete allTypes["funny"];
+  const allTypes = Object.keys(allSets)
+    .filter(setType => !SET_TYPES_EXCLUDED_FROM_RANDOM_SET.has(setType));
 
   const randomType = allTypes[allTypes.length * Math.random() << 0];
 

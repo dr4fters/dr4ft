@@ -2,7 +2,7 @@ import React from "react";
 
 import App from "../app";
 import Checkbox from "../components/Checkbox";
-import './GameSettings.scss';
+import "./GameSettings.scss";
 
 const GameSettings = () => (
   <div className='GameSettings'>
