@@ -28,6 +28,7 @@ ${
   copy(name, deck) {
     return [
       ...deck[ZONE_MAIN].map(renderCopyCard),
+      "",
       "Sideboard",
       ...deck[ZONE_SIDEBOARD].map(renderCopyCard),
     ].join("\n");
