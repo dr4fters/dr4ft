@@ -6,7 +6,9 @@ const envVarsSchema = joi.object({
   HOST: joi.string()
     .default("localhost"),
   DEFAULT_USERNAME: joi.string()
-    .default("dr4fter")
+    .default("dr4fter"),
+  POOL_SERVICE_URL: joi.string()
+    .default("http://localhost:5000/")
 }).unknown()
   .required();
 

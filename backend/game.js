@@ -103,6 +103,10 @@ module.exports = class Game extends Room {
     return this.didGameStart && !this.isGameFinished;
   }
 
+  get isSealed() {
+    return /sealed/.test(this.type);
+  }
+
   // The number of total games. This includes ones that have been long since
   // abandoned but not yet garbage-collected by the `renew` mechanism.
   static numGames() {
@@ -459,58 +463,52 @@ module.exports = class Game extends Room {
   }
 
 
-  async createPool() {
+  createPool() {
     switch (this.type) {
     case "cube draft": {
-      this.pool = Pool.DraftCube({
+      return Pool.DraftCube({
         cubeList: this.cube.list,
         playersLength: this.players.length,
         packsNumber: this.cube.packs,
         playerPackSize: this.cube.cards
       });
-      break;
     }
     case "cube sealed": {
-      this.pool = Pool.SealedCube({
+      return Pool.SealedCube({
         cubeList: this.cube.list,
         playersLength: this.players.length,
         playerPoolSize: this.cubePoolSize
       });
-      break;
     }
     case "draft":
     case "decadent draft": {
-      this.pool = await Pool.DraftNormal({
+      return Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
       });
-      break;
     }
 
     case "sealed": {
-      this.pool = Pool.SealedNormal({
+      return Pool.SealedNormal({
         playersLength: this.players.length,
         sets: this.sets
       });
-      break;
     }
     case "chaos draft": {
-      this.pool = Pool.DraftChaos({
+      return Pool.DraftChaos({
         playersLength: this.players.length,
         packsNumber: this.chaosPacksNumber,
         modernOnly: this.modernOnly,
         totalChaos: this.totalChaos
       });
-      break;
     }
     case "chaos sealed": {
-      this.pool = Pool.SealedChaos({
+      return Pool.SealedChaos({
         playersLength: this.players.length,
         packsNumber: this.chaosPacksNumber,
         modernOnly: this.modernOnly,
         totalChaos: this.totalChaos
       });
-      break;
     }
     default: throw new Error(`Type ${this.type} not recognized`);
     }
@@ -545,7 +543,9 @@ module.exports = class Game extends Room {
 
   async start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
-      Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
+      if (!this.isSealed) {
+        Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
+      }
       this.renew();
 
       if (this.shouldAddBots()) {
@@ -562,8 +562,7 @@ module.exports = class Game extends Room {
         this.players = shuffle(this.players);
       }
 
-      await this.createPool();
-
+      this.pool = await this.createPool();
       if (/sealed/.test(this.type)) {
         this.handleSealed();
       } else {

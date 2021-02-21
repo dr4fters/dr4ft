@@ -1,8 +1,8 @@
 const {sample, shuffle, random, range, times, constant, pull} = require("lodash");
-const boosterGenerator = require("./boosterGenerator");
-const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
+const boosterGenerator = require("../boosterGenerator");
+const { getVersion } = require("../mtgjson");
+const { getPlayableSets, getLatestReleasedSet, getBoosterRulesVersion, getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("../data");
 const draftId = require("uuid").v1;
-const axios = require("axios");
 
 /**
  * @desc add a unique id to a card
@@ -45,13 +45,10 @@ const SealedNormal = ({ playersLength, sets }) => (
 );
 
 const DraftNormal = ({ playersLength, sets }) => (
-  axios.post("http://localhost:5001/regular", {
-    players: playersLength,
-    sets: sets
-  }).then(function (response) {
-    console.log(response);
-    return response.data;
-  })
+  replaceRNGSet(sets)
+    .flatMap(set => times(playersLength, constant(set)))
+    .map(boosterGenerator)
+    .map(addCardIdsToBoosterCards)
 );
 // Get a random set and transform it to pack
 function getRandomPack(setList) {
@@ -106,11 +103,36 @@ const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos })
     .map(addCardIdsToBoosterCards);
 };
 
+const controlCubeList = (list) => {
+  const bad = [];
+  for (let cardName of list)
+    if (!getCardByName(cardName))
+      bad.push(cardName);
+
+  if (bad.length) {
+    let msg = `Invalid cards: ${bad.splice(-10).join("; ")}`;
+    if (bad.length)
+      msg += `; and ${bad.length} more`;
+    throw Error(msg);
+  }
+};
+
+const getPoolInfos = () => {
+  return {
+    availableSets: getPlayableSets(),
+    latestSet: getLatestReleasedSet(),
+    mtgJsonVersion: getVersion(),
+    boosterRulesVersion: getBoosterRulesVersion()
+  };
+};
+
 module.exports = {
   SealedCube,
   DraftCube,
   SealedNormal,
   DraftNormal,
   SealedChaos,
-  DraftChaos
+  DraftChaos,
+  controlCubeList,
+  getPoolInfos
 };

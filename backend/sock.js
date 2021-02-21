@@ -1,7 +1,6 @@
 const { EventEmitter } = require("events");
 const { app: { DEFAULT_USERNAME } } = require("../config");
-const { getPlayableSets, getLatestReleasedSet, getBoosterRulesVersion } = require("./data");
-const { getVersion } = require("./mtgjson");
+const { getPoolInfos } = require("./pool");
 
 // All sockets currently connected to the server.
 let allSocks = [];
@@ -40,11 +39,8 @@ class Sock extends EventEmitter {
     for (let key in mixins)
       this[key] = mixins[key].bind(this);
 
-    this.send("set", {
-      availableSets: getPlayableSets(),
-      latestSet: getLatestReleasedSet(),
-      mtgJsonVersion: getVersion(),
-      boosterRulesVersion: getBoosterRulesVersion()
+    getPoolInfos().then((poolInfos) => {
+      this.send("set", poolInfos);
     });
     allSocks.push(this);
     broadcastNumUsers();

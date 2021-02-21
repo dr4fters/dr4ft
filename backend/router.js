@@ -5,9 +5,9 @@ const Sock = require("./sock");
 const util = require("./util");
 const logger = require("./logger");
 
-function create(opts) {
+async function create(opts) {
   try {
-    util.game(opts);
+    await util.game(opts);
   } catch(err) {
     logger.error(`user ${this.name} could not create a game - ${err.message}`);
     return this.err(err.message);

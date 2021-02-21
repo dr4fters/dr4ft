@@ -1,6 +1,7 @@
 const assert = require("assert");
 const {countBy} = require("lodash");
-const { getSet, getCardByName } = require("./data");
+const { getSet } = require("./data");
+const { ControlCubeList } = require("./pool");
 const BASICS = [
   "Forest",
   "Island",
@@ -9,7 +10,7 @@ const BASICS = [
   "Swamp"
 ];
 
-function controlCubeSettingsAndTransformList(cube, seats, type) {
+async function controlCubeSettingsAndTransformList(cube, seats, type) {
   let {list, cards, packs, cubePoolSize, burnsPerPack} = cube;
 
   assert(typeof list === "string", "cube.list must be a string");
@@ -28,17 +29,7 @@ function controlCubeSettingsAndTransformList(cube, seats, type) {
   assert(min <= list.length && list.length <= 1e5,
     `The cube needs between ${min} and 100 000 cards with this settings, it has ${list.length}`);
 
-  const bad = [];
-  for (let cardName of list)
-    if (!getCardByName(cardName))
-      bad.push(cardName);
-
-  if (bad.length) {
-    let msg = `Invalid cards: ${bad.splice(-10).join("; ")}`;
-    if (bad.length)
-      msg += `; and ${bad.length} more`;
-    throw Error(msg);
-  }
+  await ControlCubeList(list);
 
   cube.list = list;
 }
@@ -66,7 +57,7 @@ module.exports = {
 
     return true;
   },
-  game({ seats, type, sets, cube, isPrivate, modernOnly = true, chaosPacksNumber, totalChaos = true }) {
+  async game({ seats, type, sets, cube, isPrivate, modernOnly = true, chaosPacksNumber, totalChaos = true }) {
     const acceptableGameTypes = [
       "draft",
       "sealed",
@@ -93,7 +84,7 @@ module.exports = {
     case "cube draft":
     case "cube sealed":
       assert(typeof cube === "object", "cube must be an object");
-      controlCubeSettingsAndTransformList(cube, seats, type);
+      await controlCubeSettingsAndTransformList(cube, seats, type);
       break;
     case "chaos draft":
     case "chaos sealed":
