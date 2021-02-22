@@ -5,17 +5,17 @@ const logger = require("../logger");
 
 const poolServiceUrl = config.POOL_SERVICE_URL;
 
-const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => {
-  return DraftCube({
+const SealedCube = ({ cubeList, playersLength, playerPoolSize = 90 }) => (
+  DraftCube({
     cubeList,
     playersLength,
     packsNumber: 1,
     playerPackSize: playerPoolSize
-  });
-};
+  })
+);
 
-const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => {
-  return axios.post(`${poolServiceUrl}pool/cube`, {
+const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 15 }) => (
+  axios.post(`${poolServiceUrl}pool/cube`, {
     list: cubeList,
     players: playersLength,
     packs: packsNumber,
@@ -25,8 +25,8 @@ const DraftCube = ({ cubeList, playersLength, packsNumber = 3, playerPackSize = 
     .catch(reason => {
       logger.error("could not fetch draft cube packs. Fallback to legacy", reason);
       return legacy.DraftCube({ cubeList, playersLength, packsNumber, playerPackSize });
-    });
-};
+    })
+);
 
 const SealedNormal = ({ playersLength, sets }) => (
   axios.post(`${poolServiceUrl}pool/regular/sealed`, {
