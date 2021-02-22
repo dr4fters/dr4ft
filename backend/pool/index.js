@@ -1,4 +1,3 @@
-const { chunk } = require("lodash");
 const axios = require("axios");
 const { app: config } = require("../../config");
 const legacy = require("./legacy");
