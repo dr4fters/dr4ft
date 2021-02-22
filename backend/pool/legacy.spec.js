@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 const assert = require("assert");
-const Pool = require("./pool");
+const Pool = require("./legacy");
 const {range, times, constant} = require("lodash");
 const {getPlayableSets} = require("../data");
 
