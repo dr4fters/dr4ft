@@ -87,7 +87,7 @@ CardBase.propTypes = {
   card: PropTypes.object.isRequired,
 };
 
-const CardBaseImage = ({ mouseEntered, imgUrl, onError, foil, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
+const CardBaseImage = ({ imgUrl, onError, name }) => (
   <div className="CardBaseImage">
     <img
       title={name}
@@ -110,7 +110,6 @@ CardBaseImage.propTypes = {
   setCode: PropTypes.string,
   number: PropTypes.string,
   identifiers: PropTypes.object,
-  mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,
   flippedNumber: PropTypes.string,
