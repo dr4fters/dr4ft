@@ -105,27 +105,14 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   return zoneNames.map(renderZone);
 };
 
-const ImageHelper = ({onMouseEnter, className, card}) => {
+const ImageHelper = ({className, card}) => {
   // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
   if (!card) return <div />
 
-  // TODO - consider text case
   return (
-    card.isDoubleFaced
-      ? <div className={className} id="doubleimg">
-        <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`}
-          src={getCardSrc({ ...card, isBack: card.flippedIsBack, number: card.flippedNumber, })}
-          onError={e => e.target.src = card.flippedCardURL}
-          onMouseEnter={onMouseEnter.bind(card)} />
-      </div>
-
-      : <div id='img' className = {className}>
-        <img
-          className = "image-inner"
-          onMouseEnter = {e => onMouseEnter(card, e)}
-          onError= {getFallbackSrc(card)}
-          src = {getCardSrc(card)} />
+      <div className={`helper ${className}`}>
+        <div className="card"><CardBase card={card} /></div>
+        {card.isDoubleFaced && <div className={`card ${card.layout === "flip" ? "flipped" : ""}`}><CardBase card={card} /></div>}
       </div>
   )
 };

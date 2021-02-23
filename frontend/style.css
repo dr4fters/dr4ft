@@ -364,13 +364,6 @@ input[type="checkbox"], input[type="radio"] {
 
 /** Zones **/
 
-#img,
-.card {
-  height: 340px;
-  width: 240px;
-  cursor: pointer;
-}
-
 .waiting {
   font-style: italic;
 }
@@ -462,22 +455,6 @@ input[type="checkbox"], input[type="radio"] {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-#img,
-#doubleimg {
-  position: fixed;
-  bottom: 0;
-  z-index: 101;
-}
-
-#img.left,
-#doubleimg.left {
-  left: 0;
-}
-
-#img.right,
-#doubleimg.right {
-  right: 0;
-}
 .flipped {
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);

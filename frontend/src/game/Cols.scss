@@ -20,4 +20,27 @@
       }
     }
   }
+
+  .helper {
+    position: fixed;
+    bottom: 0;
+    z-index: 101;
+
+    --card-width: 240px;
+    --card-height: 340px;
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    .card {
+      width: var(--card-width);
+      height: var(--card-height);
+      cursor: pointer;
+    }
+  }
 }
