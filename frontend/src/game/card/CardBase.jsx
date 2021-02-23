@@ -14,7 +14,10 @@ export default class CardBase extends Component {
       mouseEntered: false,
       isFlipped: false,
       url: getCardSrc(this.props.card),
+      imageErrored: false
     };
+
+    this.onImageError = this.onImageError.bind(this);
 
     if (this.props.card.isDoubleFaced) {
       this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -29,7 +32,7 @@ export default class CardBase extends Component {
       url: getCardSrc({
         ...this.props.card,
         isBack: this.props.card.flippedIsBack,
-        number: this.props.card.flippedNumber,
+        number: this.props.card.flippedNumber || this.props.card.number,
       })
     });
   }
@@ -42,6 +45,10 @@ export default class CardBase extends Component {
     });
   }
 
+  onImageError () {
+    this.setState({ imageErrored: true });
+  }
+
   render () {
     const { card } = this.props;
     // at the moment for Text view, you can't see both sides of a card on hover
@@ -51,8 +58,8 @@ export default class CardBase extends Component {
       <div className={`CardBase ${card.foil ? "-foil " : ""}`}>
         <CardBaseText {...card}/>
         {
-          App.state.cardSize !== "text" &&
-            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+          App.state.cardSize !== "text" && !this.state.imageErrored &&
+            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} onError={this.onImageError} {...card}/>
         }
 
         {this.props.children}
@@ -67,8 +74,8 @@ export default class CardBase extends Component {
       >
         <CardBaseText {...card} />
         {
-          App.state.cardSize !== "text" &&
-            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+          App.state.cardSize !== "text" && !this.state.imageErrored &&
+            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} onError={this.onImageError} {...card}/>
         }
         {this.props.children}
       </div>
@@ -80,16 +87,12 @@ CardBase.propTypes = {
   card: PropTypes.object.isRequired,
 };
 
-const CardBaseImage = ({ mouseEntered, url, foil, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
+const CardBaseImage = ({ mouseEntered, imgUrl, onError, foil, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
   <div className="CardBaseImage">
     <img
       title={name}
-      onError={getFallbackSrc({ setCode, number })}
-      src={
-        !mouseEntered
-          ? getCardSrc({ identifiers, setCode, url, number })
-          : getCardSrc({ identifiers, setCode, url, number: flippedNumber, isBack: flippedIsBack })
-      }
+      onError={onError}
+      src={imgUrl}
     />
   </div>
 );
@@ -110,7 +113,8 @@ CardBaseImage.propTypes = {
   mouseEntered: PropTypes.bool,
   url: PropTypes.string,
   flippedIsBack: PropTypes.bool,
-  flippedNumber: PropTypes.string
+  flippedNumber: PropTypes.string,
+  onError: PropTypes.func
 };
 
 const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
