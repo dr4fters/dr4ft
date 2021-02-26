@@ -251,7 +251,7 @@ const getPlayableSets = () => {
   return playableSets;
 };
 
-const SET_TYPES_EXCLUDED_FROM_RANDOM_SET = new Set(["custom", "random", "funny"]);
+const SET_TYPES_EXCLUDED_FROM_RANDOM_SET = new Set(["custom", "funny", "draft_innovation", "starter", "random"]);
 const getRandomSet = () => {
   const allSets = getPlayableSets();
   const allTypes = Object.keys(allSets)
