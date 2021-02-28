@@ -60,14 +60,14 @@ const Set = ({ index, selectedSet, type }) => {
       onChange={handleSetChange}
       search
       filterOptions={fuzzySearch}
-      // renderValue={(valueProps, ref, selectedValue) => {
-      //   return (
-      //     <div>
-      //       <i className={`ss ss-${App.state[type][index].toLowerCase()}`} />
-      //       <input className='select-search__input' {...valueProps} />
-      //     </div>
-      //   )
-      // }}
+      renderValue={(valueProps, ref, selectedValue) => {
+        return (
+          <div className='select-search_input-container'>
+            <i className={`ss ss-${App.state[type][index].toLowerCase()}`} />
+            <input className='select-search__input' {...valueProps} />
+          </div>
+        )
+      }}
       renderOption={(optionProps, optionData) => {
         return (
           <button className='select-search__option' {...optionProps}>
