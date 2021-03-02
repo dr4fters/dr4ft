@@ -157,20 +157,27 @@
     }
   }
 
-  .SelectSet__option.is-selected {
-    background: #2FCC8B;
-    color: #fff;
-  }
+  .SelectSet__option {
+    border-radius: 0;
 
-  .SelectSet__option.is-highlighted,
-  .SelectSet__option:not(.is-selected):hover {
-    background: rgba(155, 47, 204, 0.15);
-  }
+    &:not(.is-selected):hover {
+      background: rgba(155, 47, 204, 0.15);
+    }
+    &.is-highlighted {
+      background: rgba(155, 47, 204, 0.35);
+    }
 
-  .SelectSet__option.is-highlighted.is-selected,
-  .SelectSet__option.is-selected:hover {
-    background: #2eb378;
-    color: #fff;
+    &.is-selected {
+      background: #A22FCC;
+      color: #fff;
+      i, span { color: #fff; }
+
+      &.is-highlighted, &:hover {
+        color: #fff;
+        i, span { color: #fff; }
+        background: #purple;
+      }
+    }
   }
 
   /**
