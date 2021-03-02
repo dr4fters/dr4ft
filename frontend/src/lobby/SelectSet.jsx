@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import SelectSearch from 'react-select-search';
 import Fuse from 'fuse.js';
 
+import './SelectSet.scss';
+
 function fuzzySearch (options) {
   return value => {
     if (!value.length) {
@@ -30,7 +32,7 @@ function fuzzySearch (options) {
 
 import App from "../app";
 
-const Set = ({ index, selectedSet, type }) => {
+const SelectSet = ({ value, onChange }) => {
   const options = Object.entries(App.state.availableSets).reduce((acc, [setType, sets]) => {
     acc.push({
       type: 'group',
@@ -44,33 +46,27 @@ const Set = ({ index, selectedSet, type }) => {
     return acc
   }, [])
 
-  const handleSetChange = (value) => {
-    const sets = App.state[type];
-    sets[index] = value;
-
-    App.save(type, App.state[type]);
-  };
-
   return (
     <SelectSearch
+      className="SelectSet"
       options={options}
       name="card-set"
       placeholder="Choose a set"
-      value={selectedSet}
-      onChange={handleSetChange}
+      value={value}
+      onChange={onChange}
       search
       filterOptions={fuzzySearch}
       renderValue={(valueProps, ref, selectedValue) => {
         return (
-          <div className='select-search_input-container'>
-            <i className={`ss ss-${App.state[type][index].toLowerCase()}`} />
-            <input className='select-search__input' {...valueProps} />
+          <div className='SelectSet__input-container'>
+            <i className={`ss ss-${value.toLowerCase()}`} />
+            <input className='SelectSet__input' {...valueProps} />
           </div>
         )
       }}
       renderOption={(optionProps, optionData) => {
         return (
-          <button className='select-search__option' {...optionProps}>
+          <button className='SelectSet__option' {...optionProps}>
             <i className={`ss ss-${optionData.value.toLowerCase()}`} />
             {optionData.name}
             <span className='set-code'>
@@ -83,10 +79,9 @@ const Set = ({ index, selectedSet, type }) => {
   );
 };
 
-Set.propTypes = {
-  index: PropTypes.number,
-  selectedSet: PropTypes.string,
-  type: PropTypes.string
+SelectSet.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func
 };
 
-export default Set;
+export default SelectSet;
