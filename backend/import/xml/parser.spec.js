@@ -57,12 +57,12 @@ describe("Unit tests for XML Cockatrice Parser", () => {
         PF20: {
           baseSetSize: 1,
           cards: [{
-            cmc: 1,
+            convertedManaCost: 1,
             colors: ["R"],
             isAlternative: false,
             layout: "normal",
             loyalty: 4,
-            manaCost: "R",
+            manaCost: "{R}",
             name: "Card name",
             names: ["Card name"],
             number: 42,
@@ -116,12 +116,12 @@ describe("Unit tests for XML Cockatrice Parser", () => {
         IPR: {
           baseSetSize: 1,
           cards: [{
-            cmc: 4,
+            convertedManaCost: 4,
             colors: ["R", "U"],
             isAlternative: false,
             layout: "split",
             loyalty: "",
-            manaCost: "1R // 1U",
+            manaCost: "{1}{R}{1}{U}",
             name: "Fire // Ice",
             names: ["Fire", "Ice"],
             number: 302,
@@ -173,12 +173,12 @@ describe("Unit tests for XML Cockatrice Parser", () => {
         DMS: {
           baseSetSize: 1,
           cards: [{
-            cmc: 2,
+            convertedManaCost: 2,
             colors: ["W"],
             isAlternative: false,
             layout: "normal",
             loyalty: "",
-            manaCost: "1W",
+            manaCost: "{1}{W}",
             name: "Aven Harrier",
             names: ["Aven Harrier"],
             number: 0,
@@ -222,12 +222,12 @@ describe("Unit tests for XML Cockatrice Parser", () => {
         DMS: {
           baseSetSize: 1,
           cards: [{
-            cmc: 2,
+            convertedManaCost: 2,
             colors: ["W"],
             isAlternative: false,
             layout: "normal",
             loyalty: "",
-            manaCost: "1W",
+            manaCost: "{1}{W}",
             name: "Aven Harrier",
             names: ["Aven Harrier"],
             number: 0,
