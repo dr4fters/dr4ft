@@ -79,12 +79,13 @@ function parse(content) {
     const [power, toughness] = pt.split("/");
     const fixedColors = getTrueColors(root.version, color, colors);
     const fixedType = getTrueType(type);
+    const fixedManaCost = addManaCostBrackets(manacost);
     const set = jsonSets[setCode];
     set.cards.push({
       name: c.name,
       names: getNames(layout, c.name),
-      manaCost: manacost,
-      cmc,
+      manaCost: fixedManaCost,
+      convertedManaCost: cmc,
       loyalty,
       text: c.text,
       type: fixedType,
@@ -115,6 +116,12 @@ const getNames = (layout, name) => {
 const getTrueType = (type) => (
   type.split("-")[0].trim()
 );
+
+const addManaCostBrackets = (manacost) => {
+  let manaSymbolRegExp = /(?:(?<!\/)(?:\d+|[^/\s])(?!\/))|(?:\S\/\S)/g;
+  let listOfManaSymbols = manacost.match(manaSymbolRegExp);
+  return listOfManaSymbols.map((manaSymbol) => "{" + manaSymbol + "}").join("");
+};
 
 const getTrueColors = (version, colorv3, colorsv4) => (
   version === "3"
