@@ -121,7 +121,7 @@ describe("Unit tests for XML Cockatrice Parser", () => {
             isAlternative: false,
             layout: "split",
             loyalty: "",
-            manaCost: "{1}{R}{1}{U}",
+            manaCost: "{1}{R} // {1}{U}",
             name: "Fire // Ice",
             names: ["Fire", "Ice"],
             number: 302,
