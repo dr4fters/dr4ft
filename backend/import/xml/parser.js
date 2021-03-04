@@ -72,14 +72,14 @@ function parse(content) {
       colors = [],
       layout = "normal",
       loyalty = "",
-      manacost = 0,
+      manacost = "",
       pt = "",
       side = "a",
       type = "" } = root.version === "3" ? c : c.prop;
     const [power, toughness] = pt.split("/");
     const fixedColors = getTrueColors(root.version, color, colors);
     const fixedType = getTrueType(type);
-    const fixedManaCost = addManaCostBrackets(manacost);
+    const fixedManaCost = addManaCostBrackets(String(manacost));
     const set = jsonSets[setCode];
     set.cards.push({
       name: c.name,
@@ -118,10 +118,12 @@ const getTrueType = (type) => (
 );
 
 const manaSymbolRegExp = /(?:(?<!\/)(?:\d+|[^/\s])(?!\/))|\S\/\S|\/\//g;
-const addManaCostBrackets = (manaCostString) => {
-  let manaSymbolArray = manaCostString.match(manaSymbolRegExp);
-  return manaSymbolArray.map((manaSymbol) =>{
-    return manaSymbol === "//" ? ` ${manaSymbol} ` : `{${manaSymbol}}`;}).join("");
+const addManaCostBrackets = (manacost) => {
+  if (manaSymbolRegExp.test(manacost)){
+    let manaSymbols = manacost.match(manaSymbolRegExp);
+    return manaSymbols.map((manaSymbol) =>{
+      return manaSymbol === "//" ? ` ${manaSymbol} ` : `{${manaSymbol}}`;}).join("");
+  } else return manacost;
 };
 
 const getTrueColors = (version, colorv3, colorsv4) => (
