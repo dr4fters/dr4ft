@@ -117,10 +117,11 @@ const getTrueType = (type) => (
   type.split("-")[0].trim()
 );
 
-const addManaCostBrackets = (manacost) => {
-  let manaSymbolRegExp = /(?:(?<!\/)(?:\d+|[^/\s])(?!\/))|(?:\S\/\S)/g;
-  let listOfManaSymbols = manacost.match(manaSymbolRegExp);
-  return listOfManaSymbols.map((manaSymbol) => "{" + manaSymbol + "}").join("");
+const manaSymbolRegExp = /(?:(?<!\/)(?:\d+|[^/\s])(?!\/))|\S\/\S|\/\//g;
+const addManaCostBrackets = (manaCostString) => {
+  let manaSymbolArray = manaCostString.match(manaSymbolRegExp);
+  return manaSymbolArray.map((manaSymbol) =>{
+    return manaSymbol === "//" ? ` ${manaSymbol} ` : `{${manaSymbol}}`;}).join("");
 };
 
 const getTrueColors = (version, colorv3, colorsv4) => (
