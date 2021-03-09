@@ -4,14 +4,13 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
-import {getCardSrc, getFallbackSrc} from "../cardimage";
 import CardBase from "./card/CardBase.jsx"
 import "./Cols.scss"
 
 class Cols extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       className: "right",
       card: undefined
     };
@@ -42,6 +41,7 @@ class Cols extends Component {
 
     this.setState({ card, className });
   }
+  
   onMouseLeave() {
     this.setState({
       card: undefined
@@ -52,7 +52,7 @@ class Cols extends Component {
     return (
       <div className="Cols">
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
-        <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
+        <CornerCardPreview {...this.state} />
       </div>
     );
   }
@@ -72,7 +72,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
       let items = zone[key].map((card, index) =>
         <div 
           className="card-container"
-          key={index}
+          key={card.uuid || card.name}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
@@ -105,20 +105,19 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   return zoneNames.map(renderZone);
 };
 
-const ImageHelper = ({className, card}) => {
+const CornerCardPreview = ({className, card}) => {
   // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
   if (!card) return <div />
 
   return (
-      <div className={`helper ${className}`}>
+      <div className={`CornerCardPreview ${className}`}>
+        {card.isDoubleFaced && <div className="card"><CardBase card={card} reversed /></div>}
         <div className="card"><CardBase card={card} /></div>
-        {card.isDoubleFaced && <div className={`card ${card.layout === "flip" ? "flipped" : ""}`}><CardBase card={card} /></div>}
       </div>
   )
 };
 
-ImageHelper.propTypes = {
-  onMouseEnter: PropTypes.func.isRequired,
+CornerCardPreview.propTypes = {
   className: PropTypes.string.isRequired,
   card: PropTypes.object
 };

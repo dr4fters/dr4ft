@@ -21,7 +21,7 @@
     }
   }
 
-  .helper {
+  .CornerCardPreview {
     position: fixed;
     bottom: 0;
     z-index: 101;
@@ -38,9 +38,11 @@
     }
 
     .card {
-      width: var(--card-width);
-      height: var(--card-height);
+      display: inline-flex;
+      position: relative;
+      margin: 0;
       cursor: pointer;
+      padding: 1px;
     }
   }
 }
