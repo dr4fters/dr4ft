@@ -72,7 +72,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
       let items = zone[key].map((card, index) =>
         <div 
           className="card-container"
-          key={card.uuid || card.name}
+          key={`${index}-${card.uuid || card.name}`}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
