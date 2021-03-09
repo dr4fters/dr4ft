@@ -45,9 +45,6 @@
 }
 
 .CardBaseText {
-  z-index: -1;
-  // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
-
   width: calc(var(--card-width) - 10px);
   height: calc(var(--card-height) - 10px);
   // 10px = 2* (padding + border)
@@ -93,6 +90,9 @@
   }
 
   .body {
+    z-index: -1;
+    // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
+
     font-size: 0.9rem;
     line-height: 1.2rem;
 

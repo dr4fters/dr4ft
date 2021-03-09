@@ -368,21 +368,6 @@ input[type="checkbox"], input[type="radio"] {
   font-style: italic;
 }
 
-/** Card styles **/
-
-.card {
-  display: inline-flex;
-  position: relative;
-  margin: 0;
-  cursor: pointer;
-  padding: 1px;
-}
-
-.image-inner {
-  width: inherit;
-}
-
-
 /** Misc **/
 
 .name {
@@ -453,14 +438,6 @@ input[type="checkbox"], input[type="radio"] {
 
 .icon-bot {
   background-color: rgba(0, 0, 0, 0.25);
-}
-
-.flipped {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
 }
 
 #players th,
