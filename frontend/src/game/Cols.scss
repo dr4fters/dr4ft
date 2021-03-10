@@ -24,25 +24,11 @@
   .CornerCardPreview {
     position: fixed;
     bottom: 0;
+    right: 0;
     z-index: 101;
+    display: flex;
 
     --card-width: 240px;
     --card-height: 340px;
-
-    &.left {
-      left: 0;
-    }
-
-    &.right {
-      right: 0;
-    }
-
-    .card {
-      display: inline-flex;
-      position: relative;
-      margin: 0;
-      cursor: pointer;
-      padding: 1px;
-    }
   }
 }
