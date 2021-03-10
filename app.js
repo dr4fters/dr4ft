@@ -18,7 +18,7 @@ const app = express();
 
 // Middlewares
 app.use(helmet());
-app.use(bodyParser.json());   // for parsing application/json
+app.use(bodyParser.json()); // for parsing application/json
 app.use(cors());
 app.use(fileUpload());
 
