@@ -16,19 +16,19 @@ require("./backend/data-watch");
 
 const app = express();
 
-//Middlewares
+// Middlewares
 app.use(helmet());
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.json());   // for parsing application/json
 app.use(cors());
 app.use(fileUpload());
 
-//routing
+// Routing
 app.use(express.static("built"));
 app.use("/api", apiRouter);
 
-// Schedule check of a new sets and new boosterRules every hour
+// Schedule check for new sets and booster rules every hour
 schedule.scheduleJob("0 * * * *", updateData);
-updateData()
+updateData();
 
 // Create server
 const server = http.createServer(app);
