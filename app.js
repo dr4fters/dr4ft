@@ -28,7 +28,7 @@ app.use("/api", apiRouter);
 
 // Schedule check of a new sets and new boosterRules every hour
 schedule.scheduleJob("0 * * * *", updateData);
-updateData()
+updateData();
 
 // Create server
 const server = http.createServer(app);

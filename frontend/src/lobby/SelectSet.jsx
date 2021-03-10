@@ -22,7 +22,7 @@ function fuzzySearch (options) {
       if (matches.length) {
         acc.push({
           ...group,
-          items: matches
+          items: matches.map(match => match.item)
         })
       }
       return acc
