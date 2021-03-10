@@ -23,7 +23,7 @@ export default class CardBase extends Component {
 
     this.state = {
       url: this.getCardImage(DEFAULT),
-      isFlipped: false, // this is relative to this.props.showFlipped
+      isFlipped: this.props.showFlipped, // this is relative to this.props.showFlipped
       imageErrored: false
     };
   }
