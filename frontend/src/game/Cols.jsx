@@ -4,14 +4,13 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
-import {getCardSrc, getFallbackSrc} from "../cardimage";
 import CardBase from "./card/CardBase.jsx"
 import "./Cols.scss"
 
 class Cols extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       className: "right",
       card: undefined
     };
@@ -42,6 +41,7 @@ class Cols extends Component {
 
     this.setState({ card, className });
   }
+  
   onMouseLeave() {
     this.setState({
       card: undefined
@@ -52,7 +52,7 @@ class Cols extends Component {
     return (
       <div className="Cols">
         <Zones onMouseOver={this.onMouseEnter} zoneNames={this.props.zones} onMouseLeave={this.onMouseLeave} />
-        <ImageHelper onMouseEnter={this.onMouseEnter} {...this.state} />
+        <CornerCardPreview {...this.state} />
       </div>
     );
   }
@@ -72,7 +72,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
       let items = zone[key].map((card, index) =>
         <div 
           className="card-container"
-          key={index}
+          key={`${index}-${card.uuid || card.name}`}
           onClick={App._emit("click", zoneName, card)}
           onMouseOver={e => onMouseOver(card, e)}
           onMouseLeave={onMouseLeave} >
@@ -105,33 +105,19 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
   return zoneNames.map(renderZone);
 };
 
-const ImageHelper = ({onMouseEnter, className, card}) => {
+const CornerCardPreview = ({className, card}) => {
   // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
   if (!card) return <div />
 
-  // TODO - consider text case
   return (
-    card.isDoubleFaced
-      ? <div className={className} id="doubleimg">
-        <img className="card" src={getCardSrc(card)} onError= {getFallbackSrc(card)} onMouseEnter={onMouseEnter.bind(card)} />
-        <img className={`card ${card.layout === "flip" ? "flipped" : ""}`}
-          src={getCardSrc({ ...card, isBack: card.flippedIsBack, number: card.flippedNumber, })}
-          onError={e => e.target.src = card.flippedCardURL}
-          onMouseEnter={onMouseEnter.bind(card)} />
-      </div>
-
-      : <div id='img' className = {className}>
-        <img
-          className = "image-inner"
-          onMouseEnter = {e => onMouseEnter(card, e)}
-          onError= {getFallbackSrc(card)}
-          src = {getCardSrc(card)} />
-      </div>
+    <div className={`CornerCardPreview ${className}`}>
+      {card.isDoubleFaced && <CardBase card={card} showFlipped />}
+      <CardBase card={card} />
+    </div>
   )
 };
 
-ImageHelper.propTypes = {
-  onMouseEnter: PropTypes.func.isRequired,
+CornerCardPreview.propTypes = {
   className: PropTypes.string.isRequired,
   card: PropTypes.object
 };

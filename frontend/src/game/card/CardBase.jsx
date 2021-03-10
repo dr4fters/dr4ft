@@ -6,40 +6,65 @@ import {getCardSrc, getFallbackSrc} from "../../cardimage";
 import App from "../../app";
 import "./CardBase.scss"
 
+const DEFAULT = 0;
+const FLIP = 1;
+
 export default class CardBase extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {
-      mouseEntered: false,
-      isFlipped: false,
-      url: getCardSrc(this.props.card),
-    };
+    // this.getCardImage = this.getCardImage.bind(this);
+    // this.onImageError = this.onImageError.bind(this);
 
-    if (this.props.card.isDoubleFaced) {
+    if (props.card.isDoubleFaced) {
       this.onMouseEnter = this.onMouseEnter.bind(this);
       this.onMouseLeave = this.onMouseLeave.bind(this);
     }
+
+    this.state = {
+      url: this.getCardImage(DEFAULT),
+      isFlipped: false, // this is relative to this.props.showFlipped
+      imageErrored: false
+    };
+  }
+
+  getCardImage (side) {
+    // if initial view is "unflipped" + we want default view (relative to that)
+    if (!this.props.showFlipped && side === DEFAULT) return getCardSrc(this.props.card);
+
+    // if initial view is "flipped" + we want the flipped view (relative to that)
+    if (this.props.showFlipped && side === FLIP) return getCardSrc(this.props.card);
+
+    return getCardSrc({
+      ...this.props.card,
+      isBack: this.props.card.flippedIsBack,
+      number: this.props.card.flippedNumber || this.props.card.number,
+    });
   }
 
   onMouseEnter () {
-    this.setState({
-      mouseEntered: true,
-      isFlipped: this.props.card.layout === "flip",
-      url: getCardSrc({
-        ...this.props.card,
-        isBack: this.props.card.flippedIsBack,
-        number: this.props.card.flippedNumber,
-      })
-    });
+    this.setState({ isFlipped: !this.state.isFlipped })
+    this.setState({ url: this.getCardImage(FLIP) })
   }
 
   onMouseLeave () {
-    this.setState({
-      mouseEntered: false,
-      isFlipped: false,
-      url: getCardSrc(this.props.card),
-    });
+    this.setState({ isFlipped: !this.state.isFlipped })
+    this.setState({ url: this.getCardImage(DEFAULT) })
+  }
+
+  onImageError () {
+    const { url, isFlipped } = this.state;
+    const { setCode, number, flippedNumber } = this.props.card;
+
+    const num = (this.props.showFlipped === isFlipped) ? number : flippedNumber
+    const fallbackUrl = getFallbackSrc(setCode, num);
+
+    if (url === fallbackUrl) {
+      this.setState({ imageErrored: true });
+      return;
+    }
+
+    this.setState({ url: fallbackUrl });
   }
 
   render () {
@@ -47,70 +72,48 @@ export default class CardBase extends Component {
     // at the moment for Text view, you can't see both sides of a card on hover
     // as the same card is passed into CardBaseText regardless mouseEntered
 
-    if (!this.props.card.isDoubleFaced) return (
-      <div className={`CardBase ${card.foil ? "-foil " : ""}`}>
-        <CardBaseText {...card}/>
-        {
-          App.state.cardSize !== "text" &&
-            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+    const eventListeners = card.isDoubleFaced
+      ? {
+          onMouseEnter: this.onMouseEnter,
+          onMouseLeave: this.onMouseLeave
         }
-
-        {this.props.children}
-      </div>
-    )
+      : {} // don't add unecessary event listeners!
 
     return (
-      <div 
-        className={`CardBase ${card.foil ? "-foil " : ""} ${this.state.isFlipped ? "-flipped " : ""}`}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
+      <div
+        className={`CardBase ${card.foil ? "-foil " : ""} ${card.layout === "flip" && this.state.isFlipped ? "-flipped " : ""}`}
+        {...eventListeners}
       >
         <CardBaseText {...card} />
         {
-          App.state.cardSize !== "text" &&
-            <CardBaseImage mouseEntered={this.state.mouseEntered} imgUrl={this.state.url} {...card}/>
+          App.state.cardSize !== "text" && !this.state.imageErrored &&
+            <CardBaseImage name={card.name} src={this.state.url} handleError={this.onImageError} />
         }
         {this.props.children}
       </div>
-    );
+    )
   }
 }
 
 CardBase.propTypes = {
   card: PropTypes.object.isRequired,
+  showFlipped: PropTypes.bool // whether the card should be flipped by default
 };
 
-const CardBaseImage = ({ mouseEntered, url, foil, flippedIsBack, flippedNumber, identifiers, name, setCode = "", number = "" }) => (
+const CardBaseImage = ({ src, handleError, name }) => (
   <div className="CardBaseImage">
     <img
       title={name}
-      onError={getFallbackSrc({ setCode, number })}
-      src={
-        !mouseEntered
-          ? getCardSrc({ identifiers, setCode, url, number })
-          : getCardSrc({ identifiers, setCode, url, number: flippedNumber, isBack: flippedIsBack })
-      }
+      onError={handleError}
+      src={src}
     />
   </div>
 );
 
 CardBaseImage.propTypes = {
-  imgUrl: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  manaCost: PropTypes.string.isRequired,
-  rarity: PropTypes.string,
-  power: PropTypes.string,
-  toughness: PropTypes.string,
-  text: PropTypes.string,
-  loyalty: PropTypes.string,
-  setCode: PropTypes.string,
-  number: PropTypes.string,
-  identifiers: PropTypes.object,
-  mouseEntered: PropTypes.bool,
-  url: PropTypes.string,
-  flippedIsBack: PropTypes.bool,
-  flippedNumber: PropTypes.string
+  onError: PropTypes.func
 };
 
 const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (

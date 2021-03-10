@@ -40,12 +40,7 @@ export const getFallbackSrc = ({setCode, number}) => {
     return null;
   }
 
-  const url = getScryfallImage(setCode, number);
-  return ev => {
-    if (url !== ev.target.src) {
-      ev.target.src = url;
-    }
-  };
+  return getScryfallImage(setCode, number);
 };
 /**
  * @description builds an image url based on the card properties
@@ -53,7 +48,7 @@ export const getFallbackSrc = ({setCode, number}) => {
  * @returns {string} the image url to display
  */
 export const getCardSrc = ({identifiers, url, setCode, number, isBack}) => (
-  identifiers && identifiers.scryfallId !== ""
+  identifiers && identifiers.scryfallId != null && identifiers.scryfallId !== ""
     ? `${getScryfallImageWithLang(setCode, number)}${isBack ? "&face=back" : ""}`
     : url
 );

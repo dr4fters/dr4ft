@@ -20,4 +20,15 @@
       }
     }
   }
+
+  .CornerCardPreview {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 101;
+    display: flex;
+
+    --card-width: 240px;
+    --card-height: 340px;
+  }
 }
