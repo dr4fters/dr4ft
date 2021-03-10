@@ -7,7 +7,8 @@
     grid-column: 1;
   }
 
-  &.-flipped {
+  transition: transform 0.2s ease-in;
+  &.-rotate {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -o-transform: rotate(180deg);
