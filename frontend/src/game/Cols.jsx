@@ -110,10 +110,10 @@ const CornerCardPreview = ({className, card}) => {
   if (!card) return <div />
 
   return (
-      <div className={`CornerCardPreview ${className}`}>
-        {card.isDoubleFaced && <div className="card"><CardBase card={card} reversed /></div>}
-        <div className="card"><CardBase card={card} /></div>
-      </div>
+    <div className={`CornerCardPreview ${className}`}>
+      {card.isDoubleFaced && <CardBase card={card} showFlipped />}
+      <CardBase card={card} />
+    </div>
   )
 };
 
