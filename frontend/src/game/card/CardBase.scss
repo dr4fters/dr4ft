@@ -56,7 +56,7 @@
   font-size: 16px;
   padding: 4px;
   border: 1px solid #555;
-  border-radius: 6px;
+  border-radius: 8px;
 
   display: grid;
   grid-template-rows: auto auto 1fr;
@@ -122,5 +122,6 @@
     height: var(--card-height);
     max-width: var(--card-width);
     max-height: var(--card-height);
+    border-radius: 8px;
   }
 }
