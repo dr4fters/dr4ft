@@ -130,8 +130,26 @@ const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toug
 
     <div className="body">
       {
-        text &&
-          <div className="text">{text}</div>
+        text && (
+          <div className="text">
+            { 
+              text
+                .split('\n')
+                .map(line => {
+                  const bracketSection = line.match(/\([^\)]+\)/g)
+                  if (!bracketSection) return line
+
+                  const [before, after] = line.split(bracketSection[0])
+                  return [
+                    before,
+                    <span className='bracket'>{bracketSection[0]}</span>,
+                    after
+                  ]
+                })
+                .map(line => <div className='line'>{line}</div>)
+            }
+          </div>
+        )
       }
     </div>
 
@@ -147,6 +165,7 @@ const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toug
     </div>
   </div>
 );
+
 
 CardBaseText.propTypes = {
   name: PropTypes.string.isRequired,

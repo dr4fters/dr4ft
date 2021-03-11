@@ -7,8 +7,8 @@
   
   --border-width: 4px;
   
-  width: calc(var(--card-width) - 2 * var(--border-width));
-  height: calc(var(--card-height) - 2 * var(--border-width));
+  width: calc(var(--card-width) - 2 * var(--border-width) + 1px);
+  height: calc(var(--card-height) - 2 * var(--border-width) + 1px);
 
   border: var(--border-width) solid var(--color);
   border-radius: 6px;
