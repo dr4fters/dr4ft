@@ -116,55 +116,64 @@ CardBaseImage.propTypes = {
   onError: PropTypes.func
 };
 
-const CardBaseText = ({ name, manaCost, type = "", rarity = "", power = "", toughness = "", text = "", loyalty= "" }) => (
-  <div className="CardBaseText" >
-    <div className="header">
-      <div className="name">{name}</div>
-      <div className="cost">{manaCost}</div>
-    </div>
+const CardBaseText = ({ name, manaCost, type, rarity, power, toughness, text, loyalty, colors }) => {
+  return (
+    <div className="CardBaseText" style={{ background: backgroundStyle(colors) }}>
+      <div className="header">
+        <div className="name">{name}</div>
+        <div className="cost">{manaCost}</div>
+      </div>
 
-    <div className="sub-header">
-      <div className="type">{type}</div>
-      <div className="rarity">{rarity}</div>
-    </div>
+      <div className="sub-header">
+        <div className="type">{type}</div>
+        <div className="rarity">{rarity}</div>
+      </div>
 
-    <div className="body">
-      {
-        text && (
-          <div className="text">
-            { 
-              text
-                .split('\n')
-                .map(line => {
-                  const bracketSection = line.match(/\([^\)]+\)/g)
-                  if (!bracketSection) return line
+      <div className="body">
+        {
+          text && (
+            <div className="text">
+              { 
+                text
+                  .split('\n')
+                  .map((line, i) => {
+                    const bracketSection = line.match(/\([^\)]+\)/g)
+                    if (!bracketSection) return line
 
-                  const [before, after] = line.split(bracketSection[0])
-                  return [
-                    before,
-                    <span className='bracket'>{bracketSection[0]}</span>,
-                    after
-                  ]
-                })
-                .map(line => <div className='line'>{line}</div>)
-            }
-          </div>
-        )
-      }
-    </div>
+                    const [before, after] = line.split(bracketSection[0])
+                    return [
+                      before,
+                      <span className='bracket' key={i}>{bracketSection[0]}</span>,
+                      after
+                    ]
+                  })
+                  .map((line, i) => <div className='line' key={i}>{line}</div>)
+              }
+            </div>
+          )
+        }
+      </div>
 
-    <div className="footer">
-      {
-        power && toughness &&
-          <div className="power-toughness">{power}/{toughness}</div>
-      }
-      {
-        loyalty &&
-          <div className="loyalty">{loyalty}</div>
-      }
+      <div className="footer">
+        {
+          power && toughness &&
+            <div className="power-toughness">{power}/{toughness}</div>
+        }
+        {
+          loyalty &&
+            <div className="loyalty">{loyalty}</div>
+        }
+      </div>
     </div>
-  </div>
-);
+  );
+}
+function backgroundStyle (colors) {
+  if (!colors || !colors.length) return 'var(--colorless)'
+
+  const output = colors.map(c => `var(--${c})`).join(', ')
+  if (colors.length === 1) return output
+  else return `linear-gradient(to right, ${output})`
+}
 
 
 CardBaseText.propTypes = {
