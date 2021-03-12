@@ -69,7 +69,7 @@
     "filepond-plugin-file-validate-size": "^2.2.2",
     "filepond-plugin-file-validate-type": "^1.2.5",
     "fuse.js": "^6.4.6",
-    "helmet": "^3.23.3",
+    "helmet": "^4.4.1",
     "html-webpack-plugin": "^4.5.2",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
