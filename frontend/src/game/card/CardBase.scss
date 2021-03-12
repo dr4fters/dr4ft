@@ -5,6 +5,7 @@
   .CardBaseText, .CardBaseImage {
     grid-row: 1;
     grid-column: 1;
+    transition: transform 0.2s ease-in;
   }
 
   &.-flipped {

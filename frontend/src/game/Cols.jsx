@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import App from "../app";
 import {getZoneDisplayName} from "../zones";
 import Spaced from "../components/Spaced";
-import CardBase from "./card/CardBase.jsx"
-import "./Cols.scss"
+import CardBase from "./card/CardBase.jsx";
+import "./Cols.scss";
 
 class Cols extends Component {
   constructor(props) {
@@ -34,14 +34,14 @@ class Cols extends Component {
     }
 
     if (card.foil) {
-      className += " foil-card "; 
+      className += " foil-card ";
       // mixmix - I broke this by absorbing .foil-card into .CardBase.-foil (see CardBase.scss)
       // personally I don't care about whether pickedc cards in the col view display their foiliness
     }
 
     this.setState({ card, className });
   }
-  
+
   onMouseLeave() {
     this.setState({
       card: undefined
@@ -70,7 +70,7 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 
     for (let key in zone) {
       let items = zone[key].map((card, index) =>
-        <div 
+        <div
           className="card-container"
           key={`${index}-${card.uuid || card.name}`}
           onClick={App._emit("click", zoneName, card)}
@@ -111,8 +111,8 @@ const CornerCardPreview = ({className, card}) => {
 
   return (
     <div className={`CornerCardPreview ${className}`}>
-      {card.isDoubleFaced && <CardBase card={card} showFlipped />}
       <CardBase card={card} />
+      {card.isDoubleFaced && <CardBase card={card} showFlipped />}
     </div>
   )
 };

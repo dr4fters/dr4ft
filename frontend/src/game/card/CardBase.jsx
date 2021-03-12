@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {getCardSrc, getFallbackSrc} from "../../cardimage";
 
 import App from "../../app";
-import "./CardBase.scss"
+import "./CardBase.scss";
 
 const DEFAULT = 0;
 const FLIP = 1;
@@ -29,34 +29,37 @@ export default class CardBase extends Component {
   }
 
   getCardImage (side) {
+    const { showFlipped, card } = this.props
     // if initial view is "unflipped" + we want default view (relative to that)
-    if (!this.props.showFlipped && side === DEFAULT) return getCardSrc(this.props.card);
+    if (!showFlipped && side === DEFAULT) return getCardSrc(card);
 
     // if initial view is "flipped" + we want the flipped view (relative to that)
-    if (this.props.showFlipped && side === FLIP) return getCardSrc(this.props.card);
+    if (showFlipped && side === FLIP) return getCardSrc(card);
 
+    // WARNING - this doesn't do anything for kamigawa "flip" cards
+    // the image change there is handled by the class "-rotate"
     return getCardSrc({
-      ...this.props.card,
-      isBack: this.props.card.flippedIsBack,
-      number: this.props.card.flippedNumber || this.props.card.number,
+      ...card,
+      isBack: card.flippedIsBack,
+      number: card.flippedNumber || card.number,
     });
   }
 
   onMouseEnter () {
-    this.setState({ isFlipped: !this.state.isFlipped })
-    this.setState({ url: this.getCardImage(FLIP) })
+    this.setState({ isFlipped: !this.state.isFlipped });
+    this.setState({ url: this.getCardImage(FLIP) });
   }
 
   onMouseLeave () {
-    this.setState({ isFlipped: !this.state.isFlipped })
-    this.setState({ url: this.getCardImage(DEFAULT) })
+    this.setState({ isFlipped: !this.state.isFlipped });
+    this.setState({ url: this.getCardImage(DEFAULT) });
   }
 
   onImageError () {
     const { url, isFlipped } = this.state;
     const { setCode, number, flippedNumber } = this.props.card;
 
-    const num = (this.props.showFlipped === isFlipped) ? number : flippedNumber
+    const num = (this.props.showFlipped === isFlipped) ? number : flippedNumber;
     const fallbackUrl = getFallbackSrc(setCode, num);
 
     if (url === fallbackUrl) {
@@ -74,16 +77,22 @@ export default class CardBase extends Component {
 
     const eventListeners = card.isDoubleFaced
       ? {
-          onMouseEnter: this.onMouseEnter,
-          onMouseLeave: this.onMouseLeave
-        }
-      : {} // don't add unecessary event listeners!
+        onMouseEnter: this.onMouseEnter,
+        onMouseLeave: this.onMouseLeave
+      }
+      : {}; // don't add unecessary event listeners!
+
+    const _class = [
+      "CardBase",
+      card.foil ? "-foil" : "",
+      card.layout === "flip" && (
+        (this.props.showFlipped || this.state.isFlipped) &&
+        (this.props.showFlipped != this.state.isFlipped)
+      ) ? "-rotate" : ""
+    ].join(" ");
 
     return (
-      <div
-        className={`CardBase ${card.foil ? "-foil " : ""} ${card.layout === "flip" && this.state.isFlipped ? "-flipped " : ""}`}
-        {...eventListeners}
-      >
+      <div className={_class} {...eventListeners} >
         <CardBaseText {...card} />
         {
           App.state.cardSize !== "text" && !this.state.imageErrored &&
@@ -113,7 +122,7 @@ const CardBaseImage = ({ src, handleError, name }) => (
 CardBaseImage.propTypes = {
   src: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  onError: PropTypes.func
+  handleError: PropTypes.func
 };
 
 const CardBaseText = ({ name, manaCost, type, rarity, power, toughness, text, loyalty, colors }) => {
@@ -174,6 +183,7 @@ function backgroundStyle (colors) {
   if (colors.length === 1) return output
   else return `linear-gradient(to right, ${output})`
 }
+
 
 
 CardBaseText.propTypes = {
