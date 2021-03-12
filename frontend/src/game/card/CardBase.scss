@@ -5,15 +5,17 @@
   .CardBaseText, .CardBaseImage {
     grid-row: 1;
     grid-column: 1;
+    transition: transform 0.2s ease-in;
   }
 
-  transition: transform 0.2s ease-in;
-  &.-rotate {
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);
+  &.-flipped {
+    .CardBaseText, .CardBaseImage {
+      -webkit-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
   }
 
   &.-foil:before {
@@ -46,22 +48,36 @@
 }
 
 .CardBaseText {
+  --W: #e0dbbe;
+  --U: #2ba7d7;
+  --B: #323c39;
+  --R: #c14242;
+  --G: #568561;
+
+  --gold: #dcca98;
+
+  --colorless: #bfbbbb;
+
+  --padding:10px;
+  --border: 0px;
+  --border-color: #010101;
+
   z-index: -1;
   // z-index needed otherwise CardBaseText overflow text appears on top of image in Chrome!
 
-  width: calc(var(--card-width) - 10px);
-  height: calc(var(--card-height) - 10px);
+  width: calc(var(--card-width) - 2 * calc(var(--padding) + var(--border)));
+  height: calc(var(--card-height) - 2 * calc(var(--padding) + var(--border)));
   // 10px = 2* (padding + border)
 
   background: #fff;
   font-size: 16px;
-  padding: 4px;
-  border: 1px solid #555;
+  padding: var(--padding);
+  border: var(--border) solid var(--border-color);
   border-radius: 10px;
 
   display: grid;
   grid-template-rows: auto auto 1fr;
-  grid-gap: 10px;
+  grid-gap: 4px;
 
   align-content: start;
 
@@ -73,9 +89,12 @@
 
   .header, .sub-header, .body {
     padding: 0 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.95);
   }
 
   .header {
+    line-height: 1.3rem;
     .name {
       color: #000;
       font-weight: bold;
@@ -85,7 +104,6 @@
 
   .sub-header {
     font-size: 0.9rem;
-    background: #eee;
     border-radius: 4px;
     padding: 0.2rem;
 
@@ -100,6 +118,7 @@
     line-height: 1.2rem;
 
     .text {
+      padding-top: 5px;
       display: grid;
       grid-gap: 0.5rem;
 
