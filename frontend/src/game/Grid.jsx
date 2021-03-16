@@ -7,11 +7,12 @@ import Spaced from "../components/Spaced";
 import {ZONE_PACK, getZoneDisplayName} from "../zones";
 import CardDefault from "./card/CardDefault.jsx"
 import CardGlimpse from "./card/CardGlimpse.jsx"
+import CardPlaceholder from "./card/CardPlaceholder.jsx"
 import "./Grid.scss"
 
 const Grid = ({zones}) => (
   <div>
-    {zones.map(zone)}
+    {zones.map((name, i) => <Zone name={name} key={name + i} />)}
   </div>
 );
 
@@ -37,37 +38,38 @@ const getZoneDetails = (appState, zoneName, cards) => {
   }
 }
 
-const zone = (zoneName, index) => {
+const Zone = ({ name: zoneName }) => {
   const zone = App.getSortedZone(zoneName);
-  const zoneDisplayName = getZoneDisplayName(zoneName);
   const values = _.values(zone);
   const cards = _.flat(values);
   const isPackZone = zoneName === ZONE_PACK;
 
-  const zoneTitle = zoneDisplayName + (isPackZone ? " " + App.state.round : "");
-  const zoneDetails = getZoneDetails(App.state, zoneName, cards);
+  const { round, picksPerPack, gameState, packSize, pickNumber, game } = App.state
 
-  const remainingCardsToSelect = Math.min(App.state.picksPerPack, cards.length);
-  const remainingCardsToBurn = Math.min(App.state.game.burnsPerPack, cards.length);
-  const canConfirm = App.state.gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
+  const remainingCardsToSelect = Math.min(picksPerPack, cards.length);
+  const remainingCardsToBurn = Math.min(game.burnsPerPack, cards.length);
+  const canConfirm = gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
 
   return (
-    <div className='Grid zone' key={index}>
+    <div className='Grid zone'>
       <div className='header'>
         <h1>
-          <Spaced elements={[zoneTitle, zoneDetails]} />
+          <Spaced elements={[
+            getZoneDisplayName(zoneName) + (isPackZone ? " " + round : ""),
+            getZoneDetails(App.state, zoneName, cards)
+          ]} />
         </h1>
 
         <div className='pick-burn-detail'>
           {
             (
-              App.state.game.picksPerPack > 1 ||
-              App.state.game.burnsPerPack > 0
+              game.picksPerPack > 1 ||
+              game.burnsPerPack > 0
             ) &&
               <span className="picks">{`Pick ${remainingCardsToSelect}`}</span>
           }
           {
-            App.state.game.burnsPerPack > 0 &&
+            game.burnsPerPack > 0 &&
               <span className="burns">{`Burn ${remainingCardsToBurn}`}</span>
           }
         </div>
@@ -85,17 +87,22 @@ const zone = (zoneName, index) => {
       </div>
 
       <div className="cards">
-        {cards.map((card, i) =>
-          isPackZone && App.state.game.burnsPerPack > 0
+        {
+          cards.map((card, i) => isPackZone && game.burnsPerPack > 0
             ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
             : <CardDefault key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />
-        )}
+          )
+        }
 
+        {
+          cards.length === 0 && isPackZone && // TODO game is not over!
+          ([
+            <h2 className='waiting' key='other'>Waiting for the next pack...</h2>,
+            Array(packSize - pickNumber % packSize).fill(0)
+              .map((_, i) => <CardPlaceholder key={i} />)
+          ])
+        }
       </div>
-
-      {cards.length === 0 && zoneName === ZONE_PACK &&
-        <h2 className='waiting'>Waiting for the next pack...</h2>
-      }
     </div>
   );
 };
