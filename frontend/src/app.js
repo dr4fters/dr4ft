@@ -1,8 +1,8 @@
 import _ from "utils/utils";
 import EventEmitter from "events";
-import {STRINGS} from "./config";
 import eio from "engine.io-client";
-import {times, constant} from "lodash";
+import {times, constant, isObject, mapValues} from "lodash";
+import {STRINGS} from "./config";
 import GameState from "./gamestate";
 
 function message(msg) {
@@ -23,7 +23,6 @@ let App = {
     numActiveGames: 0,
     roomInfo: [],
 
-    seats: 8,
     title: "",
     gameId: "",
     isPrivate: true,
@@ -76,8 +75,9 @@ let App = {
     boosterRulesVersion: "",
     messages: [],
     pickNumber: 0,
-    packSize: 15,
-    gameSeats: 8, // seats of the game being played
+    packSize: 15, // TODO investigate this versus state.cards
+    seats: 8,
+    gameSeats: 8, // seats of the game being played TODO - remove in favour of state.seats
     gameState: null, // records the current state of cards is a GameState
     gameStates: {}, // Object representation of the gameState
 
@@ -120,12 +120,12 @@ let App = {
   restore() {
     for (let key in this.state) {
       let val = localStorage[key];
-      if (val) {
-        try {
-          this.state[key] = JSON.parse(val);
-        } catch(e) {
-          delete localStorage[key];
-        }
+      if (!val) continue;
+
+      try {
+        this.state[key] = ensureNumbers(JSON.parse(val));
+      } catch(e) {
+        delete localStorage[key];
       }
     }
 
@@ -245,3 +245,15 @@ let App = {
 };
 
 export default App;
+
+function ensureNumbers (obj) {
+  if (!isObject(obj)) return obj;
+  if (Array.isArray(obj)) return obj;
+
+  return mapValues(obj, (val) => {
+    if (isObject(val)) return ensureNumbers(val);
+
+    if (isNaN(parseInt(val))) return val;
+    else return parseInt(val);
+  });
+}

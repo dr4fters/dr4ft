@@ -49,6 +49,7 @@ const Zone = ({ name: zoneName }) => {
   const remainingCardsToSelect = Math.min(picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(game.burnsPerPack, cards.length);
   const canConfirm = gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
+  const cardsInNextPack = packSize - (pickNumber * (picksPerPack + game.burnsPerPack)) % packSize
 
   return (
     <div className='Grid zone'>
@@ -98,7 +99,7 @@ const Zone = ({ name: zoneName }) => {
           cards.length === 0 && isPackZone && // TODO game is not over!
           ([
             <h2 className='waiting' key='other'>Waiting for the next pack...</h2>,
-            Array(packSize - pickNumber % packSize).fill(0)
+            Array(cardsInNextPack).fill(0)
               .map((_, i) => <CardPlaceholder key={i} />)
           ])
         }
