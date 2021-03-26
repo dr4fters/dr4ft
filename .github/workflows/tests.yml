@@ -59,14 +59,14 @@ jobs:
 
       - name: Show container information
         run: |
-          docker run node:lts-alpine node --version
-          echo
           docker --version
           echo
           docker ps -a
           echo
           docker images
-
+          echo
+          echo "Node version"
+          docker run node:lts-alpine node --version
 
   lint:
     name: Run ESLint
