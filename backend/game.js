@@ -17,7 +17,15 @@ module.exports = class Game extends Room {
     super({ isPrivate });
     const gameID = uuid.v1();
     Object.assign(this, {
-      title, seats, type, isPrivate, modernOnly, totalChaos, cube, chaosPacksNumber, picksPerPack,
+      title,
+      seats: parseInt(seats),
+      type,
+      cube,
+      isPrivate,
+      modernOnly,
+      totalChaos,
+      chaosPacksNumber,
+      picksPerPack: parseInt(picksPerPack),
       delta: -1,
       hostID: hostId,
       id: gameID,

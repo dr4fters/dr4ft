@@ -1,0 +1,9 @@
+.CardPlaceholder {
+  --border-width: 1px;
+
+  width: calc(var(--card-width) - 2 * var(--border-width));
+  height: calc(var(--card-height) - 2 * var(--border-width));
+
+  border: var(--border-width) solid #b0afaf;
+  border-radius: 10px;
+}
