@@ -59,7 +59,7 @@ jobs:
 
       - name: Show container information
         run: |
-          docker run -it --rm node /bin/bash -c 'node --version'
+          docker run node:lts-alpine node --version
           echo
           docker --version
           echo
