@@ -57,8 +57,10 @@ jobs:
       - name: Run
         run: docker run -dp 1337:1337 dr4ft-app
 
-      - name: Show info
+      - name: Show container information
         run: |
+          docker run -it --rm node:alpine node
+          echo
           docker --version
           echo
           docker ps -a
