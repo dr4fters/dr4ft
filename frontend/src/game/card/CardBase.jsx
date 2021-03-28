@@ -62,7 +62,7 @@ export default class CardBase extends Component {
     const num = (this.props.showFlipped === isFlipped) ? number : flippedNumber;
     const fallbackUrl = getFallbackSrc(setCode, num);
 
-    if (url === fallbackUrl) {
+    if (url === fallbackUrl || fallbackUrl === null) {
       this.setState({ imageErrored: true });
       return;
     }
@@ -96,7 +96,7 @@ export default class CardBase extends Component {
         <CardBaseText {...card} />
         {
           App.state.cardSize !== "text" && !this.state.imageErrored &&
-            <CardBaseImage name={card.name} src={this.state.url} handleError={this.onImageError} />
+            <CardBaseImage name={card.name} src={this.state.url} handleError={this.onImageError.bind(this)} />
         }
         {this.props.children}
       </div>
