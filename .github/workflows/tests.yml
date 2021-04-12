@@ -68,7 +68,7 @@ jobs:
           echo "Node version"
           docker run node:lts-alpine node --version
           echo
-          curl https://localhost:1337
+          curl http://localhost:1337
           
 
   lint:
