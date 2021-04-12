@@ -68,7 +68,8 @@ jobs:
           echo "Node version"
           docker run node:lts-alpine node --version
           echo
-          curl http://localhost:1337
+          echo "Accessing localhost:1337"
+          wget http://localhost:1337
           
 
   lint:
