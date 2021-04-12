@@ -57,6 +57,7 @@ jobs:
       - name: Run Docker container
         run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
       
+      # TODO: This needs probably some tweaking
       - name: Access Docker container
         run: wget http://localhost:1337
 
