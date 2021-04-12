@@ -55,9 +55,9 @@ jobs:
         run: docker build --tag dr4ft-app .
 
       - name: Run
-        run: docker run -dp 1337:1337 dr4ft-app
+        run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
 
-      - name: Show container information
+      - name: Show information
         run: |
           docker --version
           echo
@@ -67,6 +67,9 @@ jobs:
           echo
           echo "Node version"
           docker run node:lts-alpine node --version
+          echo
+          curl https://localhost:1337
+          
 
   lint:
     name: Run ESLint
