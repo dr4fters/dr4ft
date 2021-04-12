@@ -51,13 +51,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build Docker container
+      - name: Build container from Dockerfile
         run: docker build --tag dr4ft-app .
 
       - name: Run Docker container
         run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
       
-      # TODO: This needs probably some tweaking
+      # TODO: This needs probably some tweaking or can be tested further
       - name: Access Docker container
         run: wget http://localhost:1337
 
