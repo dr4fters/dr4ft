@@ -51,11 +51,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Build Docker container
         run: docker build --tag dr4ft-app .
 
-      - name: Run
+      - name: Run Docker container
         run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
+      
+      - name: Access Docker container
+        run: wget https://localhost:1337
 
       - name: Show information
         run: |
@@ -67,9 +70,6 @@ jobs:
           echo
           echo "Node version"
           docker run node:lts-alpine node --version
-          echo
-          echo "Accessing localhost:1337"
-          wget http://localhost:1337
           
 
   lint:
