@@ -41,7 +41,7 @@ jobs:
 
 
   docker:
-    name: Test docker image
+    name: Test Docker image
 
     runs-on: ubuntu-latest
 
@@ -58,7 +58,7 @@ jobs:
         run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
       
       - name: Access Docker container
-        run: wget https://localhost:1337
+        run: wget http://localhost:1337
 
       - name: Show information
         run: |
