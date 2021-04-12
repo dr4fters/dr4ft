@@ -21,7 +21,6 @@ jobs:
         node_version:
           - 12.x
           - 14.x
-          - 16.x
 
     runs-on: ubuntu-latest
 
