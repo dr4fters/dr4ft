@@ -82,7 +82,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      #Don't manually pin Node version and use provided one in ubuntu package
+      #Use default Node version from GitHub Actions VM (Ubuntu)
       #- name: Setup
       #  uses: actions/setup-node@v2
       #  with:
@@ -92,4 +92,7 @@ jobs:
         run: npm install --ignore-scripts
 
       - name: Run ESLint
-        run: npm run lint
+        run: |
+          node --version
+          echo
+          npm run lint
