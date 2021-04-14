@@ -13,8 +13,8 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    name: Run tests
+  node:
+    name: Node ${{ matrix.node_version }}
 
     strategy:
       matrix:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{matrix.node_version}}
 
@@ -41,7 +41,7 @@ jobs:
 
 
   docker:
-    name: Test Docker image
+    name: Docker image (lts-alpine)
 
     runs-on: ubuntu-latest
 
@@ -69,12 +69,12 @@ jobs:
           echo
           docker images
           echo
-          echo "Node version"
+          echo "Node version (dr4ft container)"
           docker run node:lts-alpine node --version
           
 
   lint:
-    name: Run ESLint
+    name: ESLint
 
     runs-on: ubuntu-latest
 
@@ -82,10 +82,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
+      #Don't manually pin Node version and use provided one in ubuntu package
+      #- name: Setup
+      #  uses: actions/setup-node@v2
+      #  with:
+      #    node-version: 12
 
       - name: Install
         run: npm install --ignore-scripts
