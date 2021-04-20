@@ -1,5 +1,7 @@
 # App Design
 
+<br>
+
 ## Server
 
 `_`: generic js utilities
@@ -23,6 +25,8 @@
 `sock`: socket wrapper
 
 `util`: validates game options, decklist for hashing
+
+<br>
 
 ## Client
 
