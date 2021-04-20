@@ -57,9 +57,9 @@ If type is `cube draft` or `cube sealed`, the variable `cube` must have 3 attrib
 **Path:** /api/games/:**gameId**/status?secret=:**secret**
 
 ### Parameters (Params)
-**gameId:** `<id of game>`[string]
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
 ### Returns
 
@@ -109,9 +109,9 @@ The `playerId` is important as two players could share the same name.
 **Path:** /api/games/**:gameId**/start?secret=**:secret**
 
 ### Parameters (Params)
-**gameId:** `<id of game>`[string]
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
 ### Parameters (Body)
 
@@ -154,13 +154,13 @@ Sends a 400 with parameters' errors if some parameters were wrong.
 **Path:** /api/games/**:gameId**/deck?secret=**:secret**&seat=**:seat**&id=**:playerId**
 
 ### Parameters (Params)
-**gameId:** `<id of game>`[string]
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
-**seat:** `<seat number>`[int]
+**seat:** `<seat number>` [int]
 
-**id:** `<playerId>`[string]
+**id:** `<playerId>` [string]
 
 ### Returns
 
