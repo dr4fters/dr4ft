@@ -1,39 +1,43 @@
-# design
+# App Design
 
-## server
+<br>
 
-_: generic js utilities
+## Server
 
-bot: class
+`_`: generic js utilities
 
-data: wrapper around the data folder
+`bot`: class
 
-game: class
+`data`: wrapper around the data folder
 
-hash: create cockatrice deck hashes
+`game`: class
 
-human: class
+`hash`: create cockatrice deck hashes
 
-pool: generates the cardpool for a specific game
+`human`: class
 
-room: base class for game room. used as the lobby
+`pool`: generates the cardpool for a specific game
 
-router: accepts new sockets, routes players into rooms (lobby or game)
+`room`: base class for game room. used as the lobby
 
-sock: socket wrapper
+`router`: accepts new sockets, routes players into rooms (lobby or game)
 
-util: validates game options, decklist for hashing
+`sock`: socket wrapper
 
-## client
+`util`: validates game options, decklist for hashing
 
-components: ui
+<br>
 
-app: utility, default options
+## Client
 
-cards: logic
+`components`: ui
 
-data: set codes and names
+`app`: utility, default options
 
-init: traceur cannot into circular dependencies
+`cards`: logic
 
-router: does routing
+`data`: set codes and names
+
+`init`: traceur cannot into circular dependencies
+
+`router`: does routing

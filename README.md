@@ -47,6 +47,8 @@ The application provides the following features:
 *dr4ft* is written in [ES6] and transpiled with [Webpack] and [Babel], and uses [React] on the client-side.
 The application uses [SocketIO] and the Websocket technology between client and server.
 
+<br>
+
 # Project History
 
 *dr4ft* is a fork of *arxanas*' `drafts.ninja` fork of *aeosynth*'s `draft` project:
@@ -127,7 +129,7 @@ Breakpoints for the frontend should be set in your browser console.
 
 ### Contributors
 
-THANK YOU!
+❤️ Thank you!
 
 ### Contribute!
 
