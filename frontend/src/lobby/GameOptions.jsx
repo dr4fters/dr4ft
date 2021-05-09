@@ -98,7 +98,7 @@ const Decadent = ({sets, type, picksPerPack}) => (
       <Select
         value={sets.length}
         onChange={App._emit("changeSetsNumber", type)}
-        opts={_.seq(60, 36)} />
+        opts={_.seq(60, 18)} />
     </div>
     <div>
       <SelectSet
