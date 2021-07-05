@@ -13,25 +13,31 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    name: Run tests
+  node:
+    name: Node ${{ matrix.node_version }}
 
     strategy:
       matrix:
         node_version:
-          - 12
-          - 14
+          - lts/*
+          - current/*
+          - 12.x
+          - 14.x
 
     runs-on: ubuntu-latest
-
+    
+    #Allow failues for most recent Node release
+    continue-on-error: ${{matrix.node_version == 'current/*'}}
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{matrix.node_version}}
+          cache: npm
 
       - name: Install
         run: npm install
@@ -41,7 +47,7 @@ jobs:
 
 
   docker:
-    name: Test docker image
+    name: Docker image (lts-alpine)
 
     runs-on: ubuntu-latest
 
@@ -51,23 +57,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Build container from Dockerfile
         run: docker build --tag dr4ft-app .
 
-      - name: Run
-        run: docker run -dp 1337:1337 dr4ft-app
+      - name: Run Docker container
+        run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
+      
+      # TODO: This needs probably some tweaking or can be tested further
+      - name: Access Docker container
+        run: wget http://localhost:1337
 
-      - name: Show info
+      - name: Show information
         run: |
           docker --version
           echo
           docker ps -a
           echo
           docker images
-
+          echo
+          echo "Node version (dr4ft container)"
+          docker run node:lts-alpine node --version
+          
 
   lint:
-    name: Run ESLint
+    name: ESLint
 
     runs-on: ubuntu-latest
 
@@ -75,13 +88,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
+      #Use default Node version from GitHub Actions VM (Ubuntu)
+      #- name: Setup
+      #  uses: actions/setup-node@v2
+      #  with:
+      #    node-version: 12
 
       - name: Install
         run: npm install --ignore-scripts
 
       - name: Run ESLint
-        run: npm run lint
+        run: |
+          node --version
+          echo
+          npm run lint

@@ -14,12 +14,13 @@ updates:
     # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
     open-pull-requests-limit: 5
 
-  # Enable version updates for Docker
-  - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `root` directory
-    directory: "/"
-    # Check for updates once a week
-    schedule:
-      interval: "weekly"
-    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
-    open-pull-requests-limit: 1
+#Since we use the lts-alpine image in the Dockerfile this is currently not needed
+# # Enable version updates for Docker
+#  - package-ecosystem: "docker"
+#    # Look for a `Dockerfile` in the `root` directory
+#    directory: "/"
+#    # Check for updates once a week
+#    schedule:
+#      interval: "weekly"
+#    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+#    open-pull-requests-limit: 1
