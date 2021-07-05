@@ -20,12 +20,15 @@ jobs:
       matrix:
         node_version:
           - lts/*
+          - current/*
           - 12.x
           - 14.x
-          - 16.x
 
     runs-on: ubuntu-latest
-
+    
+    #Allow failues for most recent Node release
+    continue-on-error: ${{matrix.node_version == 'current/*'}}
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
