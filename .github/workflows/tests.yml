@@ -24,6 +24,7 @@ jobs:
           - 12.x
           - 14.x
 
+    fail-fast: false
     runs-on: ubuntu-latest
     
     #Allow failues for most recent Node release
