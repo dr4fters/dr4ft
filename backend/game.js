@@ -1,16 +1,16 @@
 const crypto = require("crypto");
 const path = require("path");
-const {shuffle, truncate} = require("lodash");
+const { shuffle } = require("lodash");
 const uuid = require("uuid");
 const jsonfile = require("jsonfile");
 const Bot = require("./player/bot");
 const Human = require("./player/human");
-const Pool = require("./pool");
+const PoolBuilder = require("./pool/poolBuilder");
 const Room = require("./room");
 const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
-const {saveDraftStats, getDataDir} = require("./data");
+const { saveDraftStats, getDataDir } = require("./data");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber, picksPerPack }) {
@@ -20,11 +20,7 @@ module.exports = class Game extends Room {
       title,
       seats: parseInt(seats),
       type,
-      cube,
       isPrivate,
-      modernOnly,
-      totalChaos,
-      chaosPacksNumber,
       picksPerPack: parseInt(picksPerPack),
       delta: -1,
       hostID: hostId,
@@ -32,57 +28,10 @@ module.exports = class Game extends Room {
       players: [],
       round: 0,
       bots: 0,
-      sets: sets || [],
-      isDecadent: false,
       secret: uuid.v4(),
-      logger: logger.child({ id: gameID })
+      logger: logger.child({ id: gameID }),
+      poolBuilder: new PoolBuilder(type, sets, cube, modernOnly, totalChaos, chaosPacksNumber)
     });
-    // Handle packsInfos to show various informations about the game
-    switch(type) {
-    case "draft":
-    case "sealed":
-      this.packsInfo = this.sets.join(" / ");
-      this.rounds = this.sets.length;
-      break;
-    case "decadent draft":
-      // Sets should all be the same and there can be a large number of them.
-      // Compress this info into e.g. "36x IKO" instead of "IKO / IKO / ...".
-      this.packsInfo = `${this.sets.length}x ${this.sets[0]}`;
-      this.rounds = this.sets.length;
-      this.isDecadent = true;
-      break;
-    case "cube draft":
-      this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
-      if (cube.burnsPerPack > 0) {
-        this.packsInfo += ` and ${cube.burnsPerPack} cards to burn per pack`;
-      }
-      this.rounds = this.cube.packs;
-      break;
-    case "cube sealed":
-      this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
-      this.rounds = this.cube.packs;
-      break;
-    case "chaos draft":
-    case "chaos sealed": {
-      const chaosOptions = [];
-      chaosOptions.push(`${this.chaosPacksNumber} Packs`);
-      chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
-      chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
-      this.packsInfo = `${chaosOptions.join(", ")}`;
-      this.rounds = this.chaosPacksNumber;
-      break;
-    }
-    default:
-      this.packsInfo = "";
-    }
-
-    if (cube) {
-      Object.assign(this, {
-        cubePoolSize: cube.cubePoolSize,
-        packsNumber: cube.packs,
-        playerPackSize: cube.cards
-      });
-    }
 
     this.renew();
     Rooms.add(gameID, this);
@@ -120,15 +69,15 @@ module.exports = class Game extends Room {
   // The number of games which have a player still in them.
   static numActiveGames() {
     return Rooms.getAll()
-      .filter(({isActive}) => isActive)
+      .filter(({ isActive }) => isActive)
       .length;
   }
 
   // The number of players in active games.
   static totalNumPlayers() {
     return Rooms.getAll()
-      .filter(({isActive}) => isActive)
-      .reduce((count, {players}) => {
+      .filter(({ isActive }) => isActive)
+      .reduce((count, { players }) => {
         return count + players.filter(x => x.isConnected && !x.isBot).length;
       }, 0);
   }
@@ -148,7 +97,7 @@ module.exports = class Game extends Room {
 
   static getRoomInfo() {
     return Rooms.getAll()
-      .filter(({isPrivate, didGameStart, isActive}) => !isPrivate && !didGameStart && isActive)
+      .filter(({ isPrivate, didGameStart, isActive }) => !isPrivate && !didGameStart && isActive)
       .reduce((acc, game) => {
         const usedSeats = game.players.length;
         const totalSeats = game.seats;
@@ -161,7 +110,7 @@ module.exports = class Game extends Room {
           usedSeats,
           totalSeats,
           name: game.name,
-          packsInfo: game.packsInfo,
+          packsInfo: game.poolBuilder.info,
           type: game.type,
           timeCreated: game.timeCreated,
         });
@@ -207,7 +156,7 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock, this.picksPerPack, this.getBurnsPerPack(), this.id);
+    const h = new Human(sock, this.picksPerPack, this.poolBuilder.implicitBurnsPerPack, this.id);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -220,17 +169,6 @@ module.exports = class Game extends Room {
     this.players.push(h);
     this.greet(h);
     this.meta();
-  }
-
-  getBurnsPerPack() {
-    switch (this.type) {
-    case "decadent draft":
-      return Number.MAX_VALUE;
-    case "cube draft":
-      return this.cube.burnsPerPack;
-    default:
-      return 0;
-    }
   }
 
   swap([i, j]) {
@@ -266,15 +204,15 @@ module.exports = class Game extends Room {
       isHost: h.isHost,
       round: this.round,
       self: this.players.indexOf(h),
-      sets: this.sets,
+      sets: this.poolBuilder.sets,
       gameId: this.id
     });
     h.send("gameInfos", {
       type: this.type,
-      packsInfo: this.packsInfo,
-      sets: this.sets,
+      packsInfo: this.poolBuilder.info,
+      sets: this.poolBuilder.sets,
       picksPerPack: this.picksPerPack,
-      burnsPerPack: this.type === "cube draft" ? this.cube.burnsPerPack : 0
+      burnsPerPack: this.poolBuilder.explicitBurnsPerPack
     });
 
     if (this.isGameFinished) {
@@ -322,9 +260,9 @@ module.exports = class Game extends Room {
   }
 
   uploadDraftStats() {
-    const draftStats = this.cube
-      ? { list: this.cube.list }
-      : { sets: this.sets };
+    const draftStats = this.poolBuilder.isCube
+      ? { list: this.poolBuilder.cubeList }
+      : { sets: this.poolBuilder.sets };
     draftStats.id = this.id;
     draftStats.draft = {};
 
@@ -345,14 +283,14 @@ module.exports = class Game extends Room {
       }
     });
     const cubeHash = /cube/.test(this.type)
-      ? crypto.createHash("SHA512").update(this.cube.list.join("")).digest("hex")
+      ? crypto.createHash("SHA512").update(this.poolBuilder.cubeList.join("")).digest("hex")
       : "";
 
     const draftcap = {
       "gameID": this.id,
       "players": this.players.length - this.bots,
       "type": this.type,
-      "sets": this.sets,
+      "sets": this.poolBuilder.sets,
       "seats": this.seats,
       "time": Date.now(),
       "cap": this.players.map((player, seat) => ({
@@ -407,7 +345,7 @@ module.exports = class Game extends Room {
       });
     }
 
-    if (this.round++ === this.rounds) {
+    if (this.round++ === this.poolBuilder.rounds) {
       return this.end();
     }
 
@@ -466,64 +404,6 @@ module.exports = class Game extends Room {
     return this.players.map((player) => player.getPlayerDeck());
   }
 
-
-  createPool() {
-    switch (this.type) {
-    case "cube draft": {
-      this.pool = Pool.DraftCube({
-        cubeList: this.cube.list,
-        playersLength: this.players.length,
-        packsNumber: this.cube.packs,
-        playerPackSize: this.cube.cards
-      });
-      break;
-    }
-    case "cube sealed": {
-      this.pool = Pool.SealedCube({
-        cubeList: this.cube.list,
-        playersLength: this.players.length,
-        playerPoolSize: this.cubePoolSize
-      });
-      break;
-    }
-    case "draft":
-    case "decadent draft": {
-      this.pool = Pool.DraftNormal({
-        playersLength: this.players.length,
-        sets: this.sets
-      });
-      break;
-    }
-
-    case "sealed": {
-      this.pool = Pool.SealedNormal({
-        playersLength: this.players.length,
-        sets: this.sets
-      });
-      break;
-    }
-    case "chaos draft": {
-      this.pool = Pool.DraftChaos({
-        playersLength: this.players.length,
-        packsNumber: this.chaosPacksNumber,
-        modernOnly: this.modernOnly,
-        totalChaos: this.totalChaos
-      });
-      break;
-    }
-    case "chaos sealed": {
-      this.pool = Pool.SealedChaos({
-        playersLength: this.players.length,
-        packsNumber: this.chaosPacksNumber,
-        modernOnly: this.modernOnly,
-        totalChaos: this.totalChaos
-      });
-      break;
-    }
-    default: throw new Error(`Type ${this.type} not recognized`);
-    }
-  }
-
   handleSealed() {
     this.round = -1;
     this.players.forEach((p) => {
@@ -534,7 +414,7 @@ module.exports = class Game extends Room {
   }
 
   handleDraft() {
-    const {players, useTimer, timerLength} = this;
+    const { players, useTimer, timerLength } = this;
 
     players.forEach((p, self) => {
       p.useTimer = useTimer;
@@ -547,21 +427,14 @@ module.exports = class Game extends Room {
     this.startRound();
   }
 
-  shouldAddBots() {
-    return this.addBots && !this.isDecadent;
-  }
-
   start({ addBots, useTimer, timerLength, shufflePlayers }) {
     try {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
-      if (this.shouldAddBots()) {
+      if (this.addBots) {
         while (this.players.length < this.seats) {
-          const burnsPerPack = this.type === "cube draft"
-            ? this.cube.burnsPerPack
-            : 0;
-          this.players.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
+          this.players.push(new Bot(this.picksPerPack, this.poolBuilder.implicitBurnsPerPack, this.id));
           this.bots++;
         }
       }
@@ -570,7 +443,7 @@ module.exports = class Game extends Room {
         this.players = shuffle(this.players);
       }
 
-      this.createPool();
+      this.pool = this.poolBuilder.createPool(this.players.length);
 
       if (/sealed/.test(this.type)) {
         this.handleSealed();
@@ -580,7 +453,7 @@ module.exports = class Game extends Room {
 
       this.logger.info(`Game ${this.id} started.\n${this.toString()}`);
       Game.broadcastGameInfo();
-    } catch(err) {
+    } catch (err) {
       this.logger.error(`Game ${this.id} encountered an error while starting: ${err.stack} GameState: ${this.toString()}`);
       this.players.forEach(player => {
         if (!player.isBot) {
@@ -603,25 +476,16 @@ module.exports = class Game extends Room {
     title: ${this.title}
     seats: ${this.seats}
     type: ${this.type}
-    sets: ${this.sets}
     isPrivate: ${this.isPrivate}
     picksPerPack: ${this.picksPerPack}
-    modernOnly: ${this.modernOnly}
-    totalChaos: ${this.totalChaos}
-    chaosPacksNumber: ${this.chaosPacksNumber}
-    packsInfos: ${this.packsInfo}
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
-    ${this.cube ?
-    `cubePoolSize: ${this.cube.cubePoolSize}
-    packsNumber: ${this.cube.packs}
-    playerPackSize: ${this.cube.cards}
-    cube: ${truncate(this.cube.list, 30)}`
-    : ""}`;
+    poolBuilder:
+    ${this.poolBuilder.toString()}`
   }
 
   getNextPlayer(index) {
-    const {length} = this.players;
+    const { length } = this.players;
     return this.players[(index % length + length) % length];
   }
 };
