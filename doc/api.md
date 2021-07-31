@@ -21,7 +21,7 @@ Takes in draft parameters, as  **JSON**, all of the following parameters are exp
 | seats     | int     | 8        |
 | sets      | array   | ["XLN","XLN","XLN"] |
 | type      | string  | "draft", "sealed", "cube sealed", "cube draft", "chaos" |
-| cube      | object  | {"list": "card1\ncard2\ncard3", "cards": 15, "packs": 3 |
+| cube      | object  | {"list": "card1\ncard2\ncard3", "cards": 15, "packs": 3} |
 | isPrivate | boolean | true     |
 | fourPack  | boolean | true     |
 | modernOnly| boolean | true     |
