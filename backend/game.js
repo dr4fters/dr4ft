@@ -488,4 +488,11 @@ module.exports = class Game extends Room {
     const { length } = this.players;
     return this.players[(index % length + length) % length];
   }
+
+  // Accessor required for unit test "can make a draft with 4 sets"
+  // (Note: It's weird that the unit tests evaluate private class members instead of
+  //        validating behavior, probably worth a look at the approach at some point)
+  get rounds() {
+    return this.poolBuilder.rounds;
+  }
 };
