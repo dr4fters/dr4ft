@@ -253,14 +253,6 @@ input[type="checkbox"], input[type="radio"] {
 
 /*** Main page components ***/
 
-.container {
-  box-sizing: border-box;
-  min-height: 100vh;
-  padding: 30px 0 30px 30px;
-  display: flex;
-  flex-direction: row;
-}
-
 #cube-list {
   display: flex;
   flex-direction: column;
@@ -270,31 +262,11 @@ input[type="checkbox"], input[type="radio"] {
   margin-left: 4px;
 }
 
-/** Lobby **/
-
-.lobby {
-  flex-grow: 1;
-  margin: 0 auto;
-  padding-right: 30px;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.lobby-header {
-  font-size: 40px;
-  height: 40px;
-}
-
 .spacer-dot:after {
   content: "\00b7";
   display: inline-block;
   width: 0.75em;
   text-align: center;
-}
-
-.lobby .fieldset:not(:last-child) {
-  margin-bottom: 30px;
 }
 
 /** Chat **/

@@ -1,0 +1,12 @@
+.Game {
+  box-sizing: border-box;
+  min-height: 100vh;
+  max-width: 1270px;
+
+  padding: 30px 0 30px 30px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: row;
+}
+

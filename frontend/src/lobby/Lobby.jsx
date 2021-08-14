@@ -10,6 +10,8 @@ import CreatePanel from "./CreatePanel";
 import FileUpload from "./FileUpload";
 import Version from "./Version";
 
+import "./Lobby.scss";
+
 export default class Lobby extends Component {
 
   constructor(props) {
@@ -21,17 +23,15 @@ export default class Lobby extends Component {
     const { roomInfo, serverVersion, mtgJsonVersion, boosterRulesVersion } = App.state;
 
     return (
-      <div className="container">
-        <div className="lobby">
-          <Header/>
-          <CreatePanel/>
-          <JoinPanel roomInfo={roomInfo}/>
-          <FileUpload />
-          <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>
-          {STRINGS.BRANDING.PAYPAL}
-          {STRINGS.PAGE_SECTIONS.FOOTER}
-          <Version version={serverVersion} MTGJSONVersion={mtgJsonVersion} boosterRulesVersion={boosterRulesVersion}/>
-        </div>
+      <div className="Lobby">
+        <Header/>
+        <CreatePanel/>
+        <JoinPanel roomInfo={roomInfo}/>
+        <FileUpload />
+        <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>
+        {STRINGS.BRANDING.PAYPAL}
+        {STRINGS.PAGE_SECTIONS.FOOTER}
+        <Version version={serverVersion} MTGJSONVersion={mtgJsonVersion} boosterRulesVersion={boosterRulesVersion}/>
       </div>
     );
   }

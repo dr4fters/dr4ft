@@ -15,6 +15,8 @@ import {vanillaToast} from "vanilla-toast";
 import "vanilla-toast/vanilla-toast.css";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "../zones";
 
+import "./Game.scss";
+
 export default class Game extends Component {
   constructor(props) {
     super(props);
@@ -41,7 +43,7 @@ export default class Game extends Component {
 
   render() {
     return (
-      <div className='container'>
+      <div className='Game'>
         <audio id='beep' src='/media/beep.wav'/>
         <div className='game'>
           <div className='game-controls'>
