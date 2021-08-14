@@ -481,7 +481,7 @@ module.exports = class Game extends Room {
     players: ${this.players.length} (${this.players.filter(pl => !pl.isBot).map(pl => pl.name).join(", ")})
     bots: ${this.bots}
     poolBuilder:
-    ${this.poolBuilder.toString()}`
+    ${this.poolBuilder.toString()}`;
   }
 
   getNextPlayer(index) {
