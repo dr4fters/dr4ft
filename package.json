@@ -61,7 +61,7 @@
     "cors": "^2.8.5",
     "dompurify": "^2.2.6",
     "engine.io": "^3.5.0",
-    "engine.io-client": "^3.5.1",
+    "engine.io-client": "^5.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "fast-xml-parser": "^3.18.0",
