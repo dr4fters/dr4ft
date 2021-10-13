@@ -113,7 +113,11 @@ const CardBaseImage = ({ src, handleError, name }) => (
   <div className="CardBaseImage">
     <img
       title={name}
+      className='loading'
+
       onError={handleError}
+      onLoad={ev => ev.target.classList.remove("loading")}
+  
       src={src}
     />
   </div>
