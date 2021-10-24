@@ -17,13 +17,13 @@ jobs:
     name: Node ${{ matrix.node_version }}
 
     strategy:
+      fail-fast: false
       matrix:
         node_version:
           - 12.x
           - lts/*
           - current/*
 
-    fail-fast: false
     runs-on: ubuntu-latest
     
     #Allow failues for most recent Node release
