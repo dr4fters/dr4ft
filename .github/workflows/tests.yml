@@ -19,10 +19,9 @@ jobs:
     strategy:
       matrix:
         node_version:
+          - 12.x
           - lts/*
           - current/*
-          - 12.x
-          - 14.x
 
     fail-fast: false
     runs-on: ubuntu-latest
