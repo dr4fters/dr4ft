@@ -1,32 +1,32 @@
 const parser = require("fast-xml-parser");
 
 function parse(content) {
-  const parsedContent = parser.parse(content, {ignoreAttributes: false, attributeNamePrefix: "", textNodeName: "text"});
+  const parsedContent = parser.parse(content, { ignoreAttributes: false, attributeNamePrefix: "", textNodeName: "text" });
   const root = parsedContent.cockatrice_carddatabase;
   if (!root) {
-    throw new Error("root node <cockatrice_carddatabase> must be present");
+    throw new Error("XML root node <cockatrice_carddatabase> must be present");
   }
 
-  const {sets, cards} = root;
+  const { sets, cards } = root;
   if (!cards) {
-    throw new Error("node <cards> must be present");
+    throw new Error("XML node <cards> must be present");
   }
 
   const jsonSets = {};
 
   if (sets) {
     if (!sets.set) {
-      throw new Error("node <sets> must be made of <set>");
+      throw new Error("XML node <sets> must be made of <set>");
     }
 
     if (typeof sets.set === "object" && !Array.isArray(sets.set)) {
       sets.set = [sets.set];
     }
 
-    sets.set.forEach((set) => {
+    sets.set.forEach((set, set_index) => {
       const { name: code, longname: name = "", settype: type = "", releasedate: releaseDate = "" } = set;
       if (!code) {
-        throw new Error("<sets> property <set> must contain an attribute name");
+        throw new Error(`<sets> property <set> of set number ${set_index} must contain an attribute "name"`);
       }
       jsonSets[code] = {
         code,
@@ -51,10 +51,10 @@ function parse(content) {
   cards.card.forEach(c => {
     const { text: setCode, num = 0, picurl = "", picURL = "", rarity } = c.set;
     if (!/common|basic|uncommon|rare|mythic/i.test(rarity)) {
-      throw new Error("<card> property <set> must contain an attribute rarity with one of common, basic, uncommon, rare or mythic");
+      throw new Error(`<card> property <set> of "${c.name}" must contain an attribute rarity with one of common, basic, uncommon, rare or mythic`);
     }
     if (!setCode) {
-      throw new Error("<card> property <set> must contain a value");
+      throw new Error(`<card> property <set> of "${c.name}" must contain a value`);
     }
     if (!jsonSets[setCode]) {
       jsonSets[setCode] = {
@@ -96,7 +96,7 @@ function parse(content) {
       url: picurl || picURL,
       layout,
       number: parseInt(num),
-      supertypes : [],
+      supertypes: [],
       side,
       isAlternative: false,
       colors: fixedColors
