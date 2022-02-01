@@ -1,10 +1,10 @@
 import _ from "utils/utils";
-import {vanillaToast} from "vanilla-toast";
+import { vanillaToast } from "vanilla-toast";
 import DOMPurify from "dompurify";
-import {range, times, constant} from "lodash";
+import { range, times, constant } from "lodash";
 
 import App from "./app";
-import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
+import { ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD } from "./zones";
 import exportDeck from "./export";
 
 /**
@@ -28,7 +28,7 @@ const events = {
       App.send("confirmSelection");
     }
   },
-  confirmSelection () {
+  confirmSelection() {
     if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
       App.send("confirmSelection");
     }
@@ -48,7 +48,7 @@ const events = {
     App.update();
   },
   copy() {
-    const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
+    const { exportDeckFormat: format, exportDeckFilename: filename } = App.state;
     const textField = document.createElement("textarea");
     textField.value = exportDeck[format].copy(filename, collectDeck());
 
@@ -60,7 +60,7 @@ const events = {
     hash();
   },
   download() {
-    const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
+    const { exportDeckFormat: format, exportDeckFilename: filename } = App.state;
     const data = exportDeck[format].download(filename, collectDeck());
 
     _.download(data, filename + exportDeck[format].downloadExtension);
@@ -68,8 +68,8 @@ const events = {
     hash();
   },
   start() {
-    const {addBots, useTimer, timerLength, shufflePlayers} = App.state;
-    const options = {addBots, useTimer, timerLength, shufflePlayers};
+    const { addBots, useTimer, timerLength, shufflePlayers } = App.state;
+    const options = { addBots, useTimer, timerLength, shufflePlayers };
     App.send("start", options);
   },
   pickNumber(pick) {
@@ -98,7 +98,7 @@ const events = {
     App.save("log", draftLog);
   },
   getLog() {
-    const {gameId, log, players, self, sets, gamesubtype, exportDeckFilename} = App.state;
+    const { gameId, log, players, self, sets, gamesubtype, exportDeckFilename } = App.state;
     const isCube = /cube/.test(gamesubtype);
     const date = new Date().toISOString().slice(0, -5).replace(/-/g, "").replace(/:/g, "").replace("T", "_");
     const data = [
@@ -123,30 +123,33 @@ const events = {
   },
 
   create() {
-    let {gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber, picksPerPack} = App.state;
+    console.log("BEEP BOOP", JSON.stringify(App.state, undefined, 2));
+    let { gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber, picksPerPack } = App.state;
     seats = Number(seats);
 
     //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
     // OR change backend to accept "regular draft" instead of "draft" and "regular sealed" instead of "sealed"
     const type = `${/regular/.test(gamesubtype) ? "" : gamesubtype + " "}${gametype}`;
 
-    let options = {type, seats, title, isPrivate, modernOnly, totalChaos,picksPerPack};
+    let options = { type, seats, title, isPrivate, modernOnly, totalChaos, picksPerPack };
 
     switch (gamesubtype) {
-    case "regular": {
-      const {setsDraft, setsSealed} = App.state;
-      options.sets = gametype === "sealed" ? setsSealed : setsDraft;
-      break;
-    }
-    case "decadent":
-      options.sets = App.state.setsDecadentDraft;
-      break;
-    case "cube":
-      options.cube = parseCubeOptions();
-      break;
-    case "chaos":
-      options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
-      break;
+      case "regular": {
+        const { setsDraft, setsSealed, burnsPerPack } = App.state;
+        options.sets = gametype === "sealed" ? setsSealed : setsDraft;
+        options.cube = {};
+        options.cube.burnsPerPack = parseInt(burnsPerPack);
+        break;
+      }
+      case "decadent":
+        options.sets = App.state.setsDecadentDraft;
+        break;
+      case "cube":
+        options.cube = parseCubeOptions();
+        break;
+      case "chaos":
+        options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
+        break;
     }
     App.send("create", options);
   },
@@ -314,7 +317,7 @@ const events = {
 Object.keys(events).forEach((event) => App.on(event, events[event]));
 
 const parseCubeOptions = () => {
-  let {list, cards, packs, cubePoolSize, burnsPerPack} = App.state;
+  let { list, cards, packs, cubePoolSize, burnsPerPack } = App.state;
   cards = Number(cards);
   packs = Number(packs);
   cubePoolSize = Number(cubePoolSize);
@@ -329,7 +332,7 @@ const parseCubeOptions = () => {
     .filter(x => x)
     .join("\n");
 
-  return {list, cards, packs, cubePoolSize, burnsPerPack};
+  return { list, cards, packs, cubePoolSize, burnsPerPack };
 };
 
 const clickPack = (card) => {
@@ -354,7 +357,7 @@ const collectDeck = () => ({
   [ZONE_SIDEBOARD]: collectByName(App.state.gameState.get(ZONE_SIDEBOARD), true)
 });
 
-function collectByName (cards, sideboard = false) {
+function collectByName(cards, sideboard = false) {
   const collector = cards.reduce((acc, card) => {
     if (acc[card.name]) acc[card.name].count += 1;
     else acc[card.name] = { card, count: 1, sideboard };
