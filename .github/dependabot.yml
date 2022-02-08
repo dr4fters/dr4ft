@@ -23,3 +23,13 @@ updates:
       interval: "weekly"
     # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
     open-pull-requests-limit: 1
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    # Directory must be set to "/" to check for workflow files in .github/workflows
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions once a week
+      interval: "weekly"
+    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+    open-pull-requests-limit: 2
