@@ -6,6 +6,15 @@
     grid-row: 1;
     grid-column: 1;
     transition: transform 0.2s ease-in;
+
+    img {
+      transition: all 0.2s;
+
+      &.loading {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
   }
 
   &.-flipped {

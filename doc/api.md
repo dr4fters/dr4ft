@@ -1,4 +1,10 @@
-# Create game
+# API Documentation
+
+**[ [Create Game](#create-game) ] [ [Get Game Status](#get-game-status) ] [ [Start a Game](#start-a-game) ] [ [Get Decklist(s)](#get-decklists) ]**
+
+<br>
+
+## Create Game
 **Intent:** Create a draft room
 
 **Method**: POST
@@ -7,7 +13,7 @@
 
 Takes in draft parameters, as  **JSON**, all of the following parameters are expected in the request body, except the `gameId` and `secret` which need to be in the request parameters.
 
-## Parameters (Body)
+### Parameters (Body)
 
 | Parameter | Type    | Example  |
 |:---------:|:-------:|:--------:|
@@ -15,7 +21,7 @@ Takes in draft parameters, as  **JSON**, all of the following parameters are exp
 | seats     | int     | 8        |
 | sets      | array   | ["XLN","XLN","XLN"] |
 | type      | string  | "draft", "sealed", "cube sealed", "cube draft", "chaos" |
-| cube      | object  | {"list": "card1\ncard2\ncard3", "cards": 15, "packs": 3 |
+| cube      | object  | {"list": "card1\ncard2\ncard3", "cards": 15, "packs": 3} |
 | isPrivate | boolean | true     |
 | fourPack  | boolean | true     |
 | modernOnly| boolean | true     |
@@ -31,7 +37,7 @@ If type is `cube draft` or `cube sealed`, the variable `cube` must have 3 attrib
 ⚠️ Not yet implemented: webhook[string]
 ```
 
-## Returns
+### Returns
 
 **Type:** JSON
 
@@ -41,21 +47,21 @@ If type is `cube draft` or `cube sealed`, the variable `cube` must have 3 attrib
 | gameId    | string  | t7fazj    | id of game   |
 | secret    | string  | 3020a726-b9f0-4e5d-9ea6-beefa43016b5 | random key used for further API calls |
 
+<br>
 
-
-# Get game status
+## Get Game Status
 **Intent:** Check the status of the draft, which players are ready and which are not
 
 **Method:** GET
 
 **Path:** /api/games/:**gameId**/status?secret=:**secret**
 
-## Parameters (Params)
-**gameId:** `<id of game>`[string]
+### Parameters (Params)
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
-## Returns
+### Returns
 
 **Type:** JSON
 
@@ -76,7 +82,7 @@ Each player has several attributes.
 
 The `playerId` is important as two players could share the same name.
 
-### Sample
+#### Sample
 
 ```javascript
 {
@@ -93,21 +99,21 @@ The `playerId` is important as two players could share the same name.
 }
 ```
 
+<br>
 
-
-# Start a Game
+## Start a Game
 **Intent:** Start the draft
 
 **Method:** POST
 
 **Path:** /api/games/**:gameId**/start?secret=**:secret**
 
-## Parameters (Params)
-**gameId:** `<id of game>`[string]
+### Parameters (Params)
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
-## Parameters (Body)
+### Parameters (Body)
 
 | Parameter     | Type    | Example   |
 |:-------------:|:-------:|:---------:|
@@ -118,7 +124,7 @@ The `playerId` is important as two players could share the same name.
 
 `timer` is mandatory only if `useTimer` is set to _true_.
 
-## Returns
+### Returns
 
 **Type:** JSON
 
@@ -128,7 +134,7 @@ The `playerId` is important as two players could share the same name.
 | bots       | int     | 7       | number of bots in the game |
 
 
-### Sample
+#### Sample
 ```javascript
 {
     "message": "Game pucip3cvv8 successfully started",
@@ -138,25 +144,25 @@ The `playerId` is important as two players could share the same name.
 
 Sends a 400 with parameters' errors if some parameters were wrong.
 
+<br>
 
-
-# Get decklist(s)
+## Get Decklist(s)
 **Intent:** Gets decklists at end of draft
 
 **Method:** GET
 
 **Path:** /api/games/**:gameId**/deck?secret=**:secret**&seat=**:seat**&id=**:playerId**
 
-## Parameters(Params)
-**gameId:** `<id of game>`[string]
+### Parameters (Params)
+**gameId:** `<id of game>` [string]
 
-**secret:** `<secret of the game>`[string]
+**secret:** `<secret of the game>` [string]
 
-**seat:** `<seat number>`[int]
+**seat:** `<seat number>` [int]
 
-**id:** `<playerId>`[string]
+**id:** `<playerId>` [string]
 
-## Returns
+### Returns
 
 If no `seat`/`id` has been provided, returns an array with all players of the game.
 
@@ -171,7 +177,7 @@ Type: **JSON**
 
 Each card has several attributes and the array is classified by pick order.
 
-### Sample
+#### Sample
 ```javascript
 [
     {

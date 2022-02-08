@@ -1,7 +1,7 @@
 const assert = require("assert");
 const path = require("path");
 const data = require("./data");
-const {describe, it} = require("mocha");
+const { describe, it } = require("mocha");
 
 describe("Acceptance tests for Data functions", () => {
   describe("can find certain starter sets", () => {
@@ -18,7 +18,7 @@ describe("Acceptance tests for Data functions", () => {
 
       assert(dataDir);
       assert(path.isAbsolute(dataDir));
-      assert.equal(dataDir, `${repoRoot}/data`);
+      assert.strictEqual(dataDir, path.join(repoRoot, "data"));
     });
   });
 });
