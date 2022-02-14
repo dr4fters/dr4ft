@@ -101,7 +101,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.22.0",
     "mocha": "^8.3.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.1",
     "nodemon": "^2.0.7",
     "regenerator-runtime": "^0.13.7",
     "resolve-url-loader": "^3.1.2",
