@@ -1,6 +1,6 @@
 .Cols {
   --card-width: 180px;
-  --card-height: 255px;
+  --card-width: calc(180px * 17 / 12);
 
   .col {
     float: left;

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import ReactTooltip from "react-tooltip";
 
+import "./Modal.scss";
+
 const Modal = ({
   headerText,
   footerConfirmButtonText,
@@ -17,7 +19,7 @@ const Modal = ({
   }
 
   return (
-    <div onScroll={() => {ReactTooltip.rebuild();}} className="modal-outer-container">
+    <div onScroll={() => {ReactTooltip.rebuild();}} className="Modal">
       <div className="modal-backdrop" onClick={onClose}></div>
       <div className="modal-container">
         <header className="modal-header">
@@ -41,7 +43,7 @@ const Modal = ({
         </header>
         <div className="modal-body">{children}</div>
         <div className="modal-footer">
-          <button onClick={onClose}>{footerCancelButtonText || "Cancel"}</button>
+          <button onClick={onClose} className="secondary">{footerCancelButtonText || "Cancel"}</button>
           <button onClick={onConfirm} className="primary">{footerConfirmButtonText || "Confirm"}</button>
         </div>
       </div>

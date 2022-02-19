@@ -157,13 +157,13 @@
 
 .CardBaseImage {
   width: var(--card-width);
-  height: var(--card-height);
+  height: calc(var(--card-height));
 
   img {
     width: var(--card-width);
-    height: var(--card-height);
+    height: calc(var(--card-height));
     max-width: var(--card-width);
-    max-height: var(--card-height);
+    max-height: calc(var(--card-height));
     border-radius: 10px;
   }
 }
