@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const JoinPanel = ({roomInfo}) => {
+import CreateGameButton from "./CreateGameButton";
+
+import "./GamesPanel.scss";
+
+const GamesPanel = ({roomInfo}) => {
   return (
-    <fieldset className='fieldset'>
-      <legend className='legend'>Join a Room</legend>
+    <fieldset className='GamesPanel fieldset'>
+      <legend className='legend'>Games</legend>
       {roomInfo.length
-        ? <table className='join-room-table'>
+        ? <table className='join-game-table'>
           <thead>
             <tr>
               <th>Name</th>
@@ -23,20 +27,21 @@ const JoinPanel = ({roomInfo}) => {
               <td>{room.packsInfo}</td>
               <td>{room.usedSeats}/{room.totalSeats}</td>
               <td>
-                <a href={`#g/${room.id}`} className='join-room-link'>
-                    Join room
+                <a href={`#g/${room.id}`} className='join-game-link'>
+                  <div>Join game</div>
                 </a>
               </td>
             </tr>)}
           </tbody>
         </table>
         : "There are no public rooms open currently."}
+      <CreateGameButton />
     </fieldset>
   );
 };
 
-JoinPanel.propTypes = {
+GamesPanel.propTypes = {
   roomInfo: PropTypes.array
 };
 
-export default JoinPanel;
+export default GamesPanel;

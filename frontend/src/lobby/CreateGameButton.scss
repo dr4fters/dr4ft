@@ -1,0 +1,22 @@
+.CreateGameButton {
+  button {
+    color: #089dff;
+    background: white;
+    cursor: pointer;
+
+    padding: 10px 20px;
+    border: 1px solid #089dff;
+    margin-top: 1rem;
+  }
+
+  .Players {
+    display: grid;
+    grid-template-columns: 100px auto;
+    grid-gap: 1rem;
+
+    align-items: center;
+    justify-content: start;
+
+    select, label { margin: 0; }
+  }
+}

@@ -4,9 +4,8 @@ import App from "../app";
 import {STRINGS} from "../config";
 
 import Header from "./Header";
-import JoinPanel from "./JoinPanel";
+import GamesPanel from "./GamesPanel";
 import NewsPanel from "./NewsPanel";
-import CreatePanel from "./CreatePanel";
 import FileUpload from "./FileUpload";
 import Version from "./Version";
 
@@ -24,8 +23,7 @@ export default class Lobby extends Component {
       <div className="container">
         <div className="lobby">
           <Header/>
-          <CreatePanel/>
-          <JoinPanel roomInfo={roomInfo}/>
+          <GamesPanel roomInfo={roomInfo}/>
           <FileUpload />
           <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>
           {STRINGS.BRANDING.PAYPAL}

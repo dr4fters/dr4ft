@@ -281,10 +281,11 @@ input[type="checkbox"], input[type="radio"] {
 /** Lobby **/
 
 .lobby {
-  flex-grow: 1;
+  max-width: 900px;
   margin: 0 auto;
 
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
 }
 
@@ -346,29 +347,6 @@ input[type="checkbox"], input[type="radio"] {
   margin-left: -1px;
   width: 100%;
 }
-
-/*** Join rooms ***/
-
-.join-room-table {
-  border-collapse: collapse;
-  text-align: center;
-  width: 100%;
-}
-
-.join-room-table th,
-.join-room-table td {
-  padding: 5px;
-}
-
-.join-room-table tbody tr {
-  background-color: #f0f0f0;
-  border: solid #d0d0d0 1px;
-}
-
-.join-room-link:after {
-  content: '\00bb';
-}
-
 /** Zones **/
 
 .waiting {
@@ -539,5 +517,7 @@ input[type="checkbox"], input[type="radio"] {
   font-size: 14px;
   line-height: 18px;
 }
-}
 
+.filepond--credits {
+  display: none;
+}
