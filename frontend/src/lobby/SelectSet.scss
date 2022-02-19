@@ -10,6 +10,7 @@
 
 .SelectSet {
   width: 300px;
+  max-width: calc(100vw - 30px);
   position: relative;
   font-family: 'Nunito Sans', sans-serif;
   box-sizing: border-box;
