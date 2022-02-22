@@ -62,12 +62,12 @@ const CreateRoomModal = () => {
   return (
     <Modal
       show={open}
-      headerText="Create"
+      headerText="Create Game"
       footerConfirmButtonText="Create"
       onClose={closeModal}
       onConfirm={App._emit("create")}
     >
-      <ModalSection label="Title" inputId="game-title-input" >
+      <ModalSection label="Name" inputId="game-title-input" >
         <input type='text'
           ref={draftNameInput}
           id="game-title-input"

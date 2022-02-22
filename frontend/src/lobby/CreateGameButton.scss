@@ -19,4 +19,19 @@
 
     select, label { margin: 0; }
   }
+
+
+  #cube-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .cube-list {
+    width: 90%;
+    height: 150px;
+    overflow-y: scroll;
+
+    font-size: 14px;
+    line-height: 18px;
+  }
+
 }

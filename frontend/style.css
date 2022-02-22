@@ -269,11 +269,6 @@ input[type="checkbox"], input[type="radio"] {
   }
 }
 
-#cube-list {
-  display: flex;
-  flex-direction: column;
-}
-
 #preset-cubes {
   margin-left: 4px;
 }
@@ -507,15 +502,6 @@ input[type="checkbox"], input[type="radio"] {
   margin-left: 0px;
   padding: 1px 1px 1px 10px;
   font-style: italic;
-}
-
-.cube-list {
-  width: 100%;
-  height: 150px;
-  overflow-y: scroll;
-
-  font-size: 14px;
-  line-height: 18px;
 }
 
 .filepond--credits {

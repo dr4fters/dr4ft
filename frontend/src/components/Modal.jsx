@@ -19,7 +19,7 @@ const Modal = ({
   }
 
   return (
-    <div onScroll={() => {ReactTooltip.rebuild();}} className="Modal">
+    <div className="Modal" onScroll={() => ReactTooltip.rebuild()}>
       <div className="modal-backdrop" onClick={onClose}></div>
       <div className="modal-container">
         <header className="modal-header">
@@ -48,7 +48,14 @@ const Modal = ({
         </div>
       </div>
 
-      <ReactTooltip className="modal-tooltip" effect="solid" type="info" place="bottom" backgroundColor='#079DFF' textColor='#202124' />
+      <ReactTooltip
+        className="modal-tooltip"
+        effect="solid"
+        type="info"
+        place="bottom"
+        backgroundColor='#079DFF'
+        textColor='white'
+      />
     </div>
   );
 };

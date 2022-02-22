@@ -7,24 +7,21 @@ import "./Switch.scss";
 
 const Switch = ({
   appProperty,
-  checked,
-  unchecked
+  checked = {},
+  unchecked = {}
 }) => {
   const isChecked = Boolean(App.state[appProperty])
-  const { label, tooltip } = isChecked ? checked : unchecked
-
+  const tooltip = (isChecked ? checked : unchecked).tooltip
 
   return (
-    <label className="Switch">
-      <span className='label'>{label}</span>
+    <label className="Switch" data-tip={tooltip}>
+      <span className='label'>Private</span>
       <span className="vhidden">({tooltip})</span>
 
       <input
         type="checkbox"
         checked={isChecked}
-        onChange={() => {
-          App.save(appProperty, !isChecked);
-        }}
+        onChange={() => App.save(appProperty, !isChecked) }
       />
       <span className="slider-nob round"></span>
       <span className="slider round"></span>

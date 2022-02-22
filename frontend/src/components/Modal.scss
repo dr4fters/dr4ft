@@ -40,6 +40,9 @@
     fieldset {
       padding: 0;
       border: 0;
+
+      display: grid;
+      justify-content: start;
     }
 
     input, textarea, select {
@@ -140,7 +143,16 @@
   }
 
   .modal-body { border: 1px solid #D9DBDB; }
-  .modal-tooltip { opacity: 1 !important; }
+  .modal-tooltip {
+
+    letter-spacing: 0.5px;
+
+    opacity: 1 !important;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  // NOTE this is the class assigned to the react-tooltips
+  // see <ReactToolTip ... /> use in ./Modal.jsx
 
   .modal-footer {
     position: relative;
