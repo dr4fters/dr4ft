@@ -22,6 +22,7 @@ export default class CardBase extends Component {
     }
 
     this.state = {
+      cardLang: App.state.cardLang,
       cardSize: App.state.cardSize,
       url: this.getCardImage(DEFAULT),
       isFlipped: false, // this is relative to this.props.showFlipped
@@ -72,8 +73,9 @@ export default class CardBase extends Component {
   }
 
   render () {
-    if (this.state.cardSize != App.state.cardSize) {
+    if (this.state.cardSize !== App.state.cardSize || this.state.cardLang !== App.state.cardLang) {
       this.setState({
+        cardLang: App.state.cardLang,
         cardSize: App.state.cardSize,
         url: this.getCardImage(DEFAULT)
       })
