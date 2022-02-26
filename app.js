@@ -17,7 +17,10 @@ require("./backend/data-watch");
 const app = express();
 
 // Middlewares
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(cors());
 app.use(fileUpload());
