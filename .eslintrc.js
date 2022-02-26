@@ -11,12 +11,13 @@ module.exports = {
   ],
   "parserOptions": {
     "ecmaVersion": 9,
+    "requireConfigFile": false,
     "ecmaFeatures": {
       "jsx": true
     },
     "sourceType": "module"
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "plugins": [
     "react"
   ],
