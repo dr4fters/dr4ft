@@ -2,13 +2,9 @@
   dr<img src="https://raw.githubusercontent.com/dr4fters/dr4ft/master/frontend/4.png" alt="4" height="14">ft
 </p>
 
-<p align='center'>
-  <a href="https://github.com/dr4fters/dr4ft/actions?query=branch%3Amaster+workflow%3A%22Automated+tests%22"><img src=https://github.com/dr4fters/dr4ft/workflows/Automated%20tests/badge.svg?branch=master></a>
-  <a href="https://david-dm.org/dr4fters/dr4ft"><img src=https://david-dm.org/dr4fters/dr4ft.svg></a>
-  <a href="https://david-dm.org/dr4fters/dr4ft?type=dev"><img src=https://david-dm.org/dr4fters/dr4ft/dev-status.svg></a>
-</p>
-
 <br>
+
+[![CI](https://github.com/dr4fters/dr4ft/workflows/Automated%20tests/badge.svg?branch=master)](https://github.com/dr4fters/dr4ft/actions?query=branch%3Amaster+workflow%3A%22Automated+tests%22)
 
 # dr4ft [![Discord](https://img.shields.io/discord/224178957103136779?label=Discord&logo=discord&logoColor=white&color=7289da)](https://mtgjson.com/discord)
 
