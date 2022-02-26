@@ -8,4 +8,4 @@ export function toTitleCase (sentence, separator=" ") {
   const words = sentence.split(separator);
   const capitalized = words.map(capitalize);
   return capitalized.join(separator);
-};
+}
