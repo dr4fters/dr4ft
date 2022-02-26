@@ -1,6 +1,6 @@
 import _ from "utils/utils";
 import EventEmitter from "events";
-import eio from "engine.io-client";
+import { Socket } from "engine.io-client";
 import {times, constant, isObject, mapValues} from "lodash";
 import {STRINGS} from "./config";
 import GameState from "./gamestate";
@@ -140,7 +140,7 @@ let App = {
       query: { id, name }
     };
     if(!this.ws) {
-      this.ws = eio(location.href, options);
+      this.ws = new Socket(location.href, options);
       this.ws.on("message", message);
     }
   },

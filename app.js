@@ -32,7 +32,7 @@ updateData();
 
 // Create server
 const server = http.createServer(app);
-const io = eio(server);
+const io = new eio.attach(server);
 io.on("connection", router);
 
 server.listen(config.PORT);
