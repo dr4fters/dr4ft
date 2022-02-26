@@ -1,0 +1,35 @@
+.PlayersPanel {
+
+  #self-time-fixed {
+    position: fixed;
+    z-index: 99;
+
+    background-color: rgba(255, 255, 255, 0.63);
+
+    height: 44px;
+    min-width: 62px;
+
+    padding: 4px;
+    border: solid 1px white;
+    border-right: none;
+    // border-radius: 4px;
+
+    transition: left 0.5s;
+
+    > .label, > #self-time-fixed-time {
+      filter: drop-shadow(white 0 0 2px);
+    }
+
+    > .label {
+      font-size: 16px;
+      text-align: center;
+    }
+
+    > #self-time-fixed-time {
+      font-size: 20px;
+
+      margin-left: 39%;
+      margin-top: 4px;
+    }
+  }
+}

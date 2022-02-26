@@ -51,6 +51,8 @@ const Zone = ({ name: zoneName }) => {
   const canConfirm = gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
   const cardsInNextPack = packSize - (pickNumber * (picksPerPack + game.burnsPerPack)) % packSize
 
+  const showPicksDetail = game.picksPerPack > 1 || game.burnsPerPack > 0
+  const showBurnsDetail = game.burnsPerPack > 0
   return (
     <div className='Grid zone'>
       <div className='header'>
@@ -61,19 +63,19 @@ const Zone = ({ name: zoneName }) => {
           ]} />
         </h1>
 
-        <div className='pick-burn-detail'>
-          {
-            (
-              game.picksPerPack > 1 ||
-              game.burnsPerPack > 0
-            ) &&
-              <span className="picks">{`Pick ${remainingCardsToSelect}`}</span>
-          }
-          {
-            game.burnsPerPack > 0 &&
-              <span className="burns">{`Burn ${remainingCardsToBurn}`}</span>
-          }
-        </div>
+        {
+          (showPicksDetail || showBurnsDetail) &&
+          <div className='pick-burn-detail'>
+            {
+              showPicksDetail &&
+              <div className="picks">{`Pick ${remainingCardsToSelect}`}</div>
+            }
+            {
+              showBurnsDetail &&
+              <div className="burns">{`Burn ${remainingCardsToBurn}`}</div>
+            }
+          </div>
+        }
 
         {
           cards.length > 0 && zoneName === ZONE_PACK &&

@@ -1,6 +1,6 @@
 .Cols {
   --card-width: 180px;
-  --card-height: 255px;
+  --card-height: calc(180px * 17 / 12);
 
   .col {
     float: left;
@@ -30,5 +30,17 @@
 
     --card-width: 240px;
     --card-height: 340px;
+  }
+
+  /* over-rides to chill out the deck building area */
+  .CardBase {
+    .CardBaseText, .CardBaseImage {
+      img {
+        &.loading {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    }
   }
 }

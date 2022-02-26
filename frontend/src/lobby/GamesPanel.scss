@@ -1,0 +1,26 @@
+.GamesPanel {
+  .join-game-table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+
+    th, td { padding: 5px; }
+
+    tbody tr {
+      background-color: #f0f0f0;
+      border: solid #d0d0d0 1px;
+    }
+  }
+
+  .join-game-link {
+    text-decoration: none;
+
+    div {
+      color: #089dff;
+      background: white;
+      padding: 2px 9px;
+
+      &:after { content: '\00bb'; }
+    }
+  }
+}

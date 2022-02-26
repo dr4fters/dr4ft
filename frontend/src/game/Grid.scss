@@ -1,39 +1,40 @@
 .Grid {
-  --card-width: 240px;
-  --card-height: 334.2px;
-
   margin-bottom: 20px;
 
   > .header {
+    margin: 1rem 0;
+
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-auto-flow: column;
     justify-content: start;
     justify-items: start;
     grid-gap: 1rem;
 
     h1 {
+      margin: 0
     }
 
     .pick-burn-detail, .confirm-btn {
-      margin: 28px 0;
     }
 
     .pick-burn-detail {
       font-size: 1rem;
-      font-weight: bold;
+      // font-weight: bold;
 
-      display: grid;
-      grid-auto-flow: column;
-      grid-gap: 14px;
-      align-content: end;
+      max-width:  20vw; // this 
 
-      .picks, .burns {
-      }
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-end;
+      align-items: flex-end;
+
+      .picks { padding-right: 6px; }
+      .burns { }
     }
 
     button.confirm-btn {
-      justify-self: center;
-      align-self: center;
+      justify-self: start;
+      align-self: end;
 
       font-size: 18px;
       color: #fff;
@@ -42,8 +43,7 @@
 
       border: #3a87e5 solid 1px;
       border-radius: 2px;
-
-      margin-left: 1rem;
+      margin-bottom: 3px;
     }
     button[disabled].confirm-btn {
       color: #777;
@@ -72,3 +72,11 @@
     }
   }
 }
+
+@media screen and (max-width: 480px) {
+  .Grid {
+    --card-width: calc(100vw / 2 - 5px);
+    --card-height: calc(calc(100vw / 2 - 5px) * 17 / 12);
+  }
+}
+

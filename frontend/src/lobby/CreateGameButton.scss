@@ -1,0 +1,37 @@
+.CreateGameButton {
+  button {
+    color: #089dff;
+    background: white;
+    cursor: pointer;
+
+    padding: 10px 20px;
+    border: 1px solid #089dff;
+    margin-top: 1rem;
+  }
+
+  .Players {
+    display: grid;
+    grid-template-columns: 100px auto;
+    grid-gap: 1rem;
+
+    align-items: center;
+    justify-content: start;
+
+    select, label { margin: 0; }
+  }
+
+
+  #cube-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .cube-list {
+    width: 90%;
+    height: 150px;
+    overflow-y: scroll;
+
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+}
