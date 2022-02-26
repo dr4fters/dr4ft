@@ -1,6 +1,7 @@
-const parser = require("fast-xml-parser");
+const { XMLParser } = require("fast-xml-parser");
 
 function parse(content) {
+  const parser = new XMLParser();
   const parsedContent = parser.parse(content, {ignoreAttributes: false, attributeNamePrefix: "", textNodeName: "text"});
   const root = parsedContent.cockatrice_carddatabase;
   if (!root) {
