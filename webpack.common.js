@@ -11,12 +11,11 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "./built"),
-    filename: "[name]-[hash].js",
+    filename: "[name]-[fullhash].js",
     publicPath: "/"
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: "./frontend/index.html.tpl",
       cache: false
@@ -43,6 +42,7 @@ module.exports = {
       chunks: "all",
       maxSize: 200000
     },
+    minimize: false
   },
   module: {
     rules: [
