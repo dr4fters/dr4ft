@@ -60,7 +60,7 @@
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "dompurify": "^2.3.6",
-    "engine.io": "^3.5.0",
+    "engine.io": "^6.1.3",
     "engine.io-client": "^3.5.1",
     "express": "^4.17.3",
     "express-fileupload": "^1.3.1",
