@@ -66,18 +66,19 @@ const SortCards = () => (
 );
 
 const sizeDisplay = {
-  "text": "Text-Only",
-  "small": "Low",
-  "normal": "Medium",
-  "large": "High",
+  text: "Text-Only",
+  small: "Low",
+  normal: "Medium",
+  large: "High",
 };
+// see https://scryfall.com/docs/api/images
 
 const CardsImageQuality = () => (
   <div className="card-quality">
     Card image quality:
     <div className='connected-container'>
       {Object.keys(sizeDisplay).map((size, index) => {
-        const isActive = size.toLowerCase() === App.state.cardSize
+        const isActive = size === App.state.cardSize
 
         return (
           <label key={index}
@@ -91,7 +92,7 @@ const CardsImageQuality = () => (
               name='card-size'
               onChange={e => App.save("cardSize", e.currentTarget.value)}
               type='radio'
-              value={size.toLowerCase()} />
+              value={size} />
             <div>{sizeDisplay[size]}</div>
           </label>
         )
