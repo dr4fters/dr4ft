@@ -54,9 +54,7 @@ function parse(content) {
 
 
   cards.card.forEach(c => {
-    console.log(c);
     const { textNodeName: setCode, num = 0, picurl = "", picURL = "", rarity } = c.set;
-    console.log(setCode, num, picurl, picURL, rarity);
     if (!/common|basic|uncommon|rare|mythic/i.test(rarity)) {
       throw new Error("<card> property <set> must contain an attribute rarity with one of common, basic, uncommon, rare or mythic");
     }
