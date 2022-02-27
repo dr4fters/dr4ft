@@ -17,7 +17,10 @@ require("./backend/data-watch");
 const app = express();
 
 // Middlewares
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(cors());
 app.use(fileUpload());
@@ -32,7 +35,7 @@ updateData();
 
 // Create server
 const server = http.createServer(app);
-const io = eio(server);
+const io = new eio.attach(server);
 io.on("connection", router);
 
 server.listen(config.PORT);

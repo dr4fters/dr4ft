@@ -22,6 +22,8 @@ export default class CardBase extends Component {
     }
 
     this.state = {
+      cardLang: App.state.cardLang,
+      cardSize: App.state.cardSize,
       url: this.getCardImage(DEFAULT),
       isFlipped: false, // this is relative to this.props.showFlipped
       imageErrored: false
@@ -71,6 +73,14 @@ export default class CardBase extends Component {
   }
 
   render () {
+    if (this.state.cardSize !== App.state.cardSize || this.state.cardLang !== App.state.cardLang) {
+      this.setState({
+        cardLang: App.state.cardLang,
+        cardSize: App.state.cardSize,
+        url: this.getCardImage(DEFAULT)
+      })
+    }
+
     const { card } = this.props;
     // at the moment for Text view, you can't see both sides of a card on hover
     // as the same card is passed into CardBaseText regardless mouseEntered

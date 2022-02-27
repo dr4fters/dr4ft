@@ -10,6 +10,7 @@
 
 .SelectSet {
   width: 300px;
+  max-width: calc(100vw - 30px);
   position: relative;
   font-family: 'Nunito Sans', sans-serif;
   box-sizing: border-box;
@@ -101,50 +102,47 @@
 
     border: 1px solid #089dff;
     border-radius: 4px;
+    width: 100%;
 
-    max-height: 300px;
+    // max-height: 300px;
     overflow-y: auto;
+    position: absolute;
+    z-index: 99999991;
   }
 
-  /**
-   * Options
-   */
   .SelectSet__options {
     list-style: none;
+    width: 100%
   }
 
-  /**
-   * Option row
-   */
   .SelectSet__row:not(:first-child) {
     border-top: 1px solid #eee;
   }
 
-  /**
-   * Option
-   */
   .SelectSet__option,
   .SelectSet__not-found {
-    display: grid;
-    justify-content: start;
-    align-content: center;
-    align-items: center;
-    grid-gap: 5px;
-
-    grid-auto-flow: column;
-    grid-template-columns: 24px 1fr auto;
-
     // display: block;
     height: 36px;
     width: 100%;
-    padding: 0 16px;
-    background: #fff;
-    border: none;
-    outline: none;
+
     font-family: 'Noto Sans', sans-serif;
     font-size: 14px;
     text-align: left;
     cursor: pointer;
+
+    padding: 0 16px;
+    background: #fff;
+    border: none;
+    outline: none;
+
+
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    // grid-auto-flow: column;
+    grid-gap: 5px;
+    // justify-content: start;
+    align-content: center;
+    align-items: center;
 
     i {
      justify-self: center;
@@ -158,7 +156,11 @@
   }
 
   .SelectSet__option {
+    color: rgba(0,0,0, 0.9);
+
+    padding: 0 12px;
     border-radius: 0;
+    margin: 0;
 
     &:not(.is-selected):hover {
       background: rgba(155, 47, 204, 0.15);

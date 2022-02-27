@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import App from "../app";
+import "./PlayersPanel.scss"
 
 const PlayersPanel = () => (
-  <fieldset className='fieldset'>
+  <fieldset className='PlayersPanel fieldset'>
     <legend className='legend game-legend'>Players ({App.state.players.length}/{App.state.gameSeats})</legend>
     <PlayersTable />
     <div id='self-time-fixed' hidden>
-      <u>Time Left</u>
+      <div className='label'>Time left</div>
       <div id='self-time-fixed-time' />
     </div>
   </fieldset>
@@ -66,7 +67,7 @@ const fixPackTimeToScreen = () => {
     const zoneRect = zone.getBoundingClientRect();
     const selfTimeRect = selfTimeFixed.getBoundingClientRect();
     selfTimeFixed.hidden = !(App.state.round > 0 && selfRect.top < 0);
-    selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width - 5}px`;
+    selfTimeFixed.style.left = `${zoneRect.right - selfTimeRect.width}px`;
     selfTimeFixed.style.top
     = zoneRect.top > 0
         ? `${zoneRect.top + 5}px`
