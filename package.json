@@ -99,7 +99,7 @@
     "css-loader": "^6.6.0",
     "eslint": "^8.10.0",
     "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-react": "^7.29.1",
+    "eslint-plugin-react": "^7.29.3",
     "mocha": "^9.2.1",
     "nodemon": "^2.0.15",
     "regenerator-runtime": "^0.13.9",
