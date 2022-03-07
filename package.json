@@ -85,7 +85,7 @@
     "utils": "git://github.com/dr4fters/utils.git",
     "uuid": "^8.3.2",
     "vanilla-toast": "^0.5.0",
-    "webpack": "^5.69.1",
+    "webpack": "^5.70.0",
     "webpack-merge": "^5.8.0",
     "weighted": "^1.0.0",
     "winston": "^3.6.0"
