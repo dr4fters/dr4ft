@@ -81,7 +81,7 @@ function parse(content) {
       pt = "",
       side = "a",
       type = "" } = root.version === "3" ? c : c.prop;
-    const [power, toughness] = pt.split("/");
+    const [power, toughness] = String(pt).split("/");
     const fixedColors = getTrueColors(root.version, color, colors);
     const fixedType = getTrueType(type);
     const fixedManaCost = addManaCostBrackets(String(manacost));
