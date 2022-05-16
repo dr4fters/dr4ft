@@ -22,21 +22,21 @@ jobs:
         node_version:
           - 12
           - lts/*
-          - current/*
+          - current
 
     runs-on: ubuntu-latest
     
-    #Allow failues for most recent Node release
-    continue-on-error: ${{matrix.node_version == 'current/*'}}
+    # Allow failues for most recent Node release
+    continue-on-error: ${{ matrix.node_version == 'current' }}
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{matrix.node_version}}
+          node-version: ${{ matrix.node_version }}
           cache: npm
 
       - name: Install
@@ -47,7 +47,7 @@ jobs:
 
 
   docker:
-    name: Docker image (lts-alpine)
+    name: Docker (lts-alpine)
 
     runs-on: ubuntu-latest
 
@@ -55,13 +55,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Build container from Dockerfile
+      - name: Build image from Dockerfile
         run: docker build --tag dr4ft-app .
 
-      - name: Run Docker container
-        run: docker run -d --name dr4ft -p 1337:1337 dr4ft-app
+      - name: Run container from image
+        run: docker run -d -p 1337:1337 --name dr4ft dr4ft-app
       
       # TODO: This needs probably some tweaking or can be tested further
       - name: Access Docker container
@@ -71,9 +71,9 @@ jobs:
         run: |
           docker --version
           echo
-          docker ps -a
-          echo
           docker images
+          echo
+          docker ps -a
           echo
           echo "Node version (dr4ft container)"
           docker run node:lts-alpine node --version
@@ -86,13 +86,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      #Use default Node version from GitHub Actions VM (Ubuntu)
-      #- name: Setup
-      #  uses: actions/setup-node@v2
-      #  with:
-      #    node-version: 12
+        uses: actions/checkout@v3
 
       - name: Install
         run: npm clean-install --ignore-scripts
