@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:16.15.0-alpine
 ENV NPM_CONFIG_LOGLEVEL warn
 
 # Install "git"
@@ -15,7 +15,7 @@ RUN chown dr4ftuser -R .
 USER dr4ftuser
 
 # Install the dependencies
-RUN npm install
+RUN npm ci
 
 # Publish the port 1337
 EXPOSE 1337
