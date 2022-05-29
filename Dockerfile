@@ -9,7 +9,24 @@ RUN apk update \
 WORKDIR /app
 
 # Add sources to /app
-COPY . .
+COPY LICENSE .
+COPY .babelrc .
+COPY .eslintrc.js .
+COPY .mocharc.yaml .
+COPY config/ config/
+COPY app.js .
+COPY app.json .
+COPY webpack.common.js .
+COPY webpack.dev.js .
+COPY webpack.prod.js .
+COPY package.json .
+COPY package-lock.json .
+COPY scripts/ scripts/
+COPY backend/ backend/
+COPY frontend/ frontend/
+# Needed for config/version.js
+COPY .git/ .git/
+
 RUN adduser -S dr4ftuser
 RUN chown dr4ftuser -R .
 USER dr4ftuser
