@@ -21,6 +21,7 @@ jobs:
         node_version:
           - 12
           - 14
+          - 16
 
     runs-on: ubuntu-latest
 
@@ -34,7 +35,7 @@ jobs:
           node-version: ${{matrix.node_version}}
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Test
         run: npm test
@@ -81,7 +82,7 @@ jobs:
           node-version: 12
 
       - name: Install
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
 
       - name: Run ESLint
         run: npm run lint
