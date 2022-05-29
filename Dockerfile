@@ -1,31 +1,30 @@
 FROM node:16.15.0-alpine
-ENV NPM_CONFIG_LOGLEVEL warn
 
-# Install "git"
-RUN apk update \
- && apk add alpine-sdk
+ARG VERSION_INFO=noVersion
+
+ENV NPM_CONFIG_LOGLEVEL warn
+ENV VERSION_INFO=$VERSION_INFO
 
 # Set working dir as /app
 WORKDIR /app
 
 # Add sources to /app
 COPY LICENSE .
+COPY .gitignore .
 COPY .babelrc .
 COPY .eslintrc.js .
 COPY .mocharc.yaml .
-COPY config/ config/
-COPY app.js .
-COPY app.json .
-COPY webpack.common.js .
-COPY webpack.dev.js .
-COPY webpack.prod.js .
 COPY package.json .
 COPY package-lock.json .
+COPY webpack.prod.js .
+COPY webpack.common.js .
+COPY webpack.dev.js .
+COPY app.json .
+COPY app.js .
+COPY config/ config/
 COPY scripts/ scripts/
 COPY backend/ backend/
 COPY frontend/ frontend/
-# Needed for config/version.js
-COPY .git/ .git/
 
 RUN adduser -S dr4ftuser
 RUN chown dr4ftuser -R .

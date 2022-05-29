@@ -1,24 +1,32 @@
-IMAGE_NAME = dr4ft-app
-CONTAINER_NAME = $(IMAGE_NAME)-container
+VERSION_INFO ?= $$(git describe --tags)
+IMAGE ?= dr4ft-app
+CONTAINER ?= $(IMAGE)-container
 
 
+# Show makefile help by default
 .DEFAULT_GOAL = help
 
 
 .PHONY: docker
 docker:  ## Build docker image
-	docker build -t $(IMAGE_NAME) .
+	@echo "Building with version info $(VERSION_INFO)"
+	docker build \
+	  --build-arg VERSION_INFO=$(VERSION_INFO) \
+		-t $(IMAGE) .
 
 
 .PHONY: docker-run
-docker-run:  ## Run app in docker container
-	docker run --name $(CONTAINER_NAME) -dp 1337:1337 $(IMAGE_NAME)
+docker-run: docker  ## Run app in docker container
+	docker run --name $(CONTAINER) -dp 1337:1337 $(IMAGE)
+	@echo "##########################################"
+	@echo "Dr4ft now running at http://localhost:1337"
+	@echo "##########################################"
 
 
 .PHONY: docker-stop
 docker-stop:  ## Stop running docker container
-	docker stop $(CONTAINER_NAME) > /dev/null 2>&1 || true
-	docker container rm $(CONTAINER_NAME) > /dev/null 2>&1 || true
+	docker stop $(CONTAINER) > /dev/null 2>&1 || true
+	docker container rm $(CONTAINER) > /dev/null 2>&1 || true
 
 
 .PHONY: docker-restart
@@ -27,7 +35,21 @@ docker-restart: docker-stop docker-run  ## Stop, re-build, then re-run docker co
 
 .PHONY: docker-logs
 docker-logs:  ## Follow logs from running docker container
-	docker logs -f $(CONTAINER_NAME)
+	docker logs -f $(CONTAINER)
+
+
+.PHONY: docker-test
+docker-test: docker  ## Run tests in docker image
+	docker run --rm \
+		--entrypoint npm \
+		$(IMAGE) run test:js
+
+
+.PHONY: docker-lint
+docker-lint: docker  ## Lint code in docker image
+	docker run --rm \
+		--entrypoint npm \
+		$(IMAGE) run lint
 
 
 # Output help string for each target.
