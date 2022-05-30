@@ -47,7 +47,7 @@ jobs:
 
 
   docker:
-    name: Docker (lts-alpine)
+    name: Docker
 
     runs-on: ubuntu-latest
 
@@ -61,22 +61,24 @@ jobs:
         run: docker build --tag dr4ft-app .
 
       - name: Run container from image
-        run: docker run -d -p 1337:1337 --name dr4ft dr4ft-app
+        run: docker run --detach --name dr4ft -p 1337:1337 dr4ft-app
       
-      # TODO: This needs probably some tweaking or can be tested further
-      - name: Access Docker container
+      # TODO: Extend this and test e.g. creating a game via API
+      - name: Access dr4ft page
         run: wget http://localhost:1337
 
       - name: Show information
         run: |
           docker --version
           echo
-          docker images
+          docker images dr4ft-app
           echo
-          docker ps -a
+          docker ps
           echo
-          echo "Node version (dr4ft container)"
-          docker run node:lts-alpine node --version
+          echo "Node version (dr4ft-app image)"
+          docker run dr4ft-app node --version
+          echo
+          docker top dr4ft
           
 
   lint:
