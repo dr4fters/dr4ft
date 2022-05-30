@@ -17,7 +17,7 @@ docker:  ## Build docker image
 
 
 .PHONY: docker-run
-docker-run: docker  ## Run app in docker container
+docker-run: docker-stop docker  ## Run app in docker container
 	docker run -d \
 		--name $(CONTAINER) \
 		--env "PORT=$(PORT)" \
@@ -32,10 +32,6 @@ docker-run: docker  ## Run app in docker container
 docker-stop:  ## Stop running docker container
 	docker stop $(CONTAINER) > /dev/null 2>&1 || true
 	docker container rm $(CONTAINER) > /dev/null 2>&1 || true
-
-
-.PHONY: docker-restart
-docker-restart: docker-stop docker-run  ## Stop, re-build, then re-run docker container
 
 
 .PHONY: docker-logs
