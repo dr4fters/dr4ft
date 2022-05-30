@@ -4,6 +4,7 @@ ARG VERSION_INFO=noVersion
 
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV VERSION_INFO=$VERSION_INFO
+ENV PORT=1337
 
 # Set working dir as /app
 WORKDIR /app
@@ -32,9 +33,6 @@ USER dr4ftuser
 
 # Install the dependencies
 RUN npm ci
-
-# Publish the port 1337
-EXPOSE 1337
 
 # Run the server
 ENTRYPOINT [ "npm", "start" ]

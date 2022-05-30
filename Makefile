@@ -1,6 +1,7 @@
 VERSION_INFO ?= $$(git describe --tags)
 IMAGE ?= dr4ft-app
 CONTAINER ?= $(IMAGE)-container
+PORT ?= 1337
 
 
 # Show makefile help by default
@@ -17,9 +18,13 @@ docker:  ## Build docker image
 
 .PHONY: docker-run
 docker-run: docker  ## Run app in docker container
-	docker run --name $(CONTAINER) -dp 1337:1337 $(IMAGE)
+	docker run -d \
+		--name $(CONTAINER) \
+		--env "PORT=$(PORT)" \
+		-p $(PORT):$(PORT) \
+		$(IMAGE)
 	@echo "##########################################"
-	@echo "Dr4ft now running at http://localhost:1337"
+	@echo "Dr4ft now running at http://localhost:$(PORT)"
 	@echo "##########################################"
 
 
@@ -34,22 +39,28 @@ docker-restart: docker-stop docker-run  ## Stop, re-build, then re-run docker co
 
 
 .PHONY: docker-logs
-docker-logs:  ## Follow logs from running docker container
-	docker logs -f $(CONTAINER)
+FOLLOW := -f
+docker-logs:  ## Show logs from running docker container
+	docker logs $(FOLLOW) $(CONTAINER)
 
 
 .PHONY: docker-test
-docker-test: docker  ## Run tests in docker image
+docker-test: docker  ## Run tests in docker container
 	docker run --rm \
 		--entrypoint npm \
 		$(IMAGE) run test:js
 
 
 .PHONY: docker-lint
-docker-lint: docker  ## Lint code in docker image
+docker-lint: docker  ## Lint code in docker container
 	docker run --rm \
 		--entrypoint npm \
 		$(IMAGE) run lint
+
+
+.PHONY: docker-clean
+docker-clean: docker-stop  ## Remove any built docker images
+	docker rmi -f $$(docker images -q $(IMAGE)) > /dev/null 2>&1 || true
 
 
 # Output help string for each target.

@@ -15,7 +15,7 @@ const getVersionInfo = () => {
     console.log(err);
     return "noVersion";
   }
-}
+};
 
 const versionInfo = getVersionInfo();
 const versionInfoParts = versionInfo.split("-");

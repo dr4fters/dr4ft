@@ -13,50 +13,26 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    name: Run tests
-
-    strategy:
-      matrix:
-        node_version:
-          - 12
-          - 14
-          - 16
+  verify:
+    name: Verify
 
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup
-        uses: actions/setup-node@v2.5.1
-        with:
-          node-version: ${{matrix.node_version}}
-
-      - name: Install
-        run: npm ci
-
-      - name: Test
-        run: npm test
-
-
-  docker:
-    name: Test docker image
-
-    runs-on: ubuntu-latest
-
-    continue-on-error: true
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build
-        run: docker build --build-arg VERSION_INFO=$(git describe --tags) --tag dr4ft-app .
+        run: make docker
 
-      - name: Run
-        run: docker run -dp 1337:1337 dr4ft-app
+      - name: Lint
+        run: make docker-lint
+
+      - name: Test
+        run: make docker-test
+
+      - name: Run docker image
+        run: make docker-run
 
       - name: Show info
         run: |
@@ -65,24 +41,6 @@ jobs:
           docker ps -a
           echo
           docker images
+          echo
+          make docker-logs FOLLOW=
 
-
-  lint:
-    name: Run ESLint
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup
-        uses: actions/setup-node@v2.5.1
-        with:
-          node-version: 16
-
-      - name: Install
-        run: npm ci --ignore-scripts
-
-      - name: Run ESLint
-        run: npm run lint
