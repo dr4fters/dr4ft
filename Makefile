@@ -12,7 +12,7 @@ PORT ?= 1337
 docker:  ## Build docker image
 	@echo "Building with version info $(VERSION_INFO)"
 	docker build \
-	  --build-arg VERSION_INFO=$(VERSION_INFO) \
+		--build-arg VERSION_INFO=$(VERSION_INFO) \
 		-t $(IMAGE) .
 
 

@@ -3,7 +3,6 @@ FROM node:16.15.0-alpine
 ARG VERSION_INFO=noVersion
 
 ENV NPM_CONFIG_LOGLEVEL warn
-ENV VERSION_INFO=$VERSION_INFO
 ENV PORT=1337
 
 # Set working dir as /app
@@ -32,7 +31,10 @@ RUN chown dr4ftuser -R .
 USER dr4ftuser
 
 # Install the dependencies
-RUN npm ci
+RUN npm ci --ignore-scripts
+
+ENV VERSION_INFO=$VERSION_INFO
+RUN npm run postinstall
 
 # Run the server
 ENTRYPOINT [ "npm", "start" ]
