@@ -1,6 +1,4 @@
-**/.git
-**/.github
-data
-built
-doc
+data/*
+!data/scores.json
 node_modules
+frontend/lib
