@@ -64,7 +64,7 @@ It supports all their features, and many more.
 
 ### Native
 
-1) Install [Node.js](https://nodejs.org/en/download/) >= 12.0.0
+1) Install [Node.js](https://nodejs.org/en/download/) >= 16.0.0. Alternatively, install [nvm](https://github.com/nvm-sh/nvm) and then run `nvm use` in this repo, which will install the correct Node version for this repo as defined in the `.nvmrc` file.
 2) Run<br>
 `$ npm ci`<br>
 `$ npm run build`<br>
