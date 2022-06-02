@@ -17,6 +17,7 @@ jobs:
     name: Run tests
 
     strategy:
+      fail-fast: false
       matrix:
         node_version:
           - 14
