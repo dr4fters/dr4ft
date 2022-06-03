@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build
-        run: make docker
+        run: make docker CACHE_OFF=1
 
       - name: Lint
         run: make docker-lint

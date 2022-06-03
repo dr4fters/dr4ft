@@ -4,6 +4,7 @@ data
 built
 doc
 node_modules
+Makefile
 
 # Vim swap files
 **/.*.sw[po]

@@ -7,11 +7,16 @@ PORT ?= 1337
 # Show makefile help by default
 .DEFAULT_GOAL = help
 
-
+CACHE_OFF=0
+ifeq ($(CACHE_OFF), 1)
+	NO_CACHE_FLAG = --no-cache
+else
+	NO_CACHE_FLAG =
+endif
 .PHONY: docker
 docker:  ## Build docker image
 	@echo "Building with version info $(VERSION_INFO)"
-	docker build \
+	docker build $(NO_CACHE_FLAG) \
 		--build-arg VERSION_INFO=$(VERSION_INFO) \
 		-t $(IMAGE) .
 
