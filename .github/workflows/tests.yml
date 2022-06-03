@@ -35,12 +35,9 @@ jobs:
           node-version: ${{matrix.node_version}}
 
       # See https://github.com/npm/cli/issues/2610
-      - name: Hack for Node 14
-        run: |
-          if [[ "${{matrix.node_version}}" = "14" ]]; then
-            sed -i 's/git+ssh/git+https/g' package-lock.json
-          fi
-          exit 0
+      - name: Workaround for Node 14
+        if: ${{matrix.node_version}} = "14"
+        run: sed -i 's/git+ssh/git+https/g' package-lock.json
 
       - name: Install
         run: npm ci
