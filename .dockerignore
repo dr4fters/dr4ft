@@ -4,3 +4,6 @@ data
 built
 doc
 node_modules
+
+# Vim swap files
+**/.*.sw[po]
