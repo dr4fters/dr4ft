@@ -3,7 +3,7 @@ const Game = require("./game");
 const Rooms = require("./rooms");
 const Sock = require("./sock");
 const util = require("./util");
-const logger = require("./logger");
+const logger = require("./core/logger");
 
 function create(opts) {
   try {

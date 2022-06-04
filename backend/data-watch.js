@@ -1,6 +1,6 @@
 const fs = require("fs");
-const {reloadData} = require("./data");
-const logger = require("./logger");
+const {reloadData} = require("./core/data");
+const logger = require("./core/logger");
 
 /**
  * Add a watch on fs to get updated even from external process

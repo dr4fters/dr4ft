@@ -1,12 +1,11 @@
 const fs = require("fs");
 const express = require("express");
 const setsRouter = express.Router();
-const { getSets, saveSetAndCards } = require("../data");
-const doSet = require("../import/doSet");
-const logger = require("../logger");
-const parser = require("../import/xml/parser");
+const { getDataDir, getSets, saveSetAndCards } = require("../core/data");
+const doSet = require("../core/import/doSet");
+const logger = require("../core/logger");
+const parser = require("../core/import/xml/parser");
 const path = require("path");
-const {getDataDir} = require("../data");
 
 const customDataDir = path.join(getDataDir(), "custom");
 if (!fs.existsSync(customDataDir)) {

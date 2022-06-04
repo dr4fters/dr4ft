@@ -3,7 +3,7 @@
 const assert = require("assert");
 const Pool = require("./pool");
 const {range, times, constant} = require("lodash");
-const {getPlayableSets} = require("./data");
+const {getPlayableSets} = require("./core/data");
 
 const assertPackIsCorrect = (got) => {
   const cardIds = new Set();

@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-const logger = require("../backend/logger");
-const { saveSetsAndCards, getDataDir } = require("../backend/data");
-const doSet = require("../backend/import/doSet");
+const logger = require("../backend/core/logger");
+const { saveSetsAndCards, getDataDir } = require("../backend/core/data");
+const doSet = require("../backend/core/import/doSet");
 
 const updateDatabase = () => {
   let allCards = {};

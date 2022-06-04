@@ -1,5 +1,5 @@
-const {getCardByUuid, getSet, getBoosterRules} = require("./data");
-const logger = require("./logger");
+const {getCardByUuid, getSet, getBoosterRules} = require("./core/data");
+const logger = require("./core/logger");
 const weighted = require("weighted");
 const {sample, sampleSize, random, concat} = require("lodash");
 

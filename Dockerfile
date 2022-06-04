@@ -17,6 +17,14 @@ COPY --chown=dr4ftuser:dr4ftgroup package-lock.json .
 # Install the dependencies
 RUN npm ci --ignore-scripts
 
+# Update card database
+COPY --chown=dr4ftuser:dr4ftgroup backend/core backend/core
+COPY --chown=dr4ftuser:dr4ftgroup config/ config/
+COPY --chown=dr4ftuser:dr4ftgroup scripts/ scripts/
+RUN npm run download_allsets
+RUN npm run download_booster_rules
+RUN chown dr4ftuser -R data/
+
 # Add sources to /app
 COPY --chown=dr4ftuser:dr4ftgroup LICENSE .
 COPY --chown=dr4ftuser:dr4ftgroup .gitignore .
@@ -28,17 +36,12 @@ COPY --chown=dr4ftuser:dr4ftgroup webpack.common.js .
 COPY --chown=dr4ftuser:dr4ftgroup webpack.dev.js .
 COPY --chown=dr4ftuser:dr4ftgroup app.json .
 COPY --chown=dr4ftuser:dr4ftgroup app.js .
-COPY --chown=dr4ftuser:dr4ftgroup config/ config/
-COPY --chown=dr4ftuser:dr4ftgroup scripts/ scripts/
 COPY --chown=dr4ftuser:dr4ftgroup backend/ backend/
 COPY --chown=dr4ftuser:dr4ftgroup frontend/ frontend/
 
-ENV VERSION_INFO=$VERSION_INFO
-RUN npm run postinstall
-
-RUN chown dr4ftuser -R data/
-
+RUN npm run webpack
 USER dr4ftuser
 
+ENV VERSION_INFO=$VERSION_INFO
 # Run the server
 ENTRYPOINT [ "npm", "start" ]

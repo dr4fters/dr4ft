@@ -3,7 +3,7 @@ const {pull, find, pullAllWith, remove, times, sample, chain} = require("lodash"
 const Player = require("./index");
 const util = require("../util");
 const hash = require("../hash");
-const logger = require("../logger");
+const logger = require("../core/logger");
 
 module.exports = class Human extends Player {
   constructor(sock, picksPerPack, burnsPerPack, gameId) {
