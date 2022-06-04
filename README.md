@@ -64,9 +64,9 @@ It supports all their features, and many more.
 
 ### Native
 
-1) Install [Node.js](https://nodejs.org/en/download/) >= 12.0.0
+1) Install [Node.js](https://nodejs.org/en/download/) >= 16.0.0. Alternatively, install [nvm](https://github.com/nvm-sh/nvm) and then run `nvm use` in this repo, which will install the correct Node version for this repo as defined in the `.nvmrc` file.
 2) Run<br>
-`$ npm install`<br>
+`$ npm ci`<br>
 `$ npm run build`<br>
 `$ npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
@@ -131,7 +131,7 @@ Breakpoints for the frontend should be set in your browser console.
 
 Be a part of this project! You can run the test using the following.
 
-1. Install dependencies from package.json by running `npm install`
+1. Install dependencies from package.json by running `npm ci`
 2. Run the test via `npm test`
 3. Make some fun new modules!
 
