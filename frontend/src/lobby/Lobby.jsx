@@ -25,7 +25,7 @@ export default class Lobby extends Component {
           <Header/>
           <GamesPanel roomInfo={roomInfo}/>
           <FileUpload />
-          <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>
+          {STRINGS.PAGE_SECTIONS.MOTD && <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>}
           {STRINGS.BRANDING.PAYPAL}
           {STRINGS.PAGE_SECTIONS.FOOTER}
           <Version version={serverVersion} MTGJSONVersion={mtgJsonVersion} boosterRulesVersion={boosterRulesVersion}/>
