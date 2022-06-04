@@ -1,4 +1,4 @@
-name: Automated tests
+name: CI
 
 on:
   push:
@@ -13,52 +13,70 @@ on:
       - '**.md'
 
 jobs:
-  node:
+  node_nvmrc:
+    name: Node .nvmrc
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Install package.json
+        run: npm clean-install --ignore-scripts
+        
+      - name: Run postinstall scripts
+        run: npm run postinstall
+
+      - name: Run tests
+        run: npm run test:js
+
+
+  node_active_versions:
     name: Node ${{ matrix.node_version }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.node_version == 'current' }}
 
     strategy:
       fail-fast: false
       matrix:
         node_version:
+          - lts/-1
           - lts/*
           - current
 
-    runs-on: ubuntu-latest
-    
-    # Allow failues for most recent Node release
-    continue-on-error: ${{ matrix.node_version == 'current' }}
-    
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
           cache: npm
 
-      # See https://github.com/npm/cli/issues/2610
-      - name: Workaround for Node 14
-        if: matrix.node_version == '14'
-        run: sed -i 's/git+ssh/git+https/g' package-lock.json
+      - name: Install package.json
+        run: npm clean-install --ignore-scripts
+        
+      - name: Run postinstall scripts
+        run: npm run postinstall
 
-      - name: Install
-        run: npm clean-install
-
-      - name: Test
-        run: npm run test
+      - name: Run tests
+        run: npm run test:js
 
 
   docker:
     name: Docker
-
     runs-on: ubuntu-latest
-
     continue-on-error: true
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Build image from Dockerfile
@@ -83,22 +101,29 @@ jobs:
           docker run dr4ft-app node --version
           echo
           docker top dr4ft
-          
+
 
   lint:
     name: ESLint
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Install package.json
         run: npm clean-install --ignore-scripts
 
       - name: Run ESLint
         run: |
+          echo "Node version"
           node --version
-          echo
+          echo "ESLint version"
+          npx eslint --version
           npm run lint
