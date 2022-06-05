@@ -45,4 +45,3 @@ jobs:
           docker images
           echo
           make docker-logs FOLLOW=
-
