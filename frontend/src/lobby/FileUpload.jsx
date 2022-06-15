@@ -16,6 +16,7 @@ const FileUpload = () => {
   const [files, setFiles] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // TODO: Custom set uploads have been causing crashes - needs debugging, only allow XML for now
   // const allowed = ["application/json", "text/xml"]
   // const label = `Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
   //   JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`
@@ -26,13 +27,6 @@ const FileUpload = () => {
   return (
     <fieldset className='fieldset'>
       <legend className='legend'>Upload Custom Set</legend>
-
-      <p>
-        <i className="ion ion-android-alert" style={{ fontSize: 20, paddingRight: 5 }} />
-        Custom set uploads have been causing crashes.
-        While we debug this only XML uploads will be allowed
-      </p>
-
       { allowed.length &&
       <FilePond
         server={{
