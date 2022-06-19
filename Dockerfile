@@ -8,10 +8,9 @@ ENV PORT=1337
 # Set working dir as /app
 WORKDIR /app
 
+# Install the dependencies
 COPY --chown=node package.json .
 COPY --chown=node package-lock.json .
-
-# Install the dependencies
 RUN npm ci --ignore-scripts
 
 # Update card database
