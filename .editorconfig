@@ -9,3 +9,7 @@ trim_trailing_whitespace = true
 [*.{js,jsx,css,js.default}]
 indent_size = 2
 indent_style = space
+
+[Makefile]
+# Makefiles require tabs for indentation
+indent_style = tab

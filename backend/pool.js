@@ -1,6 +1,6 @@
 const {sample, shuffle, random, range, times, constant, pull} = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
-const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
+const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./core/data");
 const draftId = require("uuid").v1;
 
 /**

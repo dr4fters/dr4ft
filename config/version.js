@@ -1,16 +1,23 @@
 /* eslint no-console: "off" */
 "use strict";
 
-const execSync = require("child_process").execSync;
+const getVersionInfo = () => {
+  if (process.env.VERSION_INFO) {
+    return process.env.VERSION_INFO;
+  }
 
-let versionInfo = "noVersion";
-try {
-  versionInfo = execSync("git describe --tags")
-    .toString().trim();
-} catch(err) {
-  console.log(err);
-}
+  try {
+    const execSync = require("child_process").execSync;
+    return execSync("git describe --tags")
+      .toString()
+      .trim();
+  } catch(err) {
+    console.log(err);
+    return "noVersion";
+  }
+};
 
+const versionInfo = getVersionInfo();
 const versionInfoParts = versionInfo.split("-");
 
 const VERSION =

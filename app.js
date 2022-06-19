@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const {spawn} = require("child_process");
 
 const {app: config, version} = require("./config");
-const logger = require("./backend/logger");
+const logger = require("./backend/core/logger");
 const router = require("./backend/router");
 const apiRouter = require("./backend/api/");
 require("./backend/data-watch");

@@ -8,9 +8,9 @@ const Human = require("./player/human");
 const Pool = require("./pool");
 const Room = require("./room");
 const Rooms = require("./rooms");
-const logger = require("./logger");
+const logger = require("./core/logger");
 const Sock = require("./sock");
-const {saveDraftStats, getDataDir} = require("./data");
+const {saveDraftStats, getDataDir} = require("./core/data");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber, picksPerPack }) {

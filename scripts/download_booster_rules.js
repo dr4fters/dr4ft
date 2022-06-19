@@ -1,6 +1,6 @@
 const axios = require("axios");
-const logger = require("../backend/logger");
-const {getBoosterRulesVersion, getCardByUuid, getSet, saveBoosterRules} = require("../backend/data");
+const logger = require("../backend/core/logger");
+const {getBoosterRulesVersion, getCardByUuid, getSet, saveBoosterRules} = require("../backend/core/data");
 
 const URL = "https://raw.githubusercontent.com/taw/magic-sealed-data/master/sealed_basic_data.json";
 const REPO_URL = "https://api.github.com/repos/taw/magic-sealed-data/git/refs/heads/master";

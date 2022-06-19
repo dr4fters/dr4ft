@@ -4,9 +4,9 @@ const https = require("https");
 const unzip = require("unzipper");
 const semver = require("semver");
 const updateDatabase = require("./update_database");
-const logger = require("../backend/logger");
-const { refresh: refreshVersion } = require("../backend/mtgjson");
-const {getDataDir} = require("../backend/data");
+const logger = require("../backend/core/logger");
+const { refresh: refreshVersion } = require("../backend/core/mtgjson");
+const {getDataDir} = require("../backend/core/data");
 
 const mtgJsonURL = "https://www.mtgjson.com/api/v5/AllSetFiles.zip";
 const versionURL = "https://www.mtgjson.com/api/v5/Meta.json";

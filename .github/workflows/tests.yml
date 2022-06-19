@@ -13,55 +13,28 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    name: Run tests
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node_version:
-          - 14
-          - 16
+  verify:
+    name: Verify
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Setup
-        uses: actions/setup-node@v2.5.1
         with:
-          node-version: ${{matrix.node_version}}
-
-      # See https://github.com/npm/cli/issues/2610
-      - name: Workaround for Node 14
-        if: matrix.node_version == '14'
-        run: sed -i 's/git+ssh/git+https/g' package-lock.json
-
-      - name: Install
-        run: npm ci
-
-      - name: Test
-        run: npm test
-
-
-  docker:
-    name: Test docker image
-
-    runs-on: ubuntu-latest
-
-    continue-on-error: true
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+          fetch-depth: 0
 
       - name: Build
-        run: docker build --tag dr4ft-app .
+        run: make docker DOCKER_CACHE_OFF=1
 
-      - name: Run
-        run: docker run -dp 1337:1337 dr4ft-app
+      - name: Lint
+        run: make docker-lint
+
+      - name: Test
+        run: make docker-test
+
+      - name: Run docker image
+        run: make docker-run
 
       - name: Show info
         run: |
@@ -70,24 +43,5 @@ jobs:
           docker ps -a
           echo
           docker images
-
-
-  lint:
-    name: Run ESLint
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup
-        uses: actions/setup-node@v2.5.1
-        with:
-          node-version: 16
-
-      - name: Install
-        run: npm ci --ignore-scripts
-
-      - name: Run ESLint
-        run: npm run lint
+          echo
+          make docker-logs FOLLOW=

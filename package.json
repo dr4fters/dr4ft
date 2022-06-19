@@ -33,10 +33,11 @@
     "lint": "eslint --ignore-path .gitignore .",
     "test": "npm run postinstall && npm run test:js",
     "test:js": "mocha \"./{,!(node_modules|built)/**/}*.spec.*js\" --exit --require @babel/register",
-    "postinstall": " npm run download_allsets && npm run download_booster_rules && webpack --config webpack.prod.js",
+    "postinstall": "npm run download_allsets && npm run download_booster_rules && webpack --config webpack.prod.js",
     "update_database": "node scripts/update_database ",
     "download_allsets": "node scripts/download_allsets",
-    "download_booster_rules": "node scripts/download_booster_rules"
+    "download_booster_rules": "node scripts/download_booster_rules",
+    "webpack": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "@babel/cli": "^7.17.6",

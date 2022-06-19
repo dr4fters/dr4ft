@@ -1,6 +1,6 @@
 const { createLogger, format, transports } = require("winston");
 const { combine, timestamp, printf } = format;
-const { logger: config } = require("../config");
+const { logger: config } = require("../../config");
 
 const logger = createLogger({
   level: config.level,

@@ -1,7 +1,7 @@
 const {sample, pull, times} = require("lodash");
 
 const Player = require("./index");
-const logger = require("../logger");
+const logger = require("../core/logger");
 
 module.exports = class Bot extends Player {
   constructor(picksPerPack, burnsPerPack, gameId) {

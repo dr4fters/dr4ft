@@ -1,4 +1,11 @@
-data/*
-!data/scores.json
+**/.git
+**/.github
+README.md
+data
+built
+doc
 node_modules
-frontend/lib
+Makefile
+
+# Vim swap files
+**/.*.sw[po]

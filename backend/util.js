@@ -1,6 +1,6 @@
 const assert = require("assert");
 const {countBy} = require("lodash");
-const { getSet, getCardByName } = require("./data");
+const { getSet, getCardByName } = require("./core/data");
 const BASICS = [
   "Forest",
   "Island",

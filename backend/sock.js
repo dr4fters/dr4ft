@@ -1,7 +1,7 @@
 const { EventEmitter } = require("events");
 const { app: { DEFAULT_USERNAME } } = require("../config");
-const { getPlayableSets, getLatestReleasedSet, getBoosterRulesVersion } = require("./data");
-const { getVersion } = require("./mtgjson");
+const { getPlayableSets, getLatestReleasedSet, getBoosterRulesVersion } = require("./core/data");
+const { getVersion } = require("./core/mtgjson");
 
 // All sockets currently connected to the server.
 let allSocks = [];
