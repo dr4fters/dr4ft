@@ -20,12 +20,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Build
-        run: make docker CACHE_OFF=1
+        run: make docker DOCKER_CACHE_OFF=1
 
       - name: Lint
         run: make docker-lint
