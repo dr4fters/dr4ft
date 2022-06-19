@@ -21,9 +21,9 @@ RUN npm ci --ignore-scripts
 COPY --chown=dr4ftuser:dr4ftgroup backend/core backend/core
 COPY --chown=dr4ftuser:dr4ftgroup config/ config/
 COPY --chown=dr4ftuser:dr4ftgroup scripts/ scripts/
-RUN npm run download_allsets
-RUN npm run download_booster_rules
-RUN chown dr4ftuser -R data/
+RUN npm run download_allsets \
+ && npm run download_booster_rules \
+ && chown dr4ftuser -R data/
 
 # Add sources to /app
 COPY --chown=dr4ftuser:dr4ftgroup LICENSE .
