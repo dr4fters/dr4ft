@@ -16,7 +16,7 @@ const FileUpload = () => {
   const [files, setFiles] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // TODO: Custom set uploads have been causing crashes - needs debugging, only allow XML for now
+  // TODO: Custom set uploads in JSON format have been causing crashes (#1432) - needs debugging, only allow XML for now
   // const allowed = ["application/json", "text/xml"]
   // const label = `Drag & Drop your files here, or <span class="filepond--label-action">Browse</span><br/>
   //   JSON (MTGJSON formatted, v4) and XML (Cockatrice formatted, v3 & v4) are supported.`
