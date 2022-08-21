@@ -10,7 +10,7 @@ const opts = {
     },
     digest(digest) {
       // 10 digits of base 16 -> 8 digits of base 32
-      return parseInt(digest.slice(0, 10), 16).toString(32);
+      return parseInt(digest.slice(0, 10), 16).toString(32).padStart(8, "0");
     }
   },
 };
