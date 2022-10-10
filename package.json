@@ -63,7 +63,7 @@
     "engine.io-client": "^6.1.1",
     "express": "^4.17.3",
     "express-fileupload": "^1.3.1",
-    "fast-xml-parser": "^4.0.5",
+    "fast-xml-parser": "^4.0.11",
     "filepond": "^4.30.3",
     "filepond-plugin-file-validate-size": "^2.2.5",
     "filepond-plugin-file-validate-type": "^1.2.6",
