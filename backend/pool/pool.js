@@ -1,6 +1,6 @@
-const {sample, shuffle, random, range, times, constant, pull} = require("lodash");
+const { sample, shuffle, random, range, times, constant, pull } = require("lodash");
 const boosterGenerator = require("./boosterGenerator");
-const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("./data");
+const { getCardByUuid, getCardByName, getRandomSet, getExpansionOrCoreModernSets: getModernList, getExansionOrCoreSets: getSetsList } = require("../data");
 const draftId = require("uuid").v1;
 
 /**
@@ -38,7 +38,7 @@ const replaceRNGSet = (sets) => (
 );
 
 const SealedNormal = ({ playersLength, sets }) => (
-  times(playersLength , constant(replaceRNGSet(sets)))
+  times(playersLength, constant(replaceRNGSet(sets)))
     .map(sets => sets.flatMap(boosterGenerator))
     .map(addCardIdsToBoosterCards)
 );
@@ -96,7 +96,7 @@ const DraftChaos = ({ playersLength, packsNumber = 3, modernOnly, totalChaos }) 
 };
 
 const SealedChaos = ({ playersLength, packsNumber = 6, modernOnly, totalChaos }) => {
-  const pool = DraftChaos({playersLength, packsNumber, modernOnly, totalChaos});
+  const pool = DraftChaos({ playersLength, packsNumber, modernOnly, totalChaos });
   return range(playersLength)
     .map(() => pool.splice(0, packsNumber).flat())
     .map(addCardIdsToBoosterCards);

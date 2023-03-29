@@ -1,7 +1,7 @@
-const {getCardByUuid, getSet, getBoosterRules} = require("./data");
-const logger = require("./logger");
+const { getCardByUuid, getSet, getBoosterRules } = require("../data");
+const logger = require("../logger");
 const weighted = require("weighted");
-const {sample, sampleSize, random, concat} = require("lodash");
+const { sample, sampleSize, random, concat } = require("lodash");
 
 const makeBoosterFromRules = (setCode) => {
   const set = getSet(setCode);
@@ -17,9 +17,9 @@ const makeBoosterFromRules = (setCode) => {
   try {
     const { boosters, totalWeight, sheets } = setRules;
     const boosterSheets = weighted(
-      boosters.map(({sheets}) => sheets),
-      boosters.map(({weight}) => weight),
-      {total: totalWeight});
+      boosters.map(({ sheets }) => sheets),
+      boosters.map(({ weight }) => weight),
+      { total: totalWeight });
     return Object.entries(boosterSheets)
       .flatMap(chooseCards(sheets));
   } catch (error) {
@@ -65,7 +65,7 @@ const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
   return randomCards.map(toCard(sheetCode));
 };
 
-function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPick) {
+function getRandomCardsWithColorBalance({ cardsByColor, cards }, numberOfCardsToPick) {
   const ret = new Set();
 
   // Pick one card of each color
@@ -90,7 +90,7 @@ function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPi
   return [...ret];
 }
 
-function getRandomCards({cards, totalWeight: total}, numberOfCardsToPick) {
+function getRandomCards({ cards, totalWeight: total }, numberOfCardsToPick) {
   const ret = new Set();
 
   // Fast way to avoid duplicate
