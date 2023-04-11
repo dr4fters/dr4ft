@@ -110,5 +110,30 @@ module.exports = {
     assert(typeof shufflePlayers === "boolean", "shufflePlayers must be a boolean");
     assert(useTimer && ["Fast", "Moderate", "Slow", "Leisurely"].includes(timerLength),
       "timerLength must be Fast, Moderate, Slow or Leisurely");
+  },
+
+  // distributes elements in arr1 and arr2 as evenly as possible using a method
+  // inspired by Bresenham's line algorithm
+  distributeArrays(arr1, arr2) {
+    assert(Array.isArray(arr1), "arr1 must be an array");
+    assert(Array.isArray(arr2), "arr2 must be an array");
+
+    let arrX = (arr1.length >= arr2.length) ? arr1 : arr2;
+    let arrY = (arr1.length >= arr2.length) ? arr2 : arr1;
+    let out = [];
+
+    let diff = (2 * arrY.length) - arrX.length;
+    let y = 0;
+    for (let x = 0; x < arrX.length; x++) {
+      if (diff > 0) {
+        out.push( arrY[y] );
+        y++;
+        diff -= (2 * arrX.length);
+      }
+      out.push( arrX[x] );
+      diff += (2 * arrY.length);
+    }
+
+    return out;
   }
 };
