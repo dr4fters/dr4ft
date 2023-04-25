@@ -77,7 +77,7 @@ const getCard = (cardCode) => {
 
 const getUuid = (cardCode) => {
   const [setCode, cardNumber] = cardCode.split(":");
-  const set = getSet(setCode.toUpperCase());
+  const set = getSet(setCode);
   if (!set) {
     logger.warn("unknown setCode: " + setCode.toUpperCase());
     return;
