@@ -53,8 +53,8 @@ const getSet = (setCode) => {
   const set = getSets()[setCode.toUpperCase()];
   if (set) return set;
 
-  console.log("unknown set:", setCode)
-  console.log("sets:", Object.keys(getSets()))
+  console.log("unknown set:", setCode);
+  console.log("sets:", Object.keys(getSets()));
 };
 
 const getCards = () => {
