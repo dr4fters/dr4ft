@@ -37,9 +37,9 @@ async function fetch() {
         acc[code] = {
           balance_colors,
           totalWeight,
-          cards: Object.entries(cards).reduce((acc, [cardCode, weigth]) => {
+          cards: Object.entries(cards).reduce((acc, [cardCode, weight]) => {
             const uuid = getUuid(cardCode);
-            acc[uuid] = weigth;
+            if (uuid) acc[uuid] = weight;
             return acc;
           },{}),
           cardsByColor: Object.entries(cards).reduce((acc, [cardCode]) => {
@@ -77,8 +77,12 @@ const getCard = (cardCode) => {
 
 const getUuid = (cardCode) => {
   const [setCode, cardNumber] = cardCode.split(":");
-  const { cardsByNumber } = getSet(setCode.toUpperCase());
-  return cardsByNumber[cardNumber] || cardsByNumber[parseInt(cardNumber)] || cardsByNumber[cardNumber.toLowerCase()];
+  const set = getSet(setCode.toUpperCase());
+  if (!set) {
+    logger.warn("unknown setCode: " + setCode.toUpperCase());
+    return;
+  }
+  return set.cardsByNumber[cardNumber] || set.cardsByNumber[parseInt(cardNumber)] || set.cardsByNumber[cardNumber.toLowerCase()];
 };
 
 module.exports = fetch;
