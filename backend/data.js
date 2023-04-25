@@ -54,7 +54,7 @@ const getSet = (setCode) => {
   if (set) return set;
 
   console.log("unknown set:", setCode);
-  console.log("sets:", Object.keys(getSets()));
+  console.log("sets:", Object.keys(getSets()).join(","));
 };
 
 const getCards = () => {
