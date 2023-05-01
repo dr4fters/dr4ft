@@ -11,6 +11,7 @@ const Rooms = require("./rooms");
 const logger = require("./logger");
 const Sock = require("./sock");
 const {saveDraftStats, getDataDir} = require("./data");
+const {distributeArrays} = require("./util");
 
 module.exports = class Game extends Room {
   constructor({ hostId, title, seats, type, sets, cube, isPrivate, modernOnly, totalChaos, chaosPacksNumber, picksPerPack }) {
@@ -556,18 +557,21 @@ module.exports = class Game extends Room {
       Object.assign(this, { addBots, useTimer, timerLength, shufflePlayers });
       this.renew();
 
-      if (this.shouldAddBots()) {
-        while (this.players.length < this.seats) {
-          const burnsPerPack = this.type === "cube draft"
-            ? this.cube.burnsPerPack
-            : 0;
-          this.players.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
-          this.bots++;
-        }
-      }
-
       if (shufflePlayers) {
         this.players = shuffle(this.players);
+      }
+
+      if (this.shouldAddBots()) {
+        const burnsPerPack = this.type === "cube draft"
+          ? this.cube.burnsPerPack
+          : 0;
+
+        let bots = [];
+        for (let i = 0; i < (this.seats - this.players.length); i++) {
+          bots.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
+        }
+        this.bots += bots.length;
+        this.players = distributeArrays(this.players, bots);
       }
 
       this.createPool();
