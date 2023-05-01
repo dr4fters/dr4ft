@@ -36,19 +36,9 @@ jobs:
       - name: Run tests
         run: npm run test:js
 
-
-  node_active_versions:
-    name: Node ${{ matrix.node_version }}
+  node_package:
+    name: Node package.json
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.node_version == 'current' }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node_version:
-          - lts/-1
-          - lts/*
-          - current
 
     steps:
       - name: Checkout repository
@@ -57,7 +47,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version-file: 'package.json'
           cache: npm
 
       - name: Install package.json
@@ -68,6 +58,38 @@ jobs:
 
       - name: Run tests
         run: npm run test:js
+
+#  node_active_versions:
+#    name: Node ${{ matrix.node_version }}
+#    runs-on: ubuntu-latest
+#    continue-on-error: ${{ matrix.node_version == 'current' }}
+#
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        node_version:
+#          - lts/-1
+#          - lts/*
+#          - current
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node_version }}
+#          cache: npm
+#
+#      - name: Install package.json
+#        run: npm clean-install --ignore-scripts
+#        
+#      - name: Run postinstall scripts
+#        run: npm run postinstall
+#
+#      - name: Run tests
+#        run: npm run test:js
 
 
   docker:
