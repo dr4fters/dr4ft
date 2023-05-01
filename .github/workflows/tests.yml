@@ -13,44 +13,30 @@ on:
       - '**.md'
 
 jobs:
-  node_nvmrc:
-    name: Node .nvmrc
+
+  node:
+    name: Node.js (${{matrix.node_version_file}})
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node_version_file:
+          - .nvmrc
+          - package.json
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node.js from ${{matrix.node_version_file}} file
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ${{matrix.node_version_file}}
           cache: npm
+          cache-dependency-path: 'package-lock.json'
 
-      - name: Install package.json
-        run: npm clean-install --ignore-scripts
-        
-      - name: Run postinstall scripts
-        run: npm run postinstall
-
-      - name: Run tests
-        run: npm run test:js
-
-  node_package:
-    name: Node package.json
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: 'package.json'
-          cache: npm
-
-      - name: Install package.json
+      - name: Install modules from package.json
         run: npm clean-install --ignore-scripts
         
       - name: Run postinstall scripts
@@ -81,6 +67,7 @@ jobs:
 #        with:
 #          node-version: ${{ matrix.node_version }}
 #          cache: npm
+#          cache-dependency-path: 'package-lock.json'
 #
 #      - name: Install package.json
 #        run: npm clean-install --ignore-scripts
@@ -133,14 +120,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node.js from .nvmrc file
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
           cache: npm
 
-      - name: Install package.json
-        run: npm clean-install --ignore-scripts
+      - name: Install ESLint
+        run: npm clean-install eslint --ignore-scripts
 
       - name: Run ESLint
         run: |
