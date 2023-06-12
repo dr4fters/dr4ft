@@ -95,7 +95,7 @@
     "@babel/register": "^7.21.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
-    "core-js": "^3.30.0",
+    "core-js": "^3.31.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.38.0",
     "eslint-plugin-import": "^2.27.5",
