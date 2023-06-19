@@ -79,7 +79,7 @@
     "react-dom": "^17.0.2",
     "react-filepond": "^7.1.2",
     "react-select-search": "^3.0.10",
-    "react-tooltip": "^4.5.1",
+    "react-tooltip": "^5.14.0",
     "semver": "^7.4.0",
     "unzipper": "^0.10.11",
     "utils": "git://github.com/dr4fters/utils.git",
