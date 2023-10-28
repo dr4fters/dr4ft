@@ -80,7 +80,7 @@
     "react-filepond": "^7.1.2",
     "react-select-search": "^3.0.10",
     "react-tooltip": "^4.5.1",
-    "semver": "^7.4.0",
+    "semver": "^7.5.2",
     "unzipper": "^0.10.11",
     "utils": "git://github.com/dr4fters/utils.git",
     "uuid": "^9.0.0",
