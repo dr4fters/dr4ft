@@ -47,18 +47,18 @@ const CubeCobra = () => {
     try {
       const {data: {cards}} = await axios.get(`https://cubecobra.com/cube/api/cubeJSON/${cubeId}`);
 
-      setCubeImportMessage(`Fetching card versions... (0/${cards.length})`);
+      setCubeImportMessage(`Fetching card versions... (0/${cards.mainboard.length})`);
 
       let totalCards = 0;
       const cardNames = (await Promise.all(
-        _.chunk(cards, 75)
+        _.chunk(cards.mainboard, 75)
           .map(async (chunk) => {
             const {data} = await axios.post(
               'https://api.scryfall.com/cards/collection',
               {identifiers: chunk.map((card) => ({id: card.cardID}))});
 
             totalCards += data.data.length;
-            setCubeImportMessage(`Fetching card versions... (${totalCards}/${cards.length})`);
+            setCubeImportMessage(`Fetching card versions... (${totalCards}/${cards.mainboard.length})`);
 
             return data.data.map((card) => {
               const name = card.card_faces ? card.card_faces[0].name : card.name;
