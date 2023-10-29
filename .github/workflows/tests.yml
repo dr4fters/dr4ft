@@ -1,4 +1,4 @@
-name: Automated tests
+name: CI
 
 on:
   push:
@@ -13,76 +13,94 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    name: Run tests
+
+  node:
+    name: Node.js (${{matrix.node_version_file}})
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        node_version:
-          - 16
-          - 18
-
-    runs-on: ubuntu-latest
+        node_version_file:
+          - .nvmrc
+          - package.json
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup
+      - name: Setup Node.js from ${{matrix.node_version_file}} file
         uses: actions/setup-node@v4
         with:
-          node-version: ${{matrix.node_version}}
+          node-version-file: ${{matrix.node_version_file}}
+          cache: npm
+          cache-dependency-path: 'package-lock.json'
 
-      - name: Install
-        run: npm ci
+      - name: Install modules from package.json
+        run: npm clean-install --ignore-scripts
+        
+      - name: Run postinstall scripts
+        run: npm run postinstall
 
-      - name: Test
-        run: npm test
+      - name: Run tests
+        run: npm run test:js
 
 
   docker:
-    name: Test docker image
-
+    name: Docker
     runs-on: ubuntu-latest
-
     continue-on-error: true
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build
+      - name: Build image from Dockerfile
         run: docker build --tag dr4ft-app .
 
-      - name: Run
-        run: docker run -dp 1337:1337 dr4ft-app
+      - name: Run container from image
+        run: docker run --detach --name dr4ft -p 1337:1337 dr4ft-app
+      
+      # TODO: Extend this and test e.g. creating a game via API
+      - name: Access dr4ft page
+        run: wget http://localhost:1337
 
-      - name: Show info
+      - name: Show information
         run: |
           docker --version
           echo
-          docker ps -a
+          docker images dr4ft-app
           echo
-          docker images
+          docker ps
+          echo
+          echo "Node version (dr4ft-app image)"
+          docker run dr4ft-app node --version
+          echo
+          docker top dr4ft
 
 
   lint:
-    name: Run ESLint
-
+    name: ESLint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup
+      - name: Setup Node.js from .nvmrc file
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version-file: '.nvmrc'
+          cache: npm
+          cache-dependency-path: 'package-lock.json'
 
-      - name: Install
-        run: npm ci --ignore-scripts
+      - name: Install ESLint
+        run: npm clean-install eslint --ignore-scripts
 
       - name: Run ESLint
-        run: npm run lint
+        run: |
+          echo "Node version"
+          node --version
+          echo "ESLint version"
+          npx eslint --version
+          npm run lint

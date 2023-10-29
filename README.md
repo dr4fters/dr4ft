@@ -8,8 +8,8 @@
 
 # dr4ft [![Discord](https://img.shields.io/discord/224178957103136779?label=Discord&logo=discord&logoColor=white&color=7289da)](https://mtgjson.com/discord)
 
-*dr4ft* is a <kbd>NodeJS</kbd> based web-application that simulates draft and sealed format between players and/or bots.
-Most of MTG sets are playable thanks to MTGJson support. We follow as much as possible the rules that determine how a real booster is created.
+*dr4ft* is a <kbd>Node.js</kbd> based web-application that simulates draft and sealed format between players and/or bots.
+Most of MTG sets are playable thanks to MTGJSON support. We follow as much as possible the rules that determine how a real booster is created.
 
 The application provides the following features:
 
@@ -64,10 +64,9 @@ It supports all their features, and many more.
 
 ### Native
 
-1) Install [Node.js](https://nodejs.org/en/download/) >= 16.0.0. Alternatively, install [nvm](https://github.com/nvm-sh/nvm) and then run `nvm use` in this repo, which will install the correct Node version for this repo as defined in the `.nvmrc` file.
+1) Install [Node.js](https://nodejs.org/en/download/) >= 16.0.0<br> Alternatively, install [nvm](https://github.com/nvm-sh/nvm) and run `nvm use` in the project root to install a correct Node version for this repo as defined in the [`.nvmrc`](.nvmrc) file.
 2) Run<br>
 `$ npm ci`<br>
-`$ npm run build`<br>
 `$ npm start`
 3) Visit [http://localhost:1337](http://localhost:1337)
 
@@ -86,17 +85,17 @@ You can also create a Docker image and run the app in a container:
 
 ### Start Server
 
-`npm start`
-This command start the server
+- `npm start`
+This command starts the server.
 
-`npm run download_allsets`
-This command downloads all sets from MTGJson and integrates them.
+- `npm run download_allsets`
+This command downloads all sets from [MTGJSON](https://mtgjson.com) and integrates them.
 
-`npm run update_database`
-This command downloads integrates all files previously downloaded from MTGJson.
+- `npm run update_database`
+This command downloads and integrates all files previously downloaded from MTGJSON.
 
-`npm run download_booster_rules`
- download and parse booster generation rules from [magic-sealed-data](https://github.com/taw/magic-sealed-data)
+- `npm run download_booster_rules`
+This command downloads and parses booster generation rules from [taw/magic-sealed-data](https://github.com/taw/magic-sealed-data)
 
 ## Development Notes
 
@@ -140,6 +139,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+<br>
 <p align='center'>
   <sub><i>The project is unaffiliated with Wizards of the Coast, and is licensed under the MIT license.</i></sub>
 </p>

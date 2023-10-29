@@ -14,8 +14,11 @@ RUN adduser -S dr4ftuser
 RUN chown dr4ftuser -R .
 USER dr4ftuser
 
-# Install the dependencies
-RUN npm ci
+# Install dependencies
+RUN npm clean-install --ignore-scripts
+
+# Run postinstall scripts
+RUN npm run postinstall
 
 # Publish the port 1337
 EXPOSE 1337
