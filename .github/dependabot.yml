@@ -4,25 +4,27 @@
 
 version: 2
 updates:
-  # Enable version updates for npm
-  - package-ecosystem: "npm"
-    # Look for `package.json` and `lock` files in the `root` directory
-    directory: "/"
-    # Check the npm registry for updates once a week
-    schedule:
-      interval: "weekly"
-    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
-    open-pull-requests-limit: 5
-
+  # To reduce noise, CURRENTLY DISABLED non-critical-security updates until the repo is more maintained again
+  #
+  ## Enable version updates for npm
+  #- package-ecosystem: "npm"
+  #  # Look for `package.json` and `lock` files in the `root` directory
+  #  directory: "/"
+  #  # Check the npm registry for updates once a week
+  #  schedule:
+  #    interval: "weekly"
+  #  # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+  #  open-pull-requests-limit: 5
+  #
   # Enable version updates for Docker
-  - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `root` directory
-    directory: "/"
-    # Check for updates once a week
-    schedule:
-      interval: "weekly"
-    # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
-    open-pull-requests-limit: 1
+  #- package-ecosystem: "docker"
+  #  # Look for a `Dockerfile` in the `root` directory
+  #  directory: "/"
+  #  # Check for updates once a week
+  #  schedule:
+  #    interval: "weekly"
+  #  # Limit the amout of open PR's (default = 5, disabled = 0, security updates are not impacted)
+  #  open-pull-requests-limit: 1
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
