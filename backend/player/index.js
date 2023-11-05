@@ -24,11 +24,11 @@ class Player extends EventEmitter {
         picks: [],
         burns: []
       },
-      pool: [],
+      pool: [], // cards you have picks from packs
+      picks: [], // string names of picked cards
       cap: {
         packs: {}
       },
-      picks: [],
       draftLog: {
         round : {},
         pack: []
