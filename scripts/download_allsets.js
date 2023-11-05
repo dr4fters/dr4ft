@@ -62,12 +62,15 @@ const download = async () => {
   logger.info("Checking if AllSets.json is up to date");
   const [isUpToDate, version] = await isVersionUpToDate();
   if (!isUpToDate) {
-    await fetchZip();
-    logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
-    updateDatabase();
-    logger.info("Update DB finished");
-    fs.writeFileSync(setsVersion, version);
-    refreshVersion();
+    await fetchZip()
+      .then(() => {
+        logger.info("Fetch AllSets.json finished. Updating the cards and sets data");
+        updateDatabase();
+        logger.info("Update DB finished");
+        fs.writeFileSync(setsVersion, version);
+        refreshVersion();
+      })
+      .catch((err) => logger.error(`Fetch AllSets.json failed. ${err.message}: ${err.stack}`));
   } else {
     logger.info("AllSets.json is up to date");
   }
