@@ -4,7 +4,7 @@
 
 version: 2
 updates:
-  # To reduce noise, CURRENTLY DISABLED non-critical-security updates until the repo is more maintained again
+  # To reduce noise, CURRENTLY DISABLING non-critical security updates until the repo is more maintained again
   #
   ## Enable version updates for npm
   #- package-ecosystem: "npm"
