@@ -112,7 +112,7 @@ You can debug this application by adding the following configuration to your `la
   "cwd": "${workspaceFolder}",
   "runtimeExecutable": "npm",
   "runtimeArgs": [
-      "run", "start-debug"
+    "run", "start-debug"
   ],
   "port": 1338
 }
