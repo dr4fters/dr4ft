@@ -14,6 +14,7 @@ import {STRINGS} from "../config";
 import {vanillaToast} from "vanilla-toast";
 import "vanilla-toast/vanilla-toast.css";
 import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "../zones";
+import LeadersPanel from "./Leaders";
 
 export default class Game extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ export default class Game extends Component {
             <div className='game-status'>
               <PlayersPanel/>
               <StartPanel/>
+              <LeadersPanel/>
             </div>
             <DeckSettings/>
           </div>
@@ -64,7 +66,7 @@ const CardsZone = () => {
     ? <Grid key={"pack"} zones={[ZONE_PACK]} />
     : <div key={"pack"}/>;
 
-  const props = { zones: [ZONE_MAIN, ZONE_SIDEBOARD, ZONE_JUNK] };
+  const props = { zones: [ZONE_MAIN, ZONE_SIDEBOARD] };
   const pool = App.state.cols
     ? <Cols key={"pool"} {...props}/>
     : <Grid key={"pool"} {...props} />;

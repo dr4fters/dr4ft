@@ -159,7 +159,6 @@ class GameState extends EventEmitter {
 
   getSortedZone(zoneName, sort) {
     const cards = this.get(zoneName);
-    console.log(cards, sort);
     const groups = _.group(cards, sort);
     for (const key in groups) {
       _.sort(groups[key], "defaultCardNumber");

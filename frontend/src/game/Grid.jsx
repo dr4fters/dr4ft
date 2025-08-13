@@ -10,14 +10,15 @@ import CardGlimpse from "./card/CardGlimpse.jsx";
 import CardPlaceholder from "./card/CardPlaceholder.jsx";
 import "./Grid.scss";
 
-const Grid = ({zones}) => (
+const Grid = ({zones, filter}) => (
   <div>
-    {zones.map((name, i) => <Zone name={name} key={name + i} />)}
+    {zones.map((name, i) => <Zone name={name} key={name + i} filter={filter} />)}
   </div>
 );
 
 Grid.propTypes = {
-  zones: PropTypes.array.isRequired
+  zones: PropTypes.array.isRequired,
+  filter: PropTypes.string
 };
 
 const getZoneDetails = (appState, zoneName, cards) => {
@@ -38,15 +39,21 @@ const getZoneDetails = (appState, zoneName, cards) => {
   }
 };
 
-const Zone = ({ name: zoneName }) => {
+const Zone = ({ name: zoneName, filter }) => {
   const zone = App.getSortedZone(zoneName);
   const values = _.values(zone);
-  const cards = _.flat(values);
+  const unfilteredCards = _.flat(values);
+  let cards;
+
+  if (filter === "Leader"){
+    cards = unfilteredCards.filter(({}));
+  }
+
+
+
   const isPackZone = zoneName === ZONE_PACK;
 
   const { round, picksPerPack, gameState, packSize, pickNumber, game } = App.state;
-
-  console.log(zoneName);
 
   const remainingCardsToSelect = Math.min(picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(game.burnsPerPack, cards.length);

@@ -52,35 +52,38 @@ async function importSet() {
         //Card whole collection
         let alternativeIdx = 0;
         while (alternativeIdx < data.alternativePrintings.length) {
-          const alternativeResponse = await fetch("https://swudb.com/api/card/getPrintingInfo", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              cardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
-              expansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
-              language: ""
-            })
-          });
-          const alt = await alternativeResponse.json();
-
-
           const altCardCode = `${data.alternativePrintings[alternativeIdx].expansionAbbreviation}_${data.alternativePrintings[alternativeIdx].cardNumber}`;
 
-          cards[altCardCode] = {
-            defaultExpansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
-            cardName: alt.cardName,
-            title: alt.title,
-            defaultCardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
-            defaultImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
-            frontImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
-            backImagePath: (alt.backImagePath ? `https://swudb.com/images/${alt.backImagePath}` : "https://karabast.net/card-back.png").replaceAll("~/", ""),
-            aspects: alt.aspects.map(aspect => ASPECTS[aspect]),
-            defaultRarity: alt.alternativePrintings[0].rarity
-          };
+          if (cards[altCardCode]) {
+            console.log(altCardCode, " already on the DB")
+          } else {
+            const alternativeResponse = await fetch("https://swudb.com/api/card/getPrintingInfo", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                cardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
+                expansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
+                language: ""
+              })
+            });
+            const alt = await alternativeResponse.json();
 
-          console.log("ADDED ", altCardCode, data.cardName);
+            cards[altCardCode] = {
+              defaultExpansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
+              cardName: alt.cardName,
+              title: alt.title,
+              defaultCardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
+              defaultImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
+              frontImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
+              backImagePath: (alt.backImagePath ? `https://swudb.com/images/${alt.backImagePath}` : "https://karabast.net/card-back.png").replaceAll("~/", ""),
+              aspects: alt.aspects.map(aspect => ASPECTS[aspect]),
+              defaultRarity: alt.alternativePrintings[0].rarity
+            };
+
+            console.log("ADDED ", altCardCode, data.cardName);
+          }
 
           alternativeIdx++;
         }
