@@ -50,7 +50,6 @@ export default class Game extends Component {
               <StartPanel/>
             </div>
             <DeckSettings/>
-            <GameSettings/>
           </div>
           <CardsZone/>
         </div>

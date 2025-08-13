@@ -120,8 +120,9 @@ module.exports = class Human extends Player {
         return;
       }
       pull(pack, card);
-      logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${card.name}`);
-      this.draftLog.pack.push( [`--> ${card.name}`].concat(pack.map(x => `    ${x.name}`)) );
+      const swuCardId = `${card.defaultExpansionAbbreviation}_${card.defaultCardNumber}`;
+      logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${card.cardName} ${card.title} (${swuCardId})`);
+      this.draftLog.pack.push( [`--> ${swuCardId}`].concat(pack.map(x => `    ${x.cardName}(${swuCardId})`)) );
       this.pool.push(card);
       const pickcard = card.foil ? "*" + card.name + "*" : card.name ;
       this.picks.push(pickcard);

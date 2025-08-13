@@ -6,16 +6,13 @@ import { toTitleCase } from "../utils";
 import App from "../app";
 
 const gameDescriptions = {
-  regular: "Conventional 15 card booster packs",
-  cube: "A user curated draft set",
-  chaos: "Randomized booster packs",
-  decadent: "Packs are discarded after first pick"
+  regular: "Conventional 16 card booster packs"
 };
 
 const GameTypes = () => {
   const gameOptions = {
-    draft: ["regular", "cube", "chaos", "decadent"],
-    sealed: ["regular", "cube", "chaos"]
+    draft: ["regular"],
+    sealed: ["regular"]
   };
 
   const getAvailableTypes = () => Object.keys(gameOptions);

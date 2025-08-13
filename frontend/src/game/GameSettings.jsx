@@ -40,11 +40,11 @@ const SortCards = () => (
   <div className="sort-cards">
     Sort cards by:
     <div className='connected-container' >
-      {["CMC", "Color", "Type", "Rarity"].map((sort, index) => {
-        const isActive = sort.toLowerCase() === App.state.sort
+      {["Rarity"].map((sort, index) => {
+        const isActive = sort.toLowerCase() === App.state.sort;
 
         return (
-          <label key={index} 
+          <label key={index}
             className={isActive
               ? "active connected-component"
               : "connected-component"
@@ -59,7 +59,7 @@ const SortCards = () => (
             />
             <div>{sort}</div>
           </label>
-        )
+        );
       })}
     </div>
   </div>
@@ -78,7 +78,7 @@ const CardsImageQuality = () => (
     Card image quality:
     <div className='connected-container'>
       {Object.keys(sizeDisplay).map((size, index) => {
-        const isActive = size === App.state.cardSize
+        const isActive = size === App.state.cardSize;
 
         return (
           <label key={index}
@@ -95,7 +95,7 @@ const CardsImageQuality = () => (
               value={size} />
             <div>{sizeDisplay[size]}</div>
           </label>
-        )
+        );
       })}
     </div>
   </div>

@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import "./SelectionState.scss";
 
 function SelectionState ({ isPick, isBurn }) {
-  if (isPick && isBurn) throw new Error("Cannot pick and burn same card")
+  if (isPick && isBurn) throw new Error("Cannot pick and burn same card");
 
-  if (!isPick && !isBurn) return null
+  if (!isPick && !isBurn) return null;
 
   if (isPick) {
     return (
       <div className="SelectionState -pick">
         <i className="action icon ion-android-checkbox" />
       </div>
-    )
+    );
   }
 
   if (isBurn) {
@@ -20,7 +20,7 @@ function SelectionState ({ isPick, isBurn }) {
       <div className="SelectionState -burn">
         <i className="action icon ion-flame" />
       </div>
-    )
+    );
   }
 }
 

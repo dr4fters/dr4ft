@@ -5,10 +5,10 @@ import _ from "utils/utils";
 import App from "../app";
 import Spaced from "../components/Spaced";
 import {ZONE_PACK, getZoneDisplayName} from "../zones";
-import CardDefault from "./card/CardDefault.jsx"
-import CardGlimpse from "./card/CardGlimpse.jsx"
-import CardPlaceholder from "./card/CardPlaceholder.jsx"
-import "./Grid.scss"
+import CardDefault from "./card/CardDefault.jsx";
+import CardGlimpse from "./card/CardGlimpse.jsx";
+import CardPlaceholder from "./card/CardPlaceholder.jsx";
+import "./Grid.scss";
 
 const Grid = ({zones}) => (
   <div>
@@ -28,15 +28,15 @@ const getZoneDetails = (appState, zoneName, cards) => {
   if (zoneName === ZONE_PACK) {
     if (appState.isDecadentDraft) {
       // Only 1 pick in decadent draft.
-      return `Pick 1 / 1`;
+      return "Pick 1 / 1";
     } else {
-      let turns = Math.ceil(appState.packSize / appState.picksPerPack  );
-      return `Pick ${appState.pickNumber} / ${turns}`
+      let turns = Math.ceil(appState.packSize / appState.picksPerPack );
+      return `Pick ${appState.pickNumber} / ${turns}`;
     }
   } else {
     return cards.length;
   }
-}
+};
 
 const Zone = ({ name: zoneName }) => {
   const zone = App.getSortedZone(zoneName);
@@ -44,15 +44,16 @@ const Zone = ({ name: zoneName }) => {
   const cards = _.flat(values);
   const isPackZone = zoneName === ZONE_PACK;
 
-  const { round, picksPerPack, gameState, packSize, pickNumber, game } = App.state
+  const { round, picksPerPack, gameState, packSize, pickNumber, game } = App.state;
+
+  console.log(zoneName);
 
   const remainingCardsToSelect = Math.min(picksPerPack, cards.length);
   const remainingCardsToBurn = Math.min(game.burnsPerPack, cards.length);
-  const canConfirm = gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn)
-  const cardsInNextPack = packSize - (pickNumber * (picksPerPack + game.burnsPerPack)) % packSize
-
-  const showPicksDetail = game.picksPerPack > 1 || game.burnsPerPack > 0
-  const showBurnsDetail = game.burnsPerPack > 0
+  const canConfirm = gameState.isSelectionReady(remainingCardsToSelect, remainingCardsToBurn);
+  const cardsInNextPack = packSize - (pickNumber * (picksPerPack + game.burnsPerPack)) % packSize;
+  const showPicksDetail = game.picksPerPack > 1 || game.burnsPerPack > 0;
+  const showBurnsDetail = game.burnsPerPack > 0;
   return (
     <div className='Grid zone'>
       <div className='header'>

@@ -29,9 +29,6 @@ app.use(fileUpload());
 app.use(express.static("built"));
 app.use("/api", apiRouter);
 
-// Schedule check for new sets and booster rules every hour
-schedule.scheduleJob("0 * * * *", updateData);
-updateData();
 
 // Create server
 const server = http.createServer(app);
@@ -40,9 +37,3 @@ io.on("connection", router);
 
 server.listen(config.PORT);
 logger.info(`Started up on port ${config.PORT} with version ${version}`);
-
-// Download Allsets.json if there's a new one and make the card DB
-function updateData () {
-  spawn("node", ["scripts/download_allsets.js"], { stdio: "inherit" });
-  spawn("node", ["scripts/download_booster_rules.js"], { stdio: "inherit" });
-}

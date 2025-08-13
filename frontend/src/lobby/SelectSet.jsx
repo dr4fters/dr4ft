@@ -16,17 +16,17 @@ function fuzzySearch (options) {
         keys: ["name", "value"],
         minMatchCharLength: 2,
         threshold: 0.3
-      })
-      const matches = fuse.search(value)
+      });
+      const matches = fuse.search(value);
 
       if (matches.length) {
         acc.push({
           ...group,
           items: matches.map(match => match.item)
-        })
+        });
       }
-      return acc
-    }, [])
+      return acc;
+    }, []);
   };
 }
 
@@ -41,10 +41,10 @@ const SelectSet = ({ value, onChange }) => {
         name: set.name,
         value: set.code
       }))
-    })
+    });
 
-    return acc
-  }, [])
+    return acc;
+  }, []);
 
   return (
     <SelectSearch
@@ -59,10 +59,10 @@ const SelectSet = ({ value, onChange }) => {
       renderValue={(valueProps) => {
         return (
           <div className="SelectSet__input-container" >
-            <i className={`ss ss-${value.toLowerCase()}`} />
+            <i className={`ss ss-${value?.toLowerCase()}`} />
             <input className='SelectSet__input' {...valueProps} />
           </div>
-        )
+        );
       }}
       renderOption={(optionProps, optionData, snapshot, className) => {
         return (
@@ -74,7 +74,7 @@ const SelectSet = ({ value, onChange }) => {
             </span>
           </button>
 
-        )
+        );
       }}
     />
   );

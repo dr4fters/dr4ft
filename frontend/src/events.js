@@ -123,7 +123,7 @@ const events = {
   },
 
   create() {
-    let {gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, chaosDraftPacksNumber, chaosSealedPacksNumber, picksPerPack} = App.state;
+    let {gametype, gamesubtype, seats, title, isPrivate, modernOnly, totalChaos, picksPerPack} = App.state;
     seats = Number(seats);
 
     //TODO: either accept to use the legacy types (draft, sealed, chaos draft ...) by  keeping it like this
@@ -138,15 +138,6 @@ const events = {
       options.sets = gametype === "sealed" ? setsSealed : setsDraft;
       break;
     }
-    case "decadent":
-      options.sets = App.state.setsDecadentDraft;
-      break;
-    case "cube":
-      options.cube = parseCubeOptions();
-      break;
-    case "chaos":
-      options.chaosPacksNumber = /draft/.test(gametype) ? chaosDraftPacksNumber : chaosSealedPacksNumber;
-      break;
     }
     App.send("create", options);
   },

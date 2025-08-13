@@ -63,7 +63,7 @@ let App = {
     exportDeckFilename: "filename",
 
     side: false,
-    sort: "rarity",
+    sort: "defaultRarity",
     log: {},
     cardSize: "normal",
     cardLang: "en",

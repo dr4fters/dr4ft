@@ -20,8 +20,8 @@ module.exports = class Bot extends Player {
     const cardsToPick = Math.min(this.picksPerPack, pack.length);
     times(cardsToPick, () => {
       const randomPick = sample(pack);
-      logger.info(`GameID: ${this.gameId}, Bot, picked: ${randomPick.name}`);
-      this.picks.push(randomPick.name);
+      logger.info(`GameID: ${this.gameId}, Bot, picked: ${randomPick.cardName}`);
+      this.picks.push(randomPick.cardName);
       pull(pack, randomPick);
     });
 
@@ -29,7 +29,7 @@ module.exports = class Bot extends Player {
     const cardsToBurn = Math.min(this.burnsPerPack, pack.length);
     times(cardsToBurn, () => {
       const randomPick = sample(pack);
-      logger.info(`GameID: ${this.gameId}, Bot, burnt: ${randomPick.name}`);
+      logger.info(`GameID: ${this.gameId}, Bot, burnt: ${randomPick.cardName}`);
       pull(pack, randomPick);
     });
 

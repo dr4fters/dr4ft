@@ -6,7 +6,6 @@ import {STRINGS} from "../config";
 import Header from "./Header";
 import GamesPanel from "./GamesPanel";
 import NewsPanel from "./NewsPanel";
-import FileUpload from "./FileUpload";
 import Version from "./Version";
 
 export default class Lobby extends Component {
@@ -24,7 +23,6 @@ export default class Lobby extends Component {
         <div className="lobby">
           <Header/>
           <GamesPanel roomInfo={roomInfo}/>
-          <FileUpload />
           {STRINGS.PAGE_SECTIONS.MOTD && <NewsPanel motd={STRINGS.PAGE_SECTIONS.MOTD}/>}
           {STRINGS.BRANDING.PAYPAL}
           {STRINGS.PAGE_SECTIONS.FOOTER}

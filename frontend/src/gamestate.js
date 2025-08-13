@@ -159,9 +159,10 @@ class GameState extends EventEmitter {
 
   getSortedZone(zoneName, sort) {
     const cards = this.get(zoneName);
+    console.log(cards, sort);
     const groups = _.group(cards, sort);
     for (const key in groups) {
-      _.sort(groups[key], sortLandsBeforeNonLands, "color", "cmc", "name");
+      _.sort(groups[key], "defaultCardNumber");
     }
     return Key(groups, sort);
   }
@@ -261,35 +262,13 @@ function Key(groups, sort) {
   let arr;
 
   switch (sort) {
-  case "cmc":
-    arr = [];
-    for (let key in groups)
-      if (parseInt(key) >= 6) {
-        [].push.apply(arr, groups[key]);
-        delete groups[key];
-      }
 
-    if (arr.length) {
-      groups["6+"] || (groups["6+"] = [])
-      ;[].push.apply(groups["6+"], arr);
-    }
-    return groups;
-
-  case "color":
-    keys =
-      ["Colorless", "White", "Blue", "Black", "Red", "Green", "Multicolor"]
-        .filter(x => keys.indexOf(x) > -1);
-    break;
   case "rarity":
     keys =
-      ["Mythic", "Rare", "Uncommon", "Common", "Basic", "Special"]
+      ["Legendary", "Rare", "Uncommon", "Common", "Special"]
         .filter(x => keys.indexOf(x) > -1);
     break;
-  case "type":
-    keys = keys.sort();
-    break;
   }
-
   let o = {};
   for (let key of keys)
     o[key] = groups[key];

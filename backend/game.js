@@ -41,38 +41,13 @@ module.exports = class Game extends Room {
     // Handle packsInfos to show various informations about the game
     switch(type) {
     case "draft":
+      this.packsInfo = this.sets.join(" / ");
+      this.rounds = this.sets.length + 1;
+      break;
     case "sealed":
       this.packsInfo = this.sets.join(" / ");
       this.rounds = this.sets.length;
       break;
-    case "decadent draft":
-      // Sets should all be the same and there can be a large number of them.
-      // Compress this info into e.g. "36x IKO" instead of "IKO / IKO / ...".
-      this.packsInfo = `${this.sets.length}x ${this.sets[0]}`;
-      this.rounds = this.sets.length;
-      this.isDecadent = true;
-      break;
-    case "cube draft":
-      this.packsInfo = `${cube.packs} packs with ${cube.cards} cards from a pool of ${cube.list.length} cards`;
-      if (cube.burnsPerPack > 0) {
-        this.packsInfo += ` and ${cube.burnsPerPack} cards to burn per pack`;
-      }
-      this.rounds = this.cube.packs;
-      break;
-    case "cube sealed":
-      this.packsInfo = `${cube.cubePoolSize} cards per player from a pool of ${cube.list.length} cards`;
-      this.rounds = this.cube.packs;
-      break;
-    case "chaos draft":
-    case "chaos sealed": {
-      const chaosOptions = [];
-      chaosOptions.push(`${this.chaosPacksNumber} Packs`);
-      chaosOptions.push(modernOnly ? "Modern sets only" : "Not modern sets only");
-      chaosOptions.push(totalChaos ? "Total Chaos" : "Not Total Chaos");
-      this.packsInfo = `${chaosOptions.join(", ")}`;
-      this.rounds = this.chaosPacksNumber;
-      break;
-    }
     default:
       this.packsInfo = "";
     }
@@ -470,25 +445,7 @@ module.exports = class Game extends Room {
 
   createPool() {
     switch (this.type) {
-    case "cube draft": {
-      this.pool = Pool.DraftCube({
-        cubeList: this.cube.list,
-        playersLength: this.players.length,
-        packsNumber: this.cube.packs,
-        playerPackSize: this.cube.cards
-      });
-      break;
-    }
-    case "cube sealed": {
-      this.pool = Pool.SealedCube({
-        cubeList: this.cube.list,
-        playersLength: this.players.length,
-        playerPoolSize: this.cubePoolSize
-      });
-      break;
-    }
-    case "draft":
-    case "decadent draft": {
+    case "draft": {
       this.pool = Pool.DraftNormal({
         playersLength: this.players.length,
         sets: this.sets
@@ -500,24 +457,6 @@ module.exports = class Game extends Room {
       this.pool = Pool.SealedNormal({
         playersLength: this.players.length,
         sets: this.sets
-      });
-      break;
-    }
-    case "chaos draft": {
-      this.pool = Pool.DraftChaos({
-        playersLength: this.players.length,
-        packsNumber: this.chaosPacksNumber,
-        modernOnly: this.modernOnly,
-        totalChaos: this.totalChaos
-      });
-      break;
-    }
-    case "chaos sealed": {
-      this.pool = Pool.SealedChaos({
-        playersLength: this.players.length,
-        packsNumber: this.chaosPacksNumber,
-        modernOnly: this.modernOnly,
-        totalChaos: this.totalChaos
       });
       break;
     }
