@@ -17,6 +17,8 @@ const getDefaultBooster = (set) => {
     sampleSize([...Common,...Uncommon,...Rare,...Legendary,...Special], 1)
   );
 
+  console.log(cardNames);
+
   return cardNames.map(getCardByUuid);
 };
 

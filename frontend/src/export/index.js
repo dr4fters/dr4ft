@@ -1,7 +1,4 @@
-import cockatrice from "./cockatrice";
-import mtgo from "./mtgo";
-import mtga from "./mtga";
-import text from "./text";
+import swudb from "./swudb";
 
 const toJSON = (filename, deck) => JSON.stringify(deck, null, 2);
 const json = {
@@ -12,9 +9,6 @@ const json = {
 };
 
 export default {
-  cockatrice,
-  mtga,
-  mtgo,
-  text,
+  swudb,
   json
 };

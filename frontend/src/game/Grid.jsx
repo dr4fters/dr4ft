@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import _ from "utils/utils";
+import { uniq } from "lodash";
 import App from "../app";
 import Spaced from "../components/Spaced";
 import {ZONE_PACK, getZoneDisplayName} from "../zones";
@@ -40,16 +41,12 @@ const getZoneDetails = (appState, zoneName, cards) => {
 };
 
 const Zone = ({ name: zoneName, filter }) => {
-  const zone = App.getSortedZone(zoneName);
+  const zone = App.getSortedZone(zoneName, filter);
   const values = _.values(zone);
-  const unfilteredCards = _.flat(values);
-  let cards;
-
-  if (filter === "Leader"){
-    cards = unfilteredCards.filter(({}));
-  }
-
-
+  const cards = _.flat(values);
+  const cardTypes = uniq(cards, function(card) {
+    return card.type;
+  });
 
   const isPackZone = zoneName === ZONE_PACK;
 
@@ -97,7 +94,7 @@ const Zone = ({ name: zoneName, filter }) => {
         }
       </div>
 
-      <div className="cards">
+      <div className={`cards -${cardTypes.map(({type}) => type).join(" -")} -${filter}`}>
         {
           cards.map((card, i) => isPackZone && game.burnsPerPack > 0
             ? <CardGlimpse key={i+zoneName+card.name+card.foil} card={card} zoneName={zoneName} />

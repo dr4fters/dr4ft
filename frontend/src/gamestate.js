@@ -157,9 +157,24 @@ class GameState extends EventEmitter {
     return this.get(ZONE_MAIN).length;
   }
 
-  getSortedZone(zoneName, sort) {
+  getSortedZone(zoneName, sort, filter) {
     const cards = this.get(zoneName);
-    const groups = _.group(cards, sort);
+    let filteredCards;
+    if (filter) {
+      switch (filter) {
+      case "Leader":
+        filteredCards = cards.filter(card => card.type === "Leader");
+        break;
+      case "Base":
+        filteredCards = cards.filter(card => card.type === "Base");
+        break;
+      case "Rest":
+        filteredCards = cards.filter(card => card.type !== "Base" && card.type !== "Leader");
+        break;
+      }
+    }
+
+    const groups = _.group(filteredCards || cards, sort);
     for (const key in groups) {
       _.sort(groups[key], "defaultCardNumber");
     }

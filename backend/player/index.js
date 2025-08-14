@@ -1,11 +1,13 @@
 const {EventEmitter} = require("events");
+const { uniq } = require("lodash");
+const { getSet, getCardByUuid } = require("../data");
 
 
 /**
  * Abstract class for Human and Bot
  */
 class Player extends EventEmitter {
-  constructor({id, isBot, isConnected, name}) {
+  constructor({id, isBot, isConnected, name, sets}) {
     super();
 
     if (this.constructor === Player) {
@@ -40,6 +42,10 @@ class Player extends EventEmitter {
       useTimer: false,
       timeLength: "Slow"
     });
+
+    console.log("Load common bases for", uniq(sets) );
+
+    this.pool = uniq(sets).map(setCode => getSet(setCode)).map(set=> set.Base).flat().map(getCardByUuid).filter(card => card.defaultRarity === 1);
   }
 
   getPlayerDeck() {

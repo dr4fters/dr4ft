@@ -51,7 +51,7 @@ const ExportDeckPanel = () => {
 
         { /* Download */ }
         {
-          activeFormat && activeFormat.download
+          activeFormat && activeFormat.download && App.state.selectedLeader && App.state.selectedBase
             ? (
               <div className='download'>
                 {/* <span>Download</span> */}
@@ -72,12 +72,12 @@ const ExportDeckPanel = () => {
                 </button>
               </div>
             )
-            : null
+            : <span>Please select a Leader and a Base</span>
         }
 
         { /* Copy */ }
         {
-          activeFormat && activeFormat.copy
+          activeFormat && activeFormat.copy && App.state.selectedLeader && App.state.selectedBase
             ? (
               <div className='copy'>
                 <span>Copy to clipboard</span>

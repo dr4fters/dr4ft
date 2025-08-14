@@ -183,7 +183,7 @@ module.exports = class Game extends Room {
     super.join(sock);
     this.logger.debug(`${sock.name} joined the game`);
 
-    const h = new Human(sock, this.picksPerPack, this.getBurnsPerPack(), this.id);
+    const h = new Human(sock, this.picksPerPack, this.getBurnsPerPack(), this.id, this.sets);
     if (h.id === this.hostID) {
       h.isHost = true;
       sock.once("start", this.start.bind(this));
@@ -507,7 +507,7 @@ module.exports = class Game extends Room {
 
         let bots = [];
         for (let i = 0; i < (this.seats - this.players.length); i++) {
-          bots.push(new Bot(this.picksPerPack, burnsPerPack, this.id));
+          bots.push(new Bot(this.picksPerPack, burnsPerPack, this.id, this.sets));
         }
         this.bots += bots.length;
         this.players = distributeArrays(this.players, bots);

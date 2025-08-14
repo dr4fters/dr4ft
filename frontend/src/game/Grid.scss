@@ -21,7 +21,7 @@
       font-size: 1rem;
       // font-weight: bold;
 
-      max-width:  20vw; // this 
+      max-width:  20vw; // this
 
       display: flex;
       flex-wrap: wrap;
@@ -52,12 +52,17 @@
       border-radius: 2px;
     }
   }
-  
+
   > .cards {
     display: grid;
     grid-template-rows: repeat(auto-fill, var(--card-height));
     grid-template-columns: repeat(auto-fill, var(--card-width));
     grid-gap: 2px;
+
+    &.-Leader, &.-Base {
+      grid-template-rows: repeat(auto-fill, var(--card-height));
+      grid-template-columns: repeat(auto-fill, var(--card-height));
+    }
 
     position: relative;
 
@@ -79,4 +84,3 @@
     --card-height: calc(calc(100vw / 2 - 5px) * 17 / 12);
   }
 }
-

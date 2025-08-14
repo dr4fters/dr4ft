@@ -4,7 +4,6 @@ node_modules
 .vscode
 .idea
 
-data
 frontend/index.html
 
 config.client.js

@@ -59,7 +59,7 @@ let App = {
     deckSize: 40,
 
     // export deck
-    exportDeckFormat: "cockatrice",
+    exportDeckFormat: "swudb",
     exportDeckFilename: "filename",
 
     side: false,
@@ -80,6 +80,8 @@ let App = {
     gameSeats: 8, // seats of the game being played TODO - remove in favour of state.seats
     gameState: null, // records the current state of cards is a GameState
     gameStates: {}, // Object representation of the gameState
+    selectedLeader: "",
+    selectedBase: "",
 
     get didGameStart() {
       // both round === 0 and round is undefined
@@ -239,8 +241,16 @@ let App = {
   getZone(zoneName){
     return App.state.gameState.get(zoneName);
   },
-  getSortedZone(zoneName) {
-    return App.state.gameState.getSortedZone(zoneName, App.state.sort);
+  getSortedZone(zoneName, filter) {
+    return App.state.gameState.getSortedZone(zoneName, App.state.sort, filter);
+  },
+  updateSelectedLeader(selectedLeader) {
+    App.state.selectedLeader = selectedLeader;
+    App.update();
+  },
+  updateSelectedBase(selectedBase) {
+    App.state.selectedBase = selectedBase;
+    App.update();
   }
 };
 

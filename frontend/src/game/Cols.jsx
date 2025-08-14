@@ -59,12 +59,13 @@ class Cols extends Component {
 }
 
 Cols.propTypes = {
-  zones: PropTypes.array.isRequired
+  zones: PropTypes.array.isRequired,
+  filter: PropTypes.filter
 };
 
-const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
+const Zones = ({onMouseOver, zoneNames, onMouseLeave, filter}) => {
   const renderZone = (zoneName) => {
-    const zone = App.getSortedZone(zoneName);
+    const zone = App.getSortedZone(zoneName, filter);
     let sum = 0;
     let cols = [];
 
@@ -107,14 +108,14 @@ const Zones = ({onMouseOver, zoneNames, onMouseLeave}) => {
 
 const CornerCardPreview = ({className, card}) => {
   // This is the on-hover enlarged helper you see in the bottom left when hovering over a card in column view
-  if (!card) return <div />
+  if (!card) return <div />;
 
   return (
     <div className={`CornerCardPreview ${className}`}>
       <CardBase card={card} />
       {card.isDoubleFaced && <CardBase card={card} showFlipped />}
     </div>
-  )
+  );
 };
 
 CornerCardPreview.propTypes = {

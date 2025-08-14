@@ -2,23 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./SelectionState.scss";
 
-function SelectionState ({ isPick, isBurn }) {
-  if (isPick && isBurn) throw new Error("Cannot pick and burn same card");
-
-  if (!isPick && !isBurn) return null;
+function SelectionState ({ isPick, card, isRotated, selection, base}) {
+  if (!isPick) return null;
 
   if (isPick) {
     return (
-      <div className="SelectionState -pick">
+      <div className={`SelectionState -pick ${(card.type === "Leader" && !isRotated) || card.type === "Base" ? "-rotated": ""} ${selection? "-selection": ""} ${base? "-base":""}`}>
         <i className="action icon ion-android-checkbox" />
-      </div>
-    );
-  }
-
-  if (isBurn) {
-    return (
-      <div className="SelectionState -burn">
-        <i className="action icon ion-flame" />
       </div>
     );
   }
@@ -26,7 +16,10 @@ function SelectionState ({ isPick, isBurn }) {
 
 SelectionState.propTypes = {
   isPick: PropTypes.bool,
-  isBurn: PropTypes.bool
+  card: PropTypes.object,
+  isRotated: PropTypes.bool,
+  selection: PropTypes.bool,
+  base: PropTypes.bool
 };
 
 export default SelectionState;

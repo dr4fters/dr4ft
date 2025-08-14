@@ -46,16 +46,17 @@ async function importSet() {
       const data = await response.json();
 
       if (data.cardId) {
-        const baseCardCode = `${setsToFetch[setIdx].expansionAbbreviation}_${data.alternativePrintings[0].cardNumber}`;
+        const formattedCardNumber = (number) => String(number).padStart(3, "0");
+        const baseCardCode = `${setsToFetch[setIdx].expansionAbbreviation}_${formattedCardNumber(cardIdx)}`;
         const cardName = data.title !== "" ? `${data.cardName}, ${data.title}` : data.cardName;
 
         //Card whole collection
         let alternativeIdx = 0;
         while (alternativeIdx < data.alternativePrintings.length) {
-          const altCardCode = `${data.alternativePrintings[alternativeIdx].expansionAbbreviation}_${data.alternativePrintings[alternativeIdx].cardNumber}`;
+          const altCardCode = `${data.alternativePrintings[alternativeIdx].expansionAbbreviation}_${formattedCardNumber(data.alternativePrintings[alternativeIdx].cardNumber)}`;
 
           if (cards[altCardCode]) {
-            console.log(altCardCode, " already on the DB")
+            console.log(altCardCode, " already on the DB");
           } else {
             const alternativeResponse = await fetch("https://swudb.com/api/card/getPrintingInfo", {
               method: "POST",
@@ -63,7 +64,7 @@ async function importSet() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                cardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
+                cardNumber: formattedCardNumber(data.alternativePrintings[alternativeIdx].cardNumber),
                 expansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
                 language: ""
               })
@@ -74,12 +75,13 @@ async function importSet() {
               defaultExpansionAbbreviation: data.alternativePrintings[alternativeIdx].expansionAbbreviation,
               cardName: alt.cardName,
               title: alt.title,
-              defaultCardNumber: data.alternativePrintings[alternativeIdx].cardNumber,
+              defaultCardNumber: formattedCardNumber(data.alternativePrintings[alternativeIdx].cardNumber),
               defaultImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
               frontImagePath: `https://swudb.com/images/${alt.frontImagePath}`.replaceAll("~/", ""),
               backImagePath: (alt.backImagePath ? `https://swudb.com/images/${alt.backImagePath}` : "https://karabast.net/card-back.png").replaceAll("~/", ""),
               aspects: alt.aspects.map(aspect => ASPECTS[aspect]),
-              defaultRarity: alt.alternativePrintings[0].rarity
+              defaultRarity: data.alternativePrintings[0].rarity,
+              type: alt.cardTypeDescription
             };
 
             console.log("ADDED ", altCardCode, data.cardName);
@@ -100,10 +102,10 @@ async function importSet() {
             cardsByName[cardName][value.expansionAbbreviation] = {};
           }
 
-          cardsByName[cardName][value.expansionAbbreviation][value.cardNumber] = baseCardCode;
+          cardsByName[cardName][value.expansionAbbreviation][formattedCardNumber(value.cardNumber)] = baseCardCode;
 
 
-          console.log("ADDED to alts", cardName, value.expansionAbbreviation, value.cardNumber);
+          console.log("ADDED to alts", cardName, value.expansionAbbreviation, formattedCardNumber(value.cardNumber));
         });
 
         //Set collection
@@ -118,9 +120,7 @@ async function importSet() {
             };
           }
 
-          sets[setsToFetch[setIdx].expansionAbbreviation].cardsByNumber[data.alternativePrintings[0].cardNumber] = baseCardCode;
-
-
+          sets[setsToFetch[setIdx].expansionAbbreviation].cardsByNumber[formattedCardNumber(cardIdx)] = baseCardCode;
 
           if (!sets[setsToFetch[setIdx].expansionAbbreviation][data.cardTypeDescription]) {
             sets[setsToFetch[setIdx].expansionAbbreviation][data.cardTypeDescription] = [];

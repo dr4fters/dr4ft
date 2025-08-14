@@ -6,12 +6,13 @@ const hash = require("../hash");
 const logger = require("../logger");
 
 module.exports = class Human extends Player {
-  constructor(sock, picksPerPack, burnsPerPack, gameId) {
+  constructor(sock, picksPerPack, burnsPerPack, gameId, sets) {
     super({
       isBot: false,
       isConnected: true,
       name: sock.name,
       id: sock.id,
+      sets
     });
     this.GameId = gameId;
     this.picksPerPack = picksPerPack;
@@ -84,8 +85,8 @@ module.exports = class Human extends Player {
       if (this.timerLength === "Leisurely") {
         timer = [90,85,80,75,70,65,60,55,50,45,40,35,30,25];
       }
-      // if a pack has more than 15 cards in it, add the average decrement on to the first picks
-      if (pack.length + this.picks.length > 15) {
+      // if a pack has more than 25 cards in it, add the average decrement on to the first picks
+      if (pack.length + this.picks.length > 25) {
         for (let x = 15; x < (pack.length + this.picks.length); x++) {
           timer.splice(0, 0, ((timer[0] + ((timer[0] + timer[timer.length - 1]) / timer.length))) | 0);
         }
@@ -122,13 +123,11 @@ module.exports = class Human extends Player {
       pull(pack, card);
       const swuCardId = `${card.defaultExpansionAbbreviation}_${card.defaultCardNumber}`;
       logger.info(`GameID: ${this.GameId}, player ${this.name}, picked: ${card.cardName} ${card.title} (${swuCardId})`);
-      this.draftLog.pack.push( [`--> ${swuCardId}`].concat(pack.map(x => `    ${x.cardName}(${swuCardId})`)) );
+      this.draftLog.pack.push( [`--> ${card.cardName} ${card.title}(${swuCardId})`].concat(pack.map(x => `    ${x.cardName}(${x.defaultExpansionAbbreviation}_${x.defaultCardNumber})`)) );
       this.pool.push(card);
-      const pickcard = card.foil ? "*" + card.name + "*" : card.name ;
-      this.picks.push(pickcard);
+      this.picks.push(swuCardId);
       this.send("add", card);
     });
-
     // Remove burned cards from pack
     remove(pack, (card) => this.selected.burns.includes(card.cardId));
 

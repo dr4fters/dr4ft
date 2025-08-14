@@ -4,12 +4,13 @@ const Player = require("./index");
 const logger = require("../logger");
 
 module.exports = class Bot extends Player {
-  constructor(picksPerPack, burnsPerPack, gameId) {
+  constructor(picksPerPack, burnsPerPack, gameId, sets) {
     super({
       isBot: true,
       isConnected: true,
       name: "bot",
       id: "",
+      sets
     });
     this.gameId= gameId;
     this.picksPerPack = picksPerPack;

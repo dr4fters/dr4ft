@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import App from "../../app";
 import {ZONE_PACK} from "../../zones";
 import CardBase from "./CardBase";
-import SelectionState from "./SelectionState.jsx"
 import "./CardDefault.scss";
 
 // mixmix - this could be a stateless functional component
@@ -15,14 +14,11 @@ export default class CardDefault extends Component {
 
     return (
       <div
-        className="CardDefault"
+        className={`CardDefault ${card.type === "Leader"? "-leader" : ""} ${card.type === "Base"? "-base" : ""}`}
         title={isPick ? "This card will be automatically picked if your time expires." : ""}
         onClick={App._emit("click", zoneName, card)}
       >
-        <CardBase card={card} zoneName={zoneName}>
-          <SelectionState isPick={isPick} />
-        </CardBase>
-
+        <CardBase card={card} zoneName={zoneName}/>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 import {range, times, constant} from "lodash";
 
 import App from "./app";
-import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
+import {ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "./zones";
 import exportDeck from "./export";
 
 /**
@@ -39,9 +39,11 @@ const events = {
       return;
     }
 
-    const dst = e.shiftKey
-      ? zoneName === ZONE_JUNK ? ZONE_MAIN : ZONE_JUNK
-      : zoneName === ZONE_SIDEBOARD ? ZONE_MAIN : ZONE_SIDEBOARD;
+    if (card.type === "Leader" || card.type === "Base") {
+      return;
+    }
+
+    const dst = zoneName === ZONE_SIDEBOARD ? ZONE_MAIN : ZONE_SIDEBOARD;
 
     App.state.gameState.move(zoneName, dst, card);
 
@@ -50,7 +52,7 @@ const events = {
   copy() {
     const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
     const textField = document.createElement("textarea");
-    textField.value = exportDeck[format].copy(filename, collectDeck());
+    textField.value = exportDeck[format].copy(filename, collectDeck(), collectLeader(), collectBase());
 
     document.body.appendChild(textField);
     textField.select();
@@ -61,7 +63,7 @@ const events = {
   },
   download() {
     const {exportDeckFormat: format, exportDeckFilename: filename} = App.state;
-    const data = exportDeck[format].download(filename, collectDeck());
+    const data = exportDeck[format].download(filename, collectDeck(), collectLeader(), collectBase());
 
     _.download(data, filename + exportDeck[format].downloadExtension);
 
@@ -340,15 +342,32 @@ const hash = () => {
   });
 };
 
-const collectDeck = () => ({
-  [ZONE_MAIN]: collectByName(App.state.gameState.get(ZONE_MAIN)),
-  [ZONE_SIDEBOARD]: collectByName(App.state.gameState.get(ZONE_SIDEBOARD), true)
-});
+const collectDeck = () => {
+  console.log(App.state.gameState.get(ZONE_MAIN));
+
+  return ({
+    [ZONE_MAIN]: collectByName(App.state.gameState.get(ZONE_MAIN)),
+    [ZONE_SIDEBOARD]: collectByName(App.state.gameState.get(ZONE_SIDEBOARD), true)
+  });
+};
+
+const collectLeader = () => {
+  return App.state.selectedLeader;
+};
+
+const collectBase = () => {
+  return App.state.selectedBase;
+};
 
 function collectByName (cards, sideboard = false) {
   const collector = cards.reduce((acc, card) => {
-    if (acc[card.name]) acc[card.name].count += 1;
-    else acc[card.name] = { card, count: 1, sideboard };
+    if (card.type === "Base" || card.type === "Leader") {
+      return acc;
+    }
+
+    const SWUID = `${card.defaultExpansionAbbreviation}_${card.defaultCardNumber}`;
+    if (acc[SWUID]) acc[SWUID].count += 1;
+    else acc[SWUID] = { id: SWUID, count: 1, sideboard };
 
     return acc;
   }, {});

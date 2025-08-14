@@ -1,17 +1,17 @@
 import React from "react";
 
+import _ from "utils/utils";
 import App from "../app";
-import {ZONE_JUNK, ZONE_MAIN, ZONE_PACK, ZONE_SIDEBOARD} from "../zones";
+import { ZONE_MAIN } from "../zones";
 
 import "./Leaders.scss";
+import CardDefault from "./card/CardDefault";
 
 const LeadersPanel = () => {
   if (App.state.didGameStart || App.state.isGameFinished) {
     return (
-      <div className='Leaders'>
+      <div className="Leaders">
         <LeadersList />
-
-
       </div>
     );
   }
@@ -19,14 +19,21 @@ const LeadersPanel = () => {
 };
 
 const LeadersList = () => {
-  console.log(App.state);
-  console.log("--------")
+  const zone = App.getSortedZone(ZONE_MAIN, "Leader");
+  const values = _.values(zone);
+  const cards = _.flat(values);
 
   return (
-    <fieldset className='ExportDeckPanel fieldset'>
-      <legend className='legend game-legend'>Picked Leaders</legend>
-      <Grid key={"pool"} zones={[ZONE_MAIN]} />
-     </fieldset>
+    <fieldset className="ExportDeckPanel fieldset">
+      <legend className="legend game-legend">Picked Leaders</legend>
+      <div className='Grid zone'>
+        <div className={"cards -Leader"}>
+          {
+            cards.map((card, i) => <CardDefault key={i+"Leader"+card.name+card.foil} card={card} zoneName={ZONE_MAIN} />)
+          }
+        </div>
+      </div>
+    </fieldset>
   );
 };
 

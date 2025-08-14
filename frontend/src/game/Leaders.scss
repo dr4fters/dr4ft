@@ -79,4 +79,11 @@
     .copy {
     }
   }
+  .Grid {
+    > .cards {
+      &.-Leader, &.-Base {
+        grid-template-rows: auto;
+      }
+    }
+  }
 }
