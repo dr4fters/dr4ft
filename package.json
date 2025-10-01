@@ -100,7 +100,7 @@
     "eslint": "^8.38.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
-    "mocha": "^10.2.0",
+    "mocha": "^10.8.2",
     "nodemon": "^2.0.22",
     "regenerator-runtime": "^0.13.11",
     "resolve-url-loader": "^5.0.0",
