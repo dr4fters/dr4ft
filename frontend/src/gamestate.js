@@ -192,15 +192,17 @@ class GameState extends EventEmitter {
   }
 
   updateCardPick(cardId, picksPerPack) {
-    if (this.#pickCardIds.length == picksPerPack) {
-      this.#pickCardIds.shift();
-    }
+    if(this.#pickCardIds.includes(cardId)){
+      // if the card is already picked, remove it
+      remove(this.#pickCardIds, id => id === cardId);
+    } else if(this.#pickCardIds.length < picksPerPack){
+      // if the card had not been picked yet, pick it and remove burn if any
+      if (this.isBurn(cardId)) {
+        remove(this.#burnCardIds, id => id === cardId);
+      }
+      this.#pickCardIds.push(cardId);
+    } 
 
-    if (this.isBurn(cardId)) {
-      remove(this.#burnCardIds, id => id === cardId);
-    }
-
-    this.#pickCardIds.push(cardId);
     this.updState();
     this.updateSelection();
   }
@@ -216,15 +218,18 @@ class GameState extends EventEmitter {
       return false;
     }
 
-    if (this.#burnCardIds.length == burnsPerPack) {
-      this.#burnCardIds.shift();
-    }
+    if(this.#burnCardIds.includes(cardId)){
+      // if the card is already burned, remove it
+      remove(this.#burnCardIds, id => id === cardId);
+    } else if(this.#burnCardIds.length < burnsPerPack) {
+      // if the card is not burned, remove it from pick if any and burn it
+      if (this.isPick(cardId)) {
+        remove(this.#pickCardIds, id => id === cardId);
+      }
+  
+      this.#burnCardIds.push(cardId);
+    } 
 
-    if (this.isPick(cardId)) {
-      remove(this.#pickCardIds, id => id === cardId);
-    }
-
-    this.#burnCardIds.push(cardId);
     this.updState();
     this.updateSelection();
   }

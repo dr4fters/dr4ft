@@ -333,13 +333,7 @@ const parseCubeOptions = () => {
 };
 
 const clickPack = (card) => {
-  if (!App.state.gameState.isPick(card.cardId)) {
     App.state.gameState.updateCardPick(card.cardId, App.state.picksPerPack);
-  } else if (App.state.gameState.isSelectionReady(App.state.picksPerPack, App.state.game.burnsPerPack)) {
-    App.state.gameState.resetPack();
-    App.update();
-    App.send("confirmSelection");
-  }
 };
 
 const hash = () => {
