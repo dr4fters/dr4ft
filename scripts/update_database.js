@@ -36,6 +36,7 @@ const updateDatabase = () => {
         }
       } catch (err) {
         logger.error(`Error while integrating the file ${filePath}: ${err.stack}`);
+        console.log("JUNK:", fs.readFileSync(filePath, "UTF-8"));
       }
     });
   }
