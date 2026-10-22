@@ -1,33 +1,48 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SelectSearch from "react-select-search";
+// The package's ESM build exports its CommonJS exports object as default, so use the CJS build
+import SelectSearch from "react-select-search/dist/cjs";
 import Fuse from "fuse.js";
+import { groupBy } from "lodash";
 
 import "./SelectSet.scss";
 
-function fuzzySearch (options) {
-  return value => {
-    if (!value.length) {
-      return options;
-    }
+// react-select-search hands over a flat list where each option carries its group,
+// so search group by group to keep the groups in their original order
+function fuzzySearch (options, query) {
+  if (!query.length) {
+    return options;
+  }
 
-    return options.reduce((acc, group) => {
-      const fuse = new Fuse(group.items, {
-        keys: ["name", "value"],
-        minMatchCharLength: 2,
-        threshold: 0.3
-      })
-      const matches = fuse.search(value)
+  return Object.values(groupBy(options, "group")).flatMap(items => {
+    const fuse = new Fuse(items, {
+      keys: ["name", "value"],
+      minMatchCharLength: 2,
+      threshold: 0.3
+    })
+    return fuse.search(query).map(match => match.item)
+  })
+}
 
-      if (matches.length) {
-        acc.push({
-          ...group,
-          items: matches.map(match => match.item)
-        })
-      }
-      return acc
-    }, [])
-  };
+// v4 derives every class name from a string className as "SelectSet-<key>",
+// so map them to the names SelectSet.scss uses
+const classNames = {
+  "container": "SelectSet",
+  "value": "SelectSet__value",
+  "input": "SelectSet__input",
+  "select": "SelectSet__select",
+  "options": "SelectSet__options",
+  "row": "SelectSet__row",
+  "option": "SelectSet__option",
+  "group": "SelectSet__group",
+  "group-header": "SelectSet__group-header",
+  "not-found": "SelectSet__not-found",
+  "is-multiple": "SelectSet--multiple",
+  "is-disabled": "is-disabled",
+  "is-loading": "is-loading",
+  "is-selected": "is-selected",
+  "is-highlighted": "is-highlighted",
+  "has-focus": "has-focus"
 }
 
 import App from "../app";
@@ -48,14 +63,15 @@ const SelectSet = ({ value, onChange }) => {
 
   return (
     <SelectSearch
-      className="SelectSet"
+      className={classNames}
       options={options}
       name="card-set"
       placeholder="Choose a set"
       value={value}
       onChange={onChange}
       search
-      filterOptions={fuzzySearch}
+      fuzzySearch={false}
+      filterOptions={[fuzzySearch]}
       renderValue={(valueProps) => {
         return (
           <div className="SelectSet__input-container" >

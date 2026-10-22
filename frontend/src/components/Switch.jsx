@@ -14,7 +14,7 @@ const Switch = ({
   const tooltip = (isChecked ? checked : unchecked).tooltip
 
   return (
-    <label className="Switch" data-tip={tooltip}>
+    <label className="Switch" data-tooltip-id="modal-tooltip" data-tooltip-content={tooltip}>
       <span className='label'>Private</span>
       <span className="vhidden">({tooltip})</span>
 

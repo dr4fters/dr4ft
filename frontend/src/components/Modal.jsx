@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 import "./Modal.scss";
 
@@ -19,7 +19,7 @@ const Modal = ({
   }
 
   return (
-    <div className="Modal" onScroll={() => ReactTooltip.rebuild()}>
+    <div className="Modal">
       <div className="modal-backdrop" onClick={onClose}></div>
       <div className="modal-container">
         <header className="modal-header">
@@ -48,13 +48,12 @@ const Modal = ({
         </div>
       </div>
 
-      <ReactTooltip
+      <Tooltip
+        id="modal-tooltip"
         className="modal-tooltip"
-        effect="solid"
-        type="info"
+        variant="info"
         place="bottom"
-        backgroundColor='#079DFF'
-        textColor='white'
+        style={{ backgroundColor: "#079DFF", color: "white" }}
       />
     </div>
   );
