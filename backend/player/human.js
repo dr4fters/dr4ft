@@ -65,7 +65,7 @@ module.exports = class Human extends Player {
   }
   sendPack(pack) {
     if (this.useTimer) {
-      let timer = [];
+      let timer;
       // http://www.wizards.com/contentresources/wizards/wpn/main/documents/magic_the_gathering_tournament_rules_pdf1.pdf pp43
       // official WOTC timings are
       // pick #, time in seconds)

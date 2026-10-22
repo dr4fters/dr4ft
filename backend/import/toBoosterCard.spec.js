@@ -1,4 +1,3 @@
-/* eslint-env node, mocha */
 const fs = require("fs");
 const assert = require("assert");
 const toBoosterCard = require("./toBoosterCard");

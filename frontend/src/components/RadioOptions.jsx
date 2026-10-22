@@ -14,7 +14,7 @@ const RadioOption = ({
   const id = `radio-button-${name}-${value}`;
 
   return (
-    <label htmlFor={id} className='radio-label connected-component' data-tip={tooltip || ""}>
+    <label htmlFor={id} className='radio-label connected-component' data-tooltip-id="modal-tooltip" data-tooltip-content={tooltip}>
       {label} <span className="vhidden">({tooltip})</span>
       <input
         id={id}
