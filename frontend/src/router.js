@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React, { Suspense } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 const Lobby = React.lazy(() => import("./lobby/Lobby"));
 const Game = React.lazy(() => import("./game/Game"));
 let App;
+let root;
 
 export default function router(_App) {
   App = _App;
@@ -49,5 +50,6 @@ function route() {
     return App.error(`not found: ${path}`);
   }
 
-  render(component, document.getElementById("root"));
+  root ??= createRoot(document.getElementById("root"));
+  root.render(component);
 }

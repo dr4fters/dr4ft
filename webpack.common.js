@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    polyfill: "@babel/polyfill",
+    polyfill: "core-js/stable",
     app: "./frontend/src/init.js"
   },
   output: {
@@ -88,7 +88,7 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/,
-        loader: "url-loader"
+        type: "asset"
       }
     ]
   }

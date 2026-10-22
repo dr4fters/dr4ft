@@ -110,6 +110,11 @@
     z-index: 99999991;
   }
 
+  // react-select-search v4 always renders the options, so only show them while focused
+  &:not(.SelectSet--multiple):not(.has-focus) .SelectSet__select {
+    display: none;
+  }
+
   .SelectSet__options {
     list-style: none;
     width: 100%

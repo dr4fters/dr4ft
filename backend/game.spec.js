@@ -1,4 +1,3 @@
-/* eslint-env node, mocha */
 const assert = require("assert");
 const Game = require("./game");
 const Sock = require("./sock");
