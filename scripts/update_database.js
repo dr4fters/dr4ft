@@ -13,12 +13,17 @@ const updateDatabase = () => {
 
   const setsDataDir = path.join(getDataDir(), "sets");
   if (fs.existsSync(setsDataDir)) {
-    const files = fs.readdirSync(setsDataDir);
+    // MTGJSON's zip nests the set files in a subfolder (AllSetFiles/), so look one level down too
+    const files = fs.readdirSync(setsDataDir).flatMap(file => (
+      fs.statSync(path.join(setsDataDir, file)).isDirectory()
+        ? fs.readdirSync(path.join(setsDataDir, file)).map(nested => path.join(file, nested))
+        : file
+    ));
     files.forEach(file => {
       if (!/.json/g.test(file)) {
         return;
       }
-      const [setName,] = file.split(".");
+      const [setName,] = path.basename(file).split(".");
       if (setsToIgnore.includes(setName)) {
         return;
       }

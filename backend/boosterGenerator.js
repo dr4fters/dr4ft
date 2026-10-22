@@ -67,6 +67,8 @@ const chooseCards = sheets => ([sheetCode, numberOfCardsToPick]) => {
 
 function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPick) {
   const ret = new Set();
+  // Never ask for more distinct cards than the sheet has, or the loop below never ends
+  const size = Math.min(numberOfCardsToPick, Object.keys(cards).length);
 
   // Pick one card of each color
   ["G", "U", "W", "B", "R"].forEach((color) => {
@@ -83,7 +85,7 @@ function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPi
     "c": cardsByColor["c"].length * numberOfCardsToPick,
   };
   const total = Object.values(nums).reduce((total, num) => total + num);
-  while (ret.size < numberOfCardsToPick) {
+  while (ret.size < size) {
     const randomColor = weighted.select(nums, { total });
     ret.add(sample(cardsByColor[randomColor]));
   }
@@ -91,10 +93,16 @@ function getRandomCardsWithColorBalance({cardsByColor, cards}, numberOfCardsToPi
 }
 
 function getRandomCards({cards, totalWeight: total}, numberOfCardsToPick) {
+  // Fixed sheets (e.g. CLU's preconstructed decks) weight each card by its number of copies
+  if (total === numberOfCardsToPick) {
+    return Object.entries(cards).flatMap(([uuid, copies]) => Array(copies).fill(uuid));
+  }
+
   const ret = new Set();
+  const size = Math.min(numberOfCardsToPick, Object.keys(cards).length);
 
   // Fast way to avoid duplicate
-  while (ret.size < numberOfCardsToPick) {
+  while (ret.size < size) {
     ret.add(weighted.select(cards, { total }));
   }
 
