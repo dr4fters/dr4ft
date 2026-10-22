@@ -32,14 +32,23 @@ async function fetch() {
     acc[code.toUpperCase()] = {
       totalWeight,
       boosters,
-      sheets: Object.entries(sheets).reduce((acc, [code, {balance_colors = false, cards}]) => {
+      sheets: Object.entries(sheets).reduce((acc, [code, {balance_colors = false, cards: allCards}]) => {
+        // Skip cards missing from MTGJSON so they don't end up as an "undefined" card in packs
+        const cards = Object.fromEntries(Object.entries(allCards).filter(([cardCode]) => {
+          if (getUuid(cardCode)) {
+            return true;
+          }
+          logger.warn(cardCode + " doesn't match any card");
+          return false;
+        }));
         const totalWeight = Object.values(cards).reduce((acc, val) => acc + val, 0);
         acc[code] = {
           balance_colors,
           totalWeight,
           cards: Object.entries(cards).reduce((acc, [cardCode, weigth]) => {
+            // Variants (e.g. ARN's "12a" and "12b") can resolve to the same card, so merge their weights
             const uuid = getUuid(cardCode);
-            acc[uuid] = weigth;
+            acc[uuid] = (acc[uuid] || 0) + weigth;
             return acc;
           },{}),
           cardsByColor: Object.entries(cards).reduce((acc, [cardCode]) => {
@@ -77,7 +86,11 @@ const getCard = (cardCode) => {
 
 const getUuid = (cardCode) => {
   const [setCode, cardNumber] = cardCode.split(":");
-  const { cardsByNumber } = getSet(setCode.toUpperCase());
+  const set = getSet(setCode.toUpperCase());
+  if (!set) {
+    return undefined;
+  }
+  const { cardsByNumber } = set;
   return cardsByNumber[cardNumber] || cardsByNumber[parseInt(cardNumber)] || cardsByNumber[cardNumber.toLowerCase()];
 };
 

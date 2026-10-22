@@ -20,4 +20,10 @@ describe("Acceptance tests for boosterGenerator function", () => {
       got.forEach(card => assert(card.name != undefined));
     });
   });
+  it("should create a CLU booster with duplicate cards", () => {
+    const got = boosterGenerator("CLU");
+    assert.equal(got.length, 20);
+    got.forEach(card => assert(card.name != undefined));
+    assert(new Set(got.map(({uuid}) => uuid)).size < got.length);
+  });
 });
