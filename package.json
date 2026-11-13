@@ -58,7 +58,7 @@
     "fuse.js": "^7.5.0",
     "helmet": "^8.3.0",
     "html-webpack-plugin": "^5.5.0",
-    "joi": "^18.3.0",
+    "joi": "^18.3.1",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
     "node-schedule": "^2.1.1",
